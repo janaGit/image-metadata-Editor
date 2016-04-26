@@ -1,4 +1,9 @@
 typings/
 node_modules/
-*.js
+app/**/*.js
 *.js.map
+*.png
+*.JPG
+*.jpg
+*~
+*.jar

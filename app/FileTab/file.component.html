@@ -1,0 +1,40 @@
+<table id='window' >
+    <tr>
+        <td > 
+            <div  id='buttons' >
+                <button type='button' id='refresh' (click)=refresh()> Refresh Image list</button>
+                <div id='nav'>
+                    <button type='button' id='previous' (click)=previousImage()> < </button>
+                    <button type='button' id='next' (click)=nextImage()> > </button>
+                </div>
+                <div id='dragAndDrop_outer' class='thumbnail'>
+                    <div id='dragAndDrop' class='thumbnail' >
+                        <span id='dragAndDrop_text' (ee_getDropedImage)=getDropedImage($event)>
+                            Drag and Drop an image
+                        </span> 
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td > 
+            <div id='imageCell'>
+                <div  id='image_place' >
+                    <img  id='image' src={{imgPath}}>
+                    <div id='image_name'> {{imageName}} </div> 
+                </div>
+                
+            </div>
+
+        </td>
+        <td>
+    </tr>
+    <tr >
+        <td></td>
+        <td>          
+            <button type='button' id='deleteFile' (click)=deleteImage()> Delete File </button>               
+
+            <button type='button' id='submitButton'> start editing </button>          
+        </td>
+    </tr>
+
+</table>    
