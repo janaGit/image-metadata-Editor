@@ -1,0 +1,81 @@
+#image_place{ 
+    width: 55%;
+    height: 75%;
+    margin-left:10%;
+    margin-top:7%;
+    position:absolute;
+}
+#image{
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: block;
+ 
+    
+}
+#imageCell{
+    position:relative;
+    width:100%;
+    height:100%; 
+    
+}
+#image_name{
+float:right;
+
+}
+#deleteFile{
+   
+}
+#window{
+    width: 100%;
+    height: 65%;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+}
+#buttons{
+    height: 70%;
+    
+}
+#submitButton{
+    float: right;
+   
+ 
+}
+td{
+      width: 50%;
+}
+#refresh{
+ 
+}
+
+#next{
+    font-size: 200%;
+}
+#previous{
+      font-size: 200%;
+}
+
+#nav{
+    margin-left: 70%;
+    margin-top: 10%;
+}
+
+#dragAndDrop{
+    width:100%;
+    height:100%;
+    display:table;
+}
+#dragAndDrop_outer{
+    width:42%;
+    height:72%;
+}
+#dragAndDrop_text{
+   display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
