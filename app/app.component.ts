@@ -8,10 +8,10 @@ import {MetadataComponent} from './MetadataTab/metadata.component';
 import {LocationComponent} from './LocationTab/location.component';
 import {CompleteComponent} from './CompleteTab/complete.component';
 import {ImageService}     from './services/image.service';
-
+import {ExifToolService}  from './services/exifTool.service';
 @Component({
     selector: 'my-app',
-    providers: [ROUTER_PROVIDERS,HTTP_PROVIDERS,ImageService],
+    providers: [ROUTER_PROVIDERS,HTTP_PROVIDERS,ImageService,ExifToolService],
     directives: [ROUTER_DIRECTIVES, TAB_DIRECTIVES],
     template: `<div class='page-header'><h1> Image Metadata Editor </h1>
 <span class="glyphicon glyphicon-edit" id="mainIcon" aria-hidden="true"></span></div>

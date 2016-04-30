@@ -4,6 +4,7 @@ var multer = require('multer');
 var app = express();
 var path = require('path');
 var fs = require('fs');
+var exifTool = require('./ExifTool.js');
 var imageDir = './images';
 
 app.use("/nm_es6-shim", express.static('node_modules/es6-shim/es6-shim.min.js'));
@@ -43,6 +44,8 @@ var upload = multer({storage: storage});
 
 
 app.get('/getImageNames', getFileNames);
+
+app.get('/getMetadata/:imageNumber', getMetadata);
 
 app.post('/newImage', upload.single('image'), newImage);
 
@@ -84,4 +87,22 @@ function deleteImage(req, res) {
 
     });
 }
+function getMetadata(req, res) {
+    fs.readdir(imageDir, function (err, files) {
+        var imageNumber = req.params.imageNumber;
+        var imageName = files[imageNumber];
+        if (typeof imageName === 'undefined') {
+            res.status(404).send('There only exist ' + files.length + ' files in the folder! Only numbers between 0 and' + (files.length - 1) + ' are accepted.');
+        }
+        var data = exifTool.getMetadata(imageDir, imageName);
+        data.then(function (data) {
+            console.log(data);
+            var body = {};
+            body.data = data;
+            res.send(body);
+        });
+    });
+
+}
+
 app.listen(3000);

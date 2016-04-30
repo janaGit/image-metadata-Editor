@@ -1,0 +1,20 @@
+
+<div class="modal fade in" id="showMetadata" [style.display]=_display role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)=closeButton()><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">show Metadata</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" >
+                    <tr *ngFor="#key of metadata_keys">
+                        <td>{{key}}</td><td>{{metadata[key]}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
