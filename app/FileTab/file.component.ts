@@ -1,12 +1,12 @@
 import {Component, OnInit} from 'angular2/core';
-
 import {ImageService}     from './../services/image.service';
 import {GetDropedImageDirective} from './../directives/getDropedImage.directive';
+import {ShowMetadataComponent} from './../modals/showMetadata.component'
 var imageDir = 'images';
 
 @Component({
-    templateUrl:'app/FileTab/file.component.html',
-    directives: [GetDropedImageDirective],
+    templateUrl: 'app/FileTab/file.component.html',
+    directives: [GetDropedImageDirective,ShowMetadataComponent],
     styleUrls: ['app/FileTab/file.component.css']
 })
 
@@ -16,6 +16,7 @@ export class FileComponent implements OnInit {
     imgNumber = 0;
     imageName: string;
     imgPath: string;
+
 
     constructor(private _imageService: ImageService) { }
 
@@ -95,11 +96,12 @@ export class FileComponent implements OnInit {
         this.imageName = this.imageNames[this.imgNumber];
         this.imgPath = imageDir + '/' + this.imageName;
     }
-    deleteImage(){
+    deleteImage() {
         var self = this;
         this._imageService.deleteImage(this.imageName).subscribe(
-                error => this.errorMessage_imageService = <any>error,
-                () =>this.refreshImageList().then(function() { self.loadImage(false) })
-                );
+            error => this.errorMessage_imageService = <any>error,
+            () => this.refreshImageList().then(function() { self.loadImage(false); })
+        );
     }
+
 }

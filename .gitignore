@@ -7,3 +7,4 @@ app/**/*.js
 *.jpg
 *~
 *.jar
+*.log

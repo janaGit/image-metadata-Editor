@@ -18,7 +18,7 @@
         </td>
         <td > 
             <div id='imageCell'>
-                <div  id='image_place' >
+                <div  id='image_place' (click)="showMetadataModal.display('block')" >
                     <img  id='image' src={{imgPath}}>
                     <div id='image_name'> {{imageName}} </div> 
                 </div>
@@ -36,5 +36,5 @@
             <button type='button' id='submitButton'> start editing </button>          
         </td>
     </tr>
-
+<showMetadata #showMetadataModal [imgNumber]="imgNumber"></showMetadata>
 </table>    
