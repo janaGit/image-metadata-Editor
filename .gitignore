@@ -8,3 +8,4 @@ app/**/*.js
 *~
 *.jar
 *.log
+!images/selectAll_Images.png

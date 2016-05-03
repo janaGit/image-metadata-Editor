@@ -13,7 +13,7 @@ export class ShowMetadataComponent implements OnChanges {
     errorMessage_exifToolService: string;
     metadata = {};
     metadata_keys=[];
-    @Input() imgNumber:number;
+    @Input() imageName:string;
     display(display: string) {
         this._display = display;
     }
@@ -23,14 +23,14 @@ export class ShowMetadataComponent implements OnChanges {
     }
     ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
 
-        if (changes['imgNumber']) {
-           var imgNumber = changes['imgNumber'].currentValue;
-          this.getMetadata(imgNumber);
+        if (changes['imageName']) {
+          this.imageName = changes['imageName'].currentValue;
+          this.getMetadata(this.imageName);
 
         }
     }
-    getMetadata(imgNumber: number) {
-        this._exifToolService.getMetadata(imgNumber.toString()).subscribe(
+    getMetadata(imageName: string) {
+        this._exifToolService.getMetadata(imageName).subscribe(
             data => { this.metadata = data; this.metadata_keys=Object.keys(data);},
             error => this.errorMessage_exifToolService = <any>error
         );

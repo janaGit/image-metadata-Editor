@@ -1,6 +1,7 @@
 var exports = module.exports = {};
 const child_process = require('child_process').spawn;
 const readline = require('readline');
+
 exports.getMetadata=function (imageDir, imageName) {
         var json = {};
                 const ls = child_process('exiftool', [imageDir + '/' + imageName]);
