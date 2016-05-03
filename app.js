@@ -45,7 +45,7 @@ var upload = multer({storage: storage});
 
 app.get('/getImageNames', getFileNames);
 
-app.get('/getMetadata/:imageNumber', getMetadata);
+app.get('/getMetadata/:imageName', getMetadata);
 
 app.post('/newImage', upload.single('image'), newImage);
 
@@ -89,10 +89,9 @@ function deleteImage(req, res) {
 }
 function getMetadata(req, res) {
     fs.readdir(imageDir, function (err, files) {
-        var imageNumber = req.params.imageNumber;
-        var imageName = files[imageNumber];
-        if (typeof imageName === 'undefined') {
-            res.status(404).send('There only exist ' + files.length + ' files in the folder! Only numbers between 0 and' + (files.length - 1) + ' are accepted.');
+        var imageName = req.params.imageName;
+        if (files.indexOf(imageName) === -1) {
+            res.status(404).send('File not exists.');
         }
         var data = exifTool.getMetadata(imageDir, imageName);
         data.then(function (data) {

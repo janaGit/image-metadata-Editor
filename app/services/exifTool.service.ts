@@ -9,8 +9,8 @@ export class ExifToolService {
     private _getMetadata = '/getMetadata';
 
 
-    getMetadata(imageNumber: string): Observable<string[]> {
-        return this._http.get(this._getMetadata+'/'+imageNumber)
+    getMetadata(imageName: string): Observable<string[]> {
+        return this._http.get(this._getMetadata+'/'+imageName)
             .map(this.extractData)
             .catch(this.handleError);
     }
