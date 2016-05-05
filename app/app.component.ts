@@ -1,11 +1,11 @@
-import {Component} from 'angular2/core';
+import {Component,OnInit} from 'angular2/core';
 import { HTTP_PROVIDERS }    from 'angular2/http';
-
 
 import {ImageService}     from './services/image.service';
 import {ExifToolService}  from './services/exifTool.service';
-import {Edit_MetadataService} from './services/edit_Metadata.service';
+import {Edit_MetadataService} from './EditMetadata/services/edit_Metadata.service';
 import {EditMetadataComponent} from './EditMetadata/editMetadata.component';
+var imageDir='images';
 @Component({
     selector: 'my-app',
     providers: [ HTTP_PROVIDERS, ImageService, ExifToolService, Edit_MetadataService],
@@ -16,6 +16,11 @@ import {EditMetadataComponent} from './EditMetadata/editMetadata.component';
 
 
 
-export class AppComponent{
-    
+export class AppComponent implements OnInit{
+    constructor(private edit_MetadataService:Edit_MetadataService){
+        
+    }
+    ngOnInit(){
+        this.edit_MetadataService.imageDir=imageDir;
+    }
 }
