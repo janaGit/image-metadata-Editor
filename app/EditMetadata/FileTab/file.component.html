@@ -33,7 +33,7 @@
         <td>          
             <button type='button' id='deleteFile' (click)=deleteImage()> Delete File </button>               
 
-            <button type='button' id='submitButton'> start editing </button>          
+            <button type='button' id='startEditingButton' (click)=startEditing()> start editing </button>          
         </td>
     </tr>
 <showMetadata #showMetadataModal [imageName]="imageName"></showMetadata>
