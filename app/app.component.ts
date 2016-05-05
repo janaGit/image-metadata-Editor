@@ -1,62 +1,21 @@
 import {Component} from 'angular2/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import { HTTP_PROVIDERS }    from 'angular2/http';
 
-import {FileComponent} from './FileTab/file.component';
-import {MetadataComponent} from './MetadataTab/metadata.component';
-import {LocationComponent} from './LocationTab/location.component';
-import {CompleteComponent} from './CompleteTab/complete.component';
+
 import {ImageService}     from './services/image.service';
 import {ExifToolService}  from './services/exifTool.service';
+import {Edit_MetadataService} from './services/edit_Metadata.service';
+import {EditMetadataComponent} from './EditMetadata/editMetadata.component';
 @Component({
     selector: 'my-app',
-    providers: [ROUTER_PROVIDERS,HTTP_PROVIDERS,ImageService,ExifToolService],
-    directives: [ROUTER_DIRECTIVES, TAB_DIRECTIVES],
-    template: `<div class='page-header'><h1> Image Metadata Editor </h1>
-<span class="glyphicon glyphicon-edit" id="mainIcon" aria-hidden="true"></span></div>
-<tabset>
-<tab *ngFor="#tabz of tabs"
-         [heading]="tabz.title"
-         [disabled]="tabz.disabled"
-        >
-    </tab>
-</tabset>
- <router-outlet></router-outlet>
-`,
+    providers: [ HTTP_PROVIDERS, ImageService, ExifToolService, Edit_MetadataService],
+    directives: [EditMetadataComponent],
+    templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
 })
 
-@RouteConfig([
-    {
-        path: '/file',
-        name: 'File',
-        component: FileComponent,
-        useAsDefault: true
-    }, 
-    {
-        path: '/metadata',
-        name: 'Metadata',
-        component: MetadataComponent
-    },
-    {
-        path: '/location',
-        name: 'Location',
-        component: LocationComponent
-    },
-    {
-        path: '/complete',
-        name: 'Complete',
-        component: CompleteComponent
-    }
-])
 
-export class AppComponent {
-    public tabs: Array<any> = [
-        { title: 'File' },
-        { title: 'Metadata', disabled: true },
-        { title: 'Location', disabled: true },
-        { title: 'Complete', disabled: true }
-    ];
 
+export class AppComponent{
+    
 }

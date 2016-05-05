@@ -1,13 +1,16 @@
-import {Component, OnInit} from 'angular2/core';
-import {ImageService}     from './../services/image.service';
-import {GetDropedImageDirective} from './../directives/getDropedImage.directive';
-import {ShowMetadataComponent} from './../modals/showMetadata.component'
+import {Component, OnInit,Output,EventEmitter} from 'angular2/core';
+import {ImageService}     from './../../services/image.service';
+import {Edit_MetadataService} from './../../services/edit_Metadata.service';
+import {GetDropedImageDirective} from './../../directives/getDropedImage.directive';
+import {ShowMetadataComponent} from './../../modals/showMetadata.component';
+
 var imageDir = 'images';
 
 @Component({
-    templateUrl: 'app/FileTab/file.component.html',
+    selector: 'FileTab',
+    templateUrl: 'app/EditMetadata/FileTab/file.component.html',
     directives: [GetDropedImageDirective,ShowMetadataComponent],
-    styleUrls: ['app/FileTab/file.component.css']
+    styleUrls: ['app/EditMetadata/FileTab/file.component.css']
 })
 
 export class FileComponent implements OnInit {
@@ -16,9 +19,9 @@ export class FileComponent implements OnInit {
     imgNumber = 0;
     imageName: string;
     imgPath: string;
+    @Output() start=new EventEmitter<boolean>();
 
-
-    constructor(private _imageService: ImageService) { }
+    constructor(private _imageService: ImageService, private _edit_MetadataService:Edit_MetadataService) { }
 
     ngOnInit() { this.refresh(); }
 
@@ -102,6 +105,10 @@ export class FileComponent implements OnInit {
             error => this.errorMessage_imageService = <any>error,
             () => this.refreshImageList().then(function() { self.loadImage(false); })
         );
+    }
+    startEditing(){
+        this._edit_MetadataService.imageName=this.imageName;
+        this.start.emit(true);
     }
 
 }
