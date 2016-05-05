@@ -1,15 +1,14 @@
-import {Component, OnInit,Output,EventEmitter} from 'angular2/core';
+import {Component, OnInit, Output, EventEmitter, ChangeDetectorRef} from 'angular2/core';
 import {ImageService}     from './../../services/image.service';
-import {Edit_MetadataService} from './../../services/edit_Metadata.service';
+import {Edit_MetadataService} from './../services/edit_Metadata.service';
 import {GetDropedImageDirective} from './../../directives/getDropedImage.directive';
 import {ShowMetadataComponent} from './../../modals/showMetadata.component';
 
-var imageDir = 'images';
 
 @Component({
     selector: 'FileTab',
     templateUrl: 'app/EditMetadata/FileTab/file.component.html',
-    directives: [GetDropedImageDirective,ShowMetadataComponent],
+    directives: [GetDropedImageDirective, ShowMetadataComponent],
     styleUrls: ['app/EditMetadata/FileTab/file.component.css']
 })
 
@@ -19,11 +18,15 @@ export class FileComponent implements OnInit {
     imgNumber = 0;
     imageName: string;
     imgPath: string;
-    @Output() start=new EventEmitter<boolean>();
+    imageDir: string;
+    @Output() start = new EventEmitter<boolean>();
 
-    constructor(private _imageService: ImageService, private _edit_MetadataService:Edit_MetadataService) { }
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
 
-    ngOnInit() { this.refresh(); }
+    ngOnInit() {
+        this.imageDir = this._edit_MetadataService.imageDir;
+        this.refresh();
+    }
 
 
     getDropedImage(file: File) {
@@ -97,7 +100,7 @@ export class FileComponent implements OnInit {
             }
         }
         this.imageName = this.imageNames[this.imgNumber];
-        this.imgPath = imageDir + '/' + this.imageName;
+        this.imgPath = this.imageDir + '/' + this.imageName;
     }
     deleteImage() {
         var self = this;
@@ -106,8 +109,9 @@ export class FileComponent implements OnInit {
             () => this.refreshImageList().then(function() { self.loadImage(false); })
         );
     }
-    startEditing(){
-        this._edit_MetadataService.imageName=this.imageName;
+    startEditing() {
+
+        this._edit_MetadataService.setImageName(this.imageName);
         this.start.emit(true);
     }
 
