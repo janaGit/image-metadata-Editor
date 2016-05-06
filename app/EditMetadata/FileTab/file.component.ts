@@ -24,7 +24,7 @@ export class FileComponent implements OnInit {
     constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
 
     ngOnInit() {
-        this.imageDir = this._edit_MetadataService.imageDir;
+        this.imageDir = this._imageService.imageDir;
         this.refresh();
     }
 
