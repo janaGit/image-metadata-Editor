@@ -6,6 +6,7 @@ var path = require('path');
 var fs = require('fs');
 var exifTool = require('./ExifTool.js');
 var imageDir = './images';
+var imageDir_edited = './images_edited';
 
 app.use("/nm_es6-shim", express.static('node_modules/es6-shim/es6-shim.min.js'));
 app.use("/nm_system-polyfills", express.static('node_modules/systemjs/dist/system-polyfills.js'));
@@ -22,6 +23,7 @@ app.use("/nm_moment", express.static('node_modules/moment/moment.js'));
 app.use("/styles.css", express.static('styles.css'));
 app.use("/app", express.static('app'));
 app.use("/images", express.static('images'));
+app.use("/images_edited", express.static('images_edited'));
 
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -44,6 +46,7 @@ var upload = multer({storage: storage});
 
 
 app.get('/getImageNames', getFileNames);
+app.get('/getImageNames_edited', getFileNames_edited);
 
 app.get('/getMetadata/:imageName', getMetadata);
 
@@ -63,6 +66,15 @@ app.get('*', function (req, res) {
 
 function getFileNames(req, res) {
     fs.readdir(imageDir, function (err, files) {
+        console.log('REQUEST:getFileName ');
+        console.log(files);
+        var body = {};
+        body.data = files;
+        res.send(body);
+    });
+}
+function getFileNames_edited(req, res) {
+    fs.readdir(imageDir_edited, function (err, files) {
         console.log('REQUEST:getFileName ');
         console.log(files);
         var body = {};
