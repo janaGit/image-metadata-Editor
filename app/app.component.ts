@@ -9,6 +9,7 @@ import {ImageGallery} from './ImageGallery/image_Gallery.component';
 
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router} from 'angular2/router';
 var imageDir = 'images';
+var imageDir_edited = 'images_edited';
 
 @Component({
     selector: 'my-app',
@@ -33,19 +34,24 @@ var imageDir = 'images';
 
 
 export class AppComponent implements OnInit {
-    private changeView_Text = 'show Image Gallery';
+    private changeView_Text = 'show edited Images';
+    private button_text = new Map<string, string>();
+
     constructor(private _imageService: ImageService, private _router: Router) {
 
     }
     ngOnInit() {
         this._imageService.imageDir = imageDir;
+        this._imageService.imageDir_edited = imageDir_edited;
+        this.button_text.set('/edit_metadata', 'edit Metadata');
+        this.button_text.set('/image_gallery', 'show edited Images');
     }
     changeView() {
-        if (this.changeView_Text === 'show Image Gallery') {
-            this.changeView_Text = 'edit Metadata';
+
+        this.changeView_Text=this.button_text.get(location.pathname)
+        if ( location.pathname==='/edit_metadata') {
             this._router.navigate(['ImageGallery']);
         } else {
-            this.changeView_Text = 'show Image Gallery';
             this._router.navigate(['EditMetadata']);
         }
 

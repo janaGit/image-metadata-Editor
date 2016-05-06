@@ -7,12 +7,19 @@ import {Injectable} from 'angular2/core';
 export class ImageService {
     constructor(private _http: Http) { }
     private _getImagesUrl = '/getImageNames';
+    private _getImages_editedUrl = '/getImageNames_edited';
     private _postImageUrl = '/newImage';
     private _deleteImageUrl = '/deleteImage';
     private _imageDir: string;
+    private _imageDir_edited: string;
 
     getImageNames(): Observable<string[]> {
         return this._http.get(this._getImagesUrl)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getImageNames_edited(): Observable<string[]> {
+        return this._http.get(this._getImages_editedUrl)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -52,10 +59,16 @@ export class ImageService {
             .map(this.extractData)
             .catch(this.handleError);
     }
- get imageDir() {
+    get imageDir() {
         return this._imageDir;
     }
     set imageDir(imgDir: string) {
         this._imageDir = imgDir;
+    }
+    set imageDir_edited(imgDir_edited: string) {
+        this._imageDir_edited = imgDir_edited;
+    }
+    get imageDir_edited() {
+        return this._imageDir_edited;
     }
 }
