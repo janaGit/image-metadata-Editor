@@ -6,6 +6,7 @@ import {MetadataComponent} from './MetadataTab/metadata.component';
 import {LocationComponent} from './LocationTab/location.component';
 import {CompleteComponent} from './CompleteTab/complete.component';
 import {Edit_MetadataService} from './services/edit_Metadata.service';
+import {ImageService}     from './../services/image.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ import {Edit_MetadataService} from './services/edit_Metadata.service';
 export class EditMetadataComponent implements OnInit {
     public selectedTab: string;
     public imgPath: string;
-
+    public imgDir:string;
     public tabs: Array<any> = [
         { title: 'File', tab: 'File' },
         { title: 'Edit Metadata', tab: 'Edit_Metadata', disabled: true },
@@ -26,13 +27,14 @@ export class EditMetadataComponent implements OnInit {
         { title: 'Location', tab: 'Location', disabled: true },
         { title: 'Complete', tab: 'Complete', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef, private edit_MetadataService: Edit_MetadataService) {
+    constructor(private _cdr: ChangeDetectorRef,private _imageService: ImageService, private edit_MetadataService: Edit_MetadataService) {
 
     }
     ngOnInit() {
-        this.edit_MetadataService.imgPath$.subscribe(
-            imgPath=> {
-                this.imgPath = imgPath;
+        this.imgDir = this._imageService.imageDir;
+        this.edit_MetadataService.imageName$.subscribe(
+            imgName=> {
+                this.imgPath = this.imgDir+'/'+imgName;
             }
         );
 

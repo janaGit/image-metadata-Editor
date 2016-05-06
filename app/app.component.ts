@@ -17,10 +17,10 @@ var imageDir='images';
 
 
 export class AppComponent implements OnInit{
-    constructor(private edit_MetadataService:Edit_MetadataService){
+    constructor(private _imageService:ImageService){
         
     }
     ngOnInit(){
-        this.edit_MetadataService.imageDir=imageDir;
+        this._imageService.imageDir=imageDir;
     }
 }
