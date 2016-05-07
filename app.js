@@ -96,36 +96,39 @@ function deleteImage(req, res) {
     });
 }
 function getMetadata(req, res) {
-    fs.readdir(imageDir, function (err, files) {
-        var imageName = req.params.imageName;
-        if (files.indexOf(imageName) === -1) {
-            res.status(404).send('File not exists.');
-        }
-        var data = exifTool.getMetadata(imageDir, imageName);
-        data.then(function (data) {
-            console.log(data);
-            var body = {};
-            body.data = data;
-            res.send(body);
-        });
-    });
+    var imageName = req.params.imageName;
+    var metadata = metadata(imageDir, imageName);
+    metadata.then(function (value) {
+        res.send(value);
+    }), function (error) {
+        res.status(404).send(error);
+    };
 
 }
 function getMetadata_edited(req, res) {
-    fs.readdir(imageDir_edited, function (err, files) {
-        var imageName = req.params.imageName;
-        if (files.indexOf(imageName) === -1) {
-            res.status(404).send('File not exists.');
-        }
-        var data = exifTool.getMetadata(imageDir_edited, imageName);
-        data.then(function (data) {
-            console.log(data);
-            var body = {};
-            body.data = data;
-            res.send(body);
+    var imageName = req.params.imageName;
+    var metadata = getMetadata(imageDir_edited, imageName);
+    metadata.then(function (value) {
+        res.send(value);
+    }), function (error) {
+        res.status(404).send(error);
+    };
+}
+function getMetadata(imageDir, imageName) {
+    return  new Promise(function (resolve, reject) {
+        fs.readdir(imageDir, function (err, files) {
+            if (files.indexOf(imageName) === -1) {
+                reject('File not exists.');
+            }
+            var data = exifTool.getMetadata(imageDir, imageName);
+            data.then(function (data) {
+                console.log(data);
+                var body = {};
+                body.data = data;
+                resolve(body);
+            });
         });
     });
-
 }
 
 app.listen(3000);
