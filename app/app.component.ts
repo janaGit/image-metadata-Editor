@@ -34,27 +34,30 @@ var imageDir_edited = 'images_edited';
 
 
 export class AppComponent implements OnInit {
-    private changeView_Text = 'show edited Images';
     private button_text = new Map<string, string>();
-
+    private changeView_Text: string;
     constructor(private _imageService: ImageService, private _router: Router) {
 
     }
     ngOnInit() {
         this._imageService.imageDir = imageDir;
         this._imageService.imageDir_edited = imageDir_edited;
-        this.button_text.set('/edit_metadata', 'edit Metadata');
-        this.button_text.set('/image_gallery', 'show edited Images');
+        this.button_text.set('/edit_metadata', 'show edited Images');
+        this.button_text.set('/', 'show edited Images');
+        this.button_text.set('/image_gallery', 'edit Metadata');
+        this.changeView_Text = this.button_text.get(location.pathname);
     }
     changeView() {
-
-        this.changeView_Text=this.button_text.get(location.pathname)
-        if ( location.pathname==='/edit_metadata') {
-            this._router.navigate(['ImageGallery']);
+        if (location.pathname === '/edit_metadata') {
+            this._router.navigate(['ImageGallery']).then(
+            ()=>this.changeView_Text = this.button_text.get(location.pathname)
+            );
         } else {
-            this._router.navigate(['EditMetadata']);
+            this._router.navigate(['EditMetadata']).then(
+            ()=>this.changeView_Text = this.button_text.get(location.pathname)
+            );
         }
-
+        
 
     }
 }
