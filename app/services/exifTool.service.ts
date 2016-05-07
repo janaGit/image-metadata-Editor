@@ -7,10 +7,16 @@ import {Injectable} from 'angular2/core';
 export class ExifToolService {
     constructor(private _http: Http) { }
     private _getMetadata = '/getMetadata';
+    private _getMetadata_edited = '/getMetadata_edited';
 
 
     getMetadata(imageName: string): Observable<string[]> {
-        return this._http.get(this._getMetadata+'/'+imageName)
+        return this._http.get(this._getMetadata + '/' + imageName)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getMetadata_edited(imageName: string): Observable<string[]> {
+        return this._http.get(this._getMetadata_edited + '/' + imageName)
             .map(this.extractData)
             .catch(this.handleError);
     }

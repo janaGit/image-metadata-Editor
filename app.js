@@ -49,6 +49,7 @@ app.get('/getImageNames', getFileNames);
 app.get('/getImageNames_edited', getFileNames_edited);
 
 app.get('/getMetadata/:imageName', getMetadata);
+app.get('/getMetadata_edited/:imageName', getMetadata_edited);
 
 app.post('/newImage', upload.single('image'), newImage);
 
@@ -57,11 +58,6 @@ app.delete('/deleteImage/:imageName', deleteImage);
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
-
-
-
-
-
 
 
 function getFileNames(req, res) {
@@ -106,6 +102,22 @@ function getMetadata(req, res) {
             res.status(404).send('File not exists.');
         }
         var data = exifTool.getMetadata(imageDir, imageName);
+        data.then(function (data) {
+            console.log(data);
+            var body = {};
+            body.data = data;
+            res.send(body);
+        });
+    });
+
+}
+function getMetadata_edited(req, res) {
+    fs.readdir(imageDir_edited, function (err, files) {
+        var imageName = req.params.imageName;
+        if (files.indexOf(imageName) === -1) {
+            res.status(404).send('File not exists.');
+        }
+        var data = exifTool.getMetadata(imageDir_edited, imageName);
         data.then(function (data) {
             console.log(data);
             var body = {};
