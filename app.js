@@ -48,7 +48,7 @@ var upload = multer({storage: storage});
 app.get('/getImageNames', getFileNames);
 app.get('/getImageNames_edited', getFileNames_edited);
 
-app.get('/getMetadata/:imageName', getMetadata);
+app.get('/getMetadata/:imageName', getMetadata_edit);
 app.get('/getMetadata_edited/:imageName', getMetadata_edited);
 
 app.post('/newImage', upload.single('image'), newImage);
@@ -95,9 +95,9 @@ function deleteImage(req, res) {
 
     });
 }
-function getMetadata(req, res) {
+function getMetadata_edit(req, res) {
     var imageName = req.params.imageName;
-    var metadata = metadata(imageDir, imageName);
+    var metadata = getMetadata(imageDir, imageName);
     metadata.then(function (value) {
         res.send(value);
     }), function (error) {

@@ -36,12 +36,12 @@ As basis for the Image Gallery I used the css file for the hoverbox by  Nathan S
     cursor: default;
 }
 
-.hoverbox a .preview
+.hoverbox a :not(.clicked).preview 
 {
     display: none;
 }
 
-.hoverbox a:hover .preview
+.hoverbox a:hover .preview, .clicked
 {
     display: block;
     position: absolute;
