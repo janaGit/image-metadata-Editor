@@ -12,7 +12,7 @@ exports.getMetadata=function (imageDir, imageName) {
                 var line= lines[i].toString();
                 var key = line.substr(0,line.indexOf(':')).trim();
                 var value = line.substring(line.indexOf(':')+1).trim();
-                if (value.indexOf('Unknown') == - 1 && value.length!=0) {
+                if ((key.indexOf('Error') > -1 || (value.indexOf('Unknown')=== -1)) && value.length!=0) {
                         json[key] = value;
                 }
 
