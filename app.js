@@ -55,6 +55,8 @@ app.post('/newImage', upload.single('image'), newImage);
 
 app.delete('/deleteImage/:imageName', deleteImage);
 
+app.post('/moveImageBackForEditing/:imageName',moveImageTo_image_folder);
+
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
@@ -127,6 +129,23 @@ function getMetadata(imageDir, imageName) {
                 body.data = data;
                 resolve(body);
             });
+        });
+    });
+}
+function moveImageTo_image_folder(req, res) {
+    var imageName = req.params.imageName;
+    fs.readdir(imageDir_edited, function (err, files) {
+        if (err) {
+                res.status(500).send(err);
+            }
+        if (files.indexOf(imageName) === -1) {
+            res.status(400).send('File not exists.');
+        }
+        fs.rename(imageDir_edited + '/' + imageName, imageDir + '/' + imageName, function (err) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            res.status(200).send({});
         });
     });
 }
