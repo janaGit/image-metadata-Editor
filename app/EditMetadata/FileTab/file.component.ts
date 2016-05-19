@@ -3,7 +3,7 @@ import {ImageService}     from './../../services/image.service';
 import {Edit_MetadataService} from './../services/edit_Metadata.service';
 import {GetDropedImageDirective} from './../../directives/getDropedImage.directive';
 import {ShowMetadataComponent} from './../../modals/showMetadata.component';
-
+import {ExifToolService}  from './../../services/exifTool.service';
 
 @Component({
     selector: 'FileTab',
@@ -21,7 +21,7 @@ export class FileComponent implements OnInit {
     imageDir: string;
     @Output() start = new EventEmitter<boolean>();
 
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
+    constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
 
     ngOnInit() {
         this.imageDir = this._imageService.imageDir;
@@ -110,9 +110,27 @@ export class FileComponent implements OnInit {
         );
     }
     startEditing() {
-
-        this._edit_MetadataService.setImageName(this.imageName);
-        this.start.emit(true);
+        var message=this.metadata_has_Error(this.imageName);
+        message.then(data=>{
+            this._edit_MetadataService.setImageName(this.imageName);
+            this.start.emit(true);
+        },error=>{
+           this.errorMessage_imageService = error;
+        })
     }
-
+    metadata_has_Error(imageName: string):Promise<String> {
+        var self=this;
+        return new Promise(function(resolve,reject){
+           self._exifToolService.getMetadata(imageName).subscribe(
+            data => {
+                if (typeof data['Error'] === 'undefined') {
+                    resolve('true');
+                }
+                reject(data['Error']);
+            },
+            error => { reject(error); }
+        ); 
+        })
+        
+    }
 }

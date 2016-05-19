@@ -18,6 +18,7 @@ export class ImageGallery implements OnInit {
     public imgDir_edited: string;
     metadata = {};
     metadata_keys = [];
+    private _editedImages_text="images_edited.txt";
     private _contextMenuElements = [
         { title: 'transfer for editing', subject: new Subject() },
         { title: 'help', subject: new Subject() }
@@ -25,7 +26,9 @@ export class ImageGallery implements OnInit {
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _renderer: Renderer) { }
     ngOnInit() {
         this._imageService.getImageNames_edited().subscribe(
-            images => { this.imageNames_edited = images },
+            images => {
+                images = this.removeString(images, this._editedImages_text); this.imageNames_edited = images
+            },
             error => this._errorMessage_imageService = <any>error
         );
         this.imgDir_edited = this._imageService.imageDir_edited;
@@ -62,6 +65,15 @@ export class ImageGallery implements OnInit {
     }
     contextMenu(val) {
         alert(val)
+    }
+    removeString(array: string[], string) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i].indexOf(string)>-1) {
+                array.splice(i, 1);
+
+            }
+        }
+        return array;
     }
 }
 
