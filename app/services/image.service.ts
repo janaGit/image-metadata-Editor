@@ -10,8 +10,10 @@ export class ImageService {
     private _getImages_editedUrl = '/getImageNames_edited';
     private _postImageUrl = '/newImage';
     private _deleteImageUrl = '/deleteImage';
+    private _postMoveImage = '/moveImageBackForEditing';
     private _imageDir: string;
     private _imageDir_edited: string;
+
 
     getImageNames(): Observable<string[]> {
         return this._http.get(this._getImagesUrl)
@@ -56,6 +58,11 @@ export class ImageService {
     }
     deleteImage(imageName: string): Observable<string[]> {
         return this._http.delete(this._deleteImageUrl + '/' + imageName)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    moveImageBackForEditing(imageName: string): Observable<string> {
+        return this._http.post(this._postMoveImage + '/' +imageName,"")
             .map(this.extractData)
             .catch(this.handleError);
     }

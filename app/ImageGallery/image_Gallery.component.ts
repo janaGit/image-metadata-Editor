@@ -14,23 +14,19 @@ export class ImageGallery implements OnInit {
     private _errorMessage_imageService: string;
     errorMessage_exifToolService: string;
     private _imageNameClicked: string;
-    public imageNames_edited: string[];
+    private _imageNames_edited: string[];
     public imgDir_edited: string;
     metadata = {};
     metadata_keys = [];
-    private _editedImages_text="images_edited.txt";
+    private _actual_Image: string;
+    private _editedImages_text = "images_edited.txt";
     private _contextMenuElements = [
         { title: 'transfer for editing', subject: new Subject() },
         { title: 'help', subject: new Subject() }
     ];
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _renderer: Renderer) { }
     ngOnInit() {
-        this._imageService.getImageNames_edited().subscribe(
-            images => {
-                images = this.removeString(images, this._editedImages_text); this.imageNames_edited = images
-            },
-            error => this._errorMessage_imageService = <any>error
-        );
+        this.getImageNames();
         this.imgDir_edited = this._imageService.imageDir_edited;
         this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
     }
@@ -39,6 +35,7 @@ export class ImageGallery implements OnInit {
             if (typeof this._imageNameClicked === 'undefined') {
                 this.getMetadata(event.img_name);
             }
+            this._actual_Image = event.img_name;
         }
         if (event.event === 'mouseClicked') {
             if (this._imageNameClicked !== event.img_name) {
@@ -64,16 +61,30 @@ export class ImageGallery implements OnInit {
         return false;
     }
     contextMenu(val) {
-        alert(val)
+        if (val === this._contextMenuElements[0].title) {
+            this._imageService.moveImageBackForEditing(this._actual_Image).subscribe(
+                data => { this.getImageNames(); },
+                error => this.errorMessage_exifToolService = <any>error
+            );
+        }
     }
     removeString(array: string[], string) {
         for (var i = 0; i < array.length; i++) {
-            if (array[i].indexOf(string)>-1) {
+            if (array[i].indexOf(string) > -1) {
                 array.splice(i, 1);
 
             }
         }
         return array;
+    }
+    getImageNames() {
+        this._imageService.getImageNames_edited().subscribe(
+            images => {
+                images = this.removeString(images, this._editedImages_text); 
+                this._imageNames_edited = images;
+            },
+            error => {this._errorMessage_imageService = <any>error}
+        );
     }
 }
 
