@@ -6,6 +6,7 @@ import {ExifToolService}  from './services/exifTool.service';
 import {Edit_MetadataService} from './EditMetadata/services/edit_Metadata.service';
 import {EditMetadataComponent} from './EditMetadata/editMetadata.component';
 import {ImageGallery} from './ImageGallery/image_Gallery.component';
+import  {ContextMenuService} from './services/contextMenu.service';
 
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router} from 'angular2/router';
 var imageDir = 'images';
@@ -13,7 +14,7 @@ var imageDir_edited = 'images_edited';
 
 @Component({
     selector: 'my-app',
-    providers: [HTTP_PROVIDERS, ImageService, ExifToolService, Edit_MetadataService, ROUTER_PROVIDERS],
+    providers: [HTTP_PROVIDERS, ImageService, ExifToolService, Edit_MetadataService, ROUTER_PROVIDERS,ContextMenuService],
     directives: [ROUTER_DIRECTIVES],
     templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
