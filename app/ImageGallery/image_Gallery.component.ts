@@ -1,12 +1,14 @@
 import {Component, OnInit, Renderer} from 'angular2/core';
+import {Subject} from 'rxjs/Rx';
 import {ImageService}     from './../services/image.service';
 import {OnMouseOverImageDirective}     from './../directives/onMouseOverImage.directive';
 import {ExifToolService}  from './../services/exifTool.service';
+import {ContextMenuHolderComponent} from './../modals/contextMenuHolder.component';
 
 @Component({
     templateUrl: 'app/ImageGallery/image_Gallery.component.html',
     styleUrls: ['app/ImageGallery/image_Gallery.component.css'],
-    directives: [OnMouseOverImageDirective]
+    directives: [OnMouseOverImageDirective, ContextMenuHolderComponent]
 })
 export class ImageGallery implements OnInit {
     private _errorMessage_imageService: string;
@@ -16,6 +18,10 @@ export class ImageGallery implements OnInit {
     public imgDir_edited: string;
     metadata = {};
     metadata_keys = [];
+    private _contextMenuElements = [
+        { title: 'transfer for editing', subject: new Subject() },
+        { title: 'help', subject: new Subject() }
+    ];
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _renderer: Renderer) { }
     ngOnInit() {
         this._imageService.getImageNames_edited().subscribe(
@@ -23,6 +29,7 @@ export class ImageGallery implements OnInit {
             error => this._errorMessage_imageService = <any>error
         );
         this.imgDir_edited = this._imageService.imageDir_edited;
+        this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
     }
     onMouseOverImage(event) {
         if (event.event === 'mouseOver') {
@@ -52,6 +59,9 @@ export class ImageGallery implements OnInit {
             return true;
         }
         return false;
+    }
+    contextMenu(val) {
+        alert(val)
     }
 }
 
