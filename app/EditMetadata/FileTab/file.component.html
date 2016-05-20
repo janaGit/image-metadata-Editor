@@ -18,7 +18,7 @@
         </td>
         <td > 
             <div id='imageCell'>
-                <div  id='image_place' (click)="showMetadataModal.display('block')" >
+                <div  id='image_place' (click)="displayMetadataModal()" >
                     <img  id='image' src={{imgPath}}>
                     <div id='image_name'> {{imageName}} </div> 
                 </div>
@@ -36,5 +36,5 @@
             <button type='button' id='startEditingButton' (click)=startEditing()> start editing </button>          
         </td>
     </tr>
-<showMetadata #showMetadataModal [imageName]="imageName"></showMetadata>
+<showMetadata [imageName]="imageName" [display]="_displayMetadataModal" [display_start]=false></showMetadata>
 </table>    
