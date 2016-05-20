@@ -1,5 +1,5 @@
 import {Component, Input} from 'angular2/core';
-import {OnChanges, SimpleChange} from 'angular2/core';
+import {OnChanges, SimpleChange, OnInit} from 'angular2/core';
 import {ExifToolService}  from './../services/exifTool.service';
 
 @Component({
@@ -8,25 +8,33 @@ import {ExifToolService}  from './../services/exifTool.service';
     styleUrls: ['app/modals/showMetadata.component.css']
 })
 
-export class ShowMetadataComponent implements OnChanges {
+export class ShowMetadataComponent implements OnChanges, OnInit{
     _display = 'none';
     errorMessage_exifToolService: string;
     metadata = {};
     metadata_keys=[];
     @Input() imageName:string;
-    display(display: string) {
-        this._display = display;
-    }
+    @Input() display: boolean;
+    @Input() display_start: boolean;
     constructor(private _exifToolService: ExifToolService) { }
-    closeButton() {
+    toogle_Show_Hide() {
         this._display = this._display !== 'none' ? 'none' : 'block';
     }
+    
     ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
 
         if (changes['imageName']) {
           this.imageName = changes['imageName'].currentValue;
           this.getMetadata(this.imageName);
 
+        }
+        if(changes['display']){
+            this.toogle_Show_Hide();
+        }
+    }
+    ngOnInit(){
+        if (!this.display_start){
+            this.toogle_Show_Hide();
         }
     }
     getMetadata(imageName: string) {

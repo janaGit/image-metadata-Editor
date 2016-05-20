@@ -9,7 +9,10 @@ import {ExifToolService}  from './../../services/exifTool.service';
     selector: 'FileTab',
     templateUrl: 'app/EditMetadata/FileTab/file.component.html',
     directives: [GetDropedImageDirective, ShowMetadataComponent],
-    styleUrls: ['app/EditMetadata/FileTab/file.component.css']
+    styleUrls: ['app/EditMetadata/FileTab/file.component.css'],
+    host: {
+        '(window:keyup)': 'onKey($event)'
+    }
 })
 
 export class FileComponent implements OnInit {
@@ -19,6 +22,7 @@ export class FileComponent implements OnInit {
     imageName: string;
     imgPath: string;
     imageDir: string;
+    _displayMetadataModal = false;
     @Output() start = new EventEmitter<boolean>();
 
     constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
@@ -110,27 +114,44 @@ export class FileComponent implements OnInit {
         );
     }
     startEditing() {
-        var message=this.metadata_has_Error(this.imageName);
-        message.then(data=>{
+        var message = this.metadata_has_Error(this.imageName);
+        message.then(data => {
             this._edit_MetadataService.setImageName(this.imageName);
             this.start.emit(true);
-        },error=>{
-           this.errorMessage_imageService = error;
+        }, error => {
+            this.errorMessage_imageService = error;
         })
     }
-    metadata_has_Error(imageName: string):Promise<String> {
-        var self=this;
-        return new Promise(function(resolve,reject){
-           self._exifToolService.getMetadata(imageName).subscribe(
-            data => {
-                if (typeof data['Error'] === 'undefined') {
-                    resolve('true');
-                }
-                reject(data['Error']);
-            },
-            error => { reject(error); }
-        ); 
+    metadata_has_Error(imageName: string): Promise<String> {
+        var self = this;
+        return new Promise(function(resolve, reject) {
+            self._exifToolService.getMetadata(imageName).subscribe(
+                data => {
+                    if (typeof data['Error'] === 'undefined') {
+                        resolve('true');
+                    }
+                    reject(data['Error']);
+                },
+                error => { reject(error); }
+            );
         })
-        
+
+    }
+    onKey(event) {
+        var key = event.key;
+        switch (key) {
+            case 'a':
+                this.previousImage();
+                break;
+            case 'd':
+                this.nextImage();
+                break;
+            case 'w':
+                this.displayMetadataModal();
+
+        }
+    }
+    displayMetadataModal() {
+        this._displayMetadataModal = !this._displayMetadataModal;
     }
 }
