@@ -8,7 +8,10 @@ import {ContextMenuHolderComponent} from './../modals/contextMenuHolder.componen
 @Component({
     templateUrl: 'app/ImageGallery/image_Gallery.component.html',
     styleUrls: ['app/ImageGallery/image_Gallery.component.css'],
-    directives: [OnMouseOverImageDirective, ContextMenuHolderComponent]
+    directives: [OnMouseOverImageDirective, ContextMenuHolderComponent],
+    host: {
+        '(document:scroll)': 'onScroll($event)'
+    }
 })
 export class ImageGallery implements OnInit {
     private _errorMessage_imageService: string;
@@ -18,6 +21,7 @@ export class ImageGallery implements OnInit {
     public imgDir_edited: string;
     metadata = {};
     metadata_keys = [];
+    private _metadata_table_height: string;
     private _actual_Image: string;
     private _editedImages_text = "images_edited.txt";
     private _contextMenuElements = [
@@ -29,6 +33,9 @@ export class ImageGallery implements OnInit {
         this.getImageNames();
         this.imgDir_edited = this._imageService.imageDir_edited;
         this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
+
+        var event = { pageY: document.body.scrollTop };
+        this.onScroll(event);
     }
     onMouseOverImage(event) {
         if (event.event === 'mouseOver') {
@@ -80,11 +87,17 @@ export class ImageGallery implements OnInit {
     getImageNames() {
         this._imageService.getImageNames_edited().subscribe(
             images => {
-                images = this.removeString(images, this._editedImages_text); 
+                images = this.removeString(images, this._editedImages_text);
                 this._imageNames_edited = images;
             },
-            error => {this._errorMessage_imageService = <any>error}
+            error => { this._errorMessage_imageService = <any>error }
         );
+    }
+    onScroll(event) {
+            var grow_limit = Math.floor(0.25 * window.innerHeight);
+            if (event.pageY <= grow_limit) {
+                this._metadata_table_height = 'calc(70vh + ' + event.pageY + 'px)';
+            }
     }
 }
 
