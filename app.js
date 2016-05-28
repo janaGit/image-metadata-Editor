@@ -55,7 +55,8 @@ app.post('/newImage', upload.single('image'), newImage);
 
 app.delete('/deleteImage/:imageName', deleteImage);
 
-app.post('/moveImageBackForEditing/:imageName',moveImageTo_image_folder);
+app.post('/moveImageBackForEditing/:imageName', moveImageTo_image_folder);
+app.post('/moveImageToImageGallery/:imageName', moveImageTo_image_edited_folder);
 
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
@@ -120,7 +121,7 @@ function getMetadata(imageDir, imageName) {
     return  new Promise(function (resolve, reject) {
         fs.readdir(imageDir, function (err, files) {
             if (files.indexOf(imageName) === -1) {
-                reject('File not exists.');
+                reject('File does not exist.');
             }
             var data = exifTool.getMetadata(imageDir, imageName);
             data.then(function (data) {
@@ -134,20 +135,46 @@ function getMetadata(imageDir, imageName) {
 }
 function moveImageTo_image_folder(req, res) {
     var imageName = req.params.imageName;
-    fs.readdir(imageDir_edited, function (err, files) {
-        if (err) {
-                res.status(500).send(err);
-            }
-        if (files.indexOf(imageName) === -1) {
-            res.status(400).send('File not exists.');
-        }
-        fs.rename(imageDir_edited + '/' + imageName, imageDir + '/' + imageName, function (err) {
-            if (err) {
-                res.status(500).send(err);
-            }
-            res.status(200).send({});
-        });
+    var result=moveImage(imageDir_edited,imageDir,imageName);
+    result.then(function (value) {
+        res.status(value.status).send(value);
+    }, function (error) {
+        res.status(error.status).send(error);
     });
 }
 
+function moveImageTo_image_edited_folder(req, res) {
+    var imageName = req.params.imageName;
+    var result=moveImage(imageDir,imageDir_edited,imageName);
+    result.then(function (value) {
+        res.status(value.status).send(value);
+    }, function (error) {
+        res.status(error.status).send(error);
+    });
+}
+function moveImage(imageDir_from, imageDir_to, imageName) {
+    return  new Promise(function (resolve, reject) {
+        fs.readdir(imageDir_from, function (err, files) {
+            if (err) {
+                var object = {status: 500, error: err};
+                console.error(object);
+                reject(object);
+            }
+            if (files.indexOf(imageName) === -1) {
+                var object = {status: 400, error: err, message: '400, File does not exist.'};
+                console.error(object);
+                reject(object);
+            }
+            fs.rename(imageDir_from + '/' + imageName, imageDir_to + '/' + imageName, function (err) {
+                if (err) {
+                    var object = {status: 500, error: err};
+                    console.error(object);
+                    reject(object);
+                }
+                var object = {status: 200};
+                resolve(object);
+            });
+        });
+    });
+}
 app.listen(3000);
