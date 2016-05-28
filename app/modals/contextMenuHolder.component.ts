@@ -14,7 +14,8 @@ import {ContextMenuService} from './../services/contextMenu.service';
         '.link{}', '.link:hover{background-color:#abc}',
         'ul{margin:0px;padding:0px;list-style-type: none}',
         '.container{z-index:2;padding-right:0px;border-radius:5px;padding-top:0.5%;padding-bottom:0.5%}',
-        'li{color:black}'
+        'li{color:#696969;}',
+        'li+li { border-top: 1px solid #696969}'
     ],
     host: {
         '(mouseup)': 'clickedOutside($event)',

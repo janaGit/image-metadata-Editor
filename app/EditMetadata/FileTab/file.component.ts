@@ -1,14 +1,17 @@
-import {Component, OnInit, Output, EventEmitter, ChangeDetectorRef} from 'angular2/core';
+import {Component, OnInit, Output, EventEmitter} from 'angular2/core';
+import {Subject} from 'rxjs/Rx';
 import {ImageService}     from './../../services/image.service';
 import {Edit_MetadataService} from './../services/edit_Metadata.service';
 import {GetDropedImageDirective} from './../../directives/getDropedImage.directive';
 import {ShowMetadataComponent} from './../../modals/showMetadata.component';
 import {ExifToolService}  from './../../services/exifTool.service';
+import {OnMouseOverImageDirective}     from './../../directives/onMouseOverImage.directive';
+import {ContextMenuHolderComponent} from './../../modals/contextMenuHolder.component';
 
 @Component({
     selector: 'FileTab',
     templateUrl: 'app/EditMetadata/FileTab/file.component.html',
-    directives: [GetDropedImageDirective, ShowMetadataComponent],
+    directives: [GetDropedImageDirective, ShowMetadataComponent, OnMouseOverImageDirective, ContextMenuHolderComponent],
     styleUrls: ['app/EditMetadata/FileTab/file.component.css'],
     host: {
         '(window:keyup)': 'onKey($event)'
@@ -24,11 +27,15 @@ export class FileComponent implements OnInit {
     imageDir: string;
     _displayMetadataModal = false;
     @Output() start = new EventEmitter<boolean>();
-
+    private _contextMenuElements = [
+        { title: 'transfer to image gallery', subject: new Subject() },
+        { title: 'help', subject: new Subject() }
+    ];
     constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
 
     ngOnInit() {
         this.imageDir = this._imageService.imageDir;
+        this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
         this.refresh();
     }
 
@@ -153,5 +160,13 @@ export class FileComponent implements OnInit {
     }
     displayMetadataModal() {
         this._displayMetadataModal = !this._displayMetadataModal;
+    }
+    contextMenu(val) {
+        if (val === this._contextMenuElements[0].title) {
+            this._imageService.moveImageToImageGallery(this.imageName).subscribe(
+                data => { this.refresh(); },
+                error => this.errorMessage_imageService = <any>error
+            );
+        }
     }
 }
