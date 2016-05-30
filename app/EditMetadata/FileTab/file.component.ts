@@ -116,8 +116,9 @@ export class FileComponent implements OnInit {
     deleteImage() {
         var self = this;
         this._imageService.deleteImage(this.imageName).subscribe(
-            error => this.errorMessage_imageService = <any>error,
-            () => this.refreshImageList().then(function() { self.loadImage(false); })
+            data => this.refreshImageList().then(function() { self.loadImage(false); },
+            error => this.errorMessage_imageService = <any>error
+            )
         );
     }
     startEditing() {
@@ -164,9 +165,15 @@ export class FileComponent implements OnInit {
     contextMenu(val) {
         if (val === this._contextMenuElements[0].title) {
             this._imageService.moveImageToImageGallery(this.imageName).subscribe(
-                data => { this.refresh(); },
+                data => { var self = this; this.refreshImageList().then(function() { self.loadImage(false) }); },
                 error => this.errorMessage_imageService = <any>error
             );
         }
+    }
+    deleteMetadata() {
+        this._exifToolService.deleteAllMetadata(this.imageName).subscribe(
+            data => { this.refresh() },
+            error => this.errorMessage_imageService = <any>error
+        );
     }
 }

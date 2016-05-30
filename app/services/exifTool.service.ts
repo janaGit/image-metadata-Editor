@@ -8,6 +8,7 @@ export class ExifToolService {
     constructor(private _http: Http) { }
     private _getMetadata = '/getMetadata';
     private _getMetadata_edited = '/getMetadata_edited';
+    private _deleteAllMetadata = '/deleteAllMetadata';
 
 
     getMetadata(imageName: string): Observable<string[]> {
@@ -20,7 +21,11 @@ export class ExifToolService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
+    deleteAllMetadata(imageName): Observable<string[]>{
+        return this._http.post(this._deleteAllMetadata+ '/' + imageName,"")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);
