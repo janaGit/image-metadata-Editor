@@ -58,6 +58,8 @@ app.delete('/deleteImage/:imageName', deleteImage);
 app.post('/moveImageBackForEditing/:imageName', moveImageTo_image_folder);
 app.post('/moveImageToImageGallery/:imageName', moveImageTo_image_edited_folder);
 
+app.post('/deleteAllMetadata/:imageName', deleteAllMetadata);
+
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
@@ -94,7 +96,7 @@ function deleteImage(req, res) {
             res.status(400).send(err);
         }
         console.log("File " + imageName + " deleted!");
-        res.sendStatus(200);
+        res.status(200).send({});
 
     });
 }
@@ -129,13 +131,15 @@ function getMetadata(imageDir, imageName) {
                 var body = {};
                 body.data = data;
                 resolve(body);
+            }, function (error) {
+                reject(error);
             });
         });
     });
 }
 function moveImageTo_image_folder(req, res) {
     var imageName = req.params.imageName;
-    var result=moveImage(imageDir_edited,imageDir,imageName);
+    var result = moveImage(imageDir_edited, imageDir, imageName);
     result.then(function (value) {
         res.status(value.status).send(value);
     }, function (error) {
@@ -145,7 +149,7 @@ function moveImageTo_image_folder(req, res) {
 
 function moveImageTo_image_edited_folder(req, res) {
     var imageName = req.params.imageName;
-    var result=moveImage(imageDir,imageDir_edited,imageName);
+    var result = moveImage(imageDir, imageDir_edited, imageName);
     result.then(function (value) {
         res.status(value.status).send(value);
     }, function (error) {
@@ -177,4 +181,27 @@ function moveImage(imageDir_from, imageDir_to, imageName) {
         });
     });
 }
+
+function deleteAllMetadata(req, res) {
+    var imageName = req.params.imageName;
+    fs.readdir(imageDir, function (err, files) {
+        if (files.indexOf(imageName) === -1) {
+            res.status(404).send('File does not exist.');
+        }
+        var result = exifTool.deleteAllMetadata(imageDir, imageDir_edited, imageName);
+        result.then(function (data) {
+            var _data={};
+            _data.body=''+data;
+            console.log('exifTool message:'+_data.body);
+            res.status(200).send(_data);
+        }, function (error) {
+            var _error={};
+            _error.body=''+error;
+            console.error('deleteAllMetadata app.js:'+_error);
+            res.status(500).send(_error);
+        });
+    });
+
+}
+
 app.listen(3000);
