@@ -156,7 +156,7 @@ export class FileComponent implements OnInit {
                 break;
             case 'w':
                 this.displayMetadataModal();
-
+           
         }
     }
     displayMetadataModal() {
@@ -173,7 +173,7 @@ export class FileComponent implements OnInit {
     deleteMetadata() {
         this._exifToolService.deleteAllMetadata(this.imageName).subscribe(
             data => { this.refresh() },
-            error => this.errorMessage_imageService = <any>error
+            error =>{this.refresh(); this.errorMessage_imageService = <any>error}
         );
     }
 }
