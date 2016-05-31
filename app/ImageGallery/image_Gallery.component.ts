@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer} from 'angular2/core';
+import {Component, OnInit, Renderer, ViewChild} from 'angular2/core';
 import {Subject} from 'rxjs/Rx';
 import {ImageService}     from './../services/image.service';
 import {OnMouseOverImageDirective}     from './../directives/onMouseOverImage.directive';
@@ -10,10 +10,12 @@ import {ContextMenuHolderComponent} from './../modals/contextMenuHolder.componen
     styleUrls: ['app/ImageGallery/image_Gallery.component.css'],
     directives: [OnMouseOverImageDirective, ContextMenuHolderComponent],
     host: {
-        '(document:scroll)': 'onScroll($event)'
+        '(document:scroll)': 'onScroll($event)',
+        '(window:keypress)': 'onKey($event)'
     }
 })
-export class ImageGallery implements OnInit {
+export class ImageGallery implements OnInit{
+    @ViewChild('table') table;
     private _errorMessage_imageService: string;
     errorMessage_exifToolService: string;
     private _imageNameClicked: string;
@@ -94,10 +96,20 @@ export class ImageGallery implements OnInit {
         );
     }
     onScroll(event) {
-            var grow_limit = Math.floor(0.25 * window.innerHeight);
-            if (event.pageY <= grow_limit) {
-                this._metadata_table_height = 'calc(70vh + ' + event.pageY + 'px)';
-            }
+        var grow_limit = Math.floor(0.25 * window.innerHeight);
+        if (event.pageY <= grow_limit) {
+            this._metadata_table_height = 'calc(70vh + ' + event.pageY + 'px)';
+        }
+    }
+    onKey(event){
+        var key = event.key;
+        switch (key) {
+            case 's':
+                this._renderer.invokeElementMethod( this.table.nativeElement, 'scrollBy', [0,50])
+                break;
+            case 'w':
+                  this._renderer.invokeElementMethod( this.table.nativeElement, 'scrollBy', [0,-50])
+        }
     }
 }
 

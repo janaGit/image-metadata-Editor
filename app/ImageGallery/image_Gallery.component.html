@@ -1,6 +1,6 @@
 <div id="view">
     <div id="metadata_box">
-        <table id="table" class="table table-striped" [style.height]="_metadata_table_height">
+        <table id="table" #table class="table table-striped" [style.height]="_metadata_table_height">
             <tr *ngFor="#key of metadata_keys">
                 <td>{{key}}</td><td>{{metadata[key]}}</td>
             </tr>
