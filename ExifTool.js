@@ -24,7 +24,7 @@ var exports = module.exports = {};
                 });
         }
 exports.deleteAllMetadata = function(imageDir, imageDir_edited, imageName){
-        const ls = child_process('exiftool', ['-all=','-overwrite_original', '-filename='+imageDir_edited+'/'+imageName,imageDir+'/'+imageName]);
+        const ls = child_process('exiftool', ['-all=','-tagsFromFile','@','-orientation','-overwrite_original', '-filename='+imageDir_edited+'/'+imageName,imageDir+'/'+imageName]);
         return new Promise(function(fulfill, reject){
         ls.stdout.on('data', (data) => { 
             console.log('exifTool message:'+data);
