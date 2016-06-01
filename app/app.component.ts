@@ -17,7 +17,7 @@ var imageDir_edited = 'images_edited';
 @Component({
     selector: 'my-app',
     providers: [HTTP_PROVIDERS, ImageService, ExifToolService, Edit_MetadataService, ROUTER_PROVIDERS, ContextMenuService],
-    directives: [ROUTER_DIRECTIVES,DROPDOWN_DIRECTIVES],
+    directives: [ROUTER_DIRECTIVES, DROPDOWN_DIRECTIVES],
     templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
     host: {
@@ -41,9 +41,11 @@ var imageDir_edited = 'images_edited';
 export class AppComponent implements OnInit {
     private button_text = new Map<string, string>();
     private changeView_Text: string;
-    private _languages=['cs','de','en','es','fr','it','ja','ko','nl','pl','ru','sv','tr','zh_cn','zh_tw'];
-    private _lang:string="de";
-    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService,private _router: Router) {
+    private _languages = ['cs', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pl', 'ru', 'sv', 'tr', 'zh_cn', 'zh_tw'];
+    private _lang: string = "de";
+    private _lang_select: string = "de";
+    private _lang_en: boolean = false;
+    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
 
     }
     ngOnInit() {
@@ -73,10 +75,21 @@ export class AppComponent implements OnInit {
         switch (key) {
             case 'Tab':
                 this.changeView();
+                break;
+            case '1':
+                if (this._lang_en) {
+                    this._lang = this._lang_select;
+                    this._exifToolService.language = this._lang_select;
+                } else {
+                    this._lang = 'en';
+                    this._exifToolService.language = 'en';
+                }
+                this._lang_en = !this._lang_en;
         }
     }
-    select_lang(event){
-        this._lang=event.target.text;
+    select_lang(event) {
+        this._lang_select = event.target.text;
+        this._lang = this._lang_select;
         this._exifToolService.language = this._lang;
     }
 }
