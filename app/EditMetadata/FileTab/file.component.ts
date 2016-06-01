@@ -28,8 +28,7 @@ export class FileComponent implements OnInit {
     _displayMetadataModal = false;
     @Output() start = new EventEmitter<boolean>();
     private _contextMenuElements = [
-        { title: 'transfer to image gallery', subject: new Subject() },
-        { title: 'help', subject: new Subject() }
+        { title: 'transfer to image gallery', subject: new Subject() }
     ];
     constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
 
@@ -111,6 +110,7 @@ export class FileComponent implements OnInit {
             }
         }
         this.imageName = this.imageNames[this.imgNumber];
+        this._exifToolService.imageName = this.imageName;
         this.imgPath = this.imageDir + '/' + this.imageName;
     }
     deleteImage() {
@@ -133,7 +133,7 @@ export class FileComponent implements OnInit {
     metadata_has_Error(imageName: string): Promise<String> {
         var self = this;
         return new Promise(function(resolve, reject) {
-            self._exifToolService.getMetadata(imageName).subscribe(
+            self._exifToolService.metadata$.subscribe(
                 data => {
                     if (typeof data['Error'] === 'undefined') {
                         resolve('true');

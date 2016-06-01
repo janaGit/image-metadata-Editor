@@ -14,7 +14,7 @@ import {ContextMenuHolderComponent} from './../modals/contextMenuHolder.componen
         '(window:keypress)': 'onKey($event)'
     }
 })
-export class ImageGallery implements OnInit{
+export class ImageGallery implements OnInit {
     @ViewChild('table') table;
     private _errorMessage_imageService: string;
     errorMessage_exifToolService: string;
@@ -27,8 +27,7 @@ export class ImageGallery implements OnInit{
     private _actual_Image: string;
     private _editedImages_text = "images_edited.txt";
     private _contextMenuElements = [
-        { title: 'transfer for editing', subject: new Subject() },
-        { title: 'help', subject: new Subject() }
+        { title: 'transfer for editing', subject: new Subject() }
     ];
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _renderer: Renderer) { }
     ngOnInit() {
@@ -41,10 +40,11 @@ export class ImageGallery implements OnInit{
     }
     onMouseOverImage(event) {
         if (event.event === 'mouseOver') {
+            this._actual_Image = event.img_name;
             if (typeof this._imageNameClicked === 'undefined') {
                 this.getMetadata(event.img_name);
             }
-            this._actual_Image = event.img_name;
+
         }
         if (event.event === 'mouseClicked') {
             if (this._imageNameClicked !== event.img_name) {
@@ -58,7 +58,8 @@ export class ImageGallery implements OnInit{
         }
     }
     getMetadata(imageName: string) {
-        this._exifToolService.getMetadata_edited(imageName).subscribe(
+        this._exifToolService.imageName_edited = imageName;
+        this._exifToolService.metadata_edited$.subscribe(
             data => { this.metadata = data; this.metadata_keys = Object.keys(data); },
             error => this.errorMessage_exifToolService = <any>error
         );
@@ -101,14 +102,14 @@ export class ImageGallery implements OnInit{
             this._metadata_table_height = 'calc(70vh + ' + event.pageY + 'px)';
         }
     }
-    onKey(event){
+    onKey(event) {
         var key = event.key;
         switch (key) {
             case 's':
-                this._renderer.invokeElementMethod( this.table.nativeElement, 'scrollBy', [0,50])
+                this._renderer.invokeElementMethod(this.table.nativeElement, 'scrollBy', [0, 50])
                 break;
             case 'w':
-                  this._renderer.invokeElementMethod( this.table.nativeElement, 'scrollBy', [0,-50])
+                this._renderer.invokeElementMethod(this.table.nativeElement, 'scrollBy', [0, -50])
         }
     }
 }
