@@ -48,8 +48,8 @@ var upload = multer({storage: storage});
 app.get('/getImageNames', getFileNames);
 app.get('/getImageNames_edited', getFileNames_edited);
 
-app.get('/getMetadata/:imageName', getMetadata_edit);
-app.get('/getMetadata_edited/:imageName', getMetadata_edited);
+app.get('/getMetadata/:imageName/:lang', getMetadata_edit);
+app.get('/getMetadata_edited/:imageName/:lang', getMetadata_edited);
 
 app.post('/newImage', upload.single('image'), newImage);
 
@@ -102,7 +102,14 @@ function deleteImage(req, res) {
 }
 function getMetadata_edit(req, res) {
     var imageName = req.params.imageName;
-    var metadata = getMetadata(imageDir, imageName);
+    var lang='';
+
+    if(req.params.lang){
+           lang=req.params.lang; 
+    }else{
+        lang='en';
+    }
+    var metadata = getMetadata(imageDir, imageName, lang);
     metadata.then(function (value) {
         res.send(value);
     }), function (error) {
@@ -112,20 +119,26 @@ function getMetadata_edit(req, res) {
 }
 function getMetadata_edited(req, res) {
     var imageName = req.params.imageName;
-    var metadata = getMetadata(imageDir_edited, imageName);
+    var lang='';
+    if(req.params.lang){
+           lang=req.params.lang; 
+    }else{
+        lang='en';
+    }
+    var metadata = getMetadata(imageDir_edited, imageName, lang);
     metadata.then(function (value) {
         res.send(value);
     }), function (error) {
         res.status(404).send(error);
     };
 }
-function getMetadata(imageDir, imageName) {
+function getMetadata(imageDir, imageName, lang) {
     return  new Promise(function (resolve, reject) {
         fs.readdir(imageDir, function (err, files) {
             if (files.indexOf(imageName) === -1) {
                 reject('File does not exist.');
             }
-            var data = exifTool.getMetadata(imageDir, imageName);
+            var data = exifTool.getMetadata(imageDir, imageName, lang);
             data.then(function (data) {
                 console.log(data);
                 var body = {};

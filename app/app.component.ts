@@ -1,5 +1,7 @@
 import {Component, OnInit} from 'angular2/core';
+//import {CORE_DIRECTIVES} from 'angular2/common';
 import { HTTP_PROVIDERS }    from 'angular2/http';
+import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
 import {ImageService}     from './services/image.service';
 import {ExifToolService}  from './services/exifTool.service';
@@ -15,7 +17,7 @@ var imageDir_edited = 'images_edited';
 @Component({
     selector: 'my-app',
     providers: [HTTP_PROVIDERS, ImageService, ExifToolService, Edit_MetadataService, ROUTER_PROVIDERS, ContextMenuService],
-    directives: [ROUTER_DIRECTIVES],
+    directives: [ROUTER_DIRECTIVES,DROPDOWN_DIRECTIVES],
     templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
     host: {
@@ -36,11 +38,12 @@ var imageDir_edited = 'images_edited';
     }
 ])
 
-
 export class AppComponent implements OnInit {
     private button_text = new Map<string, string>();
     private changeView_Text: string;
-    constructor(private _imageService: ImageService, private _router: Router) {
+    private _languages=['cs','de','en','es','fr','it','ja','ko','nl','pl','ru','sv','tr','zh_cn','zh_tw'];
+    private _lang:string="de";
+    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService,private _router: Router) {
 
     }
     ngOnInit() {
@@ -50,6 +53,7 @@ export class AppComponent implements OnInit {
         this.button_text.set('/', 'show edited Images');
         this.button_text.set('/image_gallery', 'edit Metadata');
         this.changeView_Text = this.button_text.get(location.pathname);
+        this._exifToolService.language = this._lang;
     }
     changeView() {
         if (location.pathname === '/edit_metadata') {
@@ -70,5 +74,9 @@ export class AppComponent implements OnInit {
             case 'Tab':
                 this.changeView();
         }
+    }
+    select_lang(event){
+        this._lang=event.target.text;
+        this._exifToolService.language = this._lang;
     }
 }
