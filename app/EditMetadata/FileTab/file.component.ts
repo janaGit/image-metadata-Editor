@@ -133,6 +133,7 @@ export class FileComponent implements OnInit {
     metadata_has_Error(imageName: string): Promise<String> {
         var self = this;
         return new Promise(function(resolve, reject) {
+            self._exifToolService.requestMetadata();
             self._exifToolService.metadata$.subscribe(
                 data => {
                     if (typeof data['Error'] === 'undefined') {
