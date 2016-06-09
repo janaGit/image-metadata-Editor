@@ -19,6 +19,7 @@ app.use("/nm_router.dev", express.static('node_modules/angular2/bundles/router.d
 app.use("/nm_ng2-bootstrap.min", express.static('node_modules/ng2-bootstrap/bundles/ng2-bootstrap.min.js'));
 app.use("/nm_http.dev", express.static('node_modules/angular2/bundles/http.dev.js'));
 app.use("/nm_moment", express.static('node_modules/moment/moment.js'));
+app.use("/bootstrap.css", express.static('node_modules/bootstrap/dist/css/bootstrap.min.css'));
 
 app.use("/styles.css", express.static('styles.css'));
 app.use("/app", express.static('app'));
