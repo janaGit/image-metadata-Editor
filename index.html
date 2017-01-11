@@ -1,46 +1,14 @@
 <html>
-    <head>
-        <base href="/">
-        <title>Image Metadata Editor</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">    
-        <!-- 1. Load libraries -->
-        <!-- IE required polyfills, in this exact order -->
-        <script src="/nm_es6-shim"></script>
-        <script src="/nm_system-polyfills"></script>
-        <script src="/nm_shims_for_IE"></script>   
-        <script src="/nm_angular2-polyfills"></script>
-        <script src="/nm_system.src"></script>
-        <script src="/nm_Rx"></script>
-        <script src="/nm_angular2.dev"></script>
-        <!-- added -->
-        <script src="/nm_router.dev"></script>
-        <script src="nm_ng2-bootstrap.min"></script>
-        <script src="/nm_http.dev"></script>
-        <!--css added-->
-        <link href="/bootstrap.css" rel="stylesheet">
-        <!-- css edited-->
-        <link rel="stylesheet" href="styles.css">
-        <!-- 2. Configure SystemJS -->
-        <script>
-            
-            System.config({
-                packages: {
-                    app: {
-                        format: 'register',
-                        defaultExtension: 'js'
-                    }
-                },
-                map: {
-                    moment: '/nm_moment'
-                }
-            });
-            System.import('app/main')
-                    .then(null, console.error.bind(console));
-           
-        </script>
-    </head>
-    <!-- 3. Display the application -->
-    <body>
-    <my-app>Loading...</my-app>
+
+<head>
+  <meta charset=UTF-8>
+</head>
+
+<body>
+  <app>
+    Loading...
+  </app>
+  <script src="assets/bundle.js"></script>
 </body>
+
 </html>
