@@ -1,0 +1,18 @@
+npm init
+
+Typescript:
+npm install -S typescript 
+npm install -S rxjs zone.js
+npm install -S @angular/common @angular/compiler @angular/core @angular/platform-browser @angular/platform-browser-dynamic
+
+Webpack:
+npm install webpack@beta --save-dev
+npm install awesome-typescript-loader angular2-template-loader angular2-router-loader --save-dev
+npm install raw-loader css-loader to-string-loader --save-dev
+
+Server:
+npm install webpack-dev-middleware webpack-hot-middleware --save-dev
+npm install -S express
+
+
+npm start

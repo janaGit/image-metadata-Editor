@@ -1,11 +1,1 @@
-typings/
 node_modules/
-app/**/*.js
-*.js.map
-*.png
-*.JPG
-*.jpg
-*~
-*.jar
-*.log
-!images/selectAll_Images.png
