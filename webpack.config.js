@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
-    './app/main'],
+    './app/vendor','./app/main'],
   output: {
     filename: 'bundle.js',
     publicPath: '/assets/'
@@ -18,8 +18,9 @@ module.exports = {
           'angular2-router-loader'
         ]
       },
-      { test: /\.css$/, loaders: ['to-string-loader', 'css-loader'] },
-      { test: /\.html$/, loader: 'raw-loader' }
+      { test: /\.css$/, loaders: ['to-string-loader','style-loader','css-loader'] },
+      { test: /\.html$/, loader: 'raw-loader' },
+      { test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/, loader: 'file-loader'}
     ]
   },
   resolve: {
