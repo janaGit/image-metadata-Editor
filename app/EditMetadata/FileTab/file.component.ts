@@ -2,17 +2,12 @@ import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {Subject} from 'rxjs/Rx';
 import {ImageService}     from './../../services/image.service';
 import {Edit_MetadataService} from './../services/edit_Metadata.service';
-import {GetDropedImageDirective} from './../../directives/getDropedImage.directive';
-import {ShowMetadataComponent} from './../../modals/showMetadata.component';
 import {ExifToolService}  from './../../services/exifTool.service';
-import {OnMouseOverImageDirective}     from './../../directives/onMouseOverImage.directive';
-import {ContextMenuHolderComponent} from './../../modals/contextMenuHolder.component';
 
 @Component({
     selector: 'FileTab',
-    templateUrl: 'app/EditMetadata/FileTab/file.component.html',
-    directives: [GetDropedImageDirective, ShowMetadataComponent, OnMouseOverImageDirective, ContextMenuHolderComponent],
-    styleUrls: ['app/EditMetadata/FileTab/file.component.css'],
+    templateUrl: 'file.component.html',
+    styleUrls: ['file.component.css'],
     host: {
         '(window:keyup)': 'onKey($event)'
     }
