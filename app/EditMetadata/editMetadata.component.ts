@@ -1,4 +1,4 @@
-import {Component, ChangeDetectorRef, OnInit} from 'angular2/core';
+import {Component, ChangeDetectorRef, OnInit} from '@angular/core';
 import {TAB_DIRECTIVES, TabDirective} from 'ng2-bootstrap/ng2-bootstrap';
 
 import {FileComponent} from './FileTab/file.component';

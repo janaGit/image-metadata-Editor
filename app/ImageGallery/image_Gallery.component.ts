@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer, ViewChild} from 'angular2/core';
+import {Component, OnInit, Renderer, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs/Rx';
 import {ImageService}     from './../services/image.service';
 import {OnMouseOverImageDirective}     from './../directives/onMouseOverImage.directive';

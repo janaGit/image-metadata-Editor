@@ -1,5 +1,5 @@
-import {Component, Input} from 'angular2/core';
-import {OnChanges, SimpleChange, OnInit} from 'angular2/core';
+import {Component, Input} from '@angular/core';
+import {OnChanges, SimpleChange, OnInit} from '@angular/core';
 import {ExifToolService}  from './../services/exifTool.service';
 
 @Component({

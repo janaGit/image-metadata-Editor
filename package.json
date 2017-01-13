@@ -46,8 +46,10 @@
     "@angular/platform-browser": "^2.4.2",
     "@angular/platform-browser-dynamic": "^2.4.2",
     "@angular/router": "^3.4.2",
+    "body-parser": "^1.15.2",
     "core-js": "^2.4.1",
     "express": "^4.14.0",
+    "multer": "^1.2.1",
     "ng2-bootstrap": "^1.2.0",
     "rxjs": "^5.0.3",
     "zone.js": "^0.7.4"
