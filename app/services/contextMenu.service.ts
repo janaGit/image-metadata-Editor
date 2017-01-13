@@ -3,7 +3,7 @@
 //post from Abdulrahman, answered Apr 3 at 13:10, 
 //plunker: http://plnkr.co/edit/3klGukkbDBCOaBYqcGmr?p=preview
 
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Rx';
 
 @Injectable()

@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter} from 'angular2/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {Subject} from 'rxjs/Rx';
 import {ImageService}     from './../../services/image.service';
 import {Edit_MetadataService} from './../services/edit_Metadata.service';

@@ -1,4 +1,4 @@
-import {Directive, Output, EventEmitter} from 'angular2/core';
+import {Directive, Output, EventEmitter} from '@angular/core';
 @Directive({
     selector: '[ee_getDropedImage]',
     host: {

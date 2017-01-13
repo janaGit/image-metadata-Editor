@@ -5,7 +5,7 @@
 //
 //edited by Jana Klemp
 
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {ContextMenuService} from './../services/contextMenu.service';
 @Component({
     selector: 'context-menu-holder',
