@@ -1,19 +1,15 @@
 import {Component, ChangeDetectorRef, OnInit} from '@angular/core';
-import {TAB_DIRECTIVES, TabDirective} from 'ng2-bootstrap/ng2-bootstrap';
+import {TabDirective} from 'ng2-bootstrap/ng2-bootstrap';
 
-import {FileComponent} from './FileTab/file.component';
-import {MetadataComponent} from './MetadataTab/metadata.component';
-import {LocationComponent} from './LocationTab/location.component';
-import {CompleteComponent} from './CompleteTab/complete.component';
+
 import {Edit_MetadataService} from './services/edit_Metadata.service';
 import {ImageService}     from './../services/image.service';
 
 
 @Component({
     selector: 'edit-Metadata',
-    directives: [TAB_DIRECTIVES, FileComponent, MetadataComponent, LocationComponent, CompleteComponent],
-    templateUrl: 'app/EditMetadata/editMetadata.component.html',
-    styleUrls: ['app/EditMetadata/editMetadata.component.css'],
+    templateUrl: 'editMetadata.component.html',
+    styleUrls: ['editMetadata.component.css'],
 })
 
 export class EditMetadataComponent implements OnInit {

@@ -1,14 +1,11 @@
-import {Component, OnInit, Renderer, ViewChild} from '@angular/core';
-import {Subject} from 'rxjs/Rx';
-import {ImageService}     from './../services/image.service';
-import {OnMouseOverImageDirective}     from './../directives/onMouseOverImage.directive';
-import {ExifToolService}  from './../services/exifTool.service';
-import {ContextMenuHolderComponent} from './../modals/contextMenuHolder.component';
+import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs/Rx';
+import { ImageService } from './../services/image.service';
+import { ExifToolService } from './../services/exifTool.service';
 
 @Component({
-    templateUrl: 'app/ImageGallery/image_Gallery.component.html',
-    styleUrls: ['app/ImageGallery/image_Gallery.component.css'],
-    directives: [OnMouseOverImageDirective, ContextMenuHolderComponent],
+    templateUrl: 'image_Gallery.component.html',
+    styleUrls: ['image_Gallery.component.css'],
     host: {
         '(document:scroll)': 'onScroll($event)',
         '(window:keypress)': 'onKey($event)'

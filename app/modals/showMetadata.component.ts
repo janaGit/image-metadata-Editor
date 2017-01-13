@@ -4,8 +4,8 @@ import {ExifToolService}  from './../services/exifTool.service';
 
 @Component({
     selector: 'showMetadata',
-    templateUrl: 'app/modals/showMetadata.component.html',
-    styleUrls: ['app/modals/showMetadata.component.css']
+    templateUrl: 'showMetadata.component.html',
+    styleUrls: ['showMetadata.component.css']
 })
 
 export class ShowMetadataComponent implements OnChanges, OnInit {
