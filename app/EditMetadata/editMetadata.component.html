@@ -1,0 +1,16 @@
+<div id='tab-row'>
+    <tabset>
+        <tab *ngFor="#tabz of tabs"
+            [heading]="tabz.title"
+            [disabled]="tabz.disabled"
+            [active]="tabz.active"
+            (select)="selectTab($event)">
+        </tab>
+</tabset>
+<div  id='image_place' *ngIf="imgPath!=null && selectedTab!=='File'">
+    <img  id='image_Thumbnail' src={{imgPath}}>
+</div>
+<button id="abort_Button" (click)="click_Abort()" *ngIf="selectedTab!=='File'"> Abort </button>
+</div>
+
+<FileTab *ngIf="selectedTab==='File'" (start)="startEditing($event)"></FileTab>

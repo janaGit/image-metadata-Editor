@@ -1,0 +1,3 @@
+This folder will contain the edited images.
+If the metadata of images should be checked, then put images manually into this folder.
+These images are shown in "/image_gallery" 
