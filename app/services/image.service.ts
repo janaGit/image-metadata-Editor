@@ -1,11 +1,11 @@
-import {Http, Response} from '@angular/http';
-import {Observable}     from 'rxjs/Observable';
+/*import {Http, Response} from '@angular/http';
+import {Observable}     from 'rxjs/Observable';*/
 import {Injectable} from '@angular/core';
 
 
 @Injectable()
 export class ImageService {
-    constructor(private _http: Http) { }
+    /*constructor(private _http: Http) { }
     private _getImagesUrl = '/getImageNames';
     private _getImages_editedUrl = '/getImageNames_edited';
     private _postImageUrl = '/newImage';
@@ -83,5 +83,5 @@ export class ImageService {
     }
     get imageDir_edited() {
         return this._imageDir_edited;
-    }
+    }*/
 }

@@ -9,9 +9,9 @@ import { ExifToolService } from './../services/exifTool.service';
     host: {
         '(document:scroll)': 'onScroll($event)',
         '(window:keypress)': 'onKey($event)'
-    }
+    }  
 })
-export class ImageGalleryComponent implements OnInit {
+export class ImageGalleryComponent  {
     @ViewChild('table') table;
     private _errorMessage_imageService: string;
     errorMessage_exifToolService: string;
@@ -26,10 +26,10 @@ export class ImageGalleryComponent implements OnInit {
     private _contextMenuElements = [
         { title: 'transfer for editing', subject: new Subject() }
     ];
-    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _renderer: Renderer) { }
+ // constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _renderer: Renderer) { }
     ngOnInit() {
         this.getImageNames();
-        this.imgDir_edited = this._imageService.imageDir_edited;
+       // this.imgDir_edited = this._imageService.imageDir_edited;
         this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
 
         var event = { pageY: document.body.scrollTop };
@@ -47,19 +47,19 @@ export class ImageGalleryComponent implements OnInit {
             if (this._imageNameClicked !== event.img_name) {
                 this.getMetadata(event.img_name);
                 this._imageNameClicked = event.img_name;
-                this._renderer.setElementClass(event.element, 'clicked', true);
+               // this._renderer.setElementClass(event.element, 'clicked', true);
             } else {
                 this._imageNameClicked = undefined;
-                this._renderer.setElementClass(event.element, 'clicked', false);
+                //this._renderer.setElementClass(event.element, 'clicked', false);
             }
         }
     }
     getMetadata(imageName: string) {
-        this._exifToolService.imageName_edited = imageName;
-        this._exifToolService.metadata_edited$.subscribe(
-            data => { this.metadata = data; this.metadata_keys = Object.keys(data); },
+       // this._exifToolService.imageName_edited = imageName;
+        //this._exifToolService.metadata_edited$.subscribe(
+       /*     data => { this.metadata = data; this.metadata_keys = Object.keys(data); },
             error => this.errorMessage_exifToolService = <any>error
-        );
+        );*/
     }
     imageClicked(imgName: string) {
         if (this._imageNameClicked === imgName) {
@@ -69,10 +69,10 @@ export class ImageGalleryComponent implements OnInit {
     }
     contextMenu(val) {
         if (val === this._contextMenuElements[0].title) {
-            this._imageService.moveImageBackForEditing(this._actual_Image).subscribe(
+            /*this._imageService.moveImageBackForEditing(this._actual_Image).subscribe(
                 data => { this.getImageNames(); },
                 error => this.errorMessage_exifToolService = <any>error
-            );
+            );*/
         }
     }
     removeString(array: string[], string) {
@@ -85,13 +85,13 @@ export class ImageGalleryComponent implements OnInit {
         return array;
     }
     getImageNames() {
-        this._imageService.getImageNames_edited().subscribe(
+        /*this._imageService.getImageNames_edited().subscribe(
             images => {
                 images = this.removeString(images, this._editedImages_text);
                 this._imageNames_edited = images;
             },
             error => { this._errorMessage_imageService = <any>error }
-        );
+        );*/
     }
     onScroll(event) {
         var grow_limit = Math.floor(0.25 * window.innerHeight);
@@ -103,10 +103,10 @@ export class ImageGalleryComponent implements OnInit {
         var key = event.key;
         switch (key) {
             case 's':
-                this._renderer.invokeElementMethod(this.table.nativeElement, 'scrollBy', [0, 50])
+              //  this._renderer.invokeElementMethod(this.table.nativeElement, 'scrollBy', [0, 50])
                 break;
             case 'w':
-                this._renderer.invokeElementMethod(this.table.nativeElement, 'scrollBy', [0, -50])
+               // this._renderer.invokeElementMethod(this.table.nativeElement, 'scrollBy', [0, -50])
         }
     }
 }

@@ -1,8 +1,8 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {Subject} from 'rxjs/Rx';
-import {ImageService}     from './../../services/image.service';
-import {Edit_MetadataService} from './../services/edit_Metadata.service';
-import {ExifToolService}  from './../../services/exifTool.service';
+//import {ImageService}     from './../../services/image.service';
+//import {Edit_MetadataService} from './../services/edit_Metadata.service';
+//import {ExifToolService}  from './../../services/exifTool.service';
 
 @Component({
     selector: 'FileTab',
@@ -25,10 +25,10 @@ export class FileComponent implements OnInit {
     private _contextMenuElements = [
         { title: 'transfer to image gallery', subject: new Subject() }
     ];
-    constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
+    //constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
 
     ngOnInit() {
-        this.imageDir = this._imageService.imageDir;
+       // this.imageDir = this._imageService.imageDir;
         this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
         this.refresh();
     }
@@ -36,7 +36,7 @@ export class FileComponent implements OnInit {
 
     getDropedImage(file: File) {
         var self = this;
-        this._imageService.sendImage(file).then(fileName => {
+       /* this._imageService.sendImage(file).then(fileName => {
 
             self.refreshImageList().then(function() {
                 var index = self.getImageNumber(fileName);
@@ -48,7 +48,7 @@ export class FileComponent implements OnInit {
             })
 
 
-        });
+        });*/
 
 
     }
@@ -60,12 +60,12 @@ export class FileComponent implements OnInit {
         var self = this;
 
         return new Promise(function(resolve) {
-            self._imageService.getImageNames()
+           /* self._imageService.getImageNames()
                 .subscribe(
                 images => self.imageNames = images,
                 error => self.errorMessage_imageService = <any>error,
                 () => resolve()
-                );
+                );*/
         });
 
 
@@ -105,21 +105,21 @@ export class FileComponent implements OnInit {
             }
         }
         this.imageName = this.imageNames[this.imgNumber];
-        this._exifToolService.imageName = this.imageName;
+        //this._exifToolService.imageName = this.imageName;
         this.imgPath = this.imageDir + '/' + this.imageName;
     }
     deleteImage() {
         var self = this;
-        this._imageService.deleteImage(this.imageName).subscribe(
+/*        this._imageService.deleteImage(this.imageName).subscribe(
             data => this.refreshImageList().then(function() { self.loadImage(false); },
             error => this.errorMessage_imageService = <any>error
             )
-        );
+        )*/;
     }
     startEditing() {
         var message = this.metadata_has_Error(this.imageName);
         message.then(data => {
-            this._edit_MetadataService.setImageName(this.imageName);
+         //   this._edit_MetadataService.setImageName(this.imageName);
             this.start.emit(true);
         }, error => {
             this.errorMessage_imageService = error;
@@ -128,7 +128,7 @@ export class FileComponent implements OnInit {
     metadata_has_Error(imageName: string): Promise<String> {
         var self = this;
         return new Promise(function(resolve, reject) {
-            self._exifToolService.requestMetadata();
+            /*self._exifToolService.requestMetadata();
             self._exifToolService.metadata$.subscribe(
                 data => {
                     if (typeof data['Error'] === 'undefined') {
@@ -137,7 +137,7 @@ export class FileComponent implements OnInit {
                     reject(data['Error']);
                 },
                 error => { reject(error); }
-            );
+            );*/
         })
 
     }
@@ -160,16 +160,16 @@ export class FileComponent implements OnInit {
     }
     contextMenu(val) {
         if (val === this._contextMenuElements[0].title) {
-            this._imageService.moveImageToImageGallery(this.imageName).subscribe(
+          /*  this._imageService.moveImageToImageGallery(this.imageName).subscribe(
                 data => { var self = this; this.refreshImageList().then(function() { self.loadImage(false) }); },
                 error => this.errorMessage_imageService = <any>error
-            );
+            );*/
         }
     }
     deleteMetadata() {
-        this._exifToolService.deleteAllMetadata(this.imageName).subscribe(
+       /* this._exifToolService.deleteAllMetadata(this.imageName).subscribe(
             data => { this.refresh() },
             error =>{this.refresh(); this.errorMessage_imageService = <any>error}
-        );
+        );*/
     }
 }

@@ -14,26 +14,37 @@ import { GetDropedImageDirective } from './directives/getDropedImage.directive';
 import { ContextMenuHolderComponent } from './modals/contextMenuHolder.component';
 import { ShowMetadataComponent } from './modals/showMetadata.component';
 
+import { EditMetadataComponent } from './EditMetadata/editMetadata.component';
 import { FileComponent } from './EditMetadata/FileTab/file.component';
 import { MetadataComponent } from './EditMetadata/MetadataTab/metadata.component';
 import { LocationComponent } from './EditMetadata/LocationTab/location.component';
 import { CompleteComponent } from './EditMetadata/CompleteTab/complete.component';
+
+import { ImageGalleryComponent } from './ImageGallery/image_Gallery.component';
+
+import { ImageService } from './services/image.service';
+import { ExifToolService } from './services/exifTool.service';
+import { ContextMenuService } from './services/contextMenu.service';
 @NgModule({
   imports: [BrowserModule, HttpModule,
     RouterModule.forRoot(routerConfig, { useHash: true }),
     DropdownModule.forRoot(),
     TabsModule.forRoot()
   ],
+    providers: [ImageService, ExifToolService],
   declarations: [
     AppComponent,
+    EditMetadataComponent,
     FileComponent,
     LocationComponent,
     MetadataComponent,
     CompleteComponent,
-    ShowMetadataComponent,
-    ContextMenuHolderComponent,
-    GetDropedImageDirective,
+    ImageGalleryComponent,
+    /*  ShowMetadataComponent,
+      ContextMenuHolderComponent,*/
+    /* GetDropedImageDirective,*/
     OnMouseOverImageDirective,
+    // ContextMenuService
   ],
   bootstrap: [AppComponent]
 })
