@@ -20,6 +20,9 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 app.use(webpackHotMiddleware(compiler));
 
+app.use("/images", express.static('images'));
+app.use("/images_edited", express.static('images_edited'));
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 

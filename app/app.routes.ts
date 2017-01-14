@@ -15,7 +15,7 @@ export const routerConfig: Routes = [
     },
     {
         path: '**',
-        redirectTo: 'edit_metadata',
-        pathMatch: 'full'
-    },
+        redirectTo: '/edit_metadata',
+        pathMatch: 'full',    
+    }
 ];

@@ -24,7 +24,7 @@ import {ContextMenuService} from './../services/contextMenu.service';
     template:
     `<div [ngStyle]="locationCss" class="container">
       <ul>
-          <li (mouseup)="link.subject.next(link.title)" class="link" *ngFor="#link of links">
+          <li (mouseup)="link.subject.next(link.title)" class="link" *ngFor="let link of links">
               {{link.title}}
           </li>
       </ul>

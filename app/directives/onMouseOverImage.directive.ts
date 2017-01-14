@@ -1,5 +1,5 @@
 import {Directive, Output,Input, EventEmitter,ElementRef} from '@angular/core';
-//import  {ContextMenuService} from './../services/contextMenu.service';
+import  {ContextMenuService} from './../services/contextMenu.service';
 @Directive({
     selector: '[ime_onMouseOverImage]',
     host: {
@@ -13,10 +13,10 @@ export class OnMouseOverImageDirective {
     private _src: string;
     private _event: { event: string; img_name: string; element: ElementRef };
     @Input('contextMenuElements') contextMenuElements;
-/*    constructor(private _contextMenuService:ContextMenuService){
+    constructor(private _contextMenuService:ContextMenuService){
         
     }
-    /*mouseOver(event) {
+    mouseOver(event) {
         let img_name = this.getImage(event);
         this._event = { event: 'mouseOver', img_name: img_name, element:event.target };
         this.ime_onMouseOverImage.emit(this._event);
@@ -38,7 +38,7 @@ export class OnMouseOverImageDirective {
             return img_name;
         }
         return '';
-    }*/
+    }
 }
 
 

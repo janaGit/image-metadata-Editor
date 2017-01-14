@@ -25,13 +25,14 @@ import { ImageGalleryComponent } from './ImageGallery/image_Gallery.component';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exifTool.service';
 import { ContextMenuService } from './services/contextMenu.service';
+import {Edit_MetadataService} from './EditMetadata/services/edit_Metadata.service'
 @NgModule({
   imports: [BrowserModule, HttpModule,
     RouterModule.forRoot(routerConfig, { useHash: true }),
     DropdownModule.forRoot(),
     TabsModule.forRoot()
   ],
-    providers: [ImageService, ExifToolService],
+  providers: [ImageService, ExifToolService, ContextMenuService, Edit_MetadataService],
   declarations: [
     AppComponent,
     EditMetadataComponent,
@@ -40,11 +41,10 @@ import { ContextMenuService } from './services/contextMenu.service';
     MetadataComponent,
     CompleteComponent,
     ImageGalleryComponent,
-    /*  ShowMetadataComponent,
-      ContextMenuHolderComponent,*/
-    /* GetDropedImageDirective,*/
-    OnMouseOverImageDirective,
-    // ContextMenuService
+    ShowMetadataComponent,
+    ContextMenuHolderComponent,
+    GetDropedImageDirective,
+    OnMouseOverImageDirective
   ],
   bootstrap: [AppComponent]
 })
