@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <table class="table table-striped" >
-                    <tr *ngFor="#key of metadata_keys">
+                    <tr *ngFor="let key of metadata_keys">
                         <td>{{key}}</td><td>{{metadata[key]}}</td>
                     </tr>
                 </table>

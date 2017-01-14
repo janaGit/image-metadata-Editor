@@ -16,7 +16,7 @@ export class ShowMetadataComponent implements OnChanges, OnInit {
     @Input() imageName: string;
     @Input() display: boolean;
     @Input() display_start: boolean;
-   // constructor(private _exifToolService: ExifToolService) { }
+    constructor(private _exifToolService: ExifToolService) { }
     toogle_Show_Hide() {
         this._display = this._display !== 'none' ? 'none' : 'block';
     }
@@ -25,7 +25,7 @@ export class ShowMetadataComponent implements OnChanges, OnInit {
 
         if (changes['imageName']) {
             this.imageName = changes['imageName'].currentValue;
-           // this._exifToolService.imageName = this.imageName;
+            this._exifToolService.imageName = this.imageName;
             this.getMetadata();
 
         }
@@ -39,9 +39,9 @@ export class ShowMetadataComponent implements OnChanges, OnInit {
         }
     }
     getMetadata() {
-      /*  this._exifToolService.metadata$.subscribe(
+        this._exifToolService.metadata$.subscribe(
             data => { this.metadata = data; this.metadata_keys = Object.keys(data); },
             error => this.errorMessage_exifToolService = <any>error
-        );*/
+        );
     }
 }

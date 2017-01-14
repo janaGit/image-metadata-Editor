@@ -7,7 +7,7 @@
     position:absolute;
 }
 #image{
-    //  width: 100%;
+    /*  width: 100%;*/
     height: 100%;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -15,8 +15,6 @@
     margin-bottom: 10px;
     display: block;
     image-orientation: from-image;
-
-
 }
 
 #deleteMetadataColumn{

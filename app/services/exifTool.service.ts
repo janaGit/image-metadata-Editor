@@ -1,11 +1,11 @@
-/*import {Http, Response} from '@angular/http';
-import {Observable}     from 'rxjs/Observable';*/
+import {Http, Response} from '@angular/http';
+import {Observable}     from 'rxjs/Observable';
 import {Injectable} from '@angular/core';
-/*import {Subject} from 'rxjs/Rx';*/
+import {Subject} from 'rxjs/Rx';
 
 @Injectable()
 export class ExifToolService {
-  /*  constructor(private _http: Http) { }
+    constructor(private _http: Http) { }
     private _getMetadata = '/getMetadata';
     private _getMetadata_edited = '/getMetadata_edited';
     private _deleteAllMetadata = '/deleteAllMetadata';
@@ -69,6 +69,6 @@ export class ExifToolService {
         let err = error.message || 'Server error';
         console.error(err);
         return Observable.throw(err);
-    }*/
+    }
 
 }

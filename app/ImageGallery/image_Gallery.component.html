@@ -1,11 +1,11 @@
 <div id="view">
-    <!--    <div id="metadata_box">
+        <div id="metadata_box">
         <table id="table" #table class="table table-striped" [style.height]="_metadata_table_height">
-            <tr *ngFor="#key of metadata_keys">
+            <tr *ngFor="let key of metadata_keys">
                 <td>{{key}}</td><td>{{metadata[key]}}</td>
             </tr>
         </table>
-    </div>-->
+    </div>
     <div id="hoverbox">
         <ul class="hoverbox">
 
@@ -20,4 +20,4 @@
     </div>
 
 </div>
-<!--<context-menu-holder></context-menu-holder>-->
+<context-menu-holder></context-menu-holder>
