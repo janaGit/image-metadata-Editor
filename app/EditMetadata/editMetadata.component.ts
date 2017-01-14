@@ -2,8 +2,8 @@ import {Component, ChangeDetectorRef, OnInit} from '@angular/core';
 import {TabDirective} from 'ng2-bootstrap/ng2-bootstrap';
 
 
-import {Edit_MetadataService} from './services/edit_Metadata.service';
-import {ImageService}     from './../services/image.service';
+/*import {Edit_MetadataService} from './services/edit_Metadata.service';
+import {ImageService}     from './../services/image.service';*/
 
 
 @Component({
@@ -23,21 +23,21 @@ export class EditMetadataComponent implements OnInit {
         { title: 'Location', tab: 'Location', disabled: true },
         { title: 'Complete', tab: 'Complete', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef,private _imageService: ImageService, private edit_MetadataService: Edit_MetadataService) {
+   // constructor(private _cdr: ChangeDetectorRef,private _imageService: ImageService, private edit_MetadataService: Edit_MetadataService) {
 
-    }
+  //  }
     ngOnInit() {
-        this.imgDir = this._imageService.imageDir;
-        this.edit_MetadataService.imageName$.subscribe(
+        //this.imgDir = this._imageService.imageDir;
+       /* this.edit_MetadataService.imageName$.subscribe(
             imgName=> {
                 this.imgPath = this.imgDir+'/'+imgName;
-            }
-        );
+            }*/
+       // );
 
         this.tabs.forEach(tab => {
             if (tab.tab === 'File') {
                 tab.active = true;
-                this._cdr.detectChanges();
+             //   this._cdr.detectChanges();
             }
         });
     }
@@ -54,7 +54,7 @@ export class EditMetadataComponent implements OnInit {
                     }
                 }
             });
-            this._cdr.detectChanges();
+           // this._cdr.detectChanges();
         }
 
     }
@@ -77,7 +77,7 @@ export class EditMetadataComponent implements OnInit {
                 tab.active = false;
             }
         }
-        this._cdr.detectChanges();
+      //  this._cdr.detectChanges();
 
     }
 

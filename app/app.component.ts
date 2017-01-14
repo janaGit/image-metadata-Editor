@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router} from '@angular/router';
+import {ImageService}     from './services/image.service';
+import {ExifToolService}  from './services/exifTool.service';
 
 const _path_map_button_text = [
     { path: '/edit_metadata', text: 'show edited Images' },
@@ -19,7 +22,9 @@ export class AppComponent implements OnInit {
     private _lang_select: string = "de";
 
     private changeView_Text: string;
+ constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
 
+    }
     ngOnInit() {
         this.changeView_Text = this._button_text.get(location.pathname);
     }
@@ -29,6 +34,14 @@ export class AppComponent implements OnInit {
         //this._exifToolService.language = this._lang;
     }
     changeView() {
-
+  if (location.pathname === '/edit_metadata') {
+          /*  this._router.navigate(['ImageGallery']).then(
+                () => this.changeView_Text = this._button_text.get(location.pathname)
+            );*/
+        } else {
+   /*         this._router.navigate(['EditMetadata']).then(
+                () => this.changeView_Text = this._button_text.get(location.pathname)
+            );*/
+        }
     }
 }

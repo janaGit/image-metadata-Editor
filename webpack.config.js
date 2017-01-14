@@ -27,6 +27,7 @@ module.exports = {
     extensions: ['.ts', '.js'],
     modules: [path.resolve(__dirname, 'node_modules')]
   },
+
   plugins: [
     new webpack.ContextReplacementPlugin(
       /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,

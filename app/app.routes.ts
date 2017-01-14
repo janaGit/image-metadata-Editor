@@ -1,16 +1,21 @@
 import { Routes } from '@angular/router';
 
-import {EditMetadataComponent} from './EditMetadata/editMetadata.component';
-import {ImageGalleryComponent} from './ImageGallery/image_Gallery.component';
+import { EditMetadataComponent } from './EditMetadata/editMetadata.component';
+import { ImageGalleryComponent } from './ImageGallery/image_Gallery.component';
 
 
 export const routerConfig: Routes = [
-     {
-        path: '/edit_metadata',
+    {
+        path: 'edit_metadata',
         component: EditMetadataComponent
     },
     {
-        path: '/image_gallery',
+        path: 'image_gallery',
         component: ImageGalleryComponent,
-    }
+    },
+    {
+        path: '**',
+        redirectTo: 'edit_metadata',
+        pathMatch: 'full'
+    },
 ];

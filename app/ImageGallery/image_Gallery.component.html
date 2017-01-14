@@ -1,20 +1,23 @@
 <div id="view">
-    <div id="metadata_box">
+    <!--    <div id="metadata_box">
         <table id="table" #table class="table table-striped" [style.height]="_metadata_table_height">
             <tr *ngFor="#key of metadata_keys">
                 <td>{{key}}</td><td>{{metadata[key]}}</td>
             </tr>
         </table>
-    </div>
+    </div>-->
     <div id="hoverbox">
         <ul class="hoverbox">
 
-            <li *ngFor="#imgName of _imageNames_edited">
-                <a><img src="{{imgDir_edited}}/{{imgName}}" alt="description" /><img src="{{imgDir_edited}}/{{imgName}}" (ime_onMouseOverImage)="onMouseOverImage($event)" alt="description" class="preview" [contextMenuElements]="_contextMenuElements" [class.clicked]="imageClicked(imgName)" /></a>
+            <li *ngFor="let imgName of _imageNames_edited">
+                <a><img src="{{imgDir_edited}}/{{imgName}}" alt="description" />
+                    <img src="{{imgDir_edited}}/{{imgName}}" (ime_onMouseOverImage)="onMouseOverImage($event)" alt="description" class="preview"
+                        [contextMenuElements]="_contextMenuElements" [class.clicked]="imageClicked(imgName)" />
+                </a>
             </li>
 
         </ul>
     </div>
-    
+
 </div>
-<context-menu-holder></context-menu-holder>
+<!--<context-menu-holder></context-menu-holder>-->
