@@ -133,7 +133,7 @@ function getMetadata(imageDir, imageName, lang) {
     return  new Promise(function (resolve, reject) {
         fs.readdir(imageDir, function (err, files) {
             if (files.indexOf(imageName) === -1) {
-                reject('File does not exist.');
+                reject('File with name: '+imageName+' does not exist.');
             }
             var data = exifTool.getMetadata(imageDir, imageName, lang);
             data.then(function (data) {
