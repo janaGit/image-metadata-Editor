@@ -7,7 +7,7 @@
             (select)="selectTab($event)">
         </tab>
 </tabset>
-<div  id='image_place' *ngIf="imgPath!=null && selectedTab!=='File'">
+<div  id='image_place_Thumbnail' *ngIf="imgPath!=null && selectedTab!=='File'">
     <img  id='image_Thumbnail' src={{imgPath}}>
 </div>
 <button id="abort_Button" (click)="click_Abort()" *ngIf="selectedTab!=='File'"> Abort </button>
