@@ -19,6 +19,7 @@ h1 {
 }
 #changeView_Button{
     align-self: flex-end;
+    margin-right: 1%;
 }
 #lang_dropdown{
     position:absolute;
