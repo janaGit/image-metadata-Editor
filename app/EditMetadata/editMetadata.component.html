@@ -4,13 +4,13 @@
             [heading]="tabz.title"
             [disabled]="tabz.disabled"
             [active]="tabz.active"
-            (select)="selectTab($event)">
+            (select)="selectTab($event.heading)">
         </tab>
 </tabset>
-<div  id='image_place_Thumbnail' *ngIf="imgPath!=null && selectedTab!=='File'">
+<div  id='image_place_Thumbnail' *ngIf="imgPath!=null && selectedTabName!=='File'">
     <img  id='image_Thumbnail' src={{imgPath}}>
 </div>
-<button id="abort_Button" (click)="click_Abort()" *ngIf="selectedTab!=='File'"> Abort </button>
+<button id="abort_Button" class="btn" (click)="click_Abort()" *ngIf="selectedTabName!=='File'"> Abort </button>
 </div>
 
-<FileTab *ngIf="selectedTab==='File'" (start)="startEditing($event)"></FileTab>
+<FileTab *ngIf="selectedTabName==='File'" (start)="startEditing()"></FileTab>
