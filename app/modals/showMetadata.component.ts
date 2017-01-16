@@ -42,13 +42,17 @@ export class ShowMetadataComponent {
         }
     }
     showMetadata() {
-        let __metadata = this._exifToolService.metadata;
-        if (__metadata) {
-            this.metadata = __metadata;
-            this.metadata_keys = Object.keys(this.metadata);
-            this._display_css = 'block';
-        } else {
-            alert(this._exifToolService.errorMessage);
-        }
+        let self=this;
+        this._exifToolService.requestMetadata().then(
+            function () {
+                let __metadata = self._exifToolService.metadata;
+                if (__metadata) {
+                    self.metadata = __metadata;
+                    self.metadata_keys = Object.keys(self.metadata);
+                    self._display_css = 'block';
+                } else {
+                    alert(self._exifToolService.errorMessage);
+                }
+            });
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 import { ImageService } from './../../services/image.service';
-import { Edit_MetadataService } from './../services/edit_Metadata.service';
+import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exifTool.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class FileComponent implements OnInit {
     private _contextMenuElements = [
         { title: 'transfer to image gallery', subject: new Subject() }
     ];
-    constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _edit_MetadataService: Edit_MetadataService) { }
+    constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _editorService: EditorService) { }
 
     ngOnInit() {
         this.imageDir = this._imageService.imageDir;
@@ -104,7 +104,8 @@ export class FileComponent implements OnInit {
             }
         }
         this.imageName = this.imageNames[this.imgNumber];
-        this._exifToolService.imageName = this.imageName;
+        this._editorService.imageName = this.imageName;
+        this._editorService.imageName=this.imageName;
         this.imgPath = this.imageDir + '/' + this.imageName;
     }
     deleteImage() {

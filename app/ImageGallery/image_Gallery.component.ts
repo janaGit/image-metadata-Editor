@@ -2,7 +2,7 @@ import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 import { ImageService } from './../services/image.service';
 import { ExifToolService } from './../services/exifTool.service';
-
+import { EditorService } from './../services/editor.service';
 @Component({
     templateUrl: 'image_Gallery.component.html',
     styleUrls: ['image_Gallery.component.css'],
@@ -26,7 +26,7 @@ export class ImageGalleryComponent {
     private _contextMenuElements = [
         { title: 'transfer for editing', subject: new Subject() }
     ];
-    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _renderer: Renderer) { }
+    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService:EditorService, private _renderer: Renderer) { }
     ngOnInit() {
         this.getImageNames();
         this.imgDir_edited = this._imageService.imageDir_edited;
@@ -55,7 +55,7 @@ export class ImageGalleryComponent {
         }
     }
     getMetadata(imageName: string) {
-        this._exifToolService.imageName_edited = imageName;
+        this._editorService.imageName_edited = imageName;
         this.metadata = this._exifToolService.metadata_edited;
     }
     imageClicked(imgName: string) {
