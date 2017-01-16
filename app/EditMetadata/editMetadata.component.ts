@@ -18,17 +18,19 @@ export class EditMetadataComponent implements OnInit {
      * Name of the actual selected tab.
      */
     public selectedTabName: string;
-    /**
-     * Path  to the actual selected image:
-     * 
-     * imgDir/imgName
-     */
-    imgPath:string =  this._imageService.imageDir + '/' + this.editorService.imageName;
-    /**
+
+    /*
      * Name of the folder where the images are stored 
      * that should be edited.
      */
     public imgDir: string;
+    /**
+     * Returns the path  to the actual selected image:
+     * 
+     * imgDir/imgName
+     */
+    imgPath:string;
+
     /**
      * Tabs for the different steps of the editing process.
      */
@@ -39,9 +41,11 @@ export class EditMetadataComponent implements OnInit {
         { title: 'Location', tab: 'Location', disabled: true },
         { title: 'Complete', tab: 'Complete', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private editorService: EditorService) {
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService) {
 
     }
+
+
     ngOnInit() {
         // Set the File tab to be active.
         this.tabs.forEach(tab => {
@@ -50,8 +54,11 @@ export class EditMetadataComponent implements OnInit {
                 this._cdr.detectChanges();
             }
         });
+       
+        this._editorService.imageName$.subscribe(imgName => {
+            this.imgPath = this._imageService.imageDir + '/' + imgName;
+        });
     }
-
 
     /**
      * Set the name of the actual selected tab.

@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EditorService } from './editor.service';
 
 @Injectable()
-export class ExifToolService {
+export class ExifToolService{
     constructor(private _http: Http, private _editorService: EditorService) { }
     private _getMetadata = '/getMetadata';
     private _getMetadata_edited = '/getMetadata_edited';
@@ -36,6 +36,7 @@ export class ExifToolService {
     }
 
     requestMetadata() {
+
         return new Promise(resolve => {
             this._http.get(this._getMetadata + '/' + this._editorService.imageName + '/' + this._language)
                 .map(this.extractData)
@@ -47,13 +48,13 @@ export class ExifToolService {
         });
     }
     requestMetadata_edited() {
-          return new Promise(resolve => {
-        this._http.get(this._getMetadata_edited + '/' + this._editorService.imageName_edited + '/' + this._language)
-            .map(this.extractData)
-            .catch(this.handleError).subscribe(
-            data => { this._metadata_edited = data; this._errorMessage = null; resolve();},
-            error => { this._errorMessage = error; this._metadata_edited = null; resolve();});
-          });
+        return new Promise(resolve => {
+            this._http.get(this._getMetadata_edited + '/' + this._editorService.imageName_edited + '/' + this._language)
+                .map(this.extractData)
+                .catch(this.handleError).subscribe(
+                data => { this._metadata_edited = data; this._errorMessage = null; resolve(); },
+                error => { this._errorMessage = error; this._metadata_edited = null; resolve(); });
+        });
     }
     deleteAllMetadata(imageName): Observable<string[]> {
         return this._http.post(this._deleteAllMetadata + '/' + imageName, "")

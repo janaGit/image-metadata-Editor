@@ -55,7 +55,7 @@ export class ImageGalleryComponent {
         }
     }
     getMetadata(imageName: string) {
-        this._editorService.imageName_edited = imageName;
+        this._editorService.updateImageName_edited(imageName);
         this.metadata = this._exifToolService.metadata_edited;
     }
     imageClicked(imgName: string) {
