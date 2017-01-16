@@ -9,9 +9,9 @@ import { ExifToolService } from './../services/exifTool.service';
     host: {
         '(document:scroll)': 'onScroll($event)',
         '(window:keypress)': 'onKey($event)'
-    }  
+    }
 })
-export class ImageGalleryComponent  {
+export class ImageGalleryComponent {
     @ViewChild('table') table;
     private _errorMessage_imageService: string;
     errorMessage_exifToolService: string;
@@ -26,7 +26,7 @@ export class ImageGalleryComponent  {
     private _contextMenuElements = [
         { title: 'transfer for editing', subject: new Subject() }
     ];
-  constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _renderer: Renderer) { }
+    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _renderer: Renderer) { }
     ngOnInit() {
         this.getImageNames();
         this.imgDir_edited = this._imageService.imageDir_edited;
@@ -56,10 +56,7 @@ export class ImageGalleryComponent  {
     }
     getMetadata(imageName: string) {
         this._exifToolService.imageName_edited = imageName;
-        this._exifToolService.metadata_edited$.subscribe(
-            data => { this.metadata = data; this.metadata_keys = Object.keys(data); },
-            error => this.errorMessage_exifToolService = <any>error
-        );
+        this.metadata = this._exifToolService.metadata_edited;
     }
     imageClicked(imgName: string) {
         if (this._imageNameClicked === imgName) {

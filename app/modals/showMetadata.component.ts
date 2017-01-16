@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
-import {OnChanges, SimpleChange, OnInit} from '@angular/core';
-import {ExifToolService}  from './../services/exifTool.service';
+import { Component, Input, Output, ChangeDetectorRef, Inject, EventEmitter } from '@angular/core';
+import { SimpleChange } from '@angular/core';
+import { ExifToolService } from './../services/exifTool.service';
 
 @Component({
     selector: 'showMetadata',
@@ -8,40 +8,47 @@ import {ExifToolService}  from './../services/exifTool.service';
     styleUrls: ['showMetadata.component.css']
 })
 
-export class ShowMetadataComponent implements OnChanges, OnInit {
-    _display = 'none';
-    errorMessage_exifToolService: string;
+export class ShowMetadataComponent {
+    _display_css = 'none';
     metadata = {};
     metadata_keys = [];
-    @Input() imageName: string;
-    @Input() display: boolean;
-    @Input() display_start: boolean;
+    _display: boolean;
+    @Input() get display() {
+        return this._display;
+    }
+
+    @Output() displayChange = new EventEmitter<boolean>();
+
+    set display(_display) {
+        this._display = _display;
+        this.displayChange.emit(this._display);
+        this.display_Show_Hide();
+    }
     constructor(private _exifToolService: ExifToolService) { }
     toogle_Show_Hide() {
-        this._display = this._display !== 'none' ? 'none' : 'block';
-    }
-
-    ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-
-        if (changes['imageName']) {
-            this.imageName = changes['imageName'].currentValue;
-            this._exifToolService.imageName = this.imageName;
-            this.getMetadata();
-
-        }
-        if (changes['display']) {
-            this.toogle_Show_Hide();
+        if (this._display_css !== 'none') {
+            this._display_css = 'none';
+            this.display = false;
+        } else {
+            this.showMetadata();
+            this.display = true;
         }
     }
-    ngOnInit() {
-        if (!this.display_start) {
-            this.toogle_Show_Hide();
+    display_Show_Hide() {
+        if (this._display == false) {
+            this._display_css = 'none';
+        } else {
+            this.showMetadata();
         }
     }
-    getMetadata() {
-        this._exifToolService.metadata$.subscribe(
-            data => { this.metadata = data; this.metadata_keys = Object.keys(data); },
-            error => this.errorMessage_exifToolService = <any>error
-        );
+    showMetadata() {
+        let __metadata = this._exifToolService.metadata;
+        if (__metadata) {
+            this.metadata = __metadata;
+            this.metadata_keys = Object.keys(this.metadata);
+            this._display_css = 'block';
+        } else {
+            alert(this._exifToolService.errorMessage);
+        }
     }
 }

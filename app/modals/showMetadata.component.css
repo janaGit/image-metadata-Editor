@@ -1,4 +1,8 @@
 #showMetadata{
     overflow:scroll;
 }
+.close{
+    margin-top: -15px!important;
+    font-size: 50px;
+}
 
