@@ -25,7 +25,8 @@ import { ImageGalleryComponent } from './ImageGallery/image_Gallery.component';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exifTool.service';
 import { ContextMenuService } from './services/contextMenu.service';
-import {EditorService} from './services/editor.service'
+import {EditorService} from './services/editor.service';
+
 @NgModule({
   imports: [BrowserModule, HttpModule,
     RouterModule.forRoot(routerConfig, { useHash: true }),

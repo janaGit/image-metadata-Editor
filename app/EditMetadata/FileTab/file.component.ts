@@ -30,40 +30,36 @@ export class FileComponent implements OnInit {
     ngOnInit() {
         this.imageDir = this._imageService.imageDir;
         this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
+        this._editorService.imageName$.subscribe(imgName=>{
+            this.imageName=imgName;
+        });
         this.refresh();
     }
 
 
     getDropedImage(file: File) {
-        var self = this;
+
         this._imageService.sendImage(file).then(fileName => {
-
-            self.refreshImageList().then(function () {
-                var index = self.getImageNumber(fileName);
-
+            this.refreshImageList().then(function () {
+                var index = this.getImageNumber(fileName);
                 if (index != -1) {
-                    self.imgNumber = index;
+                    this.imgNumber = index;
                 }
-                self.setActualImageName(false);
+                this.setActualImageName(false);
             })
-
-
         });
 
 
     }
     refresh() {
-        var self = this;
-        this.refreshImageList().then(function () { self.setActualImageName(true) });
+        this.refreshImageList().then(() => { this.setActualImageName(true) });
     }
     refreshImageList() {
-        var self = this;
-
-        return new Promise(function (resolve) {
-            self._imageService.getImageNames()
+        return new Promise(resolve=> {
+            this._imageService.getImageNames()
                 .subscribe(
-                images => self.imageNames = images,
-                error => self.errorMessage_imageService = <any>error,
+                images => this.imageNames = images,
+                error => this.errorMessage_imageService = <any>error,
                 () => resolve()
                 );
         });
@@ -104,24 +100,25 @@ export class FileComponent implements OnInit {
             }
         }
         this.imageName = this.imageNames[this.imgNumber];
-        this._editorService.imageName = this.imageName;
-        this._editorService.imageName=this.imageName;
+        this._editorService.updateImageName(this.imageName);
         this.imgPath = this.imageDir + '/' + this.imageName;
     }
     deleteImage() {
-        var self = this;
         this._imageService.deleteImage(this.imageName).subscribe(
-            data => this.refreshImageList().then(function () { self.setActualImageName(false); },
+            data => this.refreshImageList().then(()=>{ this.setActualImageName(false); },
                 error => this.errorMessage_imageService = <any>error
             )
         );
     }
     startEditing() {
-        if (this._exifToolService.metadata) {
-            this.start.emit();
-        } else {
-            alert(this._exifToolService.errorMessage);
-        }
+        this._exifToolService.requestMetadata().then(
+            resolve => {
+                if (this._exifToolService.metadata) {
+                    this.start.emit();
+                } else {
+                    alert(this._exifToolService.errorMessage);
+                }
+            });
     }
 
     onKey(event) {
