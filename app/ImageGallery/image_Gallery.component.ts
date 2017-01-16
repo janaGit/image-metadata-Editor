@@ -26,7 +26,7 @@ export class ImageGalleryComponent {
     private _contextMenuElements = [
         { title: 'transfer for editing', subject: new Subject() }
     ];
-    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService:EditorService, private _renderer: Renderer) { }
+    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService: EditorService, private _renderer: Renderer) { }
     ngOnInit() {
         this.getImageNames();
         this.imgDir_edited = this._imageService.imageDir_edited;
@@ -56,7 +56,10 @@ export class ImageGalleryComponent {
     }
     getMetadata(imageName: string) {
         this._editorService.updateImageName_edited(imageName);
-        this.metadata = this._exifToolService.metadata_edited;
+        this._exifToolService.requestMetadata_edited().then(() => {
+            this.metadata = this._exifToolService.metadata_edited;
+            this.metadata_keys=Object.keys(this.metadata);
+        });
     }
     imageClicked(imgName: string) {
         if (this._imageNameClicked === imgName) {

@@ -36,7 +36,6 @@ export class ExifToolService{
     }
 
     requestMetadata() {
-
         return new Promise(resolve => {
             this._http.get(this._getMetadata + '/' + this._editorService.imageName + '/' + this._language)
                 .map(this.extractData)
