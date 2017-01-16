@@ -16,7 +16,7 @@ var app = express();
 var compiler = webpack(webpackConfig);
 
 app.use(webpackDevMiddleware(compiler, {
-  publicPath: webpackConfig.output.publicPath
+    publicPath: webpackConfig.output.publicPath
 }));
 app.use(webpackHotMiddleware(compiler));
 
@@ -24,11 +24,11 @@ app.use("/images", express.static('images'));
 app.use("/images_edited", express.static('images_edited'));
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
+    res.sendFile(path.join(__dirname + '/index.html'));
 
 });
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 var storage = multer.diskStorage({
@@ -39,7 +39,7 @@ var storage = multer.diskStorage({
         cb(null, file.originalname);
     }
 });
-var upload = multer({storage: storage});
+var upload = multer({ storage: storage });
 
 
 app.get('/getImageNames', getFileNames);
@@ -99,28 +99,29 @@ function deleteImage(req, res) {
 }
 function getMetadata_edit(req, res) {
     var imageName = req.params.imageName;
-    var lang='';
+    var lang = '';
 
-    if(req.params.lang){
-           lang=req.params.lang; 
-    }else{
-        lang='en';
+    if (req.params.lang) {
+        lang = req.params.lang;
+    } else {
+        lang = 'en';
     }
     var metadata = getMetadata(imageDir, imageName, lang);
     metadata.then(function (value) {
         res.send(value);
-    }), function (error) {
+    }, function (error) {
+        console.log(error)
         res.status(404).send(error);
-    };
+    });
 
 }
 function getMetadata_edited(req, res) {
     var imageName = req.params.imageName;
-    var lang='';
-    if(req.params.lang){
-           lang=req.params.lang; 
-    }else{
-        lang='en';
+    var lang = '';
+    if (req.params.lang) {
+        lang = req.params.lang;
+    } else {
+        lang = 'en';
     }
     var metadata = getMetadata(imageDir_edited, imageName, lang);
     metadata.then(function (value) {
@@ -130,20 +131,21 @@ function getMetadata_edited(req, res) {
     };
 }
 function getMetadata(imageDir, imageName, lang) {
-    return  new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         fs.readdir(imageDir, function (err, files) {
             if (files.indexOf(imageName) === -1) {
-                reject('File with name: '+imageName+' does not exist.');
+                reject('File with name: ' + imageName + ' does not exist.');
+            } else {
+                var data = exifTool.getMetadata(imageDir, imageName, lang);
+                data.then(function (data) {
+                    console.log(data);
+                    var body = {};
+                    body.data = data;
+                    resolve(body);
+                }, function (error) {
+                    reject(error);
+                });
             }
-            var data = exifTool.getMetadata(imageDir, imageName, lang);
-            data.then(function (data) {
-                console.log(data);
-                var body = {};
-                body.data = data;
-                resolve(body);
-            }, function (error) {
-                reject(error);
-            });
         });
     });
 }
@@ -167,25 +169,25 @@ function moveImageTo_image_edited_folder(req, res) {
     });
 }
 function moveImage(imageDir_from, imageDir_to, imageName) {
-    return  new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         fs.readdir(imageDir_from, function (err, files) {
             if (err) {
-                var object = {status: 500, error: err};
+                var object = { status: 500, error: err };
                 console.error(object);
                 reject(object);
             }
             if (files.indexOf(imageName) === -1) {
-                var object = {status: 400, error: err, message: '400, File does not exist.'};
+                var object = { status: 400, error: err, message: '400, File does not exist.' };
                 console.error(object);
                 reject(object);
             }
             fs.rename(imageDir_from + '/' + imageName, imageDir_to + '/' + imageName, function (err) {
                 if (err) {
-                    var object = {status: 500, error: err};
+                    var object = { status: 500, error: err };
                     console.error(object);
                     reject(object);
                 }
-                var object = {status: 200};
+                var object = { status: 200 };
                 resolve(object);
             });
         });
@@ -200,14 +202,14 @@ function deleteAllMetadata(req, res) {
         }
         var result = exifTool.deleteAllMetadata(imageDir, imageDir_edited, imageName);
         result.then(function (data) {
-            var _data={};
-            _data.body=''+data;
-            console.log('exifTool message:'+_data.body);
+            var _data = {};
+            _data.body = '' + data;
+            console.log('exifTool message:' + _data.body);
             res.status(200).send(_data);
         }, function (error) {
-            var _error={};
-            _error.body=''+error;
-            console.error('deleteAllMetadata app.js:'+_error);
+            var _error = {};
+            _error.body = '' + error;
+            console.error('deleteAllMetadata app.js:' + _error);
             res.status(500).send(_error);
         });
     });
@@ -218,6 +220,6 @@ function deleteAllMetadata(req, res) {
 
 
 app.listen(3000, function () {
-  console.log("Listening on port 3000!");
+    console.log("Listening on port 3000!");
 });
 

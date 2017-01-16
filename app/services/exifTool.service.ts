@@ -1,7 +1,7 @@
-import {Http, Response} from '@angular/http';
-import {Observable}     from 'rxjs/Observable';
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Rx';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ExifToolService {
@@ -12,15 +12,13 @@ export class ExifToolService {
     private _language: string = 'en';
     private _imageName: string;
     private _imageName_edited: string;
-    private _metadata: Subject<Observable<any>> = new Subject();
-    private _metadata_edited: Subject<Observable<any>> = new Subject();
-    metadata$ = this._metadata.asObservable();
-    metadata_edited$ = this._metadata_edited.asObservable();
+
+    private _errorMessage;
+    private _metadata: Object;
+    private _metadata_edited: Object;
 
     set language(language) {
         this._language = language;
-        this.requestMetadata();
-        this.requestMetadata_edited();
     }
     get language() {
         return this._language;
@@ -39,19 +37,33 @@ export class ExifToolService {
     get imageName_edited() {
         return this._imageName_edited;
     }
+
+    get metadata() {
+        return this._metadata;
+    }
+
+    get metadata_edited() {
+        return this._metadata_edited;
+    }
+
+    get errorMessage() {
+        return this._errorMessage;
+    }
+
     requestMetadata() {
         this._http.get(this._getMetadata + '/' + this.imageName + '/' + this._language)
             .map(this.extractData)
             .catch(this.handleError).subscribe(
-            data => { this._metadata.next(data); },
-            error => { this._metadata.next(error); });
+            data => { this._metadata = data, this._errorMessage = null; },
+            error => { this._errorMessage = error; this._metadata = null; }
+            );
     }
     requestMetadata_edited() {
         this._http.get(this._getMetadata_edited + '/' + this.imageName_edited + '/' + this._language)
             .map(this.extractData)
             .catch(this.handleError).subscribe(
-            data => { this._metadata_edited.next(data); },
-            error => { this._metadata_edited.next(error); });
+            data => { this._metadata_edited = data; this._errorMessage = null; },
+            error => { this._errorMessage = error; this._metadata_edited = null; });
     }
     deleteAllMetadata(imageName): Observable<string[]> {
         return this._http.post(this._deleteAllMetadata + '/' + imageName, "")
@@ -66,7 +78,7 @@ export class ExifToolService {
         return body.data || {};
     }
     private handleError(error: any) {
-        let err = error.message || 'Server error';
+        let err = error || 'Server error';
         console.error(err);
         return Observable.throw(err);
     }

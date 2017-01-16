@@ -1,8 +1,8 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {Subject} from 'rxjs/Rx';
-import {ImageService}     from './../../services/image.service';
-import {Edit_MetadataService} from './../services/edit_Metadata.service';
-import {ExifToolService}  from './../../services/exifTool.service';
+import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import { Subject } from 'rxjs/Rx';
+import { ImageService } from './../../services/image.service';
+import { Edit_MetadataService } from './../services/edit_Metadata.service';
+import { ExifToolService } from './../../services/exifTool.service';
 
 @Component({
     selector: 'FileTab',
@@ -21,7 +21,7 @@ export class FileComponent implements OnInit {
     imgPath: string;
     imageDir: string;
     _displayMetadataModal = false;
-    @Output() start = new EventEmitter<boolean>();
+    @Output() start = new EventEmitter();
     private _contextMenuElements = [
         { title: 'transfer to image gallery', subject: new Subject() }
     ];
@@ -38,13 +38,13 @@ export class FileComponent implements OnInit {
         var self = this;
         this._imageService.sendImage(file).then(fileName => {
 
-            self.refreshImageList().then(function() {
+            self.refreshImageList().then(function () {
                 var index = self.getImageNumber(fileName);
 
                 if (index != -1) {
                     self.imgNumber = index;
                 }
-                self.loadImage(false);
+                self.setActualImageName(false);
             })
 
 
@@ -54,12 +54,12 @@ export class FileComponent implements OnInit {
     }
     refresh() {
         var self = this;
-        this.refreshImageList().then(function() { self.loadImage(true) });
+        this.refreshImageList().then(function () { self.setActualImageName(true) });
     }
     refreshImageList() {
         var self = this;
 
-        return new Promise(function(resolve) {
+        return new Promise(function (resolve) {
             self._imageService.getImageNames()
                 .subscribe(
                 images => self.imageNames = images,
@@ -72,7 +72,7 @@ export class FileComponent implements OnInit {
     }
     getImageNumber(name) {
         var index = this.imageNames.findIndex(
-            function(element) {
+            function (element) {
                 if (name == element) {
                     return true;
                 }
@@ -86,20 +86,19 @@ export class FileComponent implements OnInit {
     }
     nextImage() {
         this.imgNumber = this.imgNumber + 1;
-        this.loadImage(false);
+        this.setActualImageName(false);
     }
     previousImage() {
         this.imgNumber = this.imgNumber - 1;
-        this.loadImage(false);
+        this.setActualImageName(false);
     }
-    loadImage(start) {
+    setActualImageName(start) {
         if (start == true) {
             this.imgNumber = 0;
         }
         if (this.imgNumber == this.imageNames.length) {
             this.imgNumber = 0;
-        }
-        else {
+        } else {
             if (this.imgNumber < 0) {
                 this.imgNumber = this.imageNames.length - 1;
             }
@@ -110,37 +109,20 @@ export class FileComponent implements OnInit {
     }
     deleteImage() {
         var self = this;
-       this._imageService.deleteImage(this.imageName).subscribe(
-            data => this.refreshImageList().then(function() { self.loadImage(false); },
-            error => this.errorMessage_imageService = <any>error
+        this._imageService.deleteImage(this.imageName).subscribe(
+            data => this.refreshImageList().then(function () { self.setActualImageName(false); },
+                error => this.errorMessage_imageService = <any>error
             )
         );
     }
     startEditing() {
-        var message = this.metadata_has_Error(this.imageName);
-        message.then(data => {
-           this._edit_MetadataService.setImageName(this.imageName);
-            this.start.emit(true);
-        }, error => {
-            this.errorMessage_imageService = error;
-        })
+        if (this._exifToolService.metadata) {
+            this.start.emit();
+        } else {
+            alert(this._exifToolService.errorMessage);
+        }
     }
-    metadata_has_Error(imageName: string): Promise<String> {
-        var self = this;
-        return new Promise(function(resolve, reject) {
-            self._exifToolService.requestMetadata();
-            self._exifToolService.metadata$.subscribe(
-                data => {
-                    if (typeof data['Error'] === 'undefined') {
-                        resolve('true');
-                    }
-                    reject(data['Error']);
-                },
-                error => { reject(error); }
-            );
-        })
 
-    }
     onKey(event) {
         var key = event.key;
         switch (key) {
@@ -152,7 +134,7 @@ export class FileComponent implements OnInit {
                 break;
             case 'w':
                 this.displayMetadataModal();
-           
+
         }
     }
     displayMetadataModal() {
@@ -161,7 +143,7 @@ export class FileComponent implements OnInit {
     contextMenu(val) {
         if (val === this._contextMenuElements[0].title) {
             this._imageService.moveImageToImageGallery(this.imageName).subscribe(
-                data => { var self = this; this.refreshImageList().then(function() { self.loadImage(false) }); },
+                data => { var self = this; this.refreshImageList().then(function () { self.setActualImageName(false) }); },
                 error => this.errorMessage_imageService = <any>error
             );
         }
@@ -169,7 +151,7 @@ export class FileComponent implements OnInit {
     deleteMetadata() {
         this._exifToolService.deleteAllMetadata(this.imageName).subscribe(
             data => { this.refresh() },
-            error =>{this.refresh(); this.errorMessage_imageService = <any>error}
+            error => { this.refresh(); this.errorMessage_imageService = <any>error }
         );
     }
 }
