@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TabDirective } from 'ng2-bootstrap/ng2-bootstrap';
 
 
-import { Edit_MetadataService } from './services/edit_Metadata.service';
+import { EditorService } from './../services/editor.service';
 import { ImageService } from './../services/image.service';
 
 /**
@@ -23,7 +23,7 @@ export class EditMetadataComponent implements OnInit {
      * 
      * imgDir/imgName
      */
-    public imgPath: string;
+    imgPath:string =  this._imageService.imageDir + '/' + this.editorService.imageName;
     /**
      * Name of the folder where the images are stored 
      * that should be edited.
@@ -39,20 +39,10 @@ export class EditMetadataComponent implements OnInit {
         { title: 'Location', tab: 'Location', disabled: true },
         { title: 'Complete', tab: 'Complete', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private edit_MetadataService: Edit_MetadataService) {
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private editorService: EditorService) {
 
     }
     ngOnInit() {
-        //Set the path to the folder where the images, that should 
-        //be edited, are stored.
-        this.imgDir = this._imageService.imageDir;
-        //Subscribe to the edit_MetadataService to update the path to the
-        //actual image
-        this.edit_MetadataService.imageName$.subscribe(
-            imgName => {
-                this.imgPath = this.imgDir + '/' + imgName;
-            }
-        );
         // Set the File tab to be active.
         this.tabs.forEach(tab => {
             if (tab.tab === 'File') {
@@ -61,6 +51,7 @@ export class EditMetadataComponent implements OnInit {
             }
         });
     }
+
 
     /**
      * Set the name of the actual selected tab.

@@ -2,16 +2,15 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { EditorService } from './editor.service';
 
 @Injectable()
 export class ExifToolService {
-    constructor(private _http: Http) { }
+    constructor(private _http: Http, private _editorService: EditorService) { }
     private _getMetadata = '/getMetadata';
     private _getMetadata_edited = '/getMetadata_edited';
     private _deleteAllMetadata = '/deleteAllMetadata';
     private _language: string = 'en';
-    private _imageName: string;
-    private _imageName_edited: string;
 
     private _errorMessage;
     private _metadata: Object;
@@ -22,20 +21,6 @@ export class ExifToolService {
     }
     get language() {
         return this._language;
-    }
-    set imageName(imgName) {
-        this._imageName = imgName;
-        this.requestMetadata();
-    }
-    get imageName() {
-        return this._imageName;
-    }
-    set imageName_edited(imgName) {
-        this._imageName_edited = imgName;
-        this.requestMetadata_edited();
-    }
-    get imageName_edited() {
-        return this._imageName_edited;
     }
 
     get metadata() {
@@ -51,19 +36,24 @@ export class ExifToolService {
     }
 
     requestMetadata() {
-        this._http.get(this._getMetadata + '/' + this.imageName + '/' + this._language)
-            .map(this.extractData)
-            .catch(this.handleError).subscribe(
-            data => { this._metadata = data, this._errorMessage = null; },
-            error => { this._errorMessage = error; this._metadata = null; }
-            );
+        return new Promise(resolve => {
+            this._http.get(this._getMetadata + '/' + this._editorService.imageName + '/' + this._language)
+                .map(this.extractData)
+                .catch(this.handleError).subscribe(
+                data => { this._metadata = data, this._errorMessage = null; resolve(); },
+                error => { this._errorMessage = error; this._metadata = null; resolve(); }
+                );
+
+        });
     }
     requestMetadata_edited() {
-        this._http.get(this._getMetadata_edited + '/' + this.imageName_edited + '/' + this._language)
+          return new Promise(resolve => {
+        this._http.get(this._getMetadata_edited + '/' + this._editorService.imageName_edited + '/' + this._language)
             .map(this.extractData)
             .catch(this.handleError).subscribe(
-            data => { this._metadata_edited = data; this._errorMessage = null; },
-            error => { this._errorMessage = error; this._metadata_edited = null; });
+            data => { this._metadata_edited = data; this._errorMessage = null; resolve();},
+            error => { this._errorMessage = error; this._metadata_edited = null; resolve();});
+          });
     }
     deleteAllMetadata(imageName): Observable<string[]> {
         return this._http.post(this._deleteAllMetadata + '/' + imageName, "")
