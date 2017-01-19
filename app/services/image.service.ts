@@ -3,14 +3,14 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
 /**
- * This service provides methods for requests to the backend 
+ * This service class provides methods for requests to the backend 
  * for the management of the images.
  */
 @Injectable()
 export class ImageService {
 
     /**
-     * Path to the folder for the images that could be edited.
+     * Path to the folder for the images that are shown in the editing view.
      */
     private _imageDir: string;
 
@@ -47,7 +47,7 @@ export class ImageService {
     private _postMoveImage_Back = '/moveImageBackForEditing';
     
     /**
-     * Restful webservice URL to move the an image from the editing view (path:imgDir)
+     * Restful webservice URL to move an image from the editing view (path:imgDir)
      * to the image gallery (path: imageDir_edited).
      */
     private _postMoveImage_ToImageGallery = '/moveImageToImageGallery';
@@ -55,15 +55,31 @@ export class ImageService {
     constructor(private _http: Http) { }
 
     // Getter and setter methods:
+
+    /**
+     * Get the path where the images for the editing view are stored.
+     */
     get imageDir() {
         return this._imageDir;
     }
+
+    /**
+     * Set the path where the images for the editing view are stored.
+     */
     set imageDir(imgDir: string) {
         this._imageDir = imgDir;
     }
+
+    /**
+     * Get the path where the images for the image gallery are stored.
+     */
     set imageDir_edited(imgDir_edited: string) {
         this._imageDir_edited = imgDir_edited;
     }
+
+    /**
+     * Set the path where the images for the image gallery are stored.
+     */
     get imageDir_edited() {
         return this._imageDir_edited;
     }
