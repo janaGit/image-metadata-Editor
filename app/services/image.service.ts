@@ -1,28 +1,139 @@
-import {Http, Response} from '@angular/http';
-import {Observable}     from 'rxjs/Observable';
-import {Injectable} from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
 
-
+/**
+ * This service provides methods for requests to the backend 
+ * for the management of the images.
+ */
 @Injectable()
 export class ImageService {
-    constructor(private _http: Http) { }
-    private _getImagesUrl = '/getImageNames';
-    private _getImages_editedUrl = '/getImageNames_edited';
-    private _postImageUrl = '/newImage';
-    private _deleteImageUrl = '/deleteImage';
-    private _postMoveImage_Back = '/moveImageBackForEditing';
-    private _postMoveImage_ToImageGallery = '/moveImageToImageGallery';
+
+    /**
+     * Path to the folder for the images that could be edited.
+     */
     private _imageDir: string;
+
+    /**
+     *  Path to the folder for the images that are shown in the image gallery.
+     */
     private _imageDir_edited: string;
 
 
+    /**
+    * Restful webservice URL to get the image names that could be edited. 
+    */
+    private _getImagesUrl = '/getImageNames';
+
+    /**
+     * Restful webservice URL to get the image names for the image gallery. 
+     */
+    private _getImages_editedUrl = '/getImageNames_edited';
+
+    /**
+    *    Restful webservice URL to insert a new image into the image folder. 
+    */
+    private _postImageUrl = '/newImage';
+
+    /**
+    *    Restful webservice URL to delete an image that exists in the image folder. 
+    */
+    private _deleteImageUrl = '/deleteImage';
+   
+    /**
+     * Restful webservice URL to move an image from the image gallery (path: imageDir_edited)
+     * back to the editing view (path: imageDir).
+     */
+    private _postMoveImage_Back = '/moveImageBackForEditing';
+    
+    /**
+     * Restful webservice URL to move the an image from the editing view (path:imgDir)
+     * to the image gallery (path: imageDir_edited).
+     */
+    private _postMoveImage_ToImageGallery = '/moveImageToImageGallery';
+
+    constructor(private _http: Http) { }
+
+    // Getter and setter methods:
+    get imageDir() {
+        return this._imageDir;
+    }
+    set imageDir(imgDir: string) {
+        this._imageDir = imgDir;
+    }
+    set imageDir_edited(imgDir_edited: string) {
+        this._imageDir_edited = imgDir_edited;
+    }
+    get imageDir_edited() {
+        return this._imageDir_edited;
+    }
+
+    /**
+     * Method that requests the image names for the editing view.
+     */
     getImageNames(): Observable<string[]> {
         return this._http.get(this._getImagesUrl)
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    /**
+     * Method that requests the image names for the image gallery.
+     */
     getImageNames_edited(): Observable<string[]> {
         return this._http.get(this._getImages_editedUrl)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /**
+     * Method that posts an image to the backend. The image is then 
+     * stored in the folder of imageDir and shown in the editing view.
+     * 
+     * @param imageFile  Image data
+     */
+    sendImage(imageFile: File) {
+        return new Promise<string>((resolve, reject) =>{
+            let request = new XMLHttpRequest();
+            request.open('POST', this._postImageUrl, true);
+            let formData = new FormData();
+
+            formData.append('image', imageFile);
+            request.onloadend = function () {
+                resolve(request.responseText);
+            };
+
+            request.send(formData);
+
+        });
+
+    }
+
+    /**
+    * Method that does a delete request for images that are located in the path: imageDir. 
+     */
+    deleteImage(imageName: string): Observable<string[]> {
+        return this._http.delete(this._deleteImageUrl + '/' + imageName)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /**
+     * Method that does a request for moving a specific image from the image gallery
+     * (path: imageDir_edited) back to the editing view (path: imageDir).
+     */
+    moveImageBackForEditing(imageName: string): Observable<string> {
+        return this._http.post(this._postMoveImage_Back + '/' + imageName, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /**
+     * Method that does a request for moving a specific image from the editing view
+     * (path: imageDir) to the image gallery (path: imageDir_edited).
+     */
+    moveImageToImageGallery(imageName: string): Observable<string> {
+        return this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "")
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -40,48 +151,4 @@ export class ImageService {
         return Observable.throw(err);
     }
 
-    sendImage(imageFile: File) {
-        var self = this;
-        return new Promise<string>(function(resolve, reject) {
-            var request = new XMLHttpRequest();
-            request.open('POST', self._postImageUrl, true);
-            var formData = new FormData();
-
-            formData.append('image', imageFile);
-            request.onloadend = function() {
-                resolve(request.responseText);
-            };
-
-            request.send(formData);
-
-        });
-
-    }
-    deleteImage(imageName: string): Observable<string[]> {
-        return this._http.delete(this._deleteImageUrl + '/' + imageName)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    moveImageBackForEditing(imageName: string): Observable<string> {
-        return this._http.post(this._postMoveImage_Back + '/' + imageName, "")
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    moveImageToImageGallery(imageName: string): Observable<string> {
-        return this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "")
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    get imageDir() {
-        return this._imageDir;
-    }
-    set imageDir(imgDir: string) {
-        this._imageDir = imgDir;
-    }
-    set imageDir_edited(imgDir_edited: string) {
-        this._imageDir_edited = imgDir_edited;
-    }
-    get imageDir_edited() {
-        return this._imageDir_edited;
-    }
 }
