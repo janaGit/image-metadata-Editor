@@ -11,7 +11,7 @@
 
             <li *ngFor="let imgName of _imageNames_edited">
                 <a><img src="{{imgDir_edited}}/{{imgName}}" alt="description" />
-                    <img src="{{imgDir_edited}}/{{imgName}}" (ime_onMouseOverImage)="onMouseOverImage($event)" alt="description" class="preview"
+                    <img src="{{imgDir_edited}}/{{imgName}}" (onMouseOverImage)="onMouseOverImage($event)" alt="description" class="preview"
                         [contextMenuElements]="_contextMenuElements" [class.clicked]="imageClicked(imgName)" />
                 </a>
             </li>

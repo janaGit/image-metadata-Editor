@@ -3,6 +3,7 @@ import { Subject } from 'rxjs/Rx';
 import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exifTool.service';
+import { ContextMenu } from './../../types/contextMenu.type';
 
 @Component({
     selector: 'FileTab',
@@ -22,7 +23,7 @@ export class FileComponent implements OnInit {
     imageDir: string;
     _displayMetadataModal = false;
     @Output() start = new EventEmitter();
-    private _contextMenuElements = [
+    private _contextMenuElements:ContextMenu[] = [
         { title: 'transfer to image gallery', subject: new Subject() }
     ];
     constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _editorService: EditorService) { }

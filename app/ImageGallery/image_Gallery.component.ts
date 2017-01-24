@@ -3,6 +3,10 @@ import { Subject } from 'rxjs/Rx';
 import { ImageService } from './../services/image.service';
 import { ExifToolService } from './../services/exifTool.service';
 import { EditorService } from './../services/editor.service';
+import { ContextMenu } from './../types/contextMenu.type';
+import { MouseOverImageEvent } from './../types/mouseOverImageEvent.type';
+
+
 @Component({
     templateUrl: 'image_Gallery.component.html',
     styleUrls: ['image_Gallery.component.css'],
@@ -23,7 +27,7 @@ export class ImageGalleryComponent {
     private _metadata_table_height: string;
     private _actual_Image: string;
     private _editedImages_text = "images_edited.txt";
-    private _contextMenuElements = [
+    private _contextMenuElements:ContextMenu[] = [
         { title: 'transfer for editing', subject: new Subject() }
     ];
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService: EditorService, private _renderer: Renderer) { }
@@ -35,18 +39,18 @@ export class ImageGalleryComponent {
         var event = { pageY: document.body.scrollTop };
         this.onScroll(event);
     }
-    onMouseOverImage(event) {
-        if (event.event === 'mouseOver') {
-            this._actual_Image = event.img_name;
+    onMouseOverImage(event:MouseOverImageEvent) {
+        if (event.eventName === 'mouseOver') {
+            this._actual_Image = event.imgName;
             if (typeof this._imageNameClicked === 'undefined') {
-                this.getMetadata(event.img_name);
+                this.getMetadata(event.imgName);
             }
 
         }
-        if (event.event === 'mouseClicked') {
-            if (this._imageNameClicked !== event.img_name) {
-                this.getMetadata(event.img_name);
-                this._imageNameClicked = event.img_name;
+        if (event.eventName === 'mouseClicked') {
+            if (this._imageNameClicked !== event.imgName) {
+                this.getMetadata(event.imgName);
+                this._imageNameClicked = event.imgName;
                 this._renderer.setElementClass(event.element, 'clicked', true);
             } else {
                 this._imageNameClicked = undefined;

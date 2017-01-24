@@ -48,6 +48,7 @@ export class ContextMenuHolderComponent {
 
 
     constructor(private _contextMenuService: ContextMenuService) {
+        // Subscribe to the ContextMenuService.
         this._contextMenuService.show.subscribe(e => this.showMenu(e.event, e.menuElements));
     }
 
