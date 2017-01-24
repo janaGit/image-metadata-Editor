@@ -1,44 +1,59 @@
-//The code is from: 
-//http://stackoverflow.com/questions/34861628/angular-2-implement-a-custom-context-menu?answertab=oldest#tab-top, 
-//post from Abdulrahman, answered Apr 3 at 13:10, 
-//plunker: http://plnkr.co/edit/3klGukkbDBCOaBYqcGmr?p=preview
-//
-//edited by Jana Klemp
+import { Component, HostListener } from '@angular/core';
+import { ContextMenuService } from './../services/contextMenu.service';
 
-import {Component} from '@angular/core';
-import {ContextMenuService} from './../services/contextMenu.service';
+/**
+ * This class provides the context menu component. 
+ * 
+ * The context menu consists of the following elements:
+ * 
+ *           - this class
+ * 
+ *           - contextMenu.service
+ *  
+ *           - onMouseOverImage.directive
+ * 
+ * It is used for the images at the editor view start page and the image gallery.
+ *  
+ * 
+ * The code for the contextMenu is from: 
+ * http://stackoverflow.com/questions/34861628/angular-2-implement-a-custom-context-menu?answertab=oldest#tab-top, 
+ * 
+ * post from Abdulrahman, answered Apr 3 at 13:10, 
+ * 
+ * plunker: http://plnkr.co/edit/3klGukkbDBCOaBYqcGmr?p=preview
+ * 
+ * Edited by Jana Klemp
+ * 
+ * Thanks for the code. 
+ */
 @Component({
     selector: 'context-menu-holder',
-    styles: [
-        '.container{width:150px;background-color:#eee}',
-        '.link{}', '.link:hover{background-color:#abc}',
-        'ul{margin:0px;padding:0px;list-style-type: none}',
-        '.container{z-index:2;padding-right:0px;border-radius:5px;padding-top:0.5%;padding-bottom:0.5%}',
-        'li{color:#696969;}',
-        'li+li { border-top: 1px solid #696969}'
-    ],
-    host: {
-        '(mouseup)': 'clickedOutside($event)',
-        '(document:mouseup)': 'clickedOutside($event)'
-    },
-    template:
-    `<div [ngStyle]="locationCss" class="container">
-      <ul>
-          <li (mouseup)="link.subject.next(link.title)" class="link" *ngFor="let link of links">
-              {{link.title}}
-          </li>
-      </ul>
-    </div>
-  `
+    styleUrls: ['contextMenuHolder.component.css'],
+    templateUrl: 'contextMenuHolder.component.html'
 })
 export class ContextMenuHolderComponent {
-    links = [];
-    isShown = false;
+    /**
+     * Elements that are listed in the context menu.
+     */
+    private menuElements:string[] = [];
+    /**
+     * Variable to define if the context menu 
+     * should be shown or not.
+     */
+    private isShown:boolean = false;
+    /**
+     * The context menu is displayed at that location.
+     */
     private mouseLocation: { left: number, top: number } = { left: 0, top: 0 };
+
+
     constructor(private _contextMenuService: ContextMenuService) {
-        this._contextMenuService.show.subscribe(e => this.showMenu(e.event, e.obj));
+        this._contextMenuService.show.subscribe(e => this.showMenu(e.event, e.menuElements));
     }
-    // the css for the container div
+
+    /** 
+     * The css for the div: 'container'.
+     */
     get locationCss() {
         return {
             'position': 'fixed',
@@ -47,14 +62,25 @@ export class ContextMenuHolderComponent {
             top: this.mouseLocation.top + 'px',
         };
     }
+
+    /**
+     * Hide the menu, when the mouse gets up.
+     */
+    @HostListener('mouseup', ['$event'])
+    @HostListener('document:mouseup', ['$event'])
     clickedOutside(event) {
         this.isShown = false; // hide the menu
     }
 
-    // show the menu and set the location of the mouse
-    showMenu(event, links) {
+    /** 
+     * Show the menu and set the location of the mouse.
+     * 
+     * This method is executed, when the contextMenuService 
+     * sends a new event via the show-Subject.
+     */
+    showMenu(event, menuElements) {
         this.isShown = true;
-        this.links = links;
+        this.menuElements = menuElements;
         this.mouseLocation = {
             left: event.clientX,
             top: event.clientY

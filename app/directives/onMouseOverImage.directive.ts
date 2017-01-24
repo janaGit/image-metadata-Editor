@@ -28,7 +28,7 @@ export class OnMouseOverImageDirective {
     };
     mouseRightClick(event:MouseEvent){
         event.preventDefault();
-        this._contextMenuService.show.next({event:event,obj:this.contextMenuElements});
+        this._contextMenuService.show.next({event:event,menuElements:this.contextMenuElements});
     };
     getImage(event) {
         this._src = event.target.attributes.getNamedItem("src").value;
