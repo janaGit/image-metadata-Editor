@@ -1,0 +1,32 @@
+/* 
+ * The code is from: 
+ * http://stackoverflow.com/questions/34861628/angular-2-implement-a-custom-context-menu?answertab=oldest#tab-top, 
+ * post from Abdulrahman, answered Apr 3 at 13:10, 
+ * plunker: http://plnkr.co/edit/3klGukkbDBCOaBYqcGmr?p=preview
+ *
+ * Edited by Jana Klemp
+ */
+.container{
+    width:150px;
+    background-color:#eee
+    }
+.link:hover{
+    background-color:#abc
+    }
+ul{
+    margin:0px;padding:0px;
+    list-style-type: none
+    }
+.container{
+    z-index:2;
+    padding-right:0px;
+    border-radius:5px;
+    padding-top:0.5%;
+    padding-bottom:0.5%}
+li{
+    color:#696969;
+    }
+/*li+li { 
+    border-top: 1px solid #696969
+    }
+    */

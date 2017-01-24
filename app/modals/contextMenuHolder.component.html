@@ -1,0 +1,15 @@
+<!--
+The code is from: 
+http://stackoverflow.com/questions/34861628/angular-2-implement-a-custom-context-menu?answertab=oldest#tab-top, 
+post from Abdulrahman, answered Apr 3 at 13:10, 
+plunker: http://plnkr.co/edit/3klGukkbDBCOaBYqcGmr?p=preview
+
+Edited by Jana Klemp
+-->
+<div [ngStyle]="locationCss" class="container">
+      <ul>
+          <li (mouseup)="element.subject.next(element.title)" class="link" *ngFor="let element of menuElements">
+              {{element.title}}
+          </li>
+      </ul>
+</div>
