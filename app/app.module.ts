@@ -9,7 +9,7 @@ import { routerConfig } from './app.routes';
 import { AppComponent } from './app.component';
 
 import { OnMouseOverImageDirective } from './directives/onMouseOverImage.directive';
-import { GetDropedImageDirective } from './directives/getDropedImage.directive';
+import { ReturnDropedImageDirective } from './directives/returnDropedImage.directive';
 
 import { ContextMenuHolderComponent } from './modals/contextMenuHolder.component';
 import { ShowMetadataComponent } from './modals/showMetadata.component';
@@ -44,7 +44,7 @@ import {EditorService} from './services/editor.service';
     ImageGalleryComponent,
     ShowMetadataComponent,
     ContextMenuHolderComponent,
-    GetDropedImageDirective,
+    ReturnDropedImageDirective,
     OnMouseOverImageDirective
   ],
   bootstrap: [AppComponent]
