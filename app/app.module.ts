@@ -15,7 +15,7 @@ import { ContextMenuHolderComponent } from './modals/contextMenuHolder.component
 import { ShowMetadataComponent } from './modals/showMetadata.component';
 
 import { EditMetadataComponent } from './EditMetadata/editMetadata.component';
-import { FileComponent } from './EditMetadata/FileTab/file.component';
+import { FileTabComponent } from './EditMetadata/FileTab/fileTab.component';
 import { MetadataComponent } from './EditMetadata/MetadataTab/metadata.component';
 import { LocationComponent } from './EditMetadata/LocationTab/location.component';
 import { CompleteComponent } from './EditMetadata/CompleteTab/complete.component';
@@ -37,7 +37,7 @@ import {EditorService} from './services/editor.service';
   declarations: [
     AppComponent,
     EditMetadataComponent,
-    FileComponent,
+    FileTabComponent,
     LocationComponent,
     MetadataComponent,
     CompleteComponent,
