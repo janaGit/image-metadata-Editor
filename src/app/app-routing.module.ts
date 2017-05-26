@@ -1,10 +1,10 @@
-import { Routes } from '@angular/router';
+import { NgModule }             from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 import { EditMetadataComponent } from './EditMetadata/editMetadata.component';
 import { ImageGalleryComponent } from './ImageGallery/image_Gallery.component';
 
-
-export const routerConfig: Routes = [
+const routes: Routes = [
     {
         path: 'edit_metadata',
         component: EditMetadataComponent
@@ -19,3 +19,8 @@ export const routerConfig: Routes = [
         pathMatch: 'full',    
     }
 ];
+@NgModule({
+  imports: [ RouterModule.forRoot(routes) ],
+  exports: [ RouterModule ]
+})
+export class AppRoutingModule {}

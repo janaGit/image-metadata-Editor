@@ -1,5 +1,4 @@
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
-import { TabDirective } from 'ngx-bootstrap';
 
 
 import { EditorService } from './../services/editor.service';
