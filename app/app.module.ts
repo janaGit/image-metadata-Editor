@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 
-import { DropdownModule, TabsModule } from 'ng2-bootstrap';
+import { BsDropdownModule, TabsModule, } from 'ngx-bootstrap';
 
 import { routerConfig } from './app.routes';
 import { AppComponent } from './app.component';
@@ -30,7 +30,7 @@ import {EditorService} from './services/editor.service';
 @NgModule({
   imports: [BrowserModule, HttpModule,
     RouterModule.forRoot(routerConfig, { useHash: true }),
-    DropdownModule.forRoot(),
+    BsDropdownModule.forRoot(),
     TabsModule.forRoot()
   ],
   providers: [EditorService,ImageService, ExifToolService, ContextMenuService ],
