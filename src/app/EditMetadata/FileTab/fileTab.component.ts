@@ -191,7 +191,7 @@ export class FileTabComponent implements OnInit {
                 break;
             case 'number':
                 if (Math.abs(value) > 1) {
-                   throw new Error('{value} is a number but it is not: 0 or 1 or -1');
+                    throw new Error('{value} is a number but it is not: 0 or 1 or -1');
                 }
                 this.imgNumber = this.imgNumber + value;
                 if (this.imgNumber == this.imageNames.length) {
@@ -295,6 +295,7 @@ export class FileTabComponent implements OnInit {
      */
     deleteMetadata() {
         this._exifToolService.deleteAllMetadata(this.imageName).subscribe(
+            () => { this.refreshImageList(0); },
             error => { this.errorMessage = error }
         );
     }
