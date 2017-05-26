@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Rx';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Rx';
 import { ContextMenu } from './../types/contextMenu.type';
 /**
  * This class provides the context menu service. 
@@ -27,8 +27,8 @@ import { ContextMenu } from './../types/contextMenu.type';
  * Thanks for the code. 
  */
 @Injectable()
-export class ContextMenuService{
-    public show:Subject<{event:MouseEvent,menuElements:ContextMenu[]}> = new Subject();
+export class ContextMenuService {
+    public show: Subject<{ event: MouseEvent, menuElements: ContextMenu[] }> = new Subject();
 }
 
 

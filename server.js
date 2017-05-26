@@ -1,9 +1,5 @@
 var express = require("express");
 var path = require('path');
-var webpackDevMiddleware = require("webpack-dev-middleware");
-var webpackHotMiddleware = require("webpack-hot-middleware");
-var webpack = require("webpack");
-var webpackConfig = require("./webpack.config");
 
 var bodyParser = require("body-parser");
 var multer = require('multer');
@@ -13,20 +9,15 @@ var imageDir = './images';
 var imageDir_edited = './images_edited';
 
 var app = express();
-var compiler = webpack(webpackConfig);
-
-app.use(webpackDevMiddleware(compiler, {
-    publicPath: webpackConfig.output.publicPath
-}));
-app.use(webpackHotMiddleware(compiler));
 
 app.use("/images", express.static('images'));
 app.use("/images_edited", express.static('images_edited'));
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+    res.sendFile(path.join(__dirname ,'dist/index.html'));
 
 });
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -58,7 +49,7 @@ app.post('/moveImageToImageGallery/:imageName', moveImageTo_image_edited_folder)
 app.post('/deleteAllMetadata/:imageName', deleteAllMetadata);
 
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+    res.sendFile(path.join(__dirname ,'dist/index.html'));
 });
 
 
