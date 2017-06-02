@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exifTool.service';
-
+import { EditorService } from './services/editor.service';
 /**
  * Storage of labels for the change view button. 
  * Depending on the url of the actual view (Editor / Image Gallery),
@@ -53,9 +53,9 @@ export class AppComponent implements OnInit {
      * 
      * Stores the last selected language.  
      */
-    private _lang_select: string= this._lang;
+    private _lang_select: string = this._lang;
 
-    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
+    constructor(private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
 
     }
     ngOnInit() {
@@ -98,6 +98,7 @@ export class AppComponent implements OnInit {
 
             );
         } else {
+            this._editorService.fileTabOpen = false;
             this._router.navigate(['image_gallery']).then(
                 () => this.setChangeViewButtonText()
             );
@@ -129,4 +130,5 @@ export class AppComponent implements OnInit {
                 this._lang_en = !this._lang_en;
         }
     }
+
 }

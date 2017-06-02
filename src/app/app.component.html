@@ -1,17 +1,23 @@
-<div class='page-header'>
+<div id='page-header'>
+  <div id="title">
     <h1> Image Metadata Editor </h1>
-    <span class="glyphicon glyphicon-edit" id="mainIcon" aria-hidden="true"></span>   
-    <button id="changeView_Button" class="btn" (click)="changeView()"> {{_changeView_button_text}}</button>
-</div>
- 
-<div id="lang_dropdown" dropdown>
-     <button id="lang_button" type="button" class="btn" dropdownToggle >
+    <span class="glyphicon glyphicon-edit" id="mainIcon" aria-hidden="true"></span></div>
+
+  <button id="changeView_Button" class="btn" (click)="changeView()"> {{_changeView_button_text}}</button>
+
+  <div id="lang_dropdown" dropdown>
+    <button id="lang_button" type="button" class="btn" dropdownToggle>
         {{_lang}} <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="language-dropdown">
-        <li *ngFor="let lang of _languages" >
-            <a class="dropdown-item" (click)="select_lang($event)">{{lang}}</a>
-        </li>
+      <li *ngFor="let lang of _languages">
+        <a class="dropdown-item" (click)="select_lang($event)">{{lang}}</a>
+      </li>
     </ul>
+  </div>
 </div>
-<router-outlet></router-outlet>
+
+<router-outlet id="content"></router-outlet>
+<bottom-bar *ngIf="_editorService.fileTabOpen">
+  <div>Test</div>
+</bottom-bar>

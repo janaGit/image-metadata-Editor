@@ -1,0 +1,12 @@
+<div id='originalImageBar' [class.originalImageBarChange]="showOriginalImages">
+  <div id='button' (click)='clickBottomBar()'>
+    <div class="sideBox"></div>
+    <div id="show">
+      <div>Original Images</div>
+    </div>
+    <div class="sideBox"> </div>
+  </div>
+  <div *ngIf="showOriginalImages">
+    <ng-content></ng-content>
+  </div>
+</div>

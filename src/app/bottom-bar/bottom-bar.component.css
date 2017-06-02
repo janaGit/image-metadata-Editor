@@ -1,0 +1,32 @@
+#originalImageBar {
+  width: 100%;
+  height: auto;
+  min-height: 0em;
+  background-color: blueviolet;
+  position: absolute;
+  left: 0px;
+  bottom: 0em;
+  transition: all 0.2s linear;
+  position: fixed;
+}
+
+.originalImageBarChange {
+  min-height: 100vh!important;
+}
+
+#button {
+  background-color: white;
+  display: flex;
+}
+
+#show {
+  border-top: thick dotted #cfd8dc;
+  width: fit-content;
+  flex: 1;
+  text-align: center;
+}
+
+.sideBox {
+  border-top: thin solid #cfd8dc;
+  flex: 3;
+}

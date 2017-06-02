@@ -28,7 +28,7 @@ export class EditMetadataComponent implements OnInit {
      * 
      * imgDir/imgName
      */
-    imgPath:string;
+    imgPath: string;
 
     /**
      * Tabs for the different steps of the editing process.
@@ -51,9 +51,10 @@ export class EditMetadataComponent implements OnInit {
             if (tab.tab === 'File') {
                 tab.active = true;
                 this._cdr.detectChanges();
+                this._editorService.fileTabOpen = true;
             }
         });
-       
+
         this._editorService.imageName$.subscribe(imgName => {
             this.imgPath = this._imageService.imageDir + '/' + imgName;
         });
@@ -66,6 +67,11 @@ export class EditMetadataComponent implements OnInit {
      */
     public selectTab(tabName: string) {
         this.selectedTabName = tabName;
+        if (tabName === 'File') {
+            this._editorService.fileTabOpen = true;
+        } else {
+            this._editorService.fileTabOpen = false;
+        }
     }
 
     /**
@@ -103,5 +109,6 @@ export class EditMetadataComponent implements OnInit {
         });
         this._cdr.detectChanges();
     }
+
 
 }

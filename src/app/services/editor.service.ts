@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
  */
 @Injectable()
 export class EditorService {
-    
+
     /**
      * Variable that stores a BehaviorSubject to distribute the 
      * name of the actual image of the editing view to the registered subscribers.
@@ -19,28 +19,35 @@ export class EditorService {
      * name of the actual image of the image gallery to the registered subscribers.
      */
     private __imageName_edited: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
-   /**
-    * Variable that stores the actual image name for the editing view.
-    */
+    /**
+     * Variable that stores the actual image name for the editing view.
+     */
     private _imageName: string;
 
-   /**
-    * Variable that stores the actual image name for the image gallery.
-    */
+    /**
+     * Variable that stores the actual image name for the image gallery.
+     */
     private _imageName_edited: string;
 
-   /**
-    * Variable to subscribe to the Observable to get
-    * the actual image name of the editing view.
-    */
-   public imageName$ = this.__imageName.asObservable();
+    /**
+     * Variable to subscribe to the Observable to get
+     * the actual image name of the editing view.
+     */
+    public imageName$ = this.__imageName.asObservable();
 
-   /**
-    * Variable to subscribe to the Observable to get
-    * the actual image name of the image gallery.
-    */
-   public imageName_edited$ = this.__imageName_edited.asObservable();
-
+    /**
+     * Variable to subscribe to the Observable to get
+     * the actual image name of the image gallery.
+     */
+    public imageName_edited$ = this.__imageName_edited.asObservable();
+    /**
+     * This variable stores the information if the FileTab is shown (true) or not (false).
+     */
+    private _fileTabOpen: boolean;
+    
+    constructor() {
+        this._fileTabOpen = false;
+    }
     /**
      * Get the image name of the actual selected image of the editing view.
      */
@@ -54,7 +61,20 @@ export class EditorService {
     get imageName_edited() {
         return this._imageName_edited;
     }
-
+    /**
+     * Get the variable that stores the information 
+     * if the FileTab is shown (true) or not (false).
+     */
+    get fileTabOpen(): boolean {
+        return this._fileTabOpen;
+    }
+    /**
+     *  Set the variable that stores the information 
+     * if the FileTab is shown (true) or not (false).
+     */
+    set fileTabOpen(isOpen: boolean) {
+        this._fileTabOpen = isOpen;
+    }
     /**
      * Method sets the name of the actual selected image of the 
      * editing view and pushes the update to all subscribers 
