@@ -26,6 +26,7 @@ import { EditorService } from './services/editor.service';
 
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +39,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ShowMetadataComponent,
     ContextMenuHolderComponent,
     ReturnDropedImageDirective,
-    OnMouseOverImageDirective
+    OnMouseOverImageDirective,
+    BottomBarComponent
   ],
   imports: [
     BrowserModule,

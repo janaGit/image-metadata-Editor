@@ -3,19 +3,22 @@ h1 {
     margin-left: 1%;
     color: #4863A0;
     margin-bottom: 18px;
+    float: left;
 }
-.page-header{
+#page-header{
+    padding-top: 1.5em;
     display:flex;
-    padding-bottom: 7px;
+    padding-bottom: 1em;
 }
-
+#title{
+    flex:1;
+}
 #mainIcon{
     font-size: 1.3em;
-    align-self: center;
     margin-left: 1.5%;
     margin-bottom: 20px;
+    margin-top: 1em;
     color: #FFDB58;
-    flex:1;
 }
 #changeView_Button{
     align-self: flex-end;

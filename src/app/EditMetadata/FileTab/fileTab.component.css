@@ -2,7 +2,6 @@
   width: 85%;
   height: 106%;
   margin-left: 5%;
-  margin-top: 7%;
   margin-bottom: 7%;
   position: absolute;
 }
@@ -110,3 +109,5 @@ table tr td:nth-child(3) {
   text-align: center;
   vertical-align: middle;
 }
+
+
