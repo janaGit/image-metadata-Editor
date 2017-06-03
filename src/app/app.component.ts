@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageService } from './services/image.service';
-import { ExifToolService } from './services/exifTool.service';
+import { ExifToolService } from './services/exif-tool.service';
 import { EditorService } from './services/editor.service';
 /**
  * Storage of labels for the change view button. 
@@ -15,6 +15,8 @@ const _changeView_button_map_items = [
 ];
 var imageDir = 'images';
 var imageDir_edited = 'images_edited'
+var imageDir_original = 'images_original'
+
 @Component({
     selector: 'app',
     templateUrl: '/app.component.html',
@@ -62,6 +64,7 @@ export class AppComponent implements OnInit {
         //Set the image directiories
         this._imageService.imageDir = imageDir;
         this._imageService.imageDir_edited = imageDir_edited;
+        this._imageService.imageDir_original = imageDir_original;
         // Set the language for the image metadata 
         this._exifToolService.language = this._lang;
         // Subscribe to router events to update the label of the 'changeView'-button

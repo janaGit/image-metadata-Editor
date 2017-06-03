@@ -20,6 +20,11 @@ export class ImageService {
     private _imageDir_edited: string;
 
     /**
+     *  Path to the folder for the images that are shown in the original images view.
+     */
+    private _imageDir_original: string;
+
+    /**
      * Server base URL
      */
     private _serverBase = '/api';
@@ -32,7 +37,12 @@ export class ImageService {
      * Restful webservice URL to get the image names for the image gallery. 
      */
     private _getImages_editedUrl = this._serverBase + '/getImageNames_edited';
-
+   
+    
+    /**
+     * Restful webservice URL to get the image names for the original images. 
+     */
+    private _getImages_originalUrl = this._serverBase + '/getImageNames_original';
     /**
     *    Restful webservice URL to insert a new image into the image folder. 
     */
@@ -54,6 +64,12 @@ export class ImageService {
      * to the image gallery (path: imageDir_edited).
      */
     private _postMoveImage_ToImageGallery = this._serverBase + '/moveImageToImageGallery';
+   
+    /**
+     * Restful webservice URL to copy an image from the original images view (path:imgDir_original)
+     * to the editing view (path: imageDir_edited).
+     */
+    private _postCopyImage_ForEditing = this._serverBase + '/copyImageForEditing';
 
     constructor(private _http: Http) { }
 
@@ -74,7 +90,7 @@ export class ImageService {
     }
 
     /**
-     * Get the path where the images for the image gallery are stored.
+     * Set the path where the images for the image gallery are stored.
      */
     set imageDir_edited(imgDir_edited: string) {
         this._imageDir_edited = imgDir_edited;
@@ -85,6 +101,18 @@ export class ImageService {
      */
     get imageDir_edited() {
         return this._imageDir_edited;
+    }
+    /**
+     * Set the path where the original images are stored.
+     */
+    get imageDir_original() {
+        return this._imageDir_original;
+    }
+    /**
+     * Set the path where the original images are stored.
+     */
+    set imageDir_original(imgDir_original: string) {
+        this._imageDir_original = imgDir_original;
     }
 
     /**
@@ -101,6 +129,14 @@ export class ImageService {
      */
     getImageNames_edited(): Observable<string[]> {
         return this._http.get(this._getImages_editedUrl)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    /**
+     * Method that requests the image names for the original images.
+     */
+    getImageNames_original(): Observable<string[]> {
+        return this._http.get(this._getImages_originalUrl)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -153,6 +189,15 @@ export class ImageService {
      */
     moveImageToImageGallery(imageName: string): Observable<string> {
         return this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    /**
+     * Method that does a request for copying a specific image from the original images folder
+     * (path: imageDir_original) to the editing view (path: imageDir_edited).
+     */
+    copyImageForEditing(imageName: string): Observable<string> {
+        return this._http.post(this._postCopyImage_ForEditing + '/' + imageName, "")
             .map(this.extractData)
             .catch(this.handleError);
     }
