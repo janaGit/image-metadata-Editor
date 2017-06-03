@@ -6,7 +6,7 @@
   <button id="changeView_Button" class="btn" (click)="changeView()"> {{_changeView_button_text}}</button>
 
   <div id="lang_dropdown" dropdown>
-    <button id="lang_button" type="button" class="btn" dropdownToggle>
+    <button id="lang_button" class="btn" dropdownToggle>
         {{_lang}} <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="language-dropdown">
@@ -19,5 +19,17 @@
 
 <router-outlet id="content"></router-outlet>
 <bottom-bar *ngIf="_editorService.fileTabOpen">
-  <div>Test</div>
+  <div id="copyAllDiv">  <button id="copyAll" class="btn">Copy all</button></div>
+  <div id="hoverbox">
+    <ul class="hoverbox">
+      <li *ngFor="let imgName of _imageNames_original">
+        <a><img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
+          />
+          <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)"
+          />
+        </a>
+      </li>
+
+    </ul>
+  </div>
 </bottom-bar>

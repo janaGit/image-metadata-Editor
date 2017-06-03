@@ -1,49 +1,75 @@
 h1 {
-    font-weight: bold;
-    margin-left: 1%;
-    color: #4863A0;
-    margin-bottom: 18px;
-    float: left;
+  font-weight: bold;
+  margin-left: 1%;
+  color: #4863A0;
+  margin-bottom: 18px;
+  float: left;
 }
-#page-header{
-    padding-top: 1.5em;
-    display:flex;
-    padding-bottom: 1em;
+
+#page-header {
+  padding-top: 1.5em;
+  display: flex;
+  padding-bottom: 1em;
 }
-#title{
-    flex:1;
+
+#title {
+  flex: 1;
 }
-#mainIcon{
-    font-size: 1.3em;
-    margin-left: 1.5%;
-    margin-bottom: 20px;
-    margin-top: 1em;
-    color: #FFDB58;
+
+#mainIcon {
+  font-size: 1.3em;
+  margin-left: 1.5%;
+  margin-bottom: 20px;
+  margin-top: 1em;
+  color: #FFDB58;
 }
-#changeView_Button{
-    align-self: flex-end;
-    margin-right: 1%;
+
+#changeView_Button {
+  align-self: flex-end;
+  margin-right: 1%;
 }
-#lang_dropdown{
-    position:absolute;
-    top:10px;
-    right:20px;
+
+#lang_dropdown {
+  position: absolute;
+  top: 10px;
+  right: 20px;
 }
-.dropdown-menu{
-    min-width:0;
-    padding:0px;
+
+.dropdown-menu {
+  min-width: 0;
+  padding: 0px;
 }
-.dropdown-menu > li > a {
-text-align: center;
-padding:0 4px;
+
+.dropdown-menu>li>a {
+  text-align: center;
+  padding: 0 4px;
 }
-#lang_button{
-    padding:0px 6px;
-    background-color: white;
+
+#lang_button {
+  padding: 0px 6px;
+  background-color: white;
 }
-button{
-background-color: #eee;
+
+button {
+  background-color: #eee;
 }
+
 button:hover {
   background-color: #cfd8dc;
+}
+
+.hoverbox img.editing {
+  background: yellow;
+}
+
+#copyAll {
+  flex: 1;
+  max-width: 8%;
+  margin-left: auto;
+  margin-top: 1em;
+  margin-right: 1em;
+}
+
+#copyAllDiv {
+  display: flex;
 }
