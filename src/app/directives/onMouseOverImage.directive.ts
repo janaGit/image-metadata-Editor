@@ -1,5 +1,5 @@
 import { Directive, Output, Input, EventEmitter, ElementRef, HostListener } from '@angular/core';
-import { ContextMenuService } from './../services/contextMenu.service';
+import { ContextMenuService } from './../services/context-menu.service';
 import { ContextMenu } from './../types/contextMenu.type';
 import { MouseOverImageEvent } from './../types/mouseOverImageEvent.type';
 /**

@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 import { ImageService } from './../services/image.service';
-import { ExifToolService } from './../services/exifTool.service';
+import { ExifToolService } from './../services/exif-tool.service';
 import { EditorService } from './../services/editor.service';
 import { ContextMenu } from './../types/contextMenu.type';
 import { MouseOverImageEvent } from './../types/mouseOverImageEvent.type';

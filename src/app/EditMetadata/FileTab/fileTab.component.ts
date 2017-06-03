@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Inject, HostListener } from '@
 import { Subject } from 'rxjs/Rx';
 import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
-import { ExifToolService } from './../../services/exifTool.service';
+import { ExifToolService } from './../../services/exif-tool.service';
 import { ContextMenu } from './../../types/contextMenu.type';
 
 /**

@@ -12,21 +12,21 @@ import { MetadataComponent } from './EditMetadata/MetadataTab/metadata.component
 import { LocationComponent } from './EditMetadata/LocationTab/location.component';
 import { CompleteComponent } from './EditMetadata/CompleteTab/complete.component';
 import { ImageGalleryComponent } from './ImageGallery/image_Gallery.component';
-import { ContextMenuHolderComponent } from './modals/contextMenuHolder.component';
-import { ShowMetadataComponent } from './modals/showMetadata.component';
+import { ContextMenuHolderComponent } from './modals/context-menu-holder/context-menu-holder.component';
+import { ShowMetadataComponent } from './modals/show-metadata/show-metadata.component';
 
 import { OnMouseOverImageDirective } from './directives/onMouseOverImage.directive';
 import { ReturnDropedImageDirective } from './directives/returnDropedImage.directive';
 
 
 import { ImageService } from './services/image.service';
-import { ExifToolService } from './services/exifTool.service';
-import { ContextMenuService } from './services/contextMenu.service';
+import { ExifToolService } from './services/exif-tool.service';
+import { ContextMenuService } from './services/context-menu.service';
 import { EditorService } from './services/editor.service';
 
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
+import { BottomBarComponent } from './modals/bottom-bar/bottom-bar.component';
 @NgModule({
   declarations: [
     AppComponent,
