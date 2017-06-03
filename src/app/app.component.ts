@@ -191,14 +191,16 @@ export class AppComponent implements OnInit {
      * the image folder or the image_edited folder.
      */
     isInEditingModus(imageName: string): boolean {
-        let imageFolder = this._imageNames.find(imgName => {
-            return imgName == imageName;
-        })
-        let image_editedFolder = this._imageNames_edited.find(imgName => {
-            return imgName == imageName;
-        })
-        if(imageFolder ||image_editedFolder){
-            return true;
+        if (this._imageNames && this._imageNames_edited) {
+            let imageFolder = this._imageNames.find(imgName => {
+                return imgName == imageName;
+            })
+            let image_editedFolder = this._imageNames_edited.find(imgName => {
+                return imgName == imageName;
+            })
+            if (imageFolder || image_editedFolder) {
+                return true;
+            }
         }
         return false;
     }

@@ -13,7 +13,7 @@
             <td>
                 <div id='imageCell'>
                     <div id='image_place'>
-                        <img id='image' class="img-responsive" src={{imgPath}} (click)="displayMetadataModal()" (onMouseOverImage)="null" [contextMenuElements]="_contextMenuElements">
+                        <img id='image' class="img-responsive" *ngIf="imageName" src={{imgPath}} (click)="displayMetadataModal()" (onMouseOverImage)="null" [contextMenuElements]="_contextMenuElements">
                         <button type='button' class='btn' id='deleteFile' (click)=deleteImage()> Delete File </button>
                         <div id='image_name'> {{imageName}} </div>
 
