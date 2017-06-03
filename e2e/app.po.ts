@@ -1,6 +1,6 @@
 import { browser, by, element } from 'protractor';
 
-export class ImageMetadataEditor2Page {
+export class ImageMetadataEditorPage {
   navigateTo() {
     return browser.get('/');
   }

@@ -1,10 +1,10 @@
-import { ImageMetadataEditor2Page } from './app.po';
+import { ImageMetadataEditorPage } from './app.po';
 
-describe('image-metadata-editor2 App', () => {
-  let page: ImageMetadataEditor2Page;
+describe('image-metadata-editor App', () => {
+  let page: ImageMetadataEditorPage;
 
   beforeEach(() => {
-    page = new ImageMetadataEditor2Page();
+    page = new ImageMetadataEditorPage();
   });
 
   it('should display message saying app works', () => {

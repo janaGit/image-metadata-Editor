@@ -19,38 +19,41 @@ export class ImageService {
      */
     private _imageDir_edited: string;
 
-
+    /**
+     * Server base URL
+     */
+    private _serverBase = '/api';
     /**
     * Restful webservice URL to get the image names that could be edited. 
     */
-    private _getImagesUrl = '/getImageNames';
+    private _getImagesUrl = this._serverBase + '/getImageNames';
 
     /**
      * Restful webservice URL to get the image names for the image gallery. 
      */
-    private _getImages_editedUrl = '/getImageNames_edited';
+    private _getImages_editedUrl = this._serverBase + '/getImageNames_edited';
 
     /**
     *    Restful webservice URL to insert a new image into the image folder. 
     */
-    private _postImageUrl = '/newImage';
+    private _postImageUrl = this._serverBase + '/newImage';
 
     /**
     *    Restful webservice URL to delete an image that exists in the image folder. 
     */
-    private _deleteImageUrl = '/deleteImage';
-   
+    private _deleteImageUrl = this._serverBase + '/deleteImage';
+
     /**
      * Restful webservice URL to move an image from the image gallery (path: imageDir_edited)
      * back to the editing view (path: imageDir).
      */
-    private _postMoveImage_Back = '/moveImageBackForEditing';
-    
+    private _postMoveImage_Back = this._serverBase + '/moveImageBackForEditing';
+
     /**
      * Restful webservice URL to move an image from the editing view (path:imgDir)
      * to the image gallery (path: imageDir_edited).
      */
-    private _postMoveImage_ToImageGallery = '/moveImageToImageGallery';
+    private _postMoveImage_ToImageGallery = this._serverBase + '/moveImageToImageGallery';
 
     constructor(private _http: Http) { }
 
@@ -109,7 +112,7 @@ export class ImageService {
      * @param imageFile  Image data
      */
     sendImage(imageFile: File) {
-        return new Promise<string>((resolve, reject) =>{
+        return new Promise<string>((resolve, reject) => {
             let request = new XMLHttpRequest();
             request.open('POST', this._postImageUrl, true);
             let formData = new FormData();

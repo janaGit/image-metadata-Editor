@@ -26,6 +26,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+// For the file upload when a file has been put
+// into the drag and drop box.
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'images/');
@@ -38,25 +40,27 @@ var upload = multer({
   storage: storage
 });
 
+var router = express.Router();
+app.use('/api', router);
 
-app.get('/getImageNames', getFileNames);
-app.get('/getImageNames_edited', getFileNames_edited);
-app.get('/getImageNames_original', getFileNames_original);
+router.get('/getImageNames', getFileNames);
+router.get('/getImageNames_edited', getFileNames_edited);
+router.get('/getImageNames_original', getFileNames_original);
 
-app.get('/getMetadata/:imageName/:lang', getMetadata_edit);
-app.get('/getMetadata_edited/:imageName/:lang', getMetadata_edited);
+router.get('/getMetadata/:imageName/:lang', getMetadata_edit);
+router.get('/getMetadata_edited/:imageName/:lang', getMetadata_edited);
 
-app.post('/newImage', upload.single('image'), newImage);
+router.post('/newImage', upload.single('image'), newImage);
 
-app.delete('/deleteImage/:imageName', deleteImage);
+router.delete('/deleteImage/:imageName', deleteImage);
 
-app.get('/copyImageForEditing/:imageName', copyImageToImageFolder);
-app.post('/moveImageBackForEditing/:imageName', moveImageBackToImageFolder);
-app.post('/moveImageToImageGallery/:imageName', moveImageToImageGallery);
+router.get('/copyImageForEditing/:imageName', copyImageToImageFolder);
+router.post('/moveImageBackForEditing/:imageName', moveImageBackToImageFolder);
+router.post('/moveImageToImageGallery/:imageName', moveImageToImageGallery);
 
-app.post('/deleteAllMetadata/:imageName', deleteAllMetadata);
+router.post('/deleteAllMetadata/:imageName', deleteAllMetadata);
 
-app.get('*', function (req, res) {
+router.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 

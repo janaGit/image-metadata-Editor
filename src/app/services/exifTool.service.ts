@@ -10,24 +10,27 @@ import { EditorService } from './editor.service';
  */
 @Injectable()
 export class ExifToolService {
-
+    /**
+     * Server base URL
+     */
+    private _serverBase = '/api';
     /**
      * Restful webservice URL to get the metadata of an image that is stored
      * in the path for the editing view. 
      */
-    private _getMetadata = '/getMetadata';
+    private _getMetadata = this._serverBase + '/getMetadata';
 
     /**
      * Restful webservice URL to get the metadata of an image that is stored
      * in the path for the image gallery. 
      */
-    private _getMetadata_edited = '/getMetadata_edited';
+    private _getMetadata_edited = this._serverBase + '/getMetadata_edited';
 
     /**
      * Restful webservice URL to delete the metadata of an image that is stored
      * in the path for the editing view. 
      */
-    private _deleteAllMetadata = '/deleteAllMetadata';
+    private _deleteAllMetadata = this._serverBase + '/deleteAllMetadata';
 
     /**
      * Actual language-setting for the image metadata. 
@@ -77,7 +80,7 @@ export class ExifToolService {
     get metadata_edited() {
         return this._metadata_edited;
     }
-   
+
     /**
      * Get the error message that is possibly returned from the server.
      */
