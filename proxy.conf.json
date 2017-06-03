@@ -1,0 +1,22 @@
+{
+  "/api": {
+    "target": "http://localhost:3000",
+    "secure": false,
+     "pathRewrite": {"^/api" : "/api"}
+  },
+    "/images": {
+    "target": "http://localhost:3000",
+    "secure": false,
+     "pathRewrite": {"^/images" : "/images"}
+  },
+    "/images_edited": {
+    "target": "http://localhost:3000",
+    "secure": false,
+     "pathRewrite": {"^/images" : "/images_edited"}
+  },
+    "/images_original": {
+    "target": "http://localhost:3000",
+    "secure": false,
+     "pathRewrite": {"^/images" : "/images_original"}
+  }
+}

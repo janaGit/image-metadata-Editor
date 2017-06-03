@@ -5,11 +5,12 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --open",
-    "build": "ng build && node server.js",
+    "start": "ng serve --open --proxy-config proxy.conf.json",
+    "build": "ng build && npm run server",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "server": "node server.js"
   },
   "repository": {
     "type": "git",
