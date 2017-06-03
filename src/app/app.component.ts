@@ -20,7 +20,7 @@ var imageDir_original = 'images_original'
 @Component({
     selector: 'app',
     templateUrl: '/app.component.html',
-    styleUrls: ['/app.component.css']
+    styleUrls: ['/app.component.css', '/css/hover-box.css']
 })
 export class AppComponent implements OnInit {
     /**
@@ -56,6 +56,23 @@ export class AppComponent implements OnInit {
      * Stores the last selected language.  
      */
     private _lang_select: string = this._lang;
+    /**
+     * Images names of the images in the images_original folder
+     */
+    private _imageNames_original: string[];
+    /**
+    * Images names of the images for the editing view (images).
+    */
+    private _imageNames: string[];
+    /**
+    * Images names of the images for the image gallery (images_edited).
+    */
+    private _imageNames_edited: string[];
+    /**
+     * This variable stores an error message that was returned
+     * by the image service.
+     */
+    private _errorMessage_imageService: string;
 
     constructor(private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
 
@@ -69,6 +86,9 @@ export class AppComponent implements OnInit {
         this._exifToolService.language = this._lang;
         // Subscribe to router events to update the label of the 'changeView'-button
         this._router.events.subscribe((val) => { this.setChangeViewButtonText(); });
+        this.getImageNamesOriginal();
+        this.getImageNames();
+        this.getImageNamesEdited();
     }
 
     /**
@@ -132,6 +152,55 @@ export class AppComponent implements OnInit {
                 }
                 this._lang_en = !this._lang_en;
         }
+    }
+    /**
+     * Get the image names of the original images folder (images_original).
+     */
+    getImageNamesOriginal() {
+        this._imageService.getImageNames_original().subscribe(
+            images => {
+                this._imageNames_original = images;
+            },
+            error => { this._errorMessage_imageService = <any>error }
+        );
+    }
+    /**
+     * Get the image names of the images folder (images).
+     */
+    getImageNames() {
+        this._imageService.getImageNames().subscribe(
+            images => {
+                this._imageNames = images;
+            },
+            error => { this._errorMessage_imageService = <any>error }
+        );
+    }
+    /**
+     * Get the image names of the images_edited folder.
+     */
+    getImageNamesEdited() {
+        this._imageService.getImageNames_edited().subscribe(
+            images => {
+                this._imageNames_edited = images;
+            },
+            error => { this._errorMessage_imageService = <any>error }
+        );
+    }
+    /**
+     * This method returns true, when the image exists already in
+     * the image folder or the image_edited folder.
+     */
+    isInEditingModus(imageName: string): boolean {
+        let imageFolder = this._imageNames.find(imgName => {
+            return imgName == imageName;
+        })
+        let image_editedFolder = this._imageNames_edited.find(imgName => {
+            return imgName == imageName;
+        })
+        if(imageFolder ||image_editedFolder){
+            return true;
+        }
+        return false;
     }
 
 }
