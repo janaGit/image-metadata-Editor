@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output,  EventEmitter } from '@angular/core';
 import { SimpleChange } from '@angular/core';
-import { ExifToolService } from './../services/exifTool.service';
+import { ExifToolService } from './../../services/exif-tool.service';
 
 /**
 * Different values for the css display variable.
@@ -13,8 +13,8 @@ type css_display = 'block' | 'none'
  */
 @Component({
     selector: 'showMetadata',
-    templateUrl: 'showMetadata.component.html',
-    styleUrls: ['showMetadata.component.css']
+    templateUrl: 'show-metadata.component.html',
+    styleUrls: ['show-metadata.component.css']
 })
 export class ShowMetadataComponent implements OnInit{
     /**

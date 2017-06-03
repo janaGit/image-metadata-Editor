@@ -49,16 +49,15 @@ router.get('/getImageNames_original', getFileNames_original);
 
 router.get('/getMetadata/:imageName/:lang', getMetadata_edit);
 router.get('/getMetadata_edited/:imageName/:lang', getMetadata_edited);
+router.post('/deleteAllMetadata/:imageName', deleteAllMetadata);
 
 router.post('/newImage', upload.single('image'), newImage);
-
 router.delete('/deleteImage/:imageName', deleteImage);
 
 router.get('/copyImageForEditing/:imageName', copyImageToImageFolder);
 router.post('/moveImageBackForEditing/:imageName', moveImageBackToImageFolder);
 router.post('/moveImageToImageGallery/:imageName', moveImageToImageGallery);
 
-router.post('/deleteAllMetadata/:imageName', deleteAllMetadata);
 
 router.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, 'dist/index.html'));

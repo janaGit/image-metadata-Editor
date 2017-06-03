@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { ContextMenuService } from './../services/contextMenu.service';
+import { ContextMenuService } from './../../services/context-menu.service';
 
 /**
  * This class provides the context menu component. 
@@ -28,8 +28,8 @@ import { ContextMenuService } from './../services/contextMenu.service';
  */
 @Component({
     selector: 'context-menu-holder',
-    styleUrls: ['contextMenuHolder.component.css'],
-    templateUrl: 'contextMenuHolder.component.html'
+    styleUrls: ['context-menu-holder.component.css'],
+    templateUrl: 'context-menu-holder.component.html'
 })
 export class ContextMenuHolderComponent {
     /**
