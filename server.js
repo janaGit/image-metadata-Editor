@@ -54,7 +54,7 @@ router.post('/deleteAllMetadata/:imageName', deleteAllMetadata);
 router.post('/newImage', upload.single('image'), newImage);
 router.delete('/deleteImage/:imageName', deleteImage);
 
-router.get('/copyImageForEditing/:imageName', copyImageToImageFolder);
+router.post('/copyImageForEditing/:imageName', copyImageToImageFolder);
 router.post('/moveImageBackForEditing/:imageName', moveImageBackToImageFolder);
 router.post('/moveImageToImageGallery/:imageName', moveImageToImageGallery);
 
