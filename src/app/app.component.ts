@@ -3,6 +3,10 @@ import { Router } from '@angular/router';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exif-tool.service';
 import { EditorService } from './services/editor.service';
+import { ContextMenu } from './types/context-menu.type';
+import { Subject } from 'rxjs/Rx';
+import { MouseOverImageEvent } from './types/mouse-over-image-event.type';
+
 /**
  * Storage of labels for the change view button. 
  * Depending on the url of the actual view (Editor / Image Gallery),
@@ -74,6 +78,21 @@ export class AppComponent implements OnInit {
      */
     private _errorMessage_imageService: string;
 
+    /**
+     * This variable stores the context menu elements
+     * that should be shown when there is a right click above 
+     * one of the original images in the bottom bar. 
+     * (When the image is not yet copied in the editing view)
+     */
+    private _contextMenuElements: ContextMenu[] = [
+        { title: 'copy for editing', subject: new Subject() }
+    ];
+
+    /**
+     * This variable stores the image name the mouse is placed.
+     * For the bottom bar images (original images).
+     */
+    private _actualImage: string;
     constructor(private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
 
     }
@@ -86,6 +105,7 @@ export class AppComponent implements OnInit {
         this._exifToolService.language = this._lang;
         // Subscribe to router events to update the label of the 'changeView'-button
         this._router.events.subscribe((val) => { this.setChangeViewButtonText(); });
+        this._contextMenuElements.forEach(element => element.subject.subscribe(title => this.contextMenuBottomBar(title)));
         this.getImageNamesOriginal();
         this.getImageNames();
         this.getImageNamesEdited();
@@ -168,7 +188,7 @@ export class AppComponent implements OnInit {
      * Get the image names of the images folder (images).
      */
     getImageNames() {
-        this._imageService.getImageNames().subscribe(
+        this._imageService.getImageNames().toPromise().then(
             images => {
                 this._imageNames = images;
             },
@@ -179,7 +199,7 @@ export class AppComponent implements OnInit {
      * Get the image names of the images_edited folder.
      */
     getImageNamesEdited() {
-        this._imageService.getImageNames_edited().subscribe(
+        this._imageService.getImageNames_edited().toPromise().then(
             images => {
                 this._imageNames_edited = images;
             },
@@ -204,5 +224,29 @@ export class AppComponent implements OnInit {
         }
         return false;
     }
-
+    /**
+     * This method processes the contextMenu events of the
+     * original images in the bottom bar.
+     */
+    private contextMenuBottomBar(title) {
+        // For copying an image to the editing view (images folder)
+        if (title === this._contextMenuElements[0].title) {
+            if (!this.isInEditingModus(this._actualImage)) {
+                this._imageService.copyImageForEditing(this._actualImage).toPromise().then(() => {
+                    this.getImageNames();
+                    this.getImageNamesOriginal();
+                });
+            }
+        }
+    }
+    /**
+     * This method is executed when the mouse is 
+     * moving over /clicked on an image.
+     */
+    onMouseOverImage(event: MouseOverImageEvent) {
+        // Update the name of the image the mouse is over.
+        if (event.eventName === 'mouseOver') {
+            this._actualImage = event.imgName;
+        }
+    }
 }

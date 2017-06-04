@@ -59,7 +59,7 @@ export class ImageGalleryComponent {
      */
     metadata_keys = [];
     /**
-     * This variable stores the actual selected image.
+     * This variable stores the image name the mouse is placed.
      */
     private _actual_Image: string;
     /**
