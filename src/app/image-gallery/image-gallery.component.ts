@@ -3,8 +3,8 @@ import { Subject } from 'rxjs/Rx';
 import { ImageService } from './../services/image.service';
 import { ExifToolService } from './../services/exif-tool.service';
 import { EditorService } from './../services/editor.service';
-import { ContextMenu } from './../types/contextMenu.type';
-import { MouseOverImageEvent } from './../types/mouseOverImageEvent.type';
+import { ContextMenu } from './../types/context-menu.type';
+import { MouseOverImageEvent } from './../types/mouse-over-image-event.type';
 
 /**
  * This class is for the image gallery.
@@ -13,8 +13,8 @@ import { MouseOverImageEvent } from './../types/mouseOverImageEvent.type';
  * It is also possible to move images back for editing.
  */
 @Component({
-    templateUrl: 'image_Gallery.component.html',
-    styleUrls: ['image_Gallery.component.css','../css/hover-box.css'],
+    templateUrl: 'image-gallery.component.html',
+    styleUrls: ['image-gallery.component.css','../css/hover-box.css'],
     host: {
         '(document:scroll)': 'onScroll($event)',
         '(window:keypress)': 'onKey($event)'

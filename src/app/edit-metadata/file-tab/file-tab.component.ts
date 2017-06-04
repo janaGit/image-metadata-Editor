@@ -3,16 +3,16 @@ import { Subject } from 'rxjs/Rx';
 import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
-import { ContextMenu } from './../../types/contextMenu.type';
+import { ContextMenu } from './../../types/context-menu.type';
 
 /**
  * This class provides the controller for the file-tab in the
  * editor view.
  */
 @Component({
-    selector: 'FileTab',
-    templateUrl: 'fileTab.component.html',
-    styleUrls: ['fileTab.component.css']
+    selector: 'file-tab',
+    templateUrl: 'file-tab.component.html',
+    styleUrls: ['file-tab.component.css']
 })
 export class FileTabComponent implements OnInit {
     /**

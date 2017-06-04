@@ -1,7 +1,7 @@
 import { Directive, Output, Input, EventEmitter, ElementRef, HostListener } from '@angular/core';
 import { ContextMenuService } from './../services/context-menu.service';
-import { ContextMenu } from './../types/contextMenu.type';
-import { MouseOverImageEvent } from './../types/mouseOverImageEvent.type';
+import { ContextMenu } from './../types/context-menu.type';
+import { MouseOverImageEvent } from './../types/mouse-over-image-event.type';
 /**
  * This directive can be used for <img/> tags. 
  * 

@@ -8,15 +8,15 @@ import { ImageService } from './../services/image.service';
  *  Main component of the editor view.
 */
 @Component({
-    selector: 'edit-Metadata',
-    templateUrl: 'editMetadata.component.html',
-    styleUrls: ['editMetadata.component.css']
+    selector: 'edit-metadata',
+    templateUrl: 'edit-metadata.component.html',
+    styleUrls: ['edit-metadata.component.css']
 })
 export class EditMetadataComponent implements OnInit {
     /**
      * Name of the actual selected tab.
      */
-    public selectedTabName: string;
+    public selectedTab: string;
 
     /*
      * Name of the folder where the images are stored 
@@ -34,7 +34,7 @@ export class EditMetadataComponent implements OnInit {
      * Tabs for the different steps of the editing process.
      */
     public tabs: Array<any> = [
-        { title: 'File', tab: 'File' },
+        { title: 'File', tab: 'file' },
         { title: 'Edit Metadata', tab: 'Edit_Metadata', disabled: true },
         { title: 'Additional Metadata', tab: 'Metadata', disabled: true },
         { title: 'Location', tab: 'Location', disabled: true },
@@ -48,7 +48,7 @@ export class EditMetadataComponent implements OnInit {
     ngOnInit() {
         // Set the File tab to be active.
         this.tabs.forEach(tab => {
-            if (tab.tab === 'File') {
+            if (tab.tab === 'file') {
                 tab.active = true;
                 this._cdr.detectChanges();
                 this._editorService.fileTabOpen = true;
@@ -65,9 +65,10 @@ export class EditMetadataComponent implements OnInit {
      * 
      * Used by the tab-directive, when a select-event is fired. 
      */
-    public selectTab(tabName: string) {
-        this.selectedTabName = tabName;
-        if (tabName === 'File') {
+    public selectTab(tabTitle: string) {
+        let tab=this.tabs.find(tab=>{return tab.title==tabTitle});
+        this.selectedTab = tab.tab;
+        if (this.selectedTab === 'file') {
             this._editorService.fileTabOpen = true;
         } else {
             this._editorService.fileTabOpen = false;
@@ -80,7 +81,7 @@ export class EditMetadataComponent implements OnInit {
      */
     startEditing() {
         this.tabs.forEach(tab => {
-            if (tab.tab === 'File') {
+            if (tab.tab === 'file') {
                 tab.disabled = true;
                 tab.active = false;
             } else {
@@ -99,7 +100,7 @@ export class EditMetadataComponent implements OnInit {
      */
     click_Abort() {
         this.tabs.forEach(tab => {
-            if (tab.tab === 'File') {
+            if (tab.tab === 'file') {
                 tab.disabled = false;
                 tab.active = true;
             } else {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
-import { ContextMenu } from './../types/contextMenu.type';
+import { ContextMenu } from './../types/context-menu.type';
 /**
  * This class provides the context menu service. 
  * 

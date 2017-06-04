@@ -6,17 +6,17 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { EditMetadataComponent } from './EditMetadata/editMetadata.component';
-import { FileTabComponent } from './EditMetadata/FileTab/fileTab.component';
-import { MetadataComponent } from './EditMetadata/MetadataTab/metadata.component';
-import { LocationComponent } from './EditMetadata/LocationTab/location.component';
-import { CompleteComponent } from './EditMetadata/CompleteTab/complete.component';
-import { ImageGalleryComponent } from './ImageGallery/image_Gallery.component';
+import { EditMetadataComponent } from './edit-metadata/edit-metadata.component';
+import { FileTabComponent } from './edit-metadata/file-tab/file-tab.component';
+import { MetadataComponent } from './edit-metadata/metadata-tab/metadata-tab.component';
+import { LocationComponent } from './edit-metadata/location-tab/location-tab.component';
+import { CompleteComponent } from './edit-metadata/complete-tab/complete-tab.component';
+import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
 import { ContextMenuHolderComponent } from './modals/context-menu-holder/context-menu-holder.component';
 import { ShowMetadataComponent } from './modals/show-metadata/show-metadata.component';
 
-import { OnMouseOverImageDirective } from './directives/onMouseOverImage.directive';
-import { ReturnDropedImageDirective } from './directives/returnDropedImage.directive';
+import { OnMouseOverImageDirective } from './directives/on-mouse-over-image.directive';
+import { ReturnDropedImageDirective } from './directives/return-droped-image.directive';
 
 
 import { ImageService } from './services/image.service';
