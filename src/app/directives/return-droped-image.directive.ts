@@ -5,7 +5,7 @@ import { Directive, Output, EventEmitter, HostListener } from '@angular/core';
  * file via an event emitter.
  */
 @Directive({
-    selector: '[returnDropedImage]'
+    selector: '[return-droped-image]'
 })
 export class ReturnDropedImageDirective {
     /**

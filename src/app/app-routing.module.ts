@@ -1,8 +1,8 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { EditMetadataComponent } from './EditMetadata/editMetadata.component';
-import { ImageGalleryComponent } from './ImageGallery/image_Gallery.component';
+import { EditMetadataComponent } from './edit-metadata/edit-metadata.component';
+import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
 
 const routes: Routes = [
     {
