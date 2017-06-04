@@ -11,3 +11,28 @@
     overflow-y: auto;
     display: flex;
 }
+.hoverbox a :not(.clicked).preview 
+{
+    display: none!important;
+}
+.hoverbox a:hover .preview, .clicked
+{
+    display: block!important;
+    position: absolute!important;
+    top: -33px!important;
+    left: -45px!important;
+    z-index: 1!important;
+}
+#hoverbox{
+    flex:3;
+    /*    display: flex;
+        height: 70vh;*/
+}
+.hoverbox img{
+    image-orientation: from-image;
+}
+
+.hoverbox{
+    /*    overflow-y: auto;  
+        overflow-x: hidden;*/
+}

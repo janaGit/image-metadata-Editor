@@ -1,16 +1,3 @@
-#hoverbox{
-    flex:3;
-    /*    display: flex;
-        height: 70vh;*/
-}
-.hoverbox img{
-    image-orientation: from-image;
-}
-
-.hoverbox{
-    /*    overflow-y: auto;  
-        overflow-x: hidden;*/
-}
 
 /* =Hoverbox Code
 As basis for the Image Gallery I used the css file for the hoverbox by  Nathan Smith
@@ -28,12 +15,12 @@ As basis for the Image Gallery I used the css file for the hoverbox by  Nathan S
     cursor: default;
 }
 
-.hoverbox a :not(.clicked).preview 
+.hoverbox a .preview 
 {
     display: none;
 }
 
-.hoverbox a:hover .preview, .clicked
+.hoverbox a:hover .preview
 {
     display: block;
     position: absolute;
