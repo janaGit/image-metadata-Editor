@@ -265,7 +265,7 @@ function copyImage(imageDir_from, imageDir_to, imageName) {
           console.error(object);
           reject(object);
         }
-        fs.writeFileSync(imageDir_to + '/' + imageName, image);
+        fs.writeFileSync(imageDir_to + '/' + 'edited_' + imageName, image);
         var object = {
           status: 200
         };

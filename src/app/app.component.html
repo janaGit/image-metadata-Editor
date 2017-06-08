@@ -19,17 +19,16 @@
 
 <router-outlet id="content"></router-outlet>
 <bottom-bar *ngIf="_editorService.fileTabOpen">
-  <div id="copyAllDiv"> <button id="copyAll" class="btn">Copy all</button></div>
+  <div id="copyAllDiv"> <button id="copyAll" class="btn" (click)="copyAll()">Copy all</button></div>
   <div id="hoverbox">
     <ul class="hoverbox">
       <li *ngFor="let imgName of _imageNames_original">
         <!-- *ngIf: To add and remove the onMouseOverImage directive and the contextMenu -->
         <a *ngIf="isInEditingModus(imgName)">
           <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
-         (contextmenu)="$event.preventDefault();"/>
-          <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)"
-          (contextmenu)="$event.preventDefault();"
-            />
+            (contextmenu)="$event.preventDefault();" />
+          <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (contextmenu)="$event.preventDefault();"
+          />
         </a>
         <a *ngIf="!isInEditingModus(imgName)">
           <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
