@@ -184,7 +184,7 @@ export class ImageService {
      */
     moveImageBackForEditing(imageName: string): Observable<string> {
         return this._http.post(this._postMoveImage_Back + '/' + imageName, "")
-            .map(this.extractData).map(request=>{
+            .map(this.extractData).map(request => {
                 this.updateImageNamesInFolder_edited();
                 this.updateImageNamesInFolder();
                 return request;
@@ -198,7 +198,7 @@ export class ImageService {
      */
     moveImageToImageGallery(imageName: string): Observable<string> {
         return this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "")
-            .map(this.extractData).map(request=>{
+            .map(this.extractData).map(request => {
                 this.updateImageNamesInFolder_edited();
                 this.updateImageNamesInFolder();
                 return request;
@@ -218,7 +218,21 @@ export class ImageService {
             })
             .catch(this.handleError);
     }
-    
+    /**
+     * Method that does multiple requests for copying images from the original images folder
+     * (path: imageDir_original) to the editing view (path: imageDir_edited).
+     */
+    copyImagesForEditing(imageNames: string[]): Promise<number> {
+        return new Promise((resolve) => {
+            let count = 0;
+            let finish = imageNames.length;
+            for (let imageName of imageNames) {
+                this.copyImageForEditing(imageName).toPromise().then(() => {
+                    count = this._editorService.countResolve(count, finish, resolve)
+                });
+            }
+        });
+    }
     /**
      * This method updates the names of the images that are placed 
      * in the folders: images, images_edited and images_original.
@@ -229,12 +243,12 @@ export class ImageService {
         this.updateImageNamesInFolder_edited();
         this.updateImageNamesInFolder_original();
     }
-    
-     /** 
-     * This method updates the names of the images that are placed 
-     * in the images folder.
-     * Then the editor service gets the updated list of names.
-     */
+
+    /** 
+    * This method updates the names of the images that are placed 
+    * in the images folder.
+    * Then the editor service gets the updated list of names.
+    */
     public updateImageNamesInFolder() {
         this.getImageNames().toPromise().then((imageNames) => {
             this._editorService.updateImageNamesInFolder(imageNames);

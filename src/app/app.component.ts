@@ -20,6 +20,7 @@ const _changeView_button_map_items = [
 var imageDir = 'images';
 var imageDir_edited = 'images_edited'
 var imageDir_original = 'images_original'
+var prefix = 'edited_'
 
 @Component({
     selector: 'app',
@@ -214,10 +215,10 @@ export class AppComponent implements OnInit {
     isInEditingModus(imageName: string): boolean {
         if (this._imageNames && this._imageNames_edited) {
             let imageFolder = this._imageNames.find(imgName => {
-                return imgName == imageName;
+                return imgName == prefix + imageName;
             })
             let image_editedFolder = this._imageNames_edited.find(imgName => {
-                return imgName == imageName;
+                return imgName == prefix + imageName;
             })
             if (imageFolder || image_editedFolder) {
                 return true;
@@ -234,8 +235,8 @@ export class AppComponent implements OnInit {
         if (title === this._contextMenuElements[0].title) {
             if (!this.isInEditingModus(this._actualImage)) {
                 this._imageService.copyImageForEditing(this._actualImage).toPromise().catch(
-                     error => { this._errorMessage_imageService = <any>error }
-                    );
+                    error => { this._errorMessage_imageService = <any>error }
+                );
             }
         }
     }
@@ -248,5 +249,16 @@ export class AppComponent implements OnInit {
         if (event.eventName === 'mouseOver') {
             this._actualImage = event.imgName;
         }
+    }
+    /**
+     * This method copies all images that are not yet copied into the images folder.
+     */
+    copyAll() {
+        let imageNames = this._imageNames_original.filter(imageName => {
+            let found_edited = this._imageNames_edited.find((imgName) => { return imageName === imgName });
+            let found = this._imageNames.find((imgName) => { return imageName === imgName });
+            return !(found || found_edited);
+        })
+        this._imageService.copyImagesForEditing(imageNames);
     }
 }
