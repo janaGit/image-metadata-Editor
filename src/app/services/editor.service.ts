@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ImageService } from './image.service';
 
 /**
  * This service class stores all the data that are created during the 
@@ -8,21 +9,25 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class EditorService {
 
+    /**  imageName            ---------------------------------------------           */
+    /**
+     * Variable that stores the actual image name for the editing view.
+     */
+    private _imageName: string;
+
     /**
      * Variable that stores a BehaviorSubject to distribute the 
      * name of the actual image of the editing view to the registered subscribers.
      */
     private __imageName: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+    /**
+     * Variable to subscribe to the Observable to get
+     * the actual image name of the editing view.
+     */
+    public imageName$ = this.__imageName.asObservable();
 
-    /**
-     * Variable that stores a BehaviorSubject to distribute the 
-     * name of the actual image of the image gallery to the registered subscribers.
-     */
-    private __imageName_edited: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
-    /**
-     * Variable that stores the actual image name for the editing view.
-     */
-    private _imageName: string;
+
+    /**  imageName_edited            ---------------------------------------------           */
 
     /**
      * Variable that stores the actual image name for the image gallery.
@@ -30,21 +35,83 @@ export class EditorService {
     private _imageName_edited: string;
 
     /**
-     * Variable to subscribe to the Observable to get
-     * the actual image name of the editing view.
+     * Variable that stores a BehaviorSubject to distribute the 
+     * name of the actual image of the image gallery to the registered subscribers.
      */
-    public imageName$ = this.__imageName.asObservable();
-
+    private __imageName_edited: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
     /**
      * Variable to subscribe to the Observable to get
      * the actual image name of the image gallery.
      */
     public imageName_edited$ = this.__imageName_edited.asObservable();
+
+
+
     /**
      * This variable stores the information if the FileTab is shown (true) or not (false).
      */
     private _fileTabOpen: boolean;
-    
+
+
+    /**  image name in images folder     ---------------------------------------------   */
+    /**
+     * Variable that stores a BehaviorSubject to distribute the 
+     * names of the images in the images folder.
+     */
+    private __imageNamesInFolder: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(undefined);
+
+    /**
+     * This variable stores the names of the images in the images folder.
+     */
+    private _imageNamesInFolder: string[];
+    /**
+     *  Variable to subscribe to the Observable to get
+     * the actual image name of the image gallery.
+     */
+    public _imageNamesInFolder$ = this.__imageNamesInFolder.asObservable();
+
+    /**  image name in images_edited folder     ---------------------------------------------   */
+    /**
+     * Variable that stores a BehaviorSubject to distribute the 
+     * names of the images in the images_edited folder.
+     */
+    private __imageNamesInFolder_edited: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(undefined);
+
+    /**
+     * This variable stores the names of the images in the images_edited folder.
+     */
+    private _imageNamesInFolder_edited: string[];
+    /**
+     *  Variable to subscribe to the Observable to get
+     * the actual image name of the image_edited gallery.
+     */
+    public _imageNamesInFolder_edited$ = this.__imageNamesInFolder_edited.asObservable();
+
+
+    /**  image name in images_original folder     ---------------------------------------------   */
+    /**
+     * Variable that stores a BehaviorSubject to distribute the 
+     * names of the images in the images_original folder.
+     */
+    private __imageNamesInFolder_original: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(undefined);
+
+    /**
+     * This variable stores the names of the images in the images_original folder.
+     */
+    private _imageNamesInFolder_original: string[];
+    /**
+     *  Variable to subscribe to the Observable to get
+     * the actual image name of the image_original gallery.
+     */
+    public _imageNamesInFolder_original$ = this.__imageNamesInFolder_original.asObservable();
+
+    /**
+     * This variable stores an error message that was returned
+     * by the image service.
+     */
+    private _errorMessage_imageService: string;
+
+
     constructor() {
         this._fileTabOpen = false;
     }
@@ -61,6 +128,7 @@ export class EditorService {
     get imageName_edited() {
         return this._imageName_edited;
     }
+
     /**
      * Get the variable that stores the information 
      * if the FileTab is shown (true) or not (false).
@@ -74,6 +142,24 @@ export class EditorService {
      */
     set fileTabOpen(isOpen: boolean) {
         this._fileTabOpen = isOpen;
+    }
+    /**
+     * Get the image names of the images in the images_original folder.
+     */
+    get imageNamesInFolder_original() {
+        return this._imageNamesInFolder_original;
+    }
+    /**
+     * Get the image names of the images in the images_edited folder.
+     */
+    get imageNamesInFolder_edited() {
+        return this._imageNamesInFolder_edited;
+    }
+    /**
+     * Get the image names of the images in the images folder.
+     */
+    get imageNamesInFolder() {
+        return this._imageNamesInFolder;
     }
     /**
      * Method sets the name of the actual selected image of the 
@@ -93,5 +179,35 @@ export class EditorService {
     updateImageName_edited(imgName_edited) {
         this._imageName_edited = imgName_edited;
         this.__imageName_edited.next(imgName_edited);
+    }
+    /**
+     * This method gets an actual list of names of the images 
+     * in the images_edited folder.
+     * The actual list is then send to all the subscribers of 
+     * imageNamesInFolder_edited$
+     */
+    updateImageNamesInFolder_edited(imageNames: string[]) {
+        this._imageNamesInFolder_edited = imageNames;
+        this.__imageNamesInFolder_edited.next(imageNames);
+    }
+    /**
+     * This method gets an actual list of names of the images
+     * in the images_original folder.
+     * The actual list is then send to all the subscribers of 
+     * imageNamesInFolder_original$
+     */
+    updateImageNamesInFolder_original(imageNames: string[]) {
+        this._imageNamesInFolder_original = imageNames;
+        this.__imageNamesInFolder_original.next(imageNames);
+    }
+    /**
+    * This method gets an actual list of names of the images
+    * in the images folder.
+    * The actual list is then send to all the subscribers of 
+    * imageNamesInFolder$
+    */
+    updateImageNamesInFolder(imageNames: string[]) {
+        this._imageNamesInFolder = imageNames;
+        this.__imageNamesInFolder.next(imageNames);
     }
 }

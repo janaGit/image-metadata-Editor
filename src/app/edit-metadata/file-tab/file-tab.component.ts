@@ -72,9 +72,22 @@ export class FileTabComponent implements OnInit {
         this._editorService.imageName$.subscribe(imgName => {
             this.imageName = imgName;
         });
-        // Get the names of the available images. The first name
-        // in the list is the current selected image.
-        this.refreshImageList(null);
+
+        this._editorService._imageNamesInFolder$
+            .subscribe(
+            images => {
+                //alert(images)
+                this.imageNames = images;
+                // Get the names of the available images. The first name
+                // in the list is the current selected image.
+                if (this.imageNames) {
+                    this.setCurrentImageName(null);
+                }
+
+            },
+            error => this.errorMessage = error
+            );
+
     }
 
     /**
@@ -91,34 +104,10 @@ export class FileTabComponent implements OnInit {
      */
     addDroppedImage(file: File) {
         this._imageService.sendImage(file).then(fileName => {
-            this.refreshImageList(fileName);
+            this.setCurrentImageName(fileName);
         });
     }
 
-    /**
-     * Refreshes the imageNames-Array with the names of the available
-     * images and updates the name of current selected image.
-     * 
-     * @param value Change the selected image
-     *  
-     *              [number]: Array index of the current 
-     *                        selected image + {value} .
-     *                        Possible values: 0,1,-1.
-     *              [string]: {value} is the name of the new 
-     *                        selected image. Then the Array 
-     *                        index will be updated.
-     *              [null]:   Array index = 0. 
-     */
-    refreshImageList(value: number | string) {
-        this._imageService.getImageNames()
-            .subscribe(
-            images => {
-                this.imageNames = images
-                this.setCurrentImageName(value);
-            },
-            error => this.errorMessage = error
-            );
-    }
     /**
      * Get the index of the image name in the imageName-array.
      * 
@@ -215,7 +204,7 @@ export class FileTabComponent implements OnInit {
      */
     deleteImage() {
         this._imageService.deleteImage(this.imageName).subscribe(
-            data => this.refreshImageList(0),
+            data => { this.setCurrentImageName(0); this._imageService.updateImageNamesInFolder() },
             error => this.errorMessage = error
         );
     }
@@ -284,7 +273,7 @@ export class FileTabComponent implements OnInit {
     contextMenu(val) {
         if (val === this._contextMenuElements[0].title) {
             this._imageService.moveImageToImageGallery(this.imageName).subscribe(
-                data => { this.refreshImageList(0); },
+                data => { this.setCurrentImageName(0); },
                 error => this.errorMessage = error
             );
         }
@@ -295,7 +284,7 @@ export class FileTabComponent implements OnInit {
      */
     deleteMetadata() {
         this._exifToolService.deleteAllMetadata(this.imageName).subscribe(
-            () => { this.refreshImageList(0); },
+            () => { this.setCurrentImageName(0); },
             error => { this.errorMessage = error }
         );
     }

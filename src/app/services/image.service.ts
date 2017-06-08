@@ -1,7 +1,7 @@
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-
+import { EditorService } from './editor.service';
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the images.
@@ -37,8 +37,8 @@ export class ImageService {
      * Restful webservice URL to get the image names for the image gallery. 
      */
     private _getImages_editedUrl = this._serverBase + '/getImageNames_edited';
-   
-    
+
+
     /**
      * Restful webservice URL to get the image names for the original images. 
      */
@@ -64,14 +64,19 @@ export class ImageService {
      * to the image gallery (path: imageDir_edited).
      */
     private _postMoveImage_ToImageGallery = this._serverBase + '/moveImageToImageGallery';
-   
+
     /**
      * Restful webservice URL to copy an image from the original images view (path:imgDir_original)
      * to the editing view (path: imageDir_edited).
      */
     private _postCopyImage_ForEditing = this._serverBase + '/copyImageForEditing';
 
-    constructor(private _http: Http) { }
+
+    constructor(private _http: Http, private _editorService: EditorService) {
+        this.updateImageNamesOfAllFolders();
+    }
+
+
 
     // Getter and setter methods:
 
@@ -179,7 +184,11 @@ export class ImageService {
      */
     moveImageBackForEditing(imageName: string): Observable<string> {
         return this._http.post(this._postMoveImage_Back + '/' + imageName, "")
-            .map(this.extractData)
+            .map(this.extractData).map(request=>{
+                this.updateImageNamesInFolder_edited();
+                this.updateImageNamesInFolder();
+                return request;
+            })
             .catch(this.handleError);
     }
 
@@ -189,7 +198,11 @@ export class ImageService {
      */
     moveImageToImageGallery(imageName: string): Observable<string> {
         return this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "")
-            .map(this.extractData)
+            .map(this.extractData).map(request=>{
+                this.updateImageNamesInFolder_edited();
+                this.updateImageNamesInFolder();
+                return request;
+            })
             .catch(this.handleError);
     }
     /**
@@ -198,8 +211,55 @@ export class ImageService {
      */
     copyImageForEditing(imageName: string): Observable<string> {
         return this._http.post(this._postCopyImage_ForEditing + '/' + imageName, "")
-            .map(this.extractData)
+            .map(this.extractData).map((request) => {
+                this.updateImageNamesInFolder();
+                this.updateImageNamesInFolder_original();
+                return request;
+            })
             .catch(this.handleError);
+    }
+    
+    /**
+     * This method updates the names of the images that are placed 
+     * in the folders: images, images_edited and images_original.
+     * Then the editor service gets the updated list of names.
+     */
+    private updateImageNamesOfAllFolders() {
+        this.updateImageNamesInFolder();
+        this.updateImageNamesInFolder_edited();
+        this.updateImageNamesInFolder_original();
+    }
+    
+     /** 
+     * This method updates the names of the images that are placed 
+     * in the images folder.
+     * Then the editor service gets the updated list of names.
+     */
+    public updateImageNamesInFolder() {
+        this.getImageNames().toPromise().then((imageNames) => {
+            this._editorService.updateImageNamesInFolder(imageNames);
+        }, (error) => { console.error(error); });
+    }
+    /** 
+     * This method updates the names of the images that are placed 
+     * in the images_original folder.
+     * Then the editor service gets the updated list of names.
+     */
+    public updateImageNamesInFolder_original() {
+        this.getImageNames_original().toPromise().then((imageNames) => {
+            this._editorService.updateImageNamesInFolder_original(imageNames);
+        }, (error) => { console.error(error); });
+    }
+
+    /** 
+     * This method updates the names of the images that are placed 
+     * in the images_edited folder.
+     * Then the editor service gets the updated list of names.
+     */
+    public updateImageNamesInFolder_edited() {
+        this.getImageNames_edited().toPromise().then((imageNames) => {
+            this._editorService.updateImageNamesInFolder_edited(imageNames);
+        }, (error) => { console.error(error); });
     }
 
     private extractData(res: Response) {
@@ -214,5 +274,4 @@ export class ImageService {
         console.error(err);
         return Observable.throw(err);
     }
-
 }

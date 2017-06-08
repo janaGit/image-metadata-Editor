@@ -93,6 +93,7 @@ export class AppComponent implements OnInit {
      * For the bottom bar images (original images).
      */
     private _actualImage: string;
+
     constructor(private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
 
     }
@@ -177,7 +178,7 @@ export class AppComponent implements OnInit {
      * Get the image names of the original images folder (images_original).
      */
     getImageNamesOriginal() {
-        this._imageService.getImageNames_original().subscribe(
+        this._editorService._imageNamesInFolder_original$.subscribe(
             images => {
                 this._imageNames_original = images;
             },
@@ -188,7 +189,7 @@ export class AppComponent implements OnInit {
      * Get the image names of the images folder (images).
      */
     getImageNames() {
-        this._imageService.getImageNames().toPromise().then(
+        this._editorService._imageNamesInFolder$.subscribe(
             images => {
                 this._imageNames = images;
             },
@@ -199,7 +200,7 @@ export class AppComponent implements OnInit {
      * Get the image names of the images_edited folder.
      */
     getImageNamesEdited() {
-        this._imageService.getImageNames_edited().toPromise().then(
+        this._editorService._imageNamesInFolder_edited$.subscribe(
             images => {
                 this._imageNames_edited = images;
             },
@@ -232,10 +233,9 @@ export class AppComponent implements OnInit {
         // For copying an image to the editing view (images folder)
         if (title === this._contextMenuElements[0].title) {
             if (!this.isInEditingModus(this._actualImage)) {
-                this._imageService.copyImageForEditing(this._actualImage).toPromise().then(() => {
-                    this.getImageNames();
-                    this.getImageNamesOriginal();
-                });
+                this._imageService.copyImageForEditing(this._actualImage).toPromise().catch(
+                     error => { this._errorMessage_imageService = <any>error }
+                    );
             }
         }
     }
