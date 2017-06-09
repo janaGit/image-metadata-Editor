@@ -62,14 +62,12 @@ button:hover {
   background: yellow;
 }
 
-#copyAll {
-  flex: 1;
-  max-width: 8%;
-  margin-left: auto;
+.menuItems {
   margin-top: 1em;
   margin-right: 1em;
 }
 
-#copyAllDiv {
+#menu {
   display: flex;
+  justify-content: flex-end;
 }
