@@ -95,6 +95,18 @@ export class AppComponent implements OnInit {
      */
     private _actualImage: string;
 
+    /**
+     * This variable stores the menu items for the dropdown 
+     * that controls which images should be shown in the bottom bar.
+     */
+    private _visibleImages: string[] = ["Show all", "Show copied images", "Show images not yet copied"];
+
+    /**
+     * This method stores the actual selected value for the
+     * dropdown that controls which images should be shown in the bottom bar.
+     */
+    private _visibleImage: string;
+
     constructor(private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
 
     }
@@ -111,6 +123,7 @@ export class AppComponent implements OnInit {
         this.getImageNamesOriginal();
         this.getImageNames();
         this.getImageNamesEdited();
+        this._visibleImage = this._visibleImages[0];
     }
 
     /**
@@ -130,6 +143,21 @@ export class AppComponent implements OnInit {
         this._lang_select = event.target.text;
         this._lang = this._lang_select;
         this._exifToolService.language = this._lang;
+    }
+    /**
+     * The method changes the value that defines which images
+     * are shown in the bottom bar. 
+     * 
+     * 1. All images
+     * 
+     * 2. Only images that already have been copied.
+     * 
+     * 3. Only the images that have not been copied yet.
+     * 
+     * The drop-down menu that controls the visibility of the images uses this method.
+     */
+    select_visibleImages(event) {
+        this._visibleImage = event.target.text;
     }
     /**
      * Method to switch the views: Editing <-> Image Gallery

@@ -9,7 +9,7 @@
     <button id="lang_button" class="btn" dropdownToggle>
         {{_lang}} <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" aria-labelledby="language-dropdown">
+    <ul class="dropdown-menu">
       <li *ngFor="let lang of _languages">
         <a class="dropdown-item" (click)="select_lang($event)">{{lang}}</a>
       </li>
@@ -19,18 +19,30 @@
 
 <router-outlet id="content"></router-outlet>
 <bottom-bar *ngIf="_editorService.fileTabOpen">
-  <div id="copyAllDiv"> <button id="copyAll" class="btn" (click)="copyAll()">Copy all</button></div>
+  <div id="menu">
+    <div id="visibleImages_dropdown" class="dropdown menuItems">
+      <div dropdown>
+        <button id="visibleImages_button" class="btn" dropdownToggle>{{_visibleImage}} <span class="caret"></span></button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li class="li-equal-width" *ngFor="let visibleImage of _visibleImages">
+            <a class="dropdown-item" (click)="select_visibleImages($event)">{{visibleImage}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <button id="copyAll" class="btn menuItems" (click)="copyAll()">Copy all</button>
+  </div>
   <div id="hoverbox">
     <ul class="hoverbox">
       <li *ngFor="let imgName of _imageNames_original">
         <!-- *ngIf: To add and remove the onMouseOverImage directive and the contextMenu -->
-        <a *ngIf="isInEditingModus(imgName)">
+        <a *ngIf="isInEditingModus(imgName)&&_visibleImage!==_visibleImages[2]">
           <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
             (contextmenu)="$event.preventDefault();" />
           <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (contextmenu)="$event.preventDefault();"
           />
         </a>
-        <a *ngIf="!isInEditingModus(imgName)">
+        <a *ngIf="!isInEditingModus(imgName)&&_visibleImage!==_visibleImages[1]">
           <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
             (onMouseOverImage)="onMouseOverImage($event)" [contextMenuElements]="_contextMenuElements" />
           <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (onMouseOverImage)="onMouseOverImage($event)"
