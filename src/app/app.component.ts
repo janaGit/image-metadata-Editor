@@ -88,6 +88,15 @@ export class AppComponent implements OnInit {
     private _contextMenuElements: ContextMenu[] = [
         { title: 'copy for editing', subject: new Subject() }
     ];
+    /**
+     * This variable stores the context menu elements
+     * that should be shown when there is a right click above 
+     * one of the original images in the bottom bar. 
+     * (When the image is yet copied in the editing view)
+     */
+    private _contextMenuElements_edit: ContextMenu[] = [
+        { title: 'delete copied image', subject: new Subject() }
+    ];
 
     /**
      * This variable stores the image name the mouse is placed.
@@ -120,6 +129,7 @@ export class AppComponent implements OnInit {
         // Subscribe to router events to update the label of the 'changeView'-button
         this._router.events.subscribe((val) => { this.setChangeViewButtonText(); });
         this._contextMenuElements.forEach(element => element.subject.subscribe(title => this.contextMenuBottomBar(title)));
+        this._contextMenuElements_edit.forEach(element => element.subject.subscribe(title => this.contextMenuBottomBar(title)));
         this.getImageNamesOriginal();
         this.getImageNames();
         this.getImageNamesEdited();
@@ -255,6 +265,36 @@ export class AppComponent implements OnInit {
         return false;
     }
     /**
+     * This method returns true, when the image exists already in
+     * the image folder.
+     */
+    isInImagesFolder(imageName: string): boolean {
+        if (this._imageNames) {
+            let imageFolder = this._imageNames.find(imgName => {
+                return imgName == prefix + imageName;
+            })
+            if (imageFolder) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * This method returns true, when the image exists already in
+     * the image_edited folder.
+     */
+    isInImagesEditedFolder(imageName: string): boolean {
+        if (this._imageNames_edited) {
+            let image_editedFolder = this._imageNames_edited.find(imgName => {
+                return imgName == prefix + imageName;
+            })
+            if (image_editedFolder) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
      * This method processes the contextMenu events of the
      * original images in the bottom bar.
      */
@@ -266,6 +306,13 @@ export class AppComponent implements OnInit {
                     error => { this._errorMessage_imageService = <any>error }
                 );
             }
+        }
+        // For deleting a copy of an image that is located in the images
+        // folder.
+        if (title === this._contextMenuElements_edit[0].title) {
+            this._imageService.deleteImage(prefix + this._actualImage).toPromise().catch(
+                error => { this._errorMessage_imageService = <any>error }
+            );
         }
     }
     /**
@@ -288,5 +335,11 @@ export class AppComponent implements OnInit {
             return !(found || found_edited);
         })
         this._imageService.copyImagesForEditing(imageNames);
+    }
+    /**
+     * This method deletes all images in the images folder.
+     */
+    private deleteAllCopies() {
+        this._imageService.deleteAllImagesInImagesFolder(this._imageNames);
     }
 }

@@ -173,9 +173,14 @@ export class ImageService {
     * Method that does a delete request for images that are located in the path: imageDir. 
      */
     deleteImage(imageName: string): Observable<string[]> {
-        return this._http.delete(this._deleteImageUrl + '/' + imageName)
-            .map(this.extractData)
-            .catch(this.handleError);
+        if (imageName !== "selectAll_Images.png") {
+            return this._http.delete(this._deleteImageUrl + '/' + imageName)
+                .map(this.extractData).map(request => {
+                    this.updateImageNamesInFolder();
+                    return request;
+                })
+                .catch(this.handleError);
+        } else { return null }
     }
 
     /**
@@ -229,6 +234,23 @@ export class ImageService {
             for (let imageName of imageNames) {
                 this.copyImageForEditing(imageName).toPromise().then(() => {
                     count = this._editorService.countResolve(count, finish, resolve)
+                });
+            }
+        });
+    }
+    /**
+     * This method deletes all images that are declared
+     * in the array and located in the images folder.
+     */
+    deleteAllImagesInImagesFolder(imageNames: string[]): Promise<number> {
+        return new Promise((resolve, reject) => {
+            let count = 0;
+            let finish = imageNames.length;
+            for (let imageName of imageNames) {
+                this.deleteImage(imageName).toPromise().then(() => {
+                    count = this._editorService.countResolve(count, finish, resolve);
+                }, rejected => {
+                    reject(rejected);
                 });
             }
         });

@@ -210,12 +210,12 @@ export class EditorService {
         this._imageNamesInFolder = imageNames;
         this.__imageNamesInFolder.next(imageNames);
     }
-/**
- * This method checks if all tasked have been resolved.
- * Therfore it takes the actual counter, the number of the tasks and method:resolve().
- * If all task have been resolved, then the resolve()-method is executed.
- * If not, then the actualized counter is returned.
- */
+    /**
+     * This method checks if all tasked have been resolved.
+     * Therefore it takes the actual counter, the number of the tasks and method:resolve().
+     * If all task have been resolved, then the resolve()-method is executed.
+     * If not, then the actualized counter is returned.
+     */
     public countResolve(counter: number, finish: number, resolve): number {
         counter = counter + 1;
         if (counter === finish) {

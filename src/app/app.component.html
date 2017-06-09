@@ -4,6 +4,9 @@
     <span class="glyphicon glyphicon-edit" id="mainIcon" aria-hidden="true"></span></div>
 
   <button id="changeView_Button" class="btn" (click)="changeView()"> {{_changeView_button_text}}</button>
+  <button class="btn" id="refresh-button">
+    <span class="glyphicon glyphicon-refresh" id="refresh-icon" aria-hidden="true"></span>
+  </button>
 
   <div id="lang_dropdown" dropdown>
     <button id="lang_button" class="btn" dropdownToggle>
@@ -31,24 +34,40 @@
       </div>
     </div>
     <button id="copyAll" class="btn menuItems" (click)="copyAll()">Copy all</button>
+    <button id="deleteAll" class="btn menuItems" (click)="deleteAllCopies()">Delete all copies</button>
   </div>
   <div id="hoverbox">
     <ul class="hoverbox">
-      <li *ngFor="let imgName of _imageNames_original">
+      <div *ngFor="let imgName of _imageNames_original">
         <!-- *ngIf: To add and remove the onMouseOverImage directive and the contextMenu -->
-        <a *ngIf="isInEditingModus(imgName)&&_visibleImage!==_visibleImages[2]">
-          <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
-            (contextmenu)="$event.preventDefault();" />
-          <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (contextmenu)="$event.preventDefault();"
-          />
-        </a>
-        <a *ngIf="!isInEditingModus(imgName)&&_visibleImage!==_visibleImages[1]">
-          <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
-            (onMouseOverImage)="onMouseOverImage($event)" [contextMenuElements]="_contextMenuElements" />
-          <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (onMouseOverImage)="onMouseOverImage($event)"
-            [contextMenuElements]="_contextMenuElements" />
-        </a>
-      </li>
+        <li *ngIf="isInImagesFolder(imgName)&&_visibleImage!==_visibleImages[2]">
+          <a>
+            <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
+              (onMouseOverImage)="onMouseOverImage($event)" [contextMenuElements]="_contextMenuElements_edited" />
+            <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (onMouseOverImage)="onMouseOverImage($event)"
+              [contextMenuElements]="_contextMenuElements_edit" />
+          </a>
+        </li>
+        <li *ngIf="isInImagesEditedFolder(imgName)&&_visibleImage!==_visibleImages[2]">
+          <div id="hoverboxImagesEdited">
+            <a>
+              <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
+                (contextmenu)="$event.preventDefault()" />
+              <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (contextmenu)="$event.preventDefault()"
+              />
+            </a>
+            <span>Image Gallery</span>
+          </div>
+        </li>
+        <li *ngIf="!isInEditingModus(imgName)&&_visibleImage!==_visibleImages[1]">
+          <a>
+            <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
+              (onMouseOverImage)="onMouseOverImage($event)" [contextMenuElements]="_contextMenuElements" />
+            <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (onMouseOverImage)="onMouseOverImage($event)"
+              [contextMenuElements]="_contextMenuElements" />
+          </a>
+        </li>
+      </div>
 
     </ul>
   </div>
