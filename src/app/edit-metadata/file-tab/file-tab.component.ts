@@ -104,7 +104,7 @@ export class FileTabComponent implements OnInit {
      */
     addDroppedImage(file: File) {
         this._imageService.sendImage(file).then(fileName => {
-            this.setCurrentImageName(fileName);
+            this.setCurrentImageName('edited_'+fileName);
         });
     }
 

@@ -148,7 +148,8 @@ export class ImageService {
 
     /**
      * Method that posts an image to the backend. The image is then 
-     * stored in the folder of imageDir and shown in the editing view.
+     * stored in the folder of imageDir_original, then it is copied to the
+     * images folder and shown in the editing view.
      * 
      * @param imageFile  Image data
      */
@@ -159,9 +160,13 @@ export class ImageService {
             let formData = new FormData();
 
             formData.append('image', imageFile);
-            request.onloadend = function () {
+            request.onloadend = (() => {
+                this.updateImageNamesInFolder_original();
+                this.copyImageForEditing(request.responseText).toPromise().catch(error => {
+                    reject(error);
+                });
                 resolve(request.responseText);
-            };
+            });
 
             request.send(formData);
 
@@ -218,7 +223,6 @@ export class ImageService {
         return this._http.post(this._postCopyImage_ForEditing + '/' + imageName, "")
             .map(this.extractData).map((request) => {
                 this.updateImageNamesInFolder();
-                this.updateImageNamesInFolder_original();
                 return request;
             })
             .catch(this.handleError);
