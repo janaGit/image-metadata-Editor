@@ -5,7 +5,7 @@ import { Directive, Output, EventEmitter, HostListener } from '@angular/core';
  * file via an event emitter.
  */
 @Directive({
-    selector: '[return-droped-image]'
+    selector: '[returnDropedImage]'
 })
 export class ReturnDropedImageDirective {
     /**
@@ -21,7 +21,6 @@ export class ReturnDropedImageDirective {
     @HostListener('drop', ['$event'])
     fileDroped(event) {
         event.preventDefault();
-
         var file = event.dataTransfer.files[0];
         this.returnDropedImage.emit(file);
     };

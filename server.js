@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 // into the drag and drop box.
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'images/');
+    cb(null, 'images_original/');
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -95,7 +95,7 @@ function getFileNames_original(req, res) {
 }
 
 function newImage(req, res) {
-  console.log('REQUEST:newImage ');
+  console.log('REQUEST:newImage: '+req.file.filename);
   res.send(req.file.filename);
 }
 
