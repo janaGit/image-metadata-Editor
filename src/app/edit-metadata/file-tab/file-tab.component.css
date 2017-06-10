@@ -110,4 +110,6 @@ table tr td:nth-child(3) {
   vertical-align: middle;
 }
 
-
+#list-length {
+  float: right;
+}
