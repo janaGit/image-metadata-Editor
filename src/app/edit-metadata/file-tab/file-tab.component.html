@@ -1,47 +1,49 @@
-<div id='window'>
-    <table>
-        <tr>
-            <td>
-                <div id='buttons'>
-                    <button type='button' class='btn' id='refresh' (click)=setCurrentImageName(null)> Back to first image</button>
-                    <div id='nav'>
-                        <button type='button' class='btn' id='previous' (click)=previousImage()> < </button>
-                        <button type='button' class='btn' id='next' (click)=nextImage()> > </button>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div id='imageCell'>
-                    <div id='image_place'>
-                        <img id='image' class="img-responsive" *ngIf="imageName" src={{imgPath}} (click)="displayMetadataModal()" (onMouseOverImage)="null" [contextMenuElements]="_contextMenuElements">
-                        <button type='button' class='btn' id='deleteFile' (click)=deleteImage()> Delete File </button>
-                        <div id='image_name'> {{imageName}} <div id="list-length">{{imgNumber+1}}/{{imageNames.length}}</div></div>
-                    </div>
-                </div>
-            </td>
-            <td id='deleteMetadataColumn'>
-                <button type='button' class='btn' id='deleteMetadataButton' (click)=deleteMetadata()>delete Metadata</button>
+<div id='window' style=" display: flex;flex-wrap: wrap;padding-top:2%">
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div id='dragAndDrop_outer' class='img-thumbnail'>
-                    <div id='dragAndDrop' class='img-thumbnail'>
-                        <span id='dragAndDrop_text' (returnDropedImage)=addDroppedImage($event)>
-                                Drag and Drop an image
-                            </span>
-                    </div>
-                </div>
-            </td>
-            <td>
+  <div style="flex:2; display:flex; flex-direction: column;">
+    <div style="flex:1;">
+      <button type='button' class='btn' (click)=setCurrentImageName(null)> Back to first image</button>
+    </div>
 
-            </td>
-            <td class='startEditingColumn'>
-                <button type='button' class='btn' id='startEditingButton' (click)=startEditing()> start editing </button>
-            </td>
-        </tr>
-    </table>
+    <div class='img-thumbnail' style="flex:1;width:100%;height:40%;min-height: 80px;">
+      <div class='img-thumbnail' style="width:100%;height:100%; display:flex; align-items:center; justify-content: center">
+        <div (returnDropedImage)=addDroppedImage($event)> Drag and Drop an image</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex:1; display:flex;align-items: center;justify-content:center;">
+    <button type='button' class='btn' (click)=previousImage()> < </button>
+    <button type='button' class='btn' (click)=nextImage()> > </button>
+  </div>
+
+
+
+  <div id='image-place' style="flex:3;display:flex;justify-content: center; align-items: center">
+    <div>
+      <div>
+        <img id="image" class="img-responsive" *ngIf="imageName" src={{imgPath}} (click)="displayMetadataModal()" (onMouseOverImage)="null"
+          [contextMenuElements]="_contextMenuElements">
+      </div>
+      <div id="image-info" style="flex:1;display: flex; justify-content: space-between; margin-top: 1em;">
+        <button type='button' class='btn' id='deleteFile' (click)=deleteImage()> Delete File </button>
+        <div *ngIf="imageName"> {{imageName}} </div>
+        <div *ngIf="imageNames">{{imgNumber+1}}/{{imageNames.length}}</div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div style="flex:1;padding:2%;">
+    <button type='button' class='btn' id='deleteMetadataButton' (click)=deleteMetadata()>delete Metadata</button>
+  </div>
+  <div style="flex:1;display:flex;align-items: flex-end;">
+    <div>
+      <button type='button' class='btn' id='startEditingButton' (click)=startEditing()> start editing </button>
+    </div>
+  </div>
+
 </div>
 <showMetadata [(display)]="_displayMetadataModal"></showMetadata>
 <context-menu-holder></context-menu-holder>
