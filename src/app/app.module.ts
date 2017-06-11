@@ -6,12 +6,16 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { BottomBarOriginalImgComponent } from './bottom-bar-original-img/bottom-bar-original-img.component';
+
 import { EditMetadataComponent } from './edit-metadata/edit-metadata.component';
 import { FileTabComponent } from './edit-metadata/file-tab/file-tab.component';
 import { MetadataComponent } from './edit-metadata/metadata-tab/metadata-tab.component';
 import { LocationComponent } from './edit-metadata/location-tab/location-tab.component';
 import { CompleteComponent } from './edit-metadata/complete-tab/complete-tab.component';
+
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
+
 import { ContextMenuHolderComponent } from './modals/context-menu-holder/context-menu-holder.component';
 import { ShowMetadataComponent } from './modals/show-metadata/show-metadata.component';
 
@@ -40,7 +44,8 @@ import { BottomBarComponent } from './modals/bottom-bar/bottom-bar.component';
     ContextMenuHolderComponent,
     ReturnDropedImageDirective,
     OnMouseOverImageDirective,
-    BottomBarComponent
+    BottomBarComponent,
+    BottomBarOriginalImgComponent
   ],
   imports: [
     BrowserModule,
