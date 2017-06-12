@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 
 import { ContextMenu } from '../types/context-menu.type';
@@ -15,7 +15,6 @@ var prefix = 'edited_'
   styleUrls: ['./bottom-bar-original-img.component.css', '../css/hover-box.css']
 })
 export class BottomBarOriginalImgComponent implements OnInit {
-  @Input() fileTabOpen: boolean;
   /**
     * Images names of the images in the images_original folder
     */
