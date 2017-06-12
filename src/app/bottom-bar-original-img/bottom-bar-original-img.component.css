@@ -29,4 +29,5 @@
 
 #hoverbox {
   margin-top: 1em;
+  overflow-x: hidden;
 }

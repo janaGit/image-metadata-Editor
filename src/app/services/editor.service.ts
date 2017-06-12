@@ -83,7 +83,7 @@ export class EditorService {
     private _imageNamesInFolder_edited: string[];
     /**
      *  Variable to subscribe to the Observable to get
-     * the actual image name of the image_edited gallery.
+     * the actual image names of the image_edited gallery.
      */
     public _imageNamesInFolder_edited$ = this.__imageNamesInFolder_edited.asObservable();
 
@@ -101,7 +101,7 @@ export class EditorService {
     private _imageNamesInFolder_original: string[];
     /**
      *  Variable to subscribe to the Observable to get
-     * the actual image name of the image_original gallery.
+     * the actual image names of the image_original gallery.
      */
     public _imageNamesInFolder_original$ = this.__imageNamesInFolder_original.asObservable();
 
@@ -161,6 +161,7 @@ export class EditorService {
     get imageNamesInFolder() {
         return this._imageNamesInFolder;
     }
+
     /**
      * Method sets the name of the actual selected image of the 
      * editing view and pushes the update to all subscribers 
@@ -210,6 +211,7 @@ export class EditorService {
         this._imageNamesInFolder = imageNames;
         this.__imageNamesInFolder.next(imageNames);
     }
+
     /**
      * This method checks if all tasked have been resolved.
      * Therefore it takes the actual counter, the number of the tasks and method:resolve().

@@ -25,7 +25,7 @@
         <img id="image" class="img-responsive" *ngIf="imageName" src={{imgPath}} (click)="displayMetadataModal()" (onMouseOverImage)="null"
           [contextMenuElements]="_contextMenuElements">
       </div>
-      <div id="image-info" style="flex:1;display: flex; justify-content: space-between; margin-top: 1em;">
+      <div id="image-info" style="flex:1;display: flex; justify-content: space-between; margin-top: 2%;">
         <button type='button' class='btn' id='deleteFile' (click)=deleteImage()> Delete File </button>
         <div *ngIf="imageName"> {{imageName}} </div>
         <div *ngIf="imageNames">{{imgNumber+1}}/{{imageNames.length}}</div>

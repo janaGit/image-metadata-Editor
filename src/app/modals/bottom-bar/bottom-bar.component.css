@@ -1,17 +1,3 @@
-#originalImageBar {
-  width: 100%;
-  min-height: 0em;
-  background-color: blueviolet;
-  left: 0px;
-  bottom: 0em;
-  transition: all 0.2s linear;
-  position: fixed;
-}
-
-.originalImageBarChange {
-  min-height: 100vh!important;
-}
-
 #button {
   background-color: white;
   display: flex;
@@ -27,4 +13,15 @@
 .sideBox {
   border-top: thin solid #cfd8dc;
   flex: 3;
+}
+
+#originalImageBar {
+  width: 100%;
+  min-height: 0em;
+  background-color: blueviolet;
+  transition: all 0.2s linear;
+}
+
+.originalImageBarChange {
+  min-height: 100vh!important;
 }
