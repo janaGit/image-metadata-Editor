@@ -21,8 +21,8 @@
 
   <div id='image-place' style="flex:3;display:flex;justify-content: center; align-items: center">
     <div>
-      <div>
-        <img id="image" class="img-responsive" *ngIf="imageName" src={{imgPath}} (click)="displayMetadataModal()" (onMouseOverImage)="null"
+      <div class='img-thumbnail' *ngIf="imageName" [class.deleteMetadataButton]="_editorService.test_deleteMetadata(imageName)">
+        <img id="image" class="img-responsive"  src={{imgPath}} (click)="displayMetadataModal()" (onMouseOverImage)="null"
           [contextMenuElements]="_contextMenuElements">
       </div>
       <div id="image-info" style="flex:1;display: flex; justify-content: space-between; margin-top: 2%;">

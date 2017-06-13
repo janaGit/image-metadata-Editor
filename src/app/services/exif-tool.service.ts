@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EditorService } from './editor.service';
-
+import { ImageService } from './image.service';
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the image metadata.
@@ -52,7 +52,7 @@ export class ExifToolService {
      */
     private _metadata_edited: Object;
 
-    constructor(private _http: Http, private _editorService: EditorService) { }
+    constructor(private _http: Http, private _editorService: EditorService, private _imageService:ImageService) { }
 
     // Getter and setter
     /**
@@ -123,7 +123,10 @@ export class ExifToolService {
      */
     deleteAllMetadata(imageName): Observable<string[]> {
         return this._http.post(this._deleteAllMetadata + '/' + imageName, "")
-            .map(this.extractData)
+            .map(this.extractData).map(request => {
+                this._imageService.updateImageNamesInFolder();
+                return request;
+            })
             .catch(this.handleError);
     }
 
