@@ -282,7 +282,7 @@ function deleteAllMetadata(req, res) {
     if (files.indexOf(imageName) === -1) {
       res.status(404).send('File does not exist.');
     }
-    var result = exifTool.deleteAllMetadata(imageDir, imageDir_edited, imageName);
+    var result = exifTool.deleteAllMetadata(imageDir, imageName);
     result.then(function (data) {
       var _data = {};
       _data.body = '' + data;

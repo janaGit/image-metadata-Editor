@@ -2,6 +2,8 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { EditorService } from './editor.service';
+import { Logger } from "angular2-logger/core";
+
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the images.
@@ -72,7 +74,7 @@ export class ImageService {
     private _postCopyImage_ForEditing = this._serverBase + '/copyImageForEditing';
 
 
-    constructor(private _http: Http, private _editorService: EditorService) {
+    constructor(private _http: Http, private $log: Logger, private _editorService: EditorService) {
         this.updateImageNamesOfAllFolders();
     }
 
@@ -179,7 +181,13 @@ export class ImageService {
      */
     deleteImage(imageName: string): Observable<string[]> {
         if (imageName !== "selectAll_Images.png") {
-            return this._http.delete(this._deleteImageUrl + '/' + imageName)
+            let imageNames = this._editorService.imageNamesInFolder;
+            let imageName_withPrefix: string[] = this._editorService.returnArrayElementsWithSubstring(imageNames, imageName);
+            if (imageName_withPrefix.length !== 1) {
+                this.$log.error("Image name:" + imageName + " was found multiple times with different prefixes!");
+                process.exit();
+            }
+            return this._http.delete(this._deleteImageUrl + '/' + imageName_withPrefix[0])
                 .map(this.extractData).map(request => {
                     this.updateImageNamesInFolder();
                     return request;

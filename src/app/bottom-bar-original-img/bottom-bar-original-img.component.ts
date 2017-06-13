@@ -8,7 +8,7 @@ import { ImageService } from '../services/image.service';
 import { ExifToolService } from '../services/exif-tool.service';
 import { EditorService } from '../services/editor.service';
 
-var prefix = 'edited_'
+
 @Component({
   selector: 'bottom-bar-original-img',
   templateUrl: './bottom-bar-original-img.component.html',
@@ -118,12 +118,8 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInEditingModus(imageName: string): boolean {
     if (this._imageNames && this._imageNames_edited) {
-      let imageFolder = this._imageNames.find(imgName => {
-        return imgName == prefix + imageName;
-      })
-      let image_editedFolder = this._imageNames_edited.find(imgName => {
-        return imgName == prefix + imageName;
-      })
+      let imageFolder = this._editorService.imageNameInList_prefixNotConsidered(imageName, this._imageNames);
+      let image_editedFolder = this._editorService.imageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
       if (imageFolder || image_editedFolder) {
         return true;
       }
@@ -136,9 +132,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInImagesFolder(imageName: string): boolean {
     if (this._imageNames) {
-      let imageFolder = this._imageNames.find(imgName => {
-        return imgName == prefix + imageName;
-      })
+      let imageFolder = this._editorService.imageNameInList_prefixNotConsidered(imageName, this._imageNames);
       if (imageFolder) {
         return true;
       }
@@ -151,9 +145,8 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInImagesEditedFolder(imageName: string): boolean {
     if (this._imageNames_edited) {
-      let image_editedFolder = this._imageNames_edited.find(imgName => {
-        return imgName == prefix + imageName;
-      })
+      let image_editedFolder = this._editorService.imageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
+
       if (image_editedFolder) {
         return true;
       }
@@ -176,7 +169,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
     // For deleting a copy of an image that is located in the images
     // folder.
     if (title === this._contextMenuElements_edit[0].title) {
-      this._imageService.deleteImage(prefix + this._actualImage).toPromise().catch(
+      this._imageService.deleteImage(this._actualImage).toPromise().catch(
         error => { this._errorMessage_imageService = <any>error }
       );
     }

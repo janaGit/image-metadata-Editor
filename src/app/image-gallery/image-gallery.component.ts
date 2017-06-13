@@ -14,7 +14,7 @@ import { MouseOverImageEvent } from './../types/mouse-over-image-event.type';
  */
 @Component({
     templateUrl: 'image-gallery.component.html',
-    styleUrls: ['image-gallery.component.css','../css/hover-box.css'],
+    styleUrls: ['image-gallery.component.css','../css/hover-box.css','../css/global-app.css'],
     host: {
         '(document:scroll)': 'onScroll($event)',
         '(window:keypress)': 'onKey($event)'

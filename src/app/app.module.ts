@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
+import { Logger } from "angular2-logger/core";
+
 import { AppComponent } from './app.component';
 import { BottomBarOriginalImgComponent } from './bottom-bar-original-img/bottom-bar-original-img.component';
 
@@ -55,7 +57,7 @@ import { BottomBarComponent } from './modals/bottom-bar/bottom-bar.component';
     TabsModule.forRoot(),
     BsDropdownModule.forRoot()
   ],
-  providers: [EditorService, ImageService, ExifToolService, ContextMenuService],
+  providers: [Logger, EditorService, ImageService, ExifToolService, ContextMenuService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

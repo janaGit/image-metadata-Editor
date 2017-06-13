@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ImageService } from './image.service';
 
+var prefixDeleteMetadata = 'editedx_'
+var prefix = 'edited_'
+var imagePrefixes = [prefixDeleteMetadata, prefix]
 /**
  * This service class stores all the data that are created during the 
  * use of the editor. 
@@ -211,6 +214,32 @@ export class EditorService {
         this._imageNamesInFolder = imageNames;
         this.__imageNamesInFolder.next(imageNames);
     }
+    /**
+     * This method checks, if the image file have been
+     * processed with the "delete Metadata" button.
+     */
+    public test_deleteMetadata(imgName: string): boolean {
+        let deleted = imgName.startsWith(prefixDeleteMetadata);
+        if (deleted) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * This method tests if an image name exists in the list without
+     * taking the prefixes into account.
+     */
+    imageNameInList_prefixNotConsidered(imageName, imageList: string[]): string {
+        return imageList.find(imgName => {
+            let name = imagePrefixes.find(prefix => {
+                return imgName == prefix + imageName;
+            })
+            if (name) {
+                return true;
+            }
+            return false;
+        })
+    }
 
     /**
      * This method checks if all tasked have been resolved.
@@ -225,4 +254,16 @@ export class EditorService {
         }
         return counter;
     }
+   /**
+    * This method returns all strings of an array that contain a specific substring.
+    */
+     public returnArrayElementsWithSubstring(array: string[],substring:string): string[] {
+         let results = new Array<string>();
+         if (array) {
+            results= array.filter((element) => {
+                 return element.indexOf(substring)>-1;
+             });
+         }
+         return results;
+     }
 }

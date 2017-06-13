@@ -32,19 +32,25 @@ exports.getMetadata = function (imageDir, imageName, lang) {
     });
   });
 }
-exports.deleteAllMetadata = function (imageDir, imageDir_edited, imageName) {
-  const ls = child_process('exiftool', ['-all=', '-tagsFromFile', '@', '-orientation', '-overwrite_original', '-filename=' + imageDir_edited + '/' + imageName, imageDir + '/' + imageName]);
+exports.deleteAllMetadata = function (imageDir, imageName) {
   return new Promise(function (resolve, reject) {
-    ls.stdout.on('data', (data) => {
-      console.log('exifTool message:' + data);
-      resolve(data);
-    });
-    ls.stderr.on('data', (data) => {
-      console.error('exifTool error:' + data);
-      if (data.includes('Warning: No writable tags set from ')) {
+    if (imageName.indexOf("editedx") === -1) {
+      let imageName_x = imageName.replace("edited", "editedx");
+      const ls = child_process('exiftool', ['-all=', '-tagsFromFile', '@', '-orientation', '-overwrite_original', '-filename=' + imageDir + '/' + imageName_x, imageDir + '/' + imageName]);
+      ls.stdout.on('data', (data) => {
+        console.log('exifTool message:' + data);
         resolve(data);
-      }
-      reject(data);
-    });
+      });
+      ls.stderr.on('data', (data) => {
+        console.error('exifTool error:' + data);
+        if (data.includes('Warning: No writable tags set from ')) {
+          resolve(data);
+        }
+        reject(data);
+      });
+    } else {
+      resolve("metadata of image:" + imageName + " has already been deleted");
+    }
+
   });
 }

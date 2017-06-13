@@ -12,7 +12,7 @@ import { ContextMenu } from './../../types/context-menu.type';
 @Component({
     selector: 'file-tab',
     templateUrl: 'file-tab.component.html',
-    styleUrls: ['file-tab.component.css']
+    styleUrls: ['file-tab.component.css','../../css/global-app.css']
 })
 export class FileTabComponent implements OnInit {
     /**
@@ -104,7 +104,7 @@ export class FileTabComponent implements OnInit {
      */
     addDroppedImage(file: File) {
         this._imageService.sendImage(file).then(fileName => {
-            this.setCurrentImageName('edited_'+fileName);
+            this.setCurrentImageName('edited_' + fileName);
         });
     }
 
