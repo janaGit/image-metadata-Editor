@@ -44,6 +44,9 @@
     },
     {
       "project": "e2e/tsconfig.e2e.json"
+    },
+      {
+      "project": "server/tsconfig.server.json"
     }
   ],
   "test": {
