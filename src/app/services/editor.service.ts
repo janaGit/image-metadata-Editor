@@ -49,11 +49,19 @@ export class EditorService {
     public imageName_edited$ = this.__imageName_edited.asObservable();
 
 
-
+/**  File-Tab----------------------------------  */
     /**
      * This variable stores the information if the FileTab is shown (true) or not (false).
      */
     private _fileTabOpen: boolean;
+    /**
+     * Variable that stores a BehaviorSubject to distribute if the file-Tab is actually open or not.
+     */
+    private __fileTabOpen:BehaviorSubject<Boolean>=new BehaviorSubject<Boolean>(false);
+    /**
+     * variable to subscribe, if the file tab is open or not.
+     */
+    public _fileTabOpen$=this.__fileTabOpen.asObservable();
 
 
     /**  image name in images folder     ---------------------------------------------   */
@@ -104,9 +112,27 @@ export class EditorService {
     private _imageNamesInFolder_original: string[];
     /**
      *  Variable to subscribe to the Observable to get
-     * the actual image names of the image_original gallery.
+     * the actual image names of the image_original folder.
      */
     public _imageNamesInFolder_original$ = this.__imageNamesInFolder_original.asObservable();
+
+
+    /** Image names in images_complete folder ---------------------------------------------------------- */
+    /**
+     * Variable that stores a BehaviorSubject to distribute the
+     * names of the images in the images_complete folder.
+     */
+   private __imageNamesInFolder_complete: BehaviorSubject<string[]>= new BehaviorSubject<string[]>(undefined);
+   /**
+    * This variable stores the names of the images in the images_complete folder.
+    */  
+   private _imageNamesInFolder_complete:string[]; 
+   /**
+    * Variable to subscribe to the Observable to get the actual image names of the images_complete folder.
+    */
+    public _imageNamesInFolder_complete$ = this.__imageNamesInFolder_complete.asObservable();
+    
+
 
     /**
      * This variable stores an error message that was returned
@@ -116,7 +142,6 @@ export class EditorService {
 
 
     constructor() {
-        this._fileTabOpen = false;
     }
     /**
      * Get the image name of the actual selected image of the editing view.
@@ -157,6 +182,12 @@ export class EditorService {
      */
     get imageNamesInFolder_edited() {
         return this._imageNamesInFolder_edited;
+    }
+    /**
+     * Get the image names of the images in the images_complete folder.
+     */
+    get imageNamesInFolder_complete() {
+        return this._imageNamesInFolder_complete;
     }
     /**
      * Get the image names of the images in the images folder.
@@ -205,6 +236,16 @@ export class EditorService {
         this.__imageNamesInFolder_original.next(imageNames);
     }
     /**
+     * This method gets an actual list of names of the images
+     * in the images_complete folder.
+     * The actual list is then send to all the subscribers of 
+     * imageNamesInFolder_original$
+     */
+    updateImageNamesInFolder_complete(imageNames: string[]) {
+        this._imageNamesInFolder_complete = imageNames;
+        this.__imageNamesInFolder_complete.next(imageNames);
+    }
+    /**
     * This method gets an actual list of names of the images
     * in the images folder.
     * The actual list is then send to all the subscribers of 
@@ -215,7 +256,15 @@ export class EditorService {
         this.__imageNamesInFolder.next(imageNames);
     }
     /**
-     * This method checks, if the image file have been
+     * This method updates the status if the fileTab is open or not
+     * and send the status to all subscribers
+     */
+    updateIsFileTabOpen(isOpen:boolean){
+        this._fileTabOpen=isOpen;
+        this.__fileTabOpen.next(isOpen);
+    }
+    /**
+     * This method checks, if the image file has been
      * processed with the "delete Metadata" button.
      */
     public test_deleteMetadata(imgName: string): boolean {
@@ -254,16 +303,16 @@ export class EditorService {
         }
         return counter;
     }
-   /**
-    * This method returns all strings of an array that contain a specific substring.
-    */
-     public returnArrayElementsWithSubstring(array: string[],substring:string): string[] {
-         let results = new Array<string>();
-         if (array) {
-            results= array.filter((element) => {
-                 return element.indexOf(substring)>-1;
-             });
-         }
-         return results;
-     }
+    /**
+     * This method returns all strings of an array that contain a specific substring.
+     */
+    public returnArrayElementsWithSubstring(array: string[], substring: string): string[] {
+        let results = new Array<string>();
+        if (array) {
+            results = array.filter((element) => {
+                return element.indexOf(substring) > -1;
+            });
+        }
+        return results;
+    }
 }

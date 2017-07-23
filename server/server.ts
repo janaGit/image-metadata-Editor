@@ -72,6 +72,7 @@ export class Server {
         this.router.get('/getImageNames', this.getFileNames);
         this.router.get('/getImageNames_edited', this.getFileNames_edited);
         this.router.get('/getImageNames_original', this.getFileNames_original);
+          this.router.get('/getImageNames_complete', this.getFileNames_complete);
 
         this.router.get('/getMetadata/:imageName/:lang', this.getMetadata_edit);
         this.router.get('/getMetadata_edited/:imageName/:lang', this.getMetadata_edited);
@@ -101,6 +102,15 @@ export class Server {
     private getFileNames_edited = (req, res) => {
         fs.readdir(this.imageDir_edited, (err, files) => {
             console.log('REQUEST:getFileNames_edited: ');
+            console.log(files);
+            let body: { data: string[] } = { data: files };
+            res.send(body);
+        });
+    }
+
+        private getFileNames_complete = (req, res) => {
+        fs.readdir(this.imageDir_complete, (err, files) => {
+            console.log('REQUEST:getFileNames_complete: ');
             console.log(files);
             let body: { data: string[] } = { data: files };
             res.send(body);

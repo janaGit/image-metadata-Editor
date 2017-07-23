@@ -16,6 +16,10 @@ import { EditorService } from '../services/editor.service';
 })
 export class BottomBarOriginalImgComponent implements OnInit {
   /**
+   * Title of the Bottom bar
+   */
+  private _bottomBar_title="Original Images";
+  /**
     * Images names of the images in the images_original folder
     */
   private _imageNames_original: string[];

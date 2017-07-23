@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Output, AfterViewChecked, Input, ElementRef, ViewChild } from '@angular/core';
 
 /**
  * This component realizes a bottom bar that can expand to the whole window.
@@ -9,19 +9,29 @@ import { Component, OnInit, Output, AfterViewChecked } from '@angular/core';
   styleUrls: ['./bottom-bar.component.css']
 })
 export class BottomBarComponent implements OnInit, AfterViewChecked {
+  @Input() title: string;
   /**
    * Variable that states if the original images should be shown (true)
    * or not (false)
    */
-  private showOriginalImages: boolean;
+  private _showBottomBar: boolean;
+  /**
+   * Button to open and close the bottom bar
+   */
+  @ViewChild('button') button: ElementRef;
+  /**
+   * To set the right size of the inner Bottom Bar, when the bottombar should be
+   * opened.
+   */
+  private _innerBottomBar_height:string;
   constructor() { }
 
   ngOnInit() {
-    this.showOriginalImages = false;
+    this._showBottomBar = false;
   }
   ngAfterViewChecked() {
-    if (this.showOriginalImages) {
-      window.scroll(0, document.documentElement.scrollHeight);
+    if (this._showBottomBar) {
+     window.scroll(0, document.documentElement.scrollHeight);
     }
   }
   /**
@@ -34,8 +44,11 @@ export class BottomBarComponent implements OnInit, AfterViewChecked {
   clickBottomBar() {
     let style = document.getElementsByTagName("html")[0].style;
 
-    this.showOriginalImages = !this.showOriginalImages;
-    if (this.showOriginalImages) {
+    this._showBottomBar = !this._showBottomBar;
+    if (this._showBottomBar) {
+      let button_height=this.button.nativeElement.offsetHeight;
+      button_height=button_height+8;
+      this._innerBottomBar_height="calc(100vh - "+button_height+"px)";
       style.overflowY = "hidden";
     } else {
       style.overflowY = "auto";

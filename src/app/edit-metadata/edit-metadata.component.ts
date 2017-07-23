@@ -50,8 +50,8 @@ export class EditMetadataComponent implements OnInit {
         this.tabs.forEach(tab => {
             if (tab.tab === 'file') {
                 tab.active = true;
+                this._editorService.updateIsFileTabOpen(true);
                 this._cdr.detectChanges();
-                this._editorService.fileTabOpen = true;
             }
         });
 
@@ -66,12 +66,12 @@ export class EditMetadataComponent implements OnInit {
      * Used by the tab-directive, when a select-event is fired. 
      */
     public selectTab(tabTitle: string) {
-        let tab=this.tabs.find(tab=>{return tab.title==tabTitle});
+        let tab = this.tabs.find(tab => { return tab.title == tabTitle });
         this.selectedTab = tab.tab;
         if (this.selectedTab === 'file') {
-            this._editorService.fileTabOpen = true;
+            this._editorService.updateIsFileTabOpen(true);
         } else {
-            this._editorService.fileTabOpen = false;
+            this._editorService.updateIsFileTabOpen(false);
         }
     }
 
