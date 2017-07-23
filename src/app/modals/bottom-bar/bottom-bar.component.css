@@ -15,13 +15,13 @@
   flex: 3;
 }
 
-#originalImageBar {
+#bottomBar {
   width: 100%;
   min-height: 0em;
   background-color: blueviolet;
   transition: all 0.2s linear;
 }
 
-.originalImageBarChange {
+.bottomBarChange {
   min-height: 100vh!important;
 }

@@ -25,6 +25,12 @@ export class ImageService {
      *  Path to the folder for the images that are shown in the original images view.
      */
     private _imageDir_original: string;
+      /**
+     *  Path to the folder for the images that are shown in the bottom bar of the 
+     *  image gallery (completely edited images). Folder: images_complete
+     * 
+     */
+    private _imageDir_complete: string;
 
     /**
      * Server base URL
@@ -36,9 +42,14 @@ export class ImageService {
     private _getImagesUrl = this._serverBase + '/getImageNames';
 
     /**
-     * Restful webservice URL to get the image names for the image gallery. 
+     * Restful webservice URL to get the image names for the image gallery (edited images). 
      */
     private _getImages_editedUrl = this._serverBase + '/getImageNames_edited';
+
+    /**
+     * Restful webservice URL to get the image names of the folder: images_complete (completely edited). 
+     */
+    private _getImages_completeUrl = this._serverBase + '/getImageNames_complete';
 
 
     /**
@@ -123,6 +134,19 @@ export class ImageService {
     }
 
     /**
+     * Set the path where the completely edited images are stored.
+     */
+    get imageDir_complete() {
+        return this._imageDir_complete;
+    }
+    /**
+     * Set the path where the completely edited images are stored.
+     */
+    set imageDir_complete(imgDir_complete: string) {
+        this._imageDir_complete = imgDir_complete;
+    }
+
+    /**
      * Method that requests the image names for the editing view.
      */
     getImageNames(): Observable<string[]> {
@@ -136,6 +160,14 @@ export class ImageService {
      */
     getImageNames_edited(): Observable<string[]> {
         return this._http.get(this._getImages_editedUrl)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    /**
+     * Method that requests the image names for the image gallery.
+     */
+    getImageNames_complete(): Observable<string[]> {
+        return this._http.get(this._getImages_completeUrl)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -279,7 +311,7 @@ export class ImageService {
     }
 
     /** 
-    * This method updates the names of the images that are placed 
+    * This method requests the names of the images that are placed 
     * in the images folder.
     * Then the editor service gets the updated list of names.
     */
@@ -289,7 +321,7 @@ export class ImageService {
         }, (error) => { console.error(error); });
     }
     /** 
-     * This method updates the names of the images that are placed 
+     * This method requests the names of the images that are placed 
      * in the images_original folder.
      * Then the editor service gets the updated list of names.
      */
@@ -300,13 +332,24 @@ export class ImageService {
     }
 
     /** 
-     * This method updates the names of the images that are placed 
+     * This method requests the names of the images that are placed 
      * in the images_edited folder.
      * Then the editor service gets the updated list of names.
      */
     public updateImageNamesInFolder_edited() {
         this.getImageNames_edited().toPromise().then((imageNames) => {
             this._editorService.updateImageNamesInFolder_edited(imageNames);
+        }, (error) => { console.error(error); });
+    }
+
+    /** 
+     * This method requests the names of the images that are placed 
+     * in the images_complete folder.
+     * Then the editor service gets the updated list of names.
+     */
+    public updateImageNamesInFolder_complete() {
+        this.getImageNames_complete().toPromise().then((imageNames) => {
+            this._editorService.updateImageNamesInFolder_complete(imageNames);
         }, (error) => { console.error(error); });
     }
 

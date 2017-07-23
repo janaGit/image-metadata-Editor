@@ -31,4 +31,5 @@
   </div>
 
 </div>
-<bottom-bar-original-img *ngIf="_editorService.fileTabOpen" style="flex: 1;"></bottom-bar-original-img>
+<bottom-bar-original-img *ngIf="_fileTabOpen" style="flex: 1;"></bottom-bar-original-img>
+<bottom-bar-complete-img *ngIf="_router.url === '/image_gallery'" style="flex: 1;"></bottom-bar-complete-img>

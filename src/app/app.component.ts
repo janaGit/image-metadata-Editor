@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exif-tool.service';
@@ -17,6 +17,7 @@ const _changeView_button_map_items = [
 var imageDir = 'images';
 var imageDir_edited = 'images_edited'
 var imageDir_original = 'images_original'
+var imageDir_complete = 'images_complete'
 
 
 @Component({
@@ -24,7 +25,7 @@ var imageDir_original = 'images_original'
     templateUrl: '/app.component.html',
     styleUrls: ['/app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewChecked {
     /**
      * Map for an easily access to the labels for the 'changeView'-button.
      */
@@ -60,9 +61,12 @@ export class AppComponent implements OnInit {
     private _lang_select: string = this._lang;
 
 
-    
+    /**
+     * Variable stores the status, if the filetab is open or not.
+     */
+    private _fileTabOpen: Boolean;
 
-    constructor(private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
+    constructor(private _cdr: ChangeDetectorRef, private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
 
     }
     ngOnInit() {
@@ -70,10 +74,17 @@ export class AppComponent implements OnInit {
         this._imageService.imageDir = imageDir;
         this._imageService.imageDir_edited = imageDir_edited;
         this._imageService.imageDir_original = imageDir_original;
+        this._imageService.imageDir_complete = imageDir_complete;
         // Set the language for the image metadata 
         this._exifToolService.language = this._lang;
         // Subscribe to router events to update the label of the 'changeView'-button
         this._router.events.subscribe((val) => { this.setChangeViewButtonText(); });
+        this._editorService._fileTabOpen$.subscribe(isOpen => {
+            this._fileTabOpen = isOpen;
+        })
+    }
+    ngAfterViewChecked() {
+        this._cdr.detectChanges();
     }
 
     /**
@@ -107,7 +118,7 @@ export class AppComponent implements OnInit {
 
             );
         } else {
-            this._editorService.fileTabOpen = false;
+            this._editorService.updateIsFileTabOpen(false);
             this._router.navigate(['image_gallery']).then(
                 () => this.setChangeViewButtonText()
             );
@@ -139,5 +150,5 @@ export class AppComponent implements OnInit {
                 this._lang_en = !this._lang_en;
         }
     }
-  
+
 }

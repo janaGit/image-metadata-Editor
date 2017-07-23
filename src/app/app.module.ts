@@ -33,6 +33,7 @@ import { EditorService } from './services/editor.service';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BottomBarComponent } from './modals/bottom-bar/bottom-bar.component';
+import { BottomBarCompleteImgComponent } from './bottom-bar-complete-img/bottom-bar-complete-img.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,8 @@ import { BottomBarComponent } from './modals/bottom-bar/bottom-bar.component';
     ReturnDropedImageDirective,
     OnMouseOverImageDirective,
     BottomBarComponent,
-    BottomBarOriginalImgComponent
+    BottomBarOriginalImgComponent,
+    BottomBarCompleteImgComponent
   ],
   imports: [
     BrowserModule,
