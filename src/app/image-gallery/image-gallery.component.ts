@@ -5,7 +5,7 @@ import { ExifToolService } from './../services/exif-tool.service';
 import { EditorService } from './../services/editor.service';
 import { ContextMenu } from './../types/context-menu.type';
 import { MouseOverImageEvent } from './../types/mouse-over-image-event.type';
-
+import * as prefix from "../../../utilities/image-prefixes";
 /**
  * This class is for the image gallery.
  * All the images that have been edited, are visualized
@@ -14,7 +14,7 @@ import { MouseOverImageEvent } from './../types/mouse-over-image-event.type';
  */
 @Component({
     templateUrl: 'image-gallery.component.html',
-    styleUrls: ['image-gallery.component.css','../css/hover-box.css','../css/global-app.css'],
+    styleUrls: ['image-gallery.component.css', '../css/hover-box.css', '../css/global-app.css'],
     host: {
         '(window:keypress)': 'onKey($event)'
     }
@@ -72,24 +72,26 @@ export class ImageGalleryComponent {
      * This variable stores the context menu elements
      * that should be shown when there is a right click above an image. 
      */
-    private _contextMenuElements:ContextMenu[] = [
-        { title: 'transfer for editing', subject: new Subject() }
+    private _contextMenuElements: ContextMenu[] = [
+        { title: 'transfer for editing', subject: new Subject() },
+        { title: 'transfer to complete', subject: new Subject() }
     ];
+    prefix = prefix;
 
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService: EditorService, private _renderer: Renderer) { }
-   
+
     ngOnInit() {
         // Set the variables
         this.getImageNames();
         this.imgDir_edited = this._imageService.imageDir_edited;
         // Subscribe to the subjects of the context elements and assign the contextMenu() to them.
-        this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));        
+        this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
     }
     /**
      * This method is executed when the mouse is 
      * moving over /clicked on an image.
      */
-    onMouseOverImage(event:MouseOverImageEvent) {
+    onMouseOverImage(event: MouseOverImageEvent) {
         if (event.eventName === 'mouseOver') {
             this._actual_Image = event.imgName;
             // If no image has been fixed then the metadata 
@@ -100,7 +102,7 @@ export class ImageGalleryComponent {
 
         }
         if (event.eventName === 'mouseClicked') {
-            
+
             if (this._imageNameClicked !== event.imgName) {
                 // If that image has not been fixed, then fix that image
                 // and show its metadata in the table
@@ -124,7 +126,7 @@ export class ImageGalleryComponent {
         this._exifToolService.requestMetadata_edited().then(() => {
             // Get the metadata from the exifToolService.
             this.metadata = this._exifToolService.metadata_edited;
-            this.metadata_keys=Object.keys(this.metadata);
+            this.metadata_keys = Object.keys(this.metadata);
         });
     }
     /**
@@ -141,18 +143,28 @@ export class ImageGalleryComponent {
      * images.
      */
     contextMenu(val) {
-        if (val === this._contextMenuElements[0].title) {
-            this._imageService.moveImageBackForEditing(this._actual_Image).subscribe(
-                () => { this.getImageNames(); },
-                error => this.errorMessage_exifToolService = <any>error
-            );
+        switch (val) {
+            case this._contextMenuElements[0].title:
+                this._imageService.moveImageBackForEditing(this._actual_Image).subscribe(
+                    () => { this.getImageNames(); },
+                    error => this.errorMessage_exifToolService = <any>error
+                );
+                break;
+            case this._contextMenuElements[1].title:
+                this._imageService.moveImageToImagesComplete(this._actual_Image).subscribe(
+                    () => { this.getImageNames(); },
+                    error => this.errorMessage_exifToolService = <any>error
+                );
+                break;
+            default: throw Error("val is not a valid contextMenuElement title: val = " + val);
         }
+
     }
     /**
      * This method removes a specific string from 
      * an array.
      */
-    removeString(array: string[], string):string[] {
+    removeString(array: string[], string): string[] {
         for (var i = 0; i < array.length; i++) {
             if (array[i].indexOf(string) > -1) {
                 array.splice(i, 1);

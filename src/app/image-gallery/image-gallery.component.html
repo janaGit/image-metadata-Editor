@@ -1,17 +1,21 @@
 <div id="view">
-        <div id="metadata_box">
+    <div id="metadata_box">
         <table id="table" #table class="table table-striped" [style.height]="_metadata_table_height">
             <tr *ngFor="let key of metadata_keys">
-                <td>{{key}}</td><td>{{metadata[key]}}</td>
+                <td>{{key}}</td>
+                <td>{{metadata[key]}}</td>
             </tr>
         </table>
     </div>
     <div id="hoverbox">
         <ul class="hoverbox">
             <li *ngFor="let imgName of _imageNames_edited">
-                <a><img src="{{imgDir_edited}}/{{imgName}}" alt="description" [class.deleteMetadataButton]="_editorService.test_deleteMetadata(imgName)"  />
+                <a>
+                    <img src="{{imgDir_edited}}/{{imgName}}" alt="description" [class.deleteMetadataButton]="prefix.isMetadataDeleted(imgName)"
+                    />
                     <img src="{{imgDir_edited}}/{{imgName}}" (onMouseOverImage)="onMouseOverImage($event)" alt="description" class="preview"
-                        [contextMenuElements]="_contextMenuElements" [class.clicked]="imageClicked(imgName)" [class.deleteMetadataButton]="_editorService.test_deleteMetadata(imgName)"/>
+                        [contextMenuElements]="_contextMenuElements" [class.clicked]="imageClicked(imgName)" [class.deleteMetadataButton]="prefix.isMetadataDeleted(imgName)"
+                    />
                 </a>
             </li>
 

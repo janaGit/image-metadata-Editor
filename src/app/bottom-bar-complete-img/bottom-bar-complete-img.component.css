@@ -3,3 +3,17 @@
   display: inline-grid;
   background-color: blueviolet;
 }
+.preview_imgName{
+  display: none;
+  position: absolute;
+  top: calc(150px - 33px);
+  width: 200px;
+  left: -45px;
+  text-align: center;
+  z-index: 10;
+  background-color: blueviolet;
+  color: white;
+}
+a:hover .preview_imgName{
+  display: block;
+}

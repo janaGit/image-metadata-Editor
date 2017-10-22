@@ -4,7 +4,7 @@ import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
 import { ContextMenu } from './../../types/context-menu.type';
-
+import * as prefix from "../../../../utilities/image-prefixes";
 /**
  * This class provides the controller for the file-tab in the
  * editor view.
@@ -12,7 +12,7 @@ import { ContextMenu } from './../../types/context-menu.type';
 @Component({
     selector: 'file-tab',
     templateUrl: 'file-tab.component.html',
-    styleUrls: ['file-tab.component.css','../../css/global-app.css']
+    styleUrls: ['file-tab.component.css', '../../css/global-app.css']
 })
 export class FileTabComponent implements OnInit {
     /**
@@ -60,7 +60,7 @@ export class FileTabComponent implements OnInit {
     private _contextMenuElements: ContextMenu[] = [
         { title: 'transfer to image gallery', subject: new Subject() }
     ];
-
+    prefix = prefix;
     constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _editorService: EditorService) { }
 
     ngOnInit() {

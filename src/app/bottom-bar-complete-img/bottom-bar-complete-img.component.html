@@ -4,15 +4,13 @@
     <ul class="hoverbox">
       <div *ngFor="let imgName of _imageNames_complete">
         <li>
-        <div id="imageBox">
-          <a>
-            <img src="{{_imageService.imageDir_complete}}/{{imgName}}" alt="description" 
-              (contextmenu)="$event.preventDefault()" />
-            <img src="{{_imageService.imageDir_complete}}/{{imgName}}" class="preview"  (contextmenu)="$event.preventDefault()"
-            />
-          </a>
-          <span>{{imgName}}</span>
-        </div>
+          <div id="imageBox">
+            <a>
+              <img src="{{_imageService.imageDir_complete}}/{{imgName}}" alt="description" (contextmenu)="$event.preventDefault()" />
+              <img src="{{_imageService.imageDir_complete}}/{{imgName}}" class="preview" (contextmenu)="$event.preventDefault()" />
+              <span class="preview_imgName">{{imgName}}</span>
+            </a>
+          </div>
         </li>
       </div>
     </ul>
