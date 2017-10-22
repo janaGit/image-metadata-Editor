@@ -7,7 +7,7 @@ import { MouseOverImageEvent } from '../types/mouse-over-image-event.type';
 import { ImageService } from '../services/image.service';
 import { ExifToolService } from '../services/exif-tool.service';
 import { EditorService } from '../services/editor.service';
-
+import * as prefix from "../../../utilities/image-prefixes";
 
 @Component({
   selector: 'bottom-bar-original-img',
@@ -18,7 +18,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
   /**
    * Title of the Bottom bar
    */
-  private _bottomBar_title="Original Images";
+  private _bottomBar_title = "Original Images";
   /**
     * Images names of the images in the images_original folder
     */
@@ -122,8 +122,8 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInEditingModus(imageName: string): boolean {
     if (this._imageNames && this._imageNames_edited) {
-      let imageFolder = this._editorService.imageNameInList_prefixNotConsidered(imageName, this._imageNames);
-      let image_editedFolder = this._editorService.imageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
+      let imageFolder = prefix.isImageNameInList_prefixNotConsidered(imageName, this._imageNames);
+      let image_editedFolder = prefix.isImageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
       if (imageFolder || image_editedFolder) {
         return true;
       }
@@ -136,7 +136,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInImagesFolder(imageName: string): boolean {
     if (this._imageNames) {
-      let imageFolder = this._editorService.imageNameInList_prefixNotConsidered(imageName, this._imageNames);
+      let imageFolder = prefix.isImageNameInList_prefixNotConsidered(imageName, this._imageNames);
       if (imageFolder) {
         return true;
       }
@@ -149,7 +149,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInImagesEditedFolder(imageName: string): boolean {
     if (this._imageNames_edited) {
-      let image_editedFolder = this._editorService.imageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
+      let image_editedFolder = prefix.isImageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
 
       if (image_editedFolder) {
         return true;

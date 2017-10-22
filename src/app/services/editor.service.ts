@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ImageService } from './image.service';
+import * as prefix from '../../../utilities/image-prefixes';
 
-var prefixDeleteMetadata = 'editedx_'
-var prefix = 'edited_'
-var imagePrefixes = [prefixDeleteMetadata, prefix]
+
 /**
  * This service class stores all the data that are created during the 
  * use of the editor. 
@@ -49,7 +48,7 @@ export class EditorService {
     public imageName_edited$ = this.__imageName_edited.asObservable();
 
 
-/**  File-Tab----------------------------------  */
+    /**  File-Tab----------------------------------  */
     /**
      * This variable stores the information if the FileTab is shown (true) or not (false).
      */
@@ -57,11 +56,11 @@ export class EditorService {
     /**
      * Variable that stores a BehaviorSubject to distribute if the file-Tab is actually open or not.
      */
-    private __fileTabOpen:BehaviorSubject<Boolean>=new BehaviorSubject<Boolean>(false);
+    private __fileTabOpen: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
     /**
      * variable to subscribe, if the file tab is open or not.
      */
-    public _fileTabOpen$=this.__fileTabOpen.asObservable();
+    public _fileTabOpen$ = this.__fileTabOpen.asObservable();
 
 
     /**  image name in images folder     ---------------------------------------------   */
@@ -122,16 +121,16 @@ export class EditorService {
      * Variable that stores a BehaviorSubject to distribute the
      * names of the images in the images_complete folder.
      */
-   private __imageNamesInFolder_complete: BehaviorSubject<string[]>= new BehaviorSubject<string[]>(undefined);
-   /**
-    * This variable stores the names of the images in the images_complete folder.
-    */  
-   private _imageNamesInFolder_complete:string[]; 
-   /**
-    * Variable to subscribe to the Observable to get the actual image names of the images_complete folder.
-    */
+    private __imageNamesInFolder_complete: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(undefined);
+    /**
+     * This variable stores the names of the images in the images_complete folder.
+     */
+    private _imageNamesInFolder_complete: string[];
+    /**
+     * Variable to subscribe to the Observable to get the actual image names of the images_complete folder.
+     */
     public _imageNamesInFolder_complete$ = this.__imageNamesInFolder_complete.asObservable();
-    
+
 
 
     /**
@@ -259,36 +258,11 @@ export class EditorService {
      * This method updates the status if the fileTab is open or not
      * and send the status to all subscribers
      */
-    updateIsFileTabOpen(isOpen:boolean){
-        this._fileTabOpen=isOpen;
+    updateIsFileTabOpen(isOpen: boolean) {
+        this._fileTabOpen = isOpen;
         this.__fileTabOpen.next(isOpen);
     }
-    /**
-     * This method checks, if the image file has been
-     * processed with the "delete Metadata" button.
-     */
-    public test_deleteMetadata(imgName: string): boolean {
-        let deleted = imgName.startsWith(prefixDeleteMetadata);
-        if (deleted) {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * This method tests if an image name exists in the list without
-     * taking the prefixes into account.
-     */
-    imageNameInList_prefixNotConsidered(imageName, imageList: string[]): string {
-        return imageList.find(imgName => {
-            let name = imagePrefixes.find(prefix => {
-                return imgName == prefix + imageName;
-            })
-            if (name) {
-                return true;
-            }
-            return false;
-        })
-    }
+
 
     /**
      * This method checks if all tasked have been resolved.
@@ -306,13 +280,13 @@ export class EditorService {
     /**
      * This method returns all strings of an array that contain a specific substring.
      */
-    public returnArrayElementsWithSubstring(array: string[], substring: string): string[] {
-        let results = new Array<string>();
-        if (array) {
-            results = array.filter((element) => {
-                return element.indexOf(substring) > -1;
-            });
-        }
-        return results;
-    }
+    /*     public returnArrayElementsWithSubstring(array: string[], substring: string): string[] {
+            let results = new Array<string>();
+            if (array) {
+                results = array.filter((element) => {
+                    return element.indexOf(substring) > -1;
+                });
+            }
+            return results;
+        } */
 }

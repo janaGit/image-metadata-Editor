@@ -3,7 +3,7 @@ import * as bodyParser from 'body-parser';
 import * as multer from 'multer';
 import * as path from 'path';
 import * as fs from 'fs';
-
+import * as prefix from "../utilities/image-prefixes";
 import { ExifTool } from './exif-tool';
 import { ReturnObject } from './return-object';
 
@@ -72,7 +72,7 @@ export class Server {
         this.router.get('/getImageNames', this.getFileNames);
         this.router.get('/getImageNames_edited', this.getFileNames_edited);
         this.router.get('/getImageNames_original', this.getFileNames_original);
-          this.router.get('/getImageNames_complete', this.getFileNames_complete);
+        this.router.get('/getImageNames_complete', this.getFileNames_complete);
 
         this.router.get('/getMetadata/:imageName/:lang', this.getMetadata_edit);
         this.router.get('/getMetadata_edited/:imageName/:lang', this.getMetadata_edited);
@@ -84,7 +84,7 @@ export class Server {
         this.router.post('/copyImageForEditing/:imageName', this.copyImageToImageFolder);
         this.router.post('/moveImageBackForEditing/:imageName', this.moveImageBackToImageFolder);
         this.router.post('/moveImageToImageGallery/:imageName', this.moveImageToImageGallery);
-        this.router.post('/moveImageToImagesComplete/:imageName/:imageName_new', this.moveImageToImageComplete);
+        this.router.post('/moveImageToImagesComplete/:imageName', this.moveImageToImageComplete);
         this.router.get('*', (req, res) => {
             res.sendFile(path.join(__dirname, 'dist/index.html'));
         });
@@ -108,7 +108,7 @@ export class Server {
         });
     }
 
-        private getFileNames_complete = (req, res) => {
+    private getFileNames_complete = (req, res) => {
         fs.readdir(this.imageDir_complete, (err, files) => {
             console.log('REQUEST:getFileNames_complete: ');
             console.log(files);
@@ -189,7 +189,7 @@ export class Server {
                     let data = this.exifTool.getMetadata(imageDir, imageName, lang);
                     data.then((data) => {
                         console.log(data);
-                        let body= { data: data };
+                        let body = { data: data };
                         resolve(body);
                     }, (error) => {
                         reject(error);
@@ -231,8 +231,10 @@ export class Server {
 
     private moveImageToImageComplete = (req, res) => {
         var imageName = req.params.imageName;
+        let imageNameWithoutPrefix = prefix.getImageNameWithoutPrefix(imageName);
+        console.log("Method: moveImageToImageComplete; imageNameWithoutPrefix: " + imageNameWithoutPrefix);
         var imageName_new = req.params.imageName_new;
-        var result = this.moveImage(this.imageDir_edited, this.imageDir_complete, imageName, imageName_new);
+        var result = this.moveImage(this.imageDir_edited, this.imageDir_complete, imageName, imageNameWithoutPrefix);
         result.then((value: ReturnObject) => {
             res.status(value.status).send(value);
         }, (error) => {
@@ -327,7 +329,7 @@ export class Server {
             }
             let result = this.exifTool.deleteAllMetadata(this.imageDir, imageName);
             result.then((data) => {
-                let _data={body:""};
+                let _data = { body: "" };
                 _data.body = '' + data;
                 console.log('exifTool message:' + _data.body);
                 res.status(200).send(_data);

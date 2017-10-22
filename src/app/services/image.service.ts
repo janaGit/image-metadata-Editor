@@ -25,11 +25,11 @@ export class ImageService {
      *  Path to the folder for the images that are shown in the original images view.
      */
     private _imageDir_original: string;
-      /**
-     *  Path to the folder for the images that are shown in the bottom bar of the 
-     *  image gallery (completely edited images). Folder: images_complete
-     * 
-     */
+    /**
+   *  Path to the folder for the images that are shown in the bottom bar of the 
+   *  image gallery (completely edited images). Folder: images_complete
+   * 
+   */
     private _imageDir_complete: string;
 
     /**
@@ -77,6 +77,12 @@ export class ImageService {
      * to the image gallery (path: imageDir_edited).
      */
     private _postMoveImage_ToImageGallery = this._serverBase + '/moveImageToImageGallery';
+
+    /**
+     * Restful webservice URL to move an image from the image gallery (path: imageDir_edited)
+     * to the imagesComplete folder (path: imageDir_complete).
+     */
+    private _postMoveImage_ToImagesComplete = this._serverBase + '/moveImageToImagesComplete';
 
     /**
      * Restful webservice URL to copy an image from the original images view (path:imgDir_original)
@@ -214,17 +220,14 @@ export class ImageService {
     deleteImage(imageName: string): Observable<string[]> {
         if (imageName !== "selectAll_Images.png") {
             let imageNames = this._editorService.imageNamesInFolder;
-            let imageName_withPrefix: string[] = this._editorService.returnArrayElementsWithSubstring(imageNames, imageName);
-            if (imageName_withPrefix.length !== 1) {
-                this.$log.error("Image name:" + imageName + " was found multiple times with different prefixes!");
-                process.exit();
+            if (imageNames.some(image => image === imageName)) {
+                return this._http.delete(this._deleteImageUrl + '/' + imageName)
+                    .map(this.extractData).map(request => {
+                        this.updateImageNamesInFolder();
+                        return request;
+                    })
+                    .catch(this.handleError);
             }
-            return this._http.delete(this._deleteImageUrl + '/' + imageName_withPrefix[0])
-                .map(this.extractData).map(request => {
-                    this.updateImageNamesInFolder();
-                    return request;
-                })
-                .catch(this.handleError);
         } else { return null }
     }
 
@@ -251,6 +254,20 @@ export class ImageService {
             .map(this.extractData).map(request => {
                 this.updateImageNamesInFolder_edited();
                 this.updateImageNamesInFolder();
+                return request;
+            })
+            .catch(this.handleError);
+    }
+
+    /**
+     * Method that does a request for moving a specific image from the image gallery 
+     * (path: imageDir_edited) to the imagesComplete folder (path_ imageDir_complete).
+     */
+    moveImageToImagesComplete(imageName: string): Observable<string> {
+        return this._http.post(this._postMoveImage_ToImagesComplete + '/' + imageName, "")
+            .map(this.extractData).map(request => {
+                this.updateImageNamesInFolder_edited();
+                this.updateImageNamesInFolder_complete();
                 return request;
             })
             .catch(this.handleError);

@@ -13,17 +13,17 @@
   </div>
 
   <div style="flex:1; display:flex;align-items: center;justify-content:center;">
-    <button type='button' class='btn' (click)=previousImage()> < </button>
-    <button type='button' class='btn' (click)=nextImage()> > </button>
+    <button type='button' class='btn' (click)=previousImage()>
+      < </button>
+        <button type='button' class='btn' (click)=nextImage()> > </button>
   </div>
 
 
 
   <div id='image-place' style="flex:3;display:flex;justify-content: center; align-items: center">
     <div>
-      <div class='img-thumbnail' *ngIf="imageName" [class.deleteMetadataButton]="_editorService.test_deleteMetadata(imageName)">
-        <img id="image" class="img-responsive"  src={{imgPath}} (click)="displayMetadataModal()" (onMouseOverImage)="null"
-          [contextMenuElements]="_contextMenuElements">
+      <div class='img-thumbnail' *ngIf="imageName" [class.deleteMetadataButton]="prefix.isMetadataDeleted(imageName)">
+        <img id="image" class="img-responsive" src={{imgPath}} (click)="displayMetadataModal()" (onMouseOverImage)="null" [contextMenuElements]="_contextMenuElements">
       </div>
       <div id="image-info" style="flex:1;display: flex; justify-content: space-between; margin-top: 2%;">
         <button type='button' class='btn' id='deleteFile' (click)=deleteImage()> Delete File </button>
