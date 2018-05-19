@@ -327,16 +327,16 @@ export class Server {
             if (files.indexOf(imageName) === -1) {
                 res.status(404).send('File does not exist.');
             }
-            let result = this.exifTool.deleteAllMetadata(this.imageDir, imageName);
+            let result =  this.exifTool.deleteAllMetadata(this.imageDir, imageName);
             result.then((data) => {
                 let _data = { body: "" };
                 _data.body = '' + data;
-                console.log('exifTool message:' + _data.body);
+                console.log('deleteAllMetadata server.ts message:' + _data.body);
                 res.status(200).send(_data);
             }, (error) => {
-                var _error;
+                var _error = { body: "" };
                 _error.body = '' + error;
-                console.error('deleteAllMetadata app.js:' + _error);
+                console.error('deleteAllMetadata server.ts  error:' + _error.body);
                 res.status(500).send(_error);
             });
         });
