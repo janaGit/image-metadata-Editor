@@ -4,9 +4,9 @@ export const METADATA_DELETED = "editedx_";
 export const imagePrefixes = [IMAGE_EDITED, METADATA_DELETED]
 /**
  * This method tests if an image name exists in the list without
- * taking the prefixes into account.
+ * taking the prefixes into account. Then it returns the Name with its prefix.
  */
-export function isImageNameInList_prefixNotConsidered(imageName, imageList: string[]): string {
+export function getImageNameInList_prefixNotConsidered(imageName, imageList: string[]): string {
     return imageList.find(imgName => {
         let name = imagePrefixes.find(prefix => {
             return imgName == prefix + imageName;
