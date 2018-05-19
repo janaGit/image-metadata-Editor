@@ -2,6 +2,12 @@
 import * as child_process from 'child_process';
 import * as readline from 'readline';
 import * as prefix from "../utilities/image-prefixes";
+import * as fs from 'fs';
+interface ImageData {
+  imageName: string,
+  imageNameAfterProcessing: string,
+  imageDir: string
+}
 export class ExifTool {
   private _languages = ['cs', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pl', 'ru', 'sv', 'tr', 'zh_cn', 'zh_tw'];
 
@@ -33,30 +39,57 @@ export class ExifTool {
       });
     });
   }
-  public deleteAllMetadata(imageDir, imageName) {
-    return new Promise((resolve, reject) => {
-      if (imageName.indexOf("editedx") === -1) {
-        let imageName_x = imageName.replace(prefix.IMAGE_EDITED, prefix.METADATA_DELETED);
-        const ls = child_process.spawn('exiftool', ['-all=', '-tagsFromFile', '@', '-orientation', '-overwrite_original', '-filename=' + imageDir + '/' + imageName_x, imageDir + '/' + imageName]);
-        ls.stdout.on('data', (data) => {
-          console.log('exifTool message:' + data);
-          resolve(data);
-        });
-        ls.stderr.on('data', (data: string) => {
-          console.error('exifTool error:' + data);
-          if (data.includes('Warning: No writable tags set from ')) {
-            resolve(data);
-          }
-          reject(data);
-        });
-      } else {
-        resolve("metadata of image:" + imageName + " has already been deleted");
+  public async deleteAllMetadata(imageDir, imageName): Promise<string> {
+    let data;
+    if (imageName.indexOf("editedx") === -1) {
+      let imageName_x = imageName.replace(prefix.IMAGE_EDITED, prefix.METADATA_DELETED);
+      const imageData: ImageData = {
+        imageName: imageName,
+        imageNameAfterProcessing: imageName_x,
+        imageDir: imageDir
       }
+      try {
+        const result = await this.tryProcessDeleteMetadataAndCopyTags(imageData);
+        data = new Promise((resolve, reject) => resolve(result));
+      } catch (errorData) {
+        if (errorData.includes('Warning: No writable tags set from ')) {
+          data = this.copyAndRenameFile(imageData);
+        } else {
+          data = new Promise((resolve, reject) => reject(errorData));
+        }
+      }
+    } else {
+      data = new Promise((resolve, reject) => resolve("metadata of image:" + imageName + " has already been deleted"));
+    }
+    return data;
+  }
+  private tryProcessDeleteMetadataAndCopyTags(imageData: ImageData): Promise<string> {
+    const ls = child_process.spawn('exiftool', ['-all=', '-tagsFromFile', '@', '-orientation', '-overwrite_original', '-filename=' + imageData.imageDir + '/' + imageData.imageNameAfterProcessing, imageData.imageDir + '/' + imageData.imageName]);
+    return this.LogAndReturnDataFromChildProcess(ls);
+  }
+  private async copyAndRenameFile(imageData: ImageData): Promise<string> {
+    const callbackFunction = (err) => {
+      if (err) throw err;
+    }
+    try {
+      await fs.rename(imageData.imageDir + '/' + imageData.imageName, imageData.imageDir + '/' + imageData.imageNameAfterProcessing);
+      return new Promise<string>((resolve, reject) => resolve("Simple file rename as no data were deleted from exiftool! File renamed from: " + imageData.imageName + " to " + imageData.imageNameAfterProcessing + ' in path: ' + imageData.imageDir));
+    } catch (e) {
+      return new Promise<string>((resolve, reject) => reject("rename error: " + imageData.imageName + " could not be renamed! " + e));
+    }
+  }
 
+  private LogAndReturnDataFromChildProcess(ls): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      ls.stdout.on('data', (data) => {
+        console.log('exifTool message:' + data);
+        resolve(data);
+      });
+      ls.stderr.on('data', (data: string) => {
+        console.error('exifTool error:' + data);
+        reject(data);
+      });
     });
-
-
-
   }
 
 }
