@@ -122,8 +122,8 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInEditingModus(imageName: string): boolean {
     if (this._imageNames && this._imageNames_edited) {
-      let imageFolder = prefix.isImageNameInList_prefixNotConsidered(imageName, this._imageNames);
-      let image_editedFolder = prefix.isImageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
+      let imageFolder = prefix.getImageNameInList_prefixNotConsidered(imageName, this._imageNames);
+      let image_editedFolder = prefix.getImageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
       if (imageFolder || image_editedFolder) {
         return true;
       }
@@ -136,7 +136,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInImagesFolder(imageName: string): boolean {
     if (this._imageNames) {
-      let imageFolder = prefix.isImageNameInList_prefixNotConsidered(imageName, this._imageNames);
+      let imageFolder = prefix.getImageNameInList_prefixNotConsidered(imageName, this._imageNames);
       if (imageFolder) {
         return true;
       }
@@ -149,9 +149,9 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInImagesEditedFolder(imageName: string): boolean {
     if (this._imageNames_edited) {
-      let image_editedFolder = prefix.isImageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
+      let image_editedInFolder = prefix.getImageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
 
-      if (image_editedFolder) {
+      if (image_editedInFolder) {
         return true;
       }
     }
@@ -162,6 +162,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    * original images in the bottom bar.
    */
   private contextMenuBottomBar(title) {
+    console.info('Bottom Bar Original Image: Context Menu action: '+ title);
     // For copying an image to the editing view (images folder)
     if (title === this._contextMenuElements[0].title) {
       if (!this.isInEditingModus(this._actualImage)) {
@@ -173,7 +174,9 @@ export class BottomBarOriginalImgComponent implements OnInit {
     // For deleting a copy of an image that is located in the images
     // folder.
     if (title === this._contextMenuElements_edit[0].title) {
-      this._imageService.deleteImage(this._actualImage).toPromise().catch(
+      console.info('Bottom Bar Original Image: Delete Image in Image Editing Mode! '+this._actualImage)
+      const imageWithPrefix = prefix.getImageNameInList_prefixNotConsidered(this._actualImage, this._imageNames);
+      this._imageService.deleteImage(imageWithPrefix).toPromise().catch(
         error => { this._errorMessage_imageService = <any>error }
       );
     }
