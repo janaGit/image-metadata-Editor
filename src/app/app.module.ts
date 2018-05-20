@@ -34,6 +34,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BottomBarComponent } from './modals/bottom-bar/bottom-bar.component';
 import { BottomBarCompleteImgComponent } from './bottom-bar-complete-img/bottom-bar-complete-img.component';
+import { ImeTooltipDirecive } from './directives/ime-tooltip.directive';
+import { TooltipModule } from 'ngx-bootstrap';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,6 +49,7 @@ import { BottomBarCompleteImgComponent } from './bottom-bar-complete-img/bottom-
     ContextMenuHolderComponent,
     ReturnDropedImageDirective,
     OnMouseOverImageDirective,
+    ImeTooltipDirecive,
     BottomBarComponent,
     BottomBarOriginalImgComponent,
     BottomBarCompleteImgComponent
@@ -57,7 +60,8 @@ import { BottomBarCompleteImgComponent } from './bottom-bar-complete-img/bottom-
     HttpModule,
     AppRoutingModule,
     TabsModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    TooltipModule.forRoot()
   ],
   providers: [Logger, EditorService, ImageService, ExifToolService, ContextMenuService],
   bootstrap: [AppComponent]

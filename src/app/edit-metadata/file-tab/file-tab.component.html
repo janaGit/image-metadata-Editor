@@ -28,7 +28,7 @@
           <img id="image" class="img-responsive" path="_imgPath" [style.background-image]="'url(' + _imgPath + ')'" (click)="displayMetadataModal()" (onMouseOverImage)="null" [contextMenuElements]="_contextMenuElements">
         </div>
         <div id="image-info" style="flex:1;display: flex; justify-content: space-between; margin-top: 2%;">
-          <button type='button' class='btn btn-trash' id='deleteFile' (click)=deleteImage()><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
+          <button type='button' class='btn btn-trash' id='deleteFile' (click)=deleteImage() [imeTooltip]="'Delete Image'"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
           <div *ngIf="_imageName"> {{_imageName}} </div>
           <div *ngIf="_imageNames">{{_imgNumber+1}}/{{_imageNames.length}}</div>
         </div>
