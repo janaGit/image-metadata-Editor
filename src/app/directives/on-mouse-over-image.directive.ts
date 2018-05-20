@@ -104,13 +104,17 @@ export class OnMouseOverImageDirective {
      * If 'src' has no content, then '' is returned.
      */
     private getImageName(event) {
-        let src = event.target.attributes.getNamedItem("src").value;
-        var srcList = src.split('/');
+        let src = event.target.attributes.getNamedItem("src");
+        if(src){
+            var srcList = src.value.split('/');
 
-        if (srcList.length > 1) {
-            let img_name = srcList[srcList.length - 1];
-            return img_name;
+            if (srcList.length > 1) {
+                let img_name = srcList[srcList.length - 1];
+                return img_name;
+            }
+
         }
+
 
         return '';
     }

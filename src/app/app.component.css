@@ -9,3 +9,7 @@ h1 {
 .bgwhite{
   background-color:white;
 }
+.ime-dropdown-menu{
+  min-width: 0;
+  left: -10px;
+}
