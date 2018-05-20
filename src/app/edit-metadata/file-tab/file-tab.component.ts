@@ -18,7 +18,7 @@ export class FileTabComponent implements OnInit {
     /**
      * Names of the images that can be shwn and edited.
      */
-    private imageNames: string[];
+    private _imageNames: string[];
     /**
      * If the image-service returns an error, 
      * the error message is stored in this variable.  
@@ -28,17 +28,17 @@ export class FileTabComponent implements OnInit {
      * The number to get the current selected image
      * in the imageName-Array 
      */
-    private imgNumber = 0;
+    private _imgNumber = 0;
     /**
      * Name of the current selected image.
      */
-    private imageName: string;
+    private _imageName: string;
     /**
      * Path for the current selected image:
      * 
      * imageDir / imageName
      */
-    private imgPath: string = this._imageService.imageDir + '/' + this.imageName;
+    private _imgPath: string = this._imageService.imageDir + '/' + this._imageName;
     /**
      * Visibility status of the modal that 
      * shows the metadata of the current image. 
@@ -70,18 +70,18 @@ export class FileTabComponent implements OnInit {
         // Subscribe to the image service to update the name 
         // of the current selected image
         this._editorService.imageName$.subscribe(imgName => {
-            this.imageName = imgName;
+            this._imageName = imgName;
         });
 
         this._editorService._imageNamesInFolder$
             .subscribe(
             images => {
                 //alert(images)
-                this.imageNames = images;
+                this._imageNames = images;
                 // Get the names of the available images. The first name
                 // in the list is the current selected image.
-                if (this.imageNames) {
-                    this.setCurrentImageName(null);
+                if (this._imageNames) {
+                    this.setCurrentImage(null);
                 }
 
             },
@@ -104,7 +104,7 @@ export class FileTabComponent implements OnInit {
      */
     addDroppedImage(file: File) {
         this._imageService.sendImage(file).then(fileName => {
-            this.setCurrentImageName('edited_' + fileName);
+            this.setCurrentImage('edited_' + fileName);
         });
     }
 
@@ -118,7 +118,7 @@ export class FileTabComponent implements OnInit {
         if (typeof name === 'undefined') {
             return -1;
         }
-        let index = this.imageNames.findIndex(
+        let index = this._imageNames.findIndex(
             element => {
                 if (name == element) {
                     return true;
@@ -139,7 +139,7 @@ export class FileTabComponent implements OnInit {
      * button was clicked. 
      */
     nextImage() {
-        this.setCurrentImageName(1);
+        this.setCurrentImage(1);
     }
     /**
      * The predeccessor of the current image name in the imageName-array
@@ -149,7 +149,7 @@ export class FileTabComponent implements OnInit {
      * button was clicked. 
      */
     previousImage() {
-        this.setCurrentImageName(-1);
+        this.setCurrentImage(-1);
     }
     /**
      * A new image name can be updated on different ways:
@@ -167,33 +167,33 @@ export class FileTabComponent implements OnInit {
      * 
      * The new image name is then communicated to the ImageService.
      */
-    setCurrentImageName(value: any) {
+    setCurrentImage(value: any) {
         switch (typeof value) {
             case 'object':
-                this.imgNumber = 0;
+                this._imgNumber = 0;
                 break;
             case 'string':
                 let index = this.getImageNumber(value);
                 if (index != -1) {
-                    this.imgNumber = index;
+                    this._imgNumber = index;
                 }
                 break;
             case 'number':
                 if (Math.abs(value) > 1) {
                     throw new Error('{value} is a number but it is not: 0 or 1 or -1');
                 }
-                this.imgNumber = this.imgNumber + value;
-                if (this.imgNumber == this.imageNames.length) {
-                    this.imgNumber = 0;
+                this._imgNumber = this._imgNumber + value;
+                if (this._imgNumber == this._imageNames.length) {
+                    this._imgNumber = 0;
                 } else {
-                    if (this.imgNumber < 0) {
-                        this.imgNumber = this.imageNames.length - 1;
+                    if (this._imgNumber < 0) {
+                        this._imgNumber = this._imageNames.length - 1;
                     }
                 }
         }
-        this.imageName = this.imageNames[this.imgNumber];
-        this._editorService.updateImageName(this.imageName);
-        this.imgPath = this._imageService.imageDir + '/' + this.imageName;
+        this._imageName = this._imageNames[this._imgNumber];
+        this._editorService.updateImageName(this._imageName);
+        this._imgPath = this._imageService.imageDir + '/' + this._imageName;
     }
     /**
      * Deletes the current selected image and refreshes the list with 
@@ -203,8 +203,8 @@ export class FileTabComponent implements OnInit {
      * button was clicked.
      */
     deleteImage() {
-        this._imageService.deleteImage(this.imageName).subscribe(
-            data => { this.setCurrentImageName(0); this._imageService.updateImageNamesInFolder() },
+        this._imageService.deleteImage(this._imageName).subscribe(
+            data => { this.setCurrentImage(0); this._imageService.updateImageNamesInFolder() },
             error => this.errorMessage = error
         );
     }
@@ -272,20 +272,36 @@ export class FileTabComponent implements OnInit {
      */
     contextMenu(val) {
         if (val === this._contextMenuElements[0].title) {
-            this._imageService.moveImageToImageGallery(this.imageName).subscribe(
-                data => { this.setCurrentImageName(0); },
-                error => this.errorMessage = error
-            );
+            this.moveCurrentImageToImageGallery();
         }
     }
 
     /**
      * Deletes the metadata of the current image.
      */
-    deleteMetadata() {
-        this._exifToolService.deleteAllMetadata(this.imageName).subscribe(
-            () => { this.setCurrentImageName(0); },
+    deleteMetadataOfCurrentImage() {
+        this._exifToolService.deleteAllMetadata(this._imageName).subscribe(
+            () => { this.setCurrentImage(0); },
             error => { this.errorMessage = error }
         );
     }
+    /**
+ * Deletes the metadata of the current image.
+ */
+    deleteMetadataOfCurrentImageAndMove() {
+        this.deleteMetadataOfCurrentImage();
+        this.moveCurrentImageToImageGallery();
+    }
+    moveCurrentImageToImageGallery() {
+        this._imageService.moveImageToImageGallery(this._imageName).subscribe(
+            data => { this.setCurrentImage(0); },
+            error => this.errorMessage = error
+        );
+    }
+      /**
+   * This method deletes all images in the images folder.
+   */
+  private deleteAllCopies() {
+    this._imageService.deleteAllImagesInImagesFolder(this._imageNames);
+  }
 }
