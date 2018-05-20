@@ -18,3 +18,12 @@ app {
   flex-direction: column;
   justify-content: space-between;
 }
+
+/* Tooltip */
+
+.tooltip.top .tooltip-arrow {
+  border-top-color: #009688;
+}
+.tooltip-inner {
+  background-color: #009688;
+}
