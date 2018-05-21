@@ -2,10 +2,10 @@
 
   <div style="flex:2; display:flex; flex-direction: column;">
     <div style="flex:1; display:flex; flex-direction:column; align-items: flex-start">
-      <div type='button' class='btn' (click)=setCurrentImage(null) [imeTooltip]="'Back to first image'">
+      <div type='button' class='btn' (click)=setCurrentImage(null) [imeTooltip]="'Back to first image'" tooltipPlacement="right">
         <i class="fas fa-fast-backward"></i>
       </div>
-      <div type='button' class="btn" (click)="deleteAllCopies()" [imeTooltip]="'Delete all copies'">
+      <div type='button' class="btn" (click)="deleteAllCopies()" [imeTooltip]="'Delete all copies'" tooltipPlacement="right">
         <i class="fas fa-trash-alt"></i>
         <i class="fas fa-copy"></i>
       </div>
@@ -21,10 +21,10 @@
 
   <div id='image-place' style="flex:5;display:flex;justify-content: center; align-items: center">
     <div style="flex:1; display:flex;align-items: center;justify-content:center;">
-      <div type='button' class='btn' style="margin-right: 2%" (click)=previousImage()>
+      <div type='button' class='btn' style="margin-right: 2%" (click)=previousImage() [imeTooltip]="'Previous image'">
         <i class="fas fa-angle-left fa-3x"></i>
       </div>
-      <div type='button' class='btn' (click)=nextImage()>
+      <div type='button' class='btn' (click)=nextImage() [imeTooltip]="'Next image'">
         <i class="fas fa-angle-right fa-3x"></i>
       </div>
     </div>
