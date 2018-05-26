@@ -19,6 +19,9 @@ app {
   justify-content: space-between;
 }
 
+img {
+  image-orientation: from-image;
+}
 /* Tooltip */
 
 .tooltip.top .tooltip-arrow {

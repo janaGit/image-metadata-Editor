@@ -32,7 +32,7 @@
       <div>
         <div class='img-thumbnail' style="height: 250px; width:380px;display: flex; align-items: center; justify-content: center"
           *ngIf="_imageName" [class.deleteMetadataButton]="prefix.isMetadataDeleted(_imageName)">
-          <img id="image" class="img-responsive" path="_imgPath" [style.background-image]="'url(' + _imgPath + ')'" (click)="displayMetadataModal()"
+          <img id="image" class="img-responsive" [src]="_imgPath" (click)="displayMetadataModal()"
             (onMouseOverImage)="null" [contextMenuElements]="_contextMenuElements">
         </div>
         <div id="image-info" style="flex:1;display: flex; justify-content: space-between; margin-top: 2%;">

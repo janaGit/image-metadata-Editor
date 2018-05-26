@@ -2,7 +2,9 @@
   <div id="menu">
     <div id="visibleImages_dropdown" class="dropdown menuItems">
       <div dropdown>
-        <button id="visibleImages_button" class="btn" dropdownToggle>{{_visibleImage}} <span class="caret"></span></button>
+        <button id="visibleImages_button" class="btn" dropdownToggle>{{_visibleImage}}
+          <span class="caret"></span>
+        </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <li class="li-equal-width" *ngFor="let visibleImage of _visibleImages">
             <a class="dropdown-item" (click)="select_visibleImages($event)">{{visibleImage}}</a>
@@ -21,8 +23,12 @@
           <a>
             <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
               (onMouseOverImage)="onMouseOverImage($event)" [contextMenuElements]="_contextMenuElements_edited" />
-            <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (onMouseOverImage)="onMouseOverImage($event)"
-              [contextMenuElements]="_contextMenuElements_edit" />
+            <div class="preview" [class.editing]="isInEditingModus(imgName)">
+              <div>
+                  <img src="{{_imageService.imageDir_original}}/{{imgName}}"  (onMouseOverImage)="onMouseOverImage($event)"
+                  [contextMenuElements]="_contextMenuElements_edit" />
+              </div>
+            </div>
           </a>
         </li>
         <li *ngIf="isInImagesEditedFolder(imgName)&&_visibleImage!==_visibleImages[2]">
@@ -30,8 +36,12 @@
             <a>
               <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
                 (contextmenu)="$event.preventDefault()" />
-              <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (contextmenu)="$event.preventDefault()"
-              />
+              <div class="preview" [class.editing]="isInEditingModus(imgName)">
+                <div>
+                    <img src="{{_imageService.imageDir_original}}/{{imgName}}"  (contextmenu)="$event.preventDefault()"/>
+                </div>
+                
+              </div>
             </a>
             <span>Image Gallery</span>
           </div>
@@ -40,8 +50,12 @@
           <a>
             <img src="{{_imageService.imageDir_original}}/{{imgName}}" alt="description" [class.editing]="isInEditingModus(imgName)"
               (onMouseOverImage)="onMouseOverImage($event)" [contextMenuElements]="_contextMenuElements" />
-            <img src="{{_imageService.imageDir_original}}/{{imgName}}" class="preview" [class.editing]="isInEditingModus(imgName)" (onMouseOverImage)="onMouseOverImage($event)"
-              [contextMenuElements]="_contextMenuElements" />
+            <div class="preview" [class.editing]="isInEditingModus(imgName)">
+              <div>
+                  <img src="{{_imageService.imageDir_original}}/{{imgName}}"   (onMouseOverImage)="onMouseOverImage($event)"
+                  [contextMenuElements]="_contextMenuElements" />
+              </div>
+            </div>
           </a>
         </li>
       </div>
