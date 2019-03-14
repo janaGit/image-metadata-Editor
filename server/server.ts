@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as prefix from "../utilities/image-prefixes";
 import { ExifTool } from './exif-tool';
-import { ReturnObject } from './return-object';
+import { ReturnObject } from '../src/app/types/return-object.interface';
 
 export class Server {
     private imageDir: string;
@@ -174,10 +174,9 @@ export class Server {
         var metadata = this.getMetadata(this.imageDir_edited, imageName, lang);
         metadata.then((value) => {
             res.send(value);
-        }),
-            (error) => {
-                res.status(404).send(error);
-            };
+        }, (error) => {
+            res.status(404).send(error);
+        });
     }
 
     private getMetadata = (imageDir, imageName, lang) => {
@@ -327,15 +326,13 @@ export class Server {
             if (files.indexOf(imageName) === -1) {
                 res.status(404).send('File does not exist.');
             }
-            let result =  this.exifTool.deleteAllMetadata(this.imageDir, imageName);
+            let result = this.exifTool.deleteAllMetadata(this.imageDir, imageName);
             result.then((data) => {
-                let _data = { body: "" };
-                _data.body = '' + data;
+                let _data = { body: data };
                 console.log('deleteAllMetadata server.ts message:' + _data.body);
                 res.status(200).send(_data);
             }, (error) => {
-                var _error = { body: "" };
-                _error.body = '' + error;
+                var _error = { body: error };
                 console.error('deleteAllMetadata server.ts  error:' + _error.body);
                 res.status(500).send(_error);
             });

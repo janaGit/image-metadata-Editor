@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EditorService } from './editor.service';
 import { ImageService } from './image.service';
+import {ReturnObject} from '../types/return-object.interface'
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the image metadata.
@@ -120,12 +121,14 @@ export class ExifToolService {
 
     /**
      * Method that deletes the metadata of images of the editing view.
+     * @param imageName Image name of Image that metadata should be deleted.
+     * @return Name of Image after deleted image data. (Image is renamed after deleting image data)
      */
-    deleteAllMetadata(imageName): Observable<string[]> {
+    deleteAllMetadataOfImage(imageName: string): Observable<string> {
         return this._http.post(this._deleteAllMetadata + '/' + imageName, "")
-            .map(this.extractData).map(request => {
+            .map(this.extractReturnObject).map(returnObject => {
                 this._imageService.updateImageNamesInFolder();
-                return request;
+                return returnObject.payload.imageName;
             })
             .catch(this.handleError);
     }
@@ -137,6 +140,13 @@ export class ExifToolService {
         }
         let body = res.json();
         return body.data || {};
+    }
+    private extractReturnObject(res: Response): ReturnObject {
+        if (res.status < 200 || res.status >= 300) {
+            throw new Error('Bad response status: ' + res.status);
+        }
+        let json = res.json();
+        return json.body || {};
     }
     private handleError(error: any) {
         let err = error || 'Server error';

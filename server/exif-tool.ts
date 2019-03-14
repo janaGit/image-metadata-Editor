@@ -3,6 +3,8 @@ import * as child_process from 'child_process';
 import * as readline from 'readline';
 import * as prefix from "../utilities/image-prefixes";
 import * as fs from 'fs';
+import { ReturnObject } from 'app/types/return-object.interface';
+
 interface ImageData {
   imageName: string,
   imageNameAfterProcessing: string,
@@ -39,7 +41,8 @@ export class ExifTool {
       });
     });
   }
-  public async deleteAllMetadata(imageDir, imageName): Promise<string> {
+
+  public async deleteAllMetadata(imageDir, imageName): Promise<ReturnObject> {
     let data;
     if (imageName.indexOf("editedx") === -1) {
       let imageName_x = imageName.replace(prefix.IMAGE_EDITED, prefix.METADATA_DELETED);
@@ -50,16 +53,16 @@ export class ExifTool {
       }
       try {
         const result = await this.tryProcessDeleteMetadataAndCopyTags(imageData);
-        data = new Promise((resolve, reject) => resolve(result));
+        data = new Promise((resolve, reject) => resolve({ message: result, payload: { imageName: imageName_x } }));
       } catch (errorData) {
         if (errorData.includes('Warning: No writable tags set from ')) {
           data = this.copyAndRenameFile(imageData);
         } else {
-          data = new Promise((resolve, reject) => reject(errorData));
+          data = new Promise((resolve, reject) => reject({ message: errorData, payload: null }));
         }
       }
     } else {
-      data = new Promise((resolve, reject) => resolve("metadata of image:" + imageName + " has already been deleted"));
+      data = new Promise((resolve, reject) => resolve({ message: "metadata of image:" + imageName + " has already been deleted", payload: { imageName: imageName } }));
     }
     return data;
   }

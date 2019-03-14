@@ -303,7 +303,7 @@ export class ImageService {
      * This method deletes all images that are declared
      * in the array and located in the images folder.
      */
-    deleteAllImagesInImagesFolder(imageNames: string[]): Promise<number> {
+    deleteAllImagesInImagesFolder(imageNames: string[]): Promise<boolean> {
         return new Promise((resolve, reject) => {
             let count = 0;
             let finish = imageNames.length;

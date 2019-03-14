@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Inject, HostListener } from '@angular/core';
-import { Subject } from 'rxjs/Rx';
+import { Subject, Observable } from 'rxjs/Rx';
 import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
@@ -75,17 +75,17 @@ export class FileTabComponent implements OnInit {
 
         this._editorService._imageNamesInFolder$
             .subscribe(
-            images => {
-                //alert(images)
-                this._imageNames = images;
-                // Get the names of the available images. The first name
-                // in the list is the current selected image.
-                if (this._imageNames) {
-                    this.setCurrentImage(null);
-                }
+                images => {
+                    //alert(images)
+                    this._imageNames = images;
+                    // Get the names of the available images. The first name
+                    // in the list is the current selected image.
+                    if (this._imageNames) {
+                        this.setCurrentImage(null);
+                    }
 
-            },
-            error => this.errorMessage = error
+                },
+                error => this.errorMessage = error
             );
 
     }
@@ -279,29 +279,38 @@ export class FileTabComponent implements OnInit {
     /**
      * Deletes the metadata of the current image.
      */
-    deleteMetadataOfCurrentImage() {
-        this._exifToolService.deleteAllMetadata(this._imageName).subscribe(
-            () => { this.setCurrentImage(0); },
-            error => { this.errorMessage = error }
+    deleteMetadataOfCurrentImage(): Observable<string> {
+       return  this._exifToolService.deleteAllMetadataOfImage(this._imageName).map(
+            (imageName) => { this.setCurrentImage(0); return imageName},
+            error => { this.errorMessage = error ; return null}
         );
+    }
+    
+    onClickDeleteAllMetadataOfCurrentImage(){
+        this.deleteMetadataOfCurrentImage().toPromise();
     }
     /**
  * Deletes the metadata of the current image.
  */
     deleteMetadataOfCurrentImageAndMove() {
-        this.deleteMetadataOfCurrentImage();
-        this.moveCurrentImageToImageGallery();
+        this.deleteMetadataOfCurrentImage().toPromise().then( imageName =>{
+            if(imageName){
+                this._imageService.moveImageToImageGallery(imageName).subscribe();
+            }
+        });
     }
+   
     moveCurrentImageToImageGallery() {
         this._imageService.moveImageToImageGallery(this._imageName).subscribe(
             data => { this.setCurrentImage(0); },
             error => this.errorMessage = error
         );
     }
-      /**
-   * This method deletes all images in the images folder.
-   */
-  private deleteAllCopies() {
-    this._imageService.deleteAllImagesInImagesFolder(this._imageNames);
-  }
+    
+    /**
+ * This method deletes all images in the images folder.
+ */
+   deleteAllCopies() {
+        this._imageService.deleteAllImagesInImagesFolder(this._imageNames);
+    }
 }
