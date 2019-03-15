@@ -5,6 +5,7 @@ import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
 import { ContextMenu } from './../../types/context-menu.type';
 import * as prefix from "../../../../utilities/image-prefixes";
+import { filterFilesToIgnore } from '../../../../utilities/utilitiy-methods';
 /**
  * This class provides the controller for the file-tab in the
  * editor view.
@@ -314,7 +315,12 @@ export class FileTabComponent implements OnInit {
             this.errorMessage = error
         }
     }
-
+    deleteMetadataOfALLImagesAndMoveThemToImageGallery() {
+        this._imageNames.filter(filterFilesToIgnore).map(async (imageName) => {
+            const newImageName = await this._exifToolService.deleteAllMetadataOfImage(imageName);
+            await this._imageService.moveImageToImageGallery(newImageName);
+        })
+    }
     /**
  * This method deletes all images in the images folder.
  */

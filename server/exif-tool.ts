@@ -1,7 +1,7 @@
 
 import * as child_process from 'child_process';
 import * as readline from 'readline';
-import * as prefix from "../utilities/image-prefixes";
+import * as constants from "../utilities/constants";
 import * as fs from 'fs';
 import { ReturnObject } from 'app/types/return-object.interface';
 
@@ -43,9 +43,9 @@ export class ExifTool {
   }
 
   public async deleteAllMetadata(imageDir, imageName): Promise<ReturnObject> {
-    let data;
+    let data: ReturnObject;
     if (imageName.indexOf("editedx") === -1) {
-      let imageName_x = imageName.replace(prefix.IMAGE_EDITED, prefix.METADATA_DELETED);
+      let imageName_x = imageName.replace(constants.IMAGE_EDITED, constants.METADATA_DELETED);
       const imageData: ImageData = {
         imageName: imageName,
         imageNameAfterProcessing: imageName_x,
@@ -53,16 +53,33 @@ export class ExifTool {
       }
       try {
         const result = await this.tryProcessDeleteMetadataAndCopyTags(imageData);
-        data = new Promise((resolve, reject) => resolve({ message: result, payload: { imageName: imageName_x } }));
+        data = {
+          status: 200,
+          message: result,
+          payload: { imageName: imageName_x }
+        };
       } catch (errorData) {
         if (errorData.includes('Warning: No writable tags set from ')) {
-          data = this.copyAndRenameFile(imageData);
+          const _message = await this.copyAndRenameFile(imageData);
+          data = {
+            status: 200,
+            message: _message,
+            payload: { imageName: imageName }
+          }
         } else {
-          data = new Promise((resolve, reject) => reject({ message: errorData, payload: null }));
+          data = {
+            status: 500,
+            message: errorData,
+            payload: null
+          };
         }
       }
     } else {
-      data = new Promise((resolve, reject) => resolve({ message: "metadata of image:" + imageName + " has already been deleted", payload: { imageName: imageName } }));
+      data = {
+        status: 200,
+        message: "metadata of image:" + imageName + " has already been deleted",
+        payload: { imageName: imageName }
+      };
     }
     return data;
   }

@@ -1,7 +1,5 @@
+import { imagePrefixes, METADATA_DELETED } from "./constants";
 
-export const IMAGE_EDITED = "edited_";
-export const METADATA_DELETED = "editedx_";
-export const imagePrefixes = [IMAGE_EDITED, METADATA_DELETED]
 /**
  * This method tests if an image name exists in the list without
  * taking the prefixes into account. Then it returns the Name with its prefix.
