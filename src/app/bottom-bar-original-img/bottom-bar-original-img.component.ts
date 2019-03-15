@@ -166,7 +166,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
     // For copying an image to the editing view (images folder)
     if (title === this._contextMenuElements[0].title) {
       if (!this.isInEditingModus(this._actualImage)) {
-        this._imageService.copyImageForEditing(this._actualImage).toPromise().catch(
+        this._imageService.copyImageForEditing(this._actualImage).catch(
           error => { this._errorMessage_imageService = <any>error }
         );
       }
@@ -176,7 +176,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
     if (title === this._contextMenuElements_edit[0].title) {
       console.info('Bottom Bar Original Image: Delete Image in Image Editing Mode! '+this._actualImage)
       const imageWithPrefix = prefix.getImageNameInList_prefixNotConsidered(this._actualImage, this._imageNames);
-      this._imageService.deleteImage(imageWithPrefix).toPromise().catch(
+      this._imageService.deleteImage(imageWithPrefix).catch(
         error => { this._errorMessage_imageService = <any>error }
       );
     }

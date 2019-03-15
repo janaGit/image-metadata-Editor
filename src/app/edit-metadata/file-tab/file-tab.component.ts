@@ -202,11 +202,14 @@ export class FileTabComponent implements OnInit {
      * This method is executed when the 'Delete File' 
      * button was clicked.
      */
-    deleteImage() {
-        this._imageService.deleteImage(this._imageName).subscribe(
-            data => { this.setCurrentImage(0); this._imageService.updateImageNamesInFolder() },
-            error => this.errorMessage = error
-        );
+    async deleteImage() {
+        try {
+            const data = await this._imageService.deleteImage(this._imageName);
+            this.setCurrentImage(0);
+            this._imageService.updateImageNamesInFolder()
+        } catch (error) {
+            this.errorMessage = error;
+        }
     }
     /**
      * Tests if metadata are available for the current image.
@@ -279,38 +282,43 @@ export class FileTabComponent implements OnInit {
     /**
      * Deletes the metadata of the current image.
      */
-    deleteMetadataOfCurrentImage(): Observable<string> {
-       return  this._exifToolService.deleteAllMetadataOfImage(this._imageName).map(
-            (imageName) => { this.setCurrentImage(0); return imageName},
-            error => { this.errorMessage = error ; return null}
-        );
+    async deleteMetadataOfCurrentImage(): Promise<string> {
+        try {
+            const imageName = await this._exifToolService.deleteAllMetadataOfImage(this._imageName);
+            this.setCurrentImage(0);
+            return imageName
+        } catch (error) {
+            this.errorMessage = error;
+            return null;
+        }
     }
-    
-    onClickDeleteAllMetadataOfCurrentImage(){
-        this.deleteMetadataOfCurrentImage().toPromise();
+
+    onClickDeleteAllMetadataOfCurrentImage() {
+        this.deleteMetadataOfCurrentImage();
     }
     /**
- * Deletes the metadata of the current image.
- */
-    deleteMetadataOfCurrentImageAndMove() {
-        this.deleteMetadataOfCurrentImage().toPromise().then( imageName =>{
-            if(imageName){
-                this._imageService.moveImageToImageGallery(imageName).subscribe();
-            }
-        });
+     * Deletes the metadata of the current image.
+     */
+    async deleteMetadataOfCurrentImageAndMove() {
+        const imageName = await this.deleteMetadataOfCurrentImage();
+        if (imageName) {
+            this._imageService.moveImageToImageGallery(imageName);
+        }
     }
-   
-    moveCurrentImageToImageGallery() {
-        this._imageService.moveImageToImageGallery(this._imageName).subscribe(
-            data => { this.setCurrentImage(0); },
-            error => this.errorMessage = error
-        );
+
+    async moveCurrentImageToImageGallery() {
+        try {
+            const data = await this._imageService.moveImageToImageGallery(this._imageName);
+            this.setCurrentImage(0)
+        } catch (error) {
+            this.errorMessage = error
+        }
     }
-    
+
     /**
  * This method deletes all images in the images folder.
  */
-   deleteAllCopies() {
+    deleteAllCopies() {
         this._imageService.deleteAllImagesInImagesFolder(this._imageNames);
     }
 }

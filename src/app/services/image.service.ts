@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { EditorService } from './editor.service';
 import { Logger } from "angular2-logger/core";
-
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the images.
@@ -155,35 +154,47 @@ export class ImageService {
     /**
      * Method that requests the image names for the editing view.
      */
-    getImageNames(): Observable<string[]> {
-        return this._http.get(this._getImagesUrl)
-            .map(this.extractData)
-            .catch(this.handleError);
+    async getImageNames(): Promise<string[]> {
+        try {
+            return this._http.get(this._getImagesUrl)
+                .map(this.extractData).toPromise();
+        } catch (error) {
+            this.handleError(error);
+        }
     }
 
     /**
      * Method that requests the image names for the image gallery.
      */
-    getImageNames_edited(): Observable<string[]> {
-        return this._http.get(this._getImages_editedUrl)
-            .map(this.extractData)
-            .catch(this.handleError);
+    getImageNames_edited(): Promise<string[]> {
+        try {
+            return this._http.get(this._getImages_editedUrl)
+                .map(this.extractData).toPromise();
+        } catch (error) {
+            this.handleError(error);
+        }
     }
     /**
      * Method that requests the image names for the image gallery.
      */
-    getImageNames_complete(): Observable<string[]> {
-        return this._http.get(this._getImages_completeUrl)
-            .map(this.extractData)
-            .catch(this.handleError);
+    getImageNames_complete(): Promise<string[]> {
+        try {
+            return this._http.get(this._getImages_completeUrl)
+                .map(this.extractData).toPromise();
+        } catch (error) {
+            this.handleError(error);
+        }
     }
     /**
      * Method that requests the image names for the original images.
      */
-    getImageNames_original(): Observable<string[]> {
-        return this._http.get(this._getImages_originalUrl)
-            .map(this.extractData)
-            .catch(this.handleError);
+    getImageNames_original(): Promise<string[]> {
+        try {
+            return this._http.get(this._getImages_originalUrl)
+                .map(this.extractData).toPromise();
+        } catch (error) {
+            this.handleError(error);
+        }
     }
 
     /**
@@ -202,7 +213,7 @@ export class ImageService {
             formData.append('image', imageFile);
             request.onloadend = (() => {
                 this.updateImageNamesInFolder_original();
-                this.copyImageForEditing(request.responseText).toPromise().catch(error => {
+                this.copyImageForEditing(request.responseText).catch(error => {
                     reject(error);
                 });
                 resolve(request.responseText);
@@ -217,16 +228,18 @@ export class ImageService {
     /**
     * Method that does a delete request for images that are located in the path: imageDir. 
      */
-    deleteImage(imageName: string): Observable<string[]> {
+    deleteImage(imageName: string): Promise<string[]> {
         if (imageName !== "selectAll_Images.png") {
             let imageNames = this._editorService.imageNamesInFolder;
             if (imageNames.some(image => image === imageName)) {
-                return this._http.delete(this._deleteImageUrl + '/' + imageName)
-                    .map(this.extractData).map(request => {
-                        this.updateImageNamesInFolder();
-                        return request;
-                    })
-                    .catch(this.handleError);
+                try {
+                    const data = this._http.delete(this._deleteImageUrl + '/' + imageName)
+                        .map(this.extractData).toPromise();
+                    this.updateImageNamesInFolder();
+                    return data;
+                } catch (error) {
+                    this.handleError(error)
+                }
             }
         } else { return null }
     }
@@ -235,54 +248,67 @@ export class ImageService {
      * Method that does a request for moving a specific image from the image gallery
      * (path: imageDir_edited) back to the editing view (path: imageDir).
      */
-    moveImageBackForEditing(imageName: string): Observable<string> {
-        return this._http.post(this._postMoveImage_Back + '/' + imageName, "")
-            .map(this.extractData).map(request => {
-                this.updateImageNamesInFolder_edited();
-                this.updateImageNamesInFolder();
-                return request;
-            })
-            .catch(this.handleError);
+    async  moveImageBackForEditing(imageName: string): Promise<string> {
+        try {
+            const data = await this._http.post(this._postMoveImage_Back + '/' + imageName, "")
+                .map(this.extractData).
+                toPromise();
+            await this.updateImageNamesInFolder_edited();
+            this.updateImageNamesInFolder();
+            return data;
+
+        } catch (error) {
+            this.handleError(error);
+        }
+
+
     }
 
     /**
      * Method that does a request for moving a specific image from the editing view
      * (path: imageDir) to the image gallery (path: imageDir_edited).
      */
-    moveImageToImageGallery(imageName: string): Observable<string> {
-        return this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "")
-            .map(this.extractData).map(request => {
-                this.updateImageNamesInFolder_edited();
-                this.updateImageNamesInFolder();
-                return request;
-            })
-            .catch(this.handleError);
+    async moveImageToImageGallery(imageName: string): Promise<string> {
+        try {
+            const data = this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "")
+                .map(this.extractData).toPromise();
+            await this.updateImageNamesInFolder_edited();
+            this.updateImageNamesInFolder();
+            return data;
+        } catch (error) {
+            this.handleError(error);
+        }
+
     }
 
     /**
      * Method that does a request for moving a specific image from the image gallery 
      * (path: imageDir_edited) to the imagesComplete folder (path_ imageDir_complete).
      */
-    moveImageToImagesComplete(imageName: string): Observable<string> {
-        return this._http.post(this._postMoveImage_ToImagesComplete + '/' + imageName, "")
-            .map(this.extractData).map(request => {
-                this.updateImageNamesInFolder_edited();
-                this.updateImageNamesInFolder_complete();
-                return request;
-            })
-            .catch(this.handleError);
+    async  moveImageToImagesComplete(imageName: string): Promise<string> {
+        try {
+            const data = await this._http.post(this._postMoveImage_ToImagesComplete + '/' + imageName, "")
+                .map(this.extractData).toPromise();
+            await this.updateImageNamesInFolder_edited();
+            this.updateImageNamesInFolder_complete();
+            return data;
+        } catch (error) {
+            this.handleError(error);
+        }
     }
     /**
      * Method that does a request for copying a specific image from the original images folder
      * (path: imageDir_original) to the editing view (path: imageDir_edited).
      */
-    copyImageForEditing(imageName: string): Observable<string> {
-        return this._http.post(this._postCopyImage_ForEditing + '/' + imageName, "")
-            .map(this.extractData).map((request) => {
-                this.updateImageNamesInFolder();
-                return request;
-            })
-            .catch(this.handleError);
+    async copyImageForEditing(imageName: string): Promise<string> {
+        try {
+            const data = await this._http.post(this._postCopyImage_ForEditing + '/' + imageName, "")
+                .map(this.extractData).toPromise();
+            await this.updateImageNamesInFolder();
+            return data;
+        } catch (error) {
+            this.handleError(error);
+        }
     }
     /**
      * Method that does multiple requests for copying images from the original images folder
@@ -293,7 +319,7 @@ export class ImageService {
             let count = 0;
             let finish = imageNames.length;
             for (let imageName of imageNames) {
-                this.copyImageForEditing(imageName).toPromise().then(() => {
+                this.copyImageForEditing(imageName).then(() => {
                     count = this._editorService.countResolve(count, finish, resolve)
                 });
             }
@@ -308,7 +334,7 @@ export class ImageService {
             let count = 0;
             let finish = imageNames.length;
             for (let imageName of imageNames) {
-                this.deleteImage(imageName).toPromise().then(() => {
+                this.deleteImage(imageName).then(() => {
                     count = this._editorService.countResolve(count, finish, resolve);
                 }, rejected => {
                     reject(rejected);
@@ -321,9 +347,9 @@ export class ImageService {
      * in the folders: images, images_edited and images_original.
      * Then the editor service gets the updated list of names.
      */
-    private updateImageNamesOfAllFolders() {
+    private async updateImageNamesOfAllFolders() {
         this.updateImageNamesInFolder();
-        this.updateImageNamesInFolder_edited();
+        await this.updateImageNamesInFolder_edited();
         this.updateImageNamesInFolder_original();
     }
 
@@ -332,20 +358,26 @@ export class ImageService {
     * in the images folder.
     * Then the editor service gets the updated list of names.
     */
-    public updateImageNamesInFolder() {
-        this.getImageNames().toPromise().then((imageNames) => {
+    public async updateImageNamesInFolder() {
+        try {
+            const imageNames = await this.getImageNames()
             this._editorService.updateImageNamesInFolder(imageNames);
-        }, (error) => { console.error(error); });
+        } catch (error) {
+            console.error(error);
+        }
     }
     /** 
      * This method requests the names of the images that are placed 
      * in the images_original folder.
      * Then the editor service gets the updated list of names.
      */
-    public updateImageNamesInFolder_original() {
-        this.getImageNames_original().toPromise().then((imageNames) => {
+    public async updateImageNamesInFolder_original() {
+        try {
+            const imageNames = await this.getImageNames_original();
             this._editorService.updateImageNamesInFolder_original(imageNames);
-        }, (error) => { console.error(error); });
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     /** 
@@ -353,10 +385,13 @@ export class ImageService {
      * in the images_edited folder.
      * Then the editor service gets the updated list of names.
      */
-    public updateImageNamesInFolder_edited() {
-        this.getImageNames_edited().toPromise().then((imageNames) => {
+    public async updateImageNamesInFolder_edited() {
+        try {
+            const imageNames = await this.getImageNames_edited();
             this._editorService.updateImageNamesInFolder_edited(imageNames);
-        }, (error) => { console.error(error); });
+        } catch (error) {
+            console.error(error);
+        };
     }
 
     /** 
@@ -364,10 +399,13 @@ export class ImageService {
      * in the images_complete folder.
      * Then the editor service gets the updated list of names.
      */
-    public updateImageNamesInFolder_complete() {
-        this.getImageNames_complete().toPromise().then((imageNames) => {
+    public async updateImageNamesInFolder_complete() {
+        try {
+            const imageNames = await this.getImageNames_complete();
             this._editorService.updateImageNamesInFolder_complete(imageNames);
-        }, (error) => { console.error(error); });
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     private extractData(res: Response) {
@@ -378,8 +416,8 @@ export class ImageService {
         return body.data || {};
     }
     private handleError(error: any) {
-        let err = error.message || 'Server error';
+        let body = error.json();
+        let err = body.message || 'Server error';
         console.error(err);
-        return Observable.throw(err);
     }
 }

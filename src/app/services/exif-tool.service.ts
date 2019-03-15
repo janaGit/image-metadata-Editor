@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EditorService } from './editor.service';
 import { ImageService } from './image.service';
-import {ReturnObject} from '../types/return-object.interface'
+import { ReturnObject } from '../types/return-object.interface'
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the image metadata.
@@ -53,7 +53,7 @@ export class ExifToolService {
      */
     private _metadata_edited: Object;
 
-    constructor(private _http: Http, private _editorService: EditorService, private _imageService:ImageService) { }
+    constructor(private _http: Http, private _editorService: EditorService, private _imageService: ImageService) { }
 
     // Getter and setter
     /**
@@ -93,30 +93,34 @@ export class ExifToolService {
      * Method that does a request to the backend to get the metadata
      * of a specific image from the editing view.
      */
-    requestMetadata() {
-        return new Promise(resolve => {
-            this._http.get(this._getMetadata + '/' + this._editorService.imageName + '/' + this._language)
-                .map(this.extractData)
-                .catch(this.handleError).subscribe(
-                data => { this._metadata = data, this._errorMessage = null; resolve(); },
-                error => { this._errorMessage = error; this._metadata = null; resolve(); }
-                );
-
-        });
+    async requestMetadata() {
+        try {
+            const data = await this._http.get(this._getMetadata + '/' + this._editorService.imageName + '/' + this._language)
+                .map(this.extractData).toPromise();
+            this._metadata = data;
+            this._errorMessage = null;
+        } catch (error) {
+            this._errorMessage = error;
+            this._metadata = null;
+        }
     }
 
     /**
      * Method that does a request to the backend to get the metadata
      * of a specific image from the image gallery.
      */
-    requestMetadata_edited() {
-        return new Promise(resolve => {
-            this._http.get(this._getMetadata_edited + '/' + this._editorService.imageName_edited + '/' + this._language)
-                .map(this.extractData)
-                .catch(this.handleError).subscribe(
-                data => { this._metadata_edited = data; this._errorMessage = null; resolve(); },
-                error => { this._errorMessage = error; this._metadata_edited = null; resolve(); });
-        });
+    async requestMetadata_edited() {
+        try {
+            const data = await this._http.get(this._getMetadata_edited + '/' + this._editorService.imageName_edited + '/' + this._language)
+                .map(this.extractData).toPromise();
+            this._metadata_edited = data;
+            this._errorMessage = null;
+        } catch (error) {
+            this.handleError(error);
+            this._errorMessage = error;
+            this._metadata_edited = null;
+        }
+
     }
 
     /**
@@ -124,13 +128,17 @@ export class ExifToolService {
      * @param imageName Image name of Image that metadata should be deleted.
      * @return Name of Image after deleted image data. (Image is renamed after deleting image data)
      */
-    deleteAllMetadataOfImage(imageName: string): Observable<string> {
-        return this._http.post(this._deleteAllMetadata + '/' + imageName, "")
-            .map(this.extractReturnObject).map(returnObject => {
-                this._imageService.updateImageNamesInFolder();
-                return returnObject.payload.imageName;
-            })
-            .catch(this.handleError);
+    async deleteAllMetadataOfImage(imageName: string): Promise<string> {
+        try {
+            const returnObject = await this._http.post(this._deleteAllMetadata + '/' + imageName, "")
+                .map(this.extractReturnObject).toPromise();
+            this._imageService.updateImageNamesInFolder();
+            return returnObject.payload.imageName;
+        }
+        catch (error) {
+            this.handleError(error)
+        };
+
     }
 
 
@@ -149,9 +157,13 @@ export class ExifToolService {
         return json.body || {};
     }
     private handleError(error: any) {
-        let err = error || 'Server error';
-        console.error(err);
-        return Observable.throw(err);
+        let err = error || 'Error on server communication';
+        if (error.status === 404) {
+            console.warn(error);
+        } else {
+            console.error(err);
+        }
+
     }
 
 }

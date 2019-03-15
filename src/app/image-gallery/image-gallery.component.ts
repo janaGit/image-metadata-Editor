@@ -78,11 +78,12 @@ export class ImageGalleryComponent {
     ];
     prefix = prefix;
 
+
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService: EditorService, private _renderer: Renderer) { }
 
     ngOnInit() {
         // Set the variables
-        this.getImageNames();
+        this.subscribeToImageNamesInEditedFolder();
         this.imgDir_edited = this._imageService.imageDir_edited;
         // Subscribe to the subjects of the context elements and assign the contextMenu() to them.
         this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
@@ -119,15 +120,19 @@ export class ImageGalleryComponent {
     /**
      * This method requests the metadata of an image.
      */
-    getMetadata(imageName: string) {
+    async getMetadata(imageName: string) {
         // Update the image name of the actual image in the editor service via an observable.
         this._editorService.updateImageName_edited(imageName);
         // After that update the metadata of that image can be requested at the backend.
-        this._exifToolService.requestMetadata_edited().then(() => {
-            // Get the metadata from the exifToolService.
-            this.metadata = this._exifToolService.metadata_edited;
+        await this._exifToolService.requestMetadata_edited();
+        // Get the metadata from the exifToolService.
+        this.metadata = this._exifToolService.metadata_edited;
+        if (this.metadata) {
             this.metadata_keys = Object.keys(this.metadata);
-        });
+        } else {
+            this.metadata_keys = [];
+        }
+
     }
     /**
      * This method checks if an image has been fixed.
@@ -142,21 +147,21 @@ export class ImageGalleryComponent {
      * This method processes the contextMenu events of the
      * images.
      */
-    contextMenu(val) {
-        switch (val) {
-            case this._contextMenuElements[0].title:
-                this._imageService.moveImageBackForEditing(this._actual_Image).subscribe(
-                    () => { this.getImageNames(); },
-                    error => this.errorMessage_exifToolService = <any>error
-                );
-                break;
-            case this._contextMenuElements[1].title:
-                this._imageService.moveImageToImagesComplete(this._actual_Image).subscribe(
-                    () => { this.getImageNames(); },
-                    error => this.errorMessage_exifToolService = <any>error
-                );
-                break;
-            default: throw Error("val is not a valid contextMenuElement title: val = " + val);
+    async contextMenu(val) {
+        try {
+            switch (val) {
+                case this._contextMenuElements[0].title:
+                    await this._imageService.moveImageBackForEditing(this._actual_Image);
+                    break;
+                case this._contextMenuElements[1].title:
+                    await this._imageService.moveImageToImagesComplete(this._actual_Image);
+                    break;
+                default: throw Error("val is not a valid contextMenuElement title: val = " + val);
+            }
+        } catch (error) {
+            console.error(error);
+            await this._imageService.updateImageNamesInFolder_edited();
+            this.errorMessage_exifToolService = <any>error;
         }
 
     }
@@ -178,13 +183,14 @@ export class ImageGalleryComponent {
      * are located in the images_edited folder. Therefore the 
      * imageService is used.
      */
-    getImageNames() {
-        this._imageService.getImageNames_edited().toPromise().then(
-            images => {
-                images = this.removeString(images, this._editedImages_text);
-                this._imageNames_edited = images;
-            },
-            error => { this._errorMessage_imageService = <any>error }
+    subscribeToImageNamesInEditedFolder() {
+        this._editorService._imageNamesInFolder_edited$.subscribe((images) => {
+            images = this.removeString(images, this._editedImages_text);
+            this._imageNames_edited = images;
+        }, (error) => {
+            console.error(error);
+            this._errorMessage_imageService = <any>error
+        }
         );
     }
     /**
