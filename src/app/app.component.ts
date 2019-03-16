@@ -95,6 +95,10 @@ export class AppComponent implements OnInit, AfterViewChecked {
         this._changeView_button_text = this._changeView_button_map.get(this._router.url);
     }
 
+    onClickRefreshButton() {
+        this._imageService.updateImageNamesOfAllFolders();
+    }
+
     /**
      * The method changes the actual image metadata language.
      * 

@@ -347,9 +347,9 @@ export class ImageService {
      * in the folders: images, images_edited and images_original.
      * Then the editor service gets the updated list of names.
      */
-    private async updateImageNamesOfAllFolders() {
+    updateImageNamesOfAllFolders() {
         this.updateImageNamesInFolder();
-        await this.updateImageNamesInFolder_edited();
+        this.updateImageNamesInFolder_edited();
         this.updateImageNamesInFolder_original();
     }
 

@@ -85,7 +85,7 @@ export class EditorService {
      * Variable that stores a BehaviorSubject to distribute the 
      * names of the images in the images_edited folder.
      */
-    private __imageNamesInFolder_edited: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(undefined);
+    private __imageNamesInFolder_edited: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
     /**
      * This variable stores the names of the images in the images_edited folder.
