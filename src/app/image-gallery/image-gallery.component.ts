@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs/Rx';
+import { Subject, Observable } from 'rxjs/Rx';
 import { ImageService } from './../services/image.service';
 import { ExifToolService } from './../services/exif-tool.service';
 import { EditorService } from './../services/editor.service';
@@ -42,7 +42,7 @@ export class ImageGalleryComponent {
      * This variable stores the names of all images that 
      * exist in the images_edited folder.
      */
-    private _imageNames_edited: string[];
+    _imageNames_edited$: Observable<string[]>;
     /**
      * This variable stores the name of the folder, where 
      * the edited images are located.
@@ -82,9 +82,15 @@ export class ImageGalleryComponent {
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService: EditorService, private _renderer: Renderer) { }
 
     ngOnInit() {
-        // Set the variables
-        this.subscribeToImageNamesInEditedFolder();
         this.imgDir_edited = this._imageService.imageDir_edited;
+        // Set the variables
+        this._imageNames_edited$ = this._editorService._imageNamesInFolder_edited$.map((images) => {
+            return this.removeString(images, this._editedImages_text);
+        }, (error) => {
+            console.error('Error on getting imageNames in Folder: edited', error);
+            this._errorMessage_imageService = <any>error
+        }
+        );
         // Subscribe to the subjects of the context elements and assign the contextMenu() to them.
         this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
     }
@@ -178,21 +184,7 @@ export class ImageGalleryComponent {
         }
         return array;
     }
-    /**
-     * This method gets the image names from the images that 
-     * are located in the images_edited folder. Therefore the 
-     * imageService is used.
-     */
-    subscribeToImageNamesInEditedFolder() {
-        this._editorService._imageNamesInFolder_edited$.subscribe((images) => {
-            images = this.removeString(images, this._editedImages_text);
-            this._imageNames_edited = images;
-        }, (error) => {
-            console.error(error);
-            this._errorMessage_imageService = <any>error
-        }
-        );
-    }
+
     /**
      * This method enables key control:
      * 

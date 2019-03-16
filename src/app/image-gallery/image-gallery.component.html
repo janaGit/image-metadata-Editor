@@ -9,7 +9,7 @@
     </div>
     <div id="hoverbox">
         <ul class="hoverbox">
-            <li *ngFor="let imgName of _imageNames_edited">
+            <li *ngFor="let imgName of (_imageNames_edited$|async)">
                 <a>
                     <img src="{{imgDir_edited}}/{{imgName}}" alt="description" [class.deleteMetadataButton]="prefix.isMetadataDeleted(imgName)"
                     />
