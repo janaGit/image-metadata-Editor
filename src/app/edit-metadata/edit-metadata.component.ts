@@ -16,7 +16,7 @@ export class EditMetadataComponent implements OnInit {
     /**
      * Name of the actual selected tab.
      */
-    public selectedTab: string;
+    public selectedTab: string = 'file';
 
     /*
      * Name of the folder where the images are stored 
