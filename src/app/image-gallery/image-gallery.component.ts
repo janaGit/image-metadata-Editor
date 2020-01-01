@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { Subject, Observable } from 'rxjs/Rx';
 import { ImageService } from './../services/image.service';
 import { ExifToolService } from './../services/exif-tool.service';
@@ -79,7 +79,7 @@ export class ImageGalleryComponent {
     prefix = prefix;
 
 
-    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService: EditorService, private _renderer: Renderer) { }
+    constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService: EditorService, private _renderer: Renderer2) { }
 
     ngOnInit() {
         this.imgDir_edited = this._imageService.imageDir_edited;
@@ -115,11 +115,11 @@ export class ImageGalleryComponent {
                 // and show its metadata in the table
                 this.getMetadata(event.imgName);
                 this._imageNameClicked = event.imgName;
-                this._renderer.setElementClass(event.element, 'clicked', true);
+                this._renderer.addClass(event.element, 'clicked');
             } else {
                 // If that image has been fixed, then unfix it.
                 this._imageNameClicked = undefined;
-                this._renderer.setElementClass(event.element, 'clicked', false);
+                this._renderer.removeClass(event.element, 'clicked');
             }
         }
     }
@@ -196,10 +196,10 @@ export class ImageGalleryComponent {
         var key = event.key;
         switch (key) {
             case 's':
-                this._renderer.invokeElementMethod(this.table.nativeElement, 'scrollBy', [0, 50])
+                this.table.nativeElement.scrollBy([0, -50]);
                 break;
             case 'w':
-                this._renderer.invokeElementMethod(this.table.nativeElement, 'scrollBy', [0, -50])
+                this.table.nativeElement.scrollBy([0, -50]);
         }
     }
 }

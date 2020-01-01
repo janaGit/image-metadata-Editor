@@ -1,11 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
-
-import { Logger } from "angular2-logger/core";
 
 import { AppComponent } from './app.component';
 import { BottomBarOriginalImgComponent } from './bottom-bar-original-img/bottom-bar-original-img.component';
@@ -59,13 +57,13 @@ import  './font-awesome';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     AppRoutingModule,
     TabsModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot()
   ],
-  providers: [Logger, EditorService, ImageService, ExifToolService, ContextMenuService],
+  providers: [EditorService, ImageService, ExifToolService, ContextMenuService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

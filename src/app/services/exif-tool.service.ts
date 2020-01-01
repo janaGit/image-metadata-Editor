@@ -1,7 +1,5 @@
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EditorService } from './editor.service';
 import { ImageService } from './image.service';
 import { ReturnObject } from '../types/return-object.interface'
@@ -53,7 +51,7 @@ export class ExifToolService {
      */
     private _metadata_edited: Object;
 
-    constructor(private _http: Http, private _editorService: EditorService, private _imageService: ImageService) { }
+    constructor(private _http: HttpClient, private _editorService: EditorService, private _imageService: ImageService) { }
 
     // Getter and setter
     /**
@@ -142,19 +140,18 @@ export class ExifToolService {
     }
 
 
-    private extractData(res: Response) {
+    private extractData(res: any) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);
         }
-        let body = res.json();
-        return body.data || {};
+        return res.data || {};
     }
-    private extractReturnObject(res: Response): ReturnObject {
+    private extractReturnObject(res: any): ReturnObject {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);
         }
-        let json = res.json();
-        return json.body || {};
+
+        return res.body || {};
     }
     private handleError(error: any) {
         let err = error || 'Error on server communication';

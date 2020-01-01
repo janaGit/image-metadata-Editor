@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, Renderer2, OnInit, HostBinding, ViewContainerRef, Renderer } from '@angular/core';
+import { Directive, Input, ElementRef, Renderer2, OnInit, HostBinding, ViewContainerRef } from '@angular/core';
 import { TooltipDirective, TooltipConfig, ComponentLoaderFactory } from 'ngx-bootstrap';
 
 @Directive({
@@ -10,7 +10,7 @@ export class ImeTooltipDirecive implements OnInit {
   @Input() tooltipPlacement: 'top'|'bottom'| 'left'|'right' = 'top';
   @HostBinding('attr.tooltip') bootstrapTooltip;
 
-  constructor(private _viewContainerRef: ViewContainerRef, private _elementRef: ElementRef, private renderer2: Renderer2, private _renderer: Renderer, private cis: ComponentLoaderFactory, private config: TooltipConfig) {
+  constructor(private _viewContainerRef: ViewContainerRef, private _elementRef: ElementRef, private renderer2: Renderer2, private _renderer: Renderer2, private cis: ComponentLoaderFactory, private config: TooltipConfig) {
 
   }
 

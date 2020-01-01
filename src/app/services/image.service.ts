@@ -1,8 +1,6 @@
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EditorService } from './editor.service';
-import { Logger } from "angular2-logger/core";
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the images.
@@ -90,7 +88,7 @@ export class ImageService {
     private _postCopyImage_ForEditing = this._serverBase + '/copyImageForEditing';
 
 
-    constructor(private _http: Http, private $log: Logger, private _editorService: EditorService) {
+    constructor(private _http: HttpClient, private _editorService: EditorService) {
         this.updateImageNamesOfAllFolders();
     }
 
@@ -408,16 +406,14 @@ export class ImageService {
         }
     }
 
-    private extractData(res: Response) {
+    private extractData(res: any) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);
         }
-        let body = res.json();
-        return body.data || {};
+        return res.data || {};
     }
     private handleError(error: any) {
-        let body = error.json();
-        let err = body.message || 'Server error';
+        let err = error.message || 'Server error';
         console.error(err);
     }
 }
