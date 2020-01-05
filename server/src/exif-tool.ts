@@ -1,9 +1,9 @@
 
 import * as child_process from 'child_process';
 import * as readline from 'readline';
-import * as constants from "../utilities/constants";
+import * as constants from "../../utilities/constants";
 import * as fs from 'fs';
-import { ReturnObject } from 'app/types/return-object.interface';
+import { ReturnObject } from '../../src/app/types/return-object.interface';
 
 interface ImageData {
   imageName: string,
@@ -92,7 +92,7 @@ export class ExifTool {
       if (err) throw err;
     }
     try {
-      await fs.rename(imageData.imageDir + '/' + imageData.imageName, imageData.imageDir + '/' + imageData.imageNameAfterProcessing);
+      fs.renameSync(imageData.imageDir + '/' + imageData.imageName, imageData.imageDir + '/' + imageData.imageNameAfterProcessing);
       return new Promise<string>((resolve, reject) => resolve("Simple file rename as no data were deleted from exiftool! File renamed from: " + imageData.imageName + " to " + imageData.imageNameAfterProcessing + ' in path: ' + imageData.imageDir));
     } catch (e) {
       return new Promise<string>((resolve, reject) => reject("rename error: " + imageData.imageName + " could not be renamed! " + e));
