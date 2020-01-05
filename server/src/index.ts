@@ -1,20 +1,27 @@
-import * as express from 'express';
+//https://auth0.com/blog/use-typescript-to-create-a-secure-api-with-nodejs-and-express-getting-started/
+import express from 'express';
 import * as bodyParser from 'body-parser';
-import * as multer from 'multer';
+import multer from 'multer';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as prefix from "../utilities/image-prefixes";
+import * as http from 'http';
+import * as dotenv from "dotenv";
+import cors from "cors";
+import helmet from "helmet";
+import * as prefix from "../../utilities/image-prefixes";
 import { ExifTool } from './exif-tool';
-import { ReturnObject } from '../src/app/types/return-object.interface';
+import { ReturnObject } from '../../src/app/types/return-object.interface';
+
 
 export class Server {
     private imageDir: string;
     private imageDir_edited: string;
     private imageDir_original: string;
     private imageDir_complete: string;
-    public app: express.Application;
+    public app: express.Express;
     private router;
     private exifTool: ExifTool;
+    private port: number;
     /** 
      * For the file upload when a file has been put
      *  into the drag and drop box.
@@ -31,26 +38,42 @@ export class Server {
         storage: this.storage
     });
 
-    public static main() {
+    public static main(): http.Server {
         let server = new Server();
-        server.start();
+        let httpServer = server.start();
+        return httpServer;
     }
     constructor() {
         this.imageDir = './images';
         this.imageDir_edited = './images_edited';
         this.imageDir_original = './images_original';
         this.imageDir_complete = './images_complete';
+        dotenv.config();
+
+        if (!process.env.PORT) {
+            console.error("no env variables!");
+            process.exit(1);
+        }
+        this.port = parseInt(process.env.PORT as string, 10);
+
         this.app = express();
+        this.app.use(helmet());
+        this.app.use(cors());
+        this.app.use(express.json());
         this.router = express.Router();
         this.exifTool = new ExifTool();
     }
-    public start() {
+    public start(): http.Server {
         this.configRoutes();
         this.configApp();
-        this.app.listen(3000, () => {
-            console.log("Listening on port 3000!");
+        let server: http.Server = this.app.listen(this.port, () => {
+            console.log("Listening on port " + this.port + "!");
         });
+        return server;
     }
+
+
+
     private configApp() {
         this.app.use("/images", express.static('images'));
         this.app.use("/images_edited", express.static('images_edited'));
@@ -340,4 +363,28 @@ export class Server {
 
     }
 }
-Server.main();
+
+let _server = Server.main();
+
+type ModuleId = string | number;
+
+interface WebpackHotModule {
+    hot?: {
+        data: any;
+        accept(
+            dependencies: string[],
+            callback?: (updatedDependencies: ModuleId[]) => void,
+        ): void;
+        accept(dependency: string, callback?: () => void): void;
+        accept(errHandler?: (err: Error) => void): void;
+        dispose(callback: (data: any) => void): void;
+    };
+}
+
+declare const module: WebpackHotModule;
+
+if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => _server.close());
+}
+
