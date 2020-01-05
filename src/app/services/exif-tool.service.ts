@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EditorService } from './editor.service';
@@ -93,8 +95,8 @@ export class ExifToolService {
      */
     async requestMetadata() {
         try {
-            const data = await this._http.get(this._getMetadata + '/' + this._editorService.imageName + '/' + this._language)
-                .map(this.extractData).toPromise();
+            const data = await this._http.get(this._getMetadata + '/' + this._editorService.imageName + '/' + this._language).pipe(
+                map(this.extractData)).toPromise();
             this._metadata = data;
             this._errorMessage = null;
         } catch (error) {
@@ -109,8 +111,8 @@ export class ExifToolService {
      */
     async requestMetadata_edited() {
         try {
-            const data = await this._http.get(this._getMetadata_edited + '/' + this._editorService.imageName_edited + '/' + this._language)
-                .map(this.extractData).toPromise();
+            const data = await this._http.get(this._getMetadata_edited + '/' + this._editorService.imageName_edited + '/' + this._language).pipe(
+                map(this.extractData)).toPromise();
             this._metadata_edited = data;
             this._errorMessage = null;
         } catch (error) {
@@ -128,8 +130,8 @@ export class ExifToolService {
      */
     async deleteAllMetadataOfImage(imageName: string): Promise<string> {
         try {
-            const returnObject = await this._http.post(this._deleteAllMetadata + '/' + imageName, "")
-                .map(this.extractReturnObject).toPromise();
+            const returnObject = await this._http.post(this._deleteAllMetadata + '/' + imageName, "").pipe(
+                map(this.extractReturnObject)).toPromise();
             this._imageService.updateImageNamesInFolder();
             return returnObject.payload.imageName;
         }

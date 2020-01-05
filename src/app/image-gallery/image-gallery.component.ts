@@ -1,5 +1,7 @@
+
+import {map} from 'rxjs/operators';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
-import { Subject, Observable } from 'rxjs/Rx';
+import { Subject, Observable } from 'rxjs';
 import { ImageService } from './../services/image.service';
 import { ExifToolService } from './../services/exif-tool.service';
 import { EditorService } from './../services/editor.service';
@@ -84,13 +86,13 @@ export class ImageGalleryComponent {
     ngOnInit() {
         this.imgDir_edited = this._imageService.imageDir_edited;
         // Set the variables
-        this._imageNames_edited$ = this._editorService._imageNamesInFolder_edited$.map((images) => {
+        this._imageNames_edited$ = this._editorService._imageNamesInFolder_edited$.pipe(map((images) => {
             return this.removeString(images, this._editedImages_text);
         }, (error) => {
             console.error('Error on getting imageNames in Folder: edited', error);
             this._errorMessage_imageService = <any>error
         }
-        );
+        ));
         // Subscribe to the subjects of the context elements and assign the contextMenu() to them.
         this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
     }
