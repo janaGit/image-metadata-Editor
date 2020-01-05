@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs/Rx';
+import { Subject } from 'rxjs';
 
 import { ContextMenu } from '../types/context-menu.type';
 import { MouseOverImageEvent } from '../types/mouse-over-image-event.type';

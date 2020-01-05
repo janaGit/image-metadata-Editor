@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Inject, HostListener } from '@angular/core';
-import { Subject, Observable } from 'rxjs/Rx';
+import { Subject, Observable } from 'rxjs';
 import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
