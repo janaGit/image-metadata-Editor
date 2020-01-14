@@ -25,7 +25,7 @@ export class ImageGalleryComponent {
     /**
      * To control  the table with the shortcuts: s,w
      */
-    @ViewChild('table') table;
+    @ViewChild('table', {static: false}) table;
     /**
      * Error message, when something went wrong in the 
      * image service.
