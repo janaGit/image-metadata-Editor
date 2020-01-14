@@ -18,7 +18,7 @@ export class BottomBarComponent implements OnInit, AfterViewChecked {
   /**
    * Button to open and close the bottom bar
    */
-  @ViewChild('button') button: ElementRef;
+  @ViewChild('button',{static: false}) button: ElementRef;
   /**
    * To set the right size of the inner Bottom Bar, when the bottombar should be
    * opened.
