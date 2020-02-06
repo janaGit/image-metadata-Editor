@@ -9,8 +9,8 @@
     position: sticky;
     height: 70vh;
     overflow-y: auto;
-    display: flex;
 }
+
 .hoverbox a :not(.clicked).preview 
 {
     display: none!important;
