@@ -14,11 +14,11 @@ export class BottomBarComponent implements OnInit, AfterViewChecked {
    * Variable that states if the original images should be shown (true)
    * or not (false)
    */
-  private _showBottomBar: boolean;
+  _showBottomBar: boolean;
   /**
    * Button to open and close the bottom bar
    */
-  @ViewChild('button',{static: false}) button: ElementRef;
+  @ViewChild('button') button: ElementRef;
   /**
    * To set the right size of the inner Bottom Bar, when the bottombar should be
    * opened.

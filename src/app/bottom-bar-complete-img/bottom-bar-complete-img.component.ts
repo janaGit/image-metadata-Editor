@@ -11,11 +11,11 @@ export class BottomBarCompleteImgComponent implements OnInit {
   /**
    * Title of the Bottom bar
    */
-  private _bottomBar_title = "Completed Images";
+  _bottomBar_title = "Completed Images";
   /**
    * List of the images names that exist in the folder: images complete 
    */
-  private _imageNames_complete: string[];
+  _imageNames_complete: string[];
   /**
    * This variable stores an error message that was returned
    * by the image service.

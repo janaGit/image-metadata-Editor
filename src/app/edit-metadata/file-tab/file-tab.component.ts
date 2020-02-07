@@ -19,7 +19,7 @@ export class FileTabComponent implements OnInit {
     /**
      * Names of the images that can be shwn and edited.
      */
-    private _imageNames: string[];
+    _imageNames: string[];
     /**
      * If the image-service returns an error, 
      * the error message is stored in this variable.  
@@ -33,7 +33,7 @@ export class FileTabComponent implements OnInit {
     /**
      * Name of the current selected image.
      */
-    private _imageName: string;
+    _imageName: string;
     /**
      * Path for the current selected image:
      * 
@@ -44,7 +44,7 @@ export class FileTabComponent implements OnInit {
      * Visibility status of the modal that 
      * shows the metadata of the current image. 
      */
-    private _displayMetadataModal = false;
+    _displayMetadataModal = false;
     /**
      * Event emitter that imforms the parent of this class
      * (editMetadata.component) that the editing process 

@@ -35,7 +35,7 @@ export class ContextMenuHolderComponent {
     /**
      * Elements that are listed in the context menu.
      */
-    private menuElements:string[] = [];
+    menuElements:string[] = [];
     /**
      * Variable to define if the context menu 
      * should be shown or not.
