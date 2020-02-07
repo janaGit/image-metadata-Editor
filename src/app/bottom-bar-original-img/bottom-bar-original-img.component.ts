@@ -18,11 +18,11 @@ export class BottomBarOriginalImgComponent implements OnInit {
   /**
    * Title of the Bottom bar
    */
-  private _bottomBar_title = "Original Images";
+  _bottomBar_title = "Original Images";
   /**
     * Images names of the images in the images_original folder
     */
-  private _imageNames_original: string[];
+  _imageNames_original: string[];
   /**
   * Images names of the images for the editing view (images).
   */
@@ -60,13 +60,13 @@ export class BottomBarOriginalImgComponent implements OnInit {
    * This variable stores the menu items for the dropdown 
    * that controls which images should be shown in the bottom bar.
    */
-  private _visibleImages: string[] = ["Show all", "Show copied images", "Show images not yet copied"];
+  _visibleImages: string[] = ["Show all", "Show copied images", "Show images not yet copied"];
 
   /**
    * This method stores the actual selected value for the
    * dropdown that controls which images should be shown in the bottom bar.
    */
-  private _visibleImage: string;
+  _visibleImage: string;
   /**
    * This variable stores an error message that was returned
    * by the image service.
@@ -205,7 +205,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
   /**
    * This method deletes all images in the images folder.
    */
-  private deleteAllCopies() {
+  deleteAllCopies() {
     this._imageService.deleteAllImagesInImagesFolder(this._imageNames);
   }
   /**

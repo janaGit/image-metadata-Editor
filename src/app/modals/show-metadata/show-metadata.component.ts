@@ -20,7 +20,7 @@ export class ShowMetadataComponent implements OnInit{
     /**
      * Actual value of css:display 
      */
-    private _display_css: css_display = 'none';
+    _display_css: css_display = 'none';
     /**
      * Actual status of the modal
      * 
@@ -36,7 +36,7 @@ export class ShowMetadataComponent implements OnInit{
     /**
      * This variable stores the keys of the metadata.
      */
-    private metadata_keys = [];
+    metadata_keys = [];
     /**
      * The status if the modal is visible of hidden can be 
      * externally defined and changed.

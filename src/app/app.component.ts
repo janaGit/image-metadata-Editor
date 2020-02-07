@@ -22,8 +22,8 @@ var imageDir_complete = 'images_complete'
 
 @Component({
     selector: 'app',
-    templateUrl: '/app.component.html',
-    styleUrls: ['/app.component.css']
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, AfterViewChecked {
     /**
@@ -33,18 +33,18 @@ export class AppComponent implements OnInit, AfterViewChecked {
     /**
      * Actual label for the 'changeView'-button.
      */
-    private _changeView_button_text: string;
+    _changeView_button_text: string;
 
     /**
      * Possible languages that can be selected for the image metadata.
      */
-    private _languages = ['cs', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pl', 'ru', 'sv', 'tr', 'zh_cn', 'zh_tw'];
+    _languages = ['cs', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pl', 'ru', 'sv', 'tr', 'zh_cn', 'zh_tw'];
     /**
      * Actual language for the image metadata. 
      * 
      * Default: 'de'
      */
-    private _lang: string = "de";
+    _lang: string = "de";
     /**
      * Chache for the short cut: '1', 
      * that can switch between English and the last selected language.
@@ -64,10 +64,11 @@ export class AppComponent implements OnInit, AfterViewChecked {
     /**
      * Variable stores the status, if the filetab is open or not.
      */
-    private _fileTabOpen: Boolean;
+    _fileTabOpen: Boolean;
 
+    router: Router;
     constructor(private _cdr: ChangeDetectorRef, private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
-
+        this.router = _router;
     }
     ngOnInit() {
         //Set the image directiories
