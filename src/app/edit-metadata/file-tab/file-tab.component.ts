@@ -95,7 +95,7 @@ export class FileTabComponent implements OnInit {
      * Set a new error message and display it.
      */
     set errorMessage(error) {
-        this.errorMessage = error;
+        this._errorMessage = error;
         alert(error);
     }
     /**
@@ -281,13 +281,13 @@ export class FileTabComponent implements OnInit {
     }
 
     /**
-     * Deletes the metadata of the current image.
+     * Deletes the metadata of the current image and return the updated Name of the image.
      */
-    async deleteMetadataOfCurrentImage(): Promise<string> {
+    async deleteMetadataOfCurrentImageAndChangeImageName(): Promise<string> {
         try {
             const imageName = await this._exifToolService.deleteAllMetadataOfImage(this._imageName);
             this.setCurrentImage(0);
-            return imageName
+            return imageName;
         } catch (error) {
             this.errorMessage = error;
             return null;
@@ -295,15 +295,18 @@ export class FileTabComponent implements OnInit {
     }
 
     onClickDeleteAllMetadataOfCurrentImage() {
-        this.deleteMetadataOfCurrentImage();
+        this.deleteMetadataOfCurrentImageAndChangeImageName();
+        this.setCurrentImage(0);
     }
     /**
      * Deletes the metadata of the current image.
      */
     async deleteMetadataOfCurrentImageAndMove() {
-        const imageName = await this.deleteMetadataOfCurrentImage();
+        const imageName = await this.deleteMetadataOfCurrentImageAndChangeImageName();
         if (imageName) {
             this._imageService.moveImageToImageGallery(imageName);
+        }else{
+            this.errorMessage = "Metadata could not be deleted!";
         }
     }
 

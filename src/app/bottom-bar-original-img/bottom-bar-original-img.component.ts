@@ -196,8 +196,8 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   copyAll() {
     let imageNames = this._imageNames_original.filter(imageName => {
-      let found_edited = this._imageNames_edited.find((imgName) => { return imageName === imgName });
-      let found = this._imageNames.find((imgName) => { return imageName === imgName });
+      let found_edited = prefix.getImageNameInList_prefixNotConsidered(imageName,this._imageNames_edited);
+      let found = prefix.getImageNameInList_prefixNotConsidered(imageName,this._imageNames);
       return !(found || found_edited);
     })
     this._imageService.copyImagesForEditing(imageNames);
