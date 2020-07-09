@@ -64,7 +64,7 @@ export class ExifTool {
           data = {
             status: 200,
             message: _message,
-            payload: { imageName: imageName }
+            payload: { imageName: imageName_x }
           }
         } else {
           data = {

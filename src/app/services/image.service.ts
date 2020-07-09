@@ -270,11 +270,13 @@ export class ImageService {
      */
     async moveImageToImageGallery(imageName: string): Promise<string> {
         try {
+            if (imageName !== "selectAll_Images.png") {
             const data = this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "").pipe(
                 map(this.extractData)).toPromise();
             await this.updateImageNamesInFolder_edited();
             this.updateImageNamesInFolder();
             return data;
+            }
         } catch (error) {
             this.handleError(error);
         }
