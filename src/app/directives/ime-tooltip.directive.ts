@@ -1,5 +1,6 @@
 import { Directive, Input, ElementRef, Renderer2, OnInit, HostBinding, ViewContainerRef } from '@angular/core';
-import { TooltipDirective, TooltipConfig, ComponentLoaderFactory } from 'ngx-bootstrap';
+import { TooltipDirective, TooltipConfig } from 'ngx-bootstrap/tooltip';
+import { ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 
 @Directive({
   selector: '[imeTooltip]'

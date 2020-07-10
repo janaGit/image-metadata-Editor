@@ -33,7 +33,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BottomBarComponent } from './modals/bottom-bar/bottom-bar.component';
 import { BottomBarCompleteImgComponent } from './bottom-bar-complete-img/bottom-bar-complete-img.component';
 import { ImeTooltipDirecive } from './directives/ime-tooltip.directive';
-import { TooltipModule } from 'ngx-bootstrap';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import  './font-awesome';
 
 @NgModule({
