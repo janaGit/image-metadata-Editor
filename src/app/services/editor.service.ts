@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ImageService } from './image.service';
-import * as prefix from '../../../utilities/image-prefixes';
+import * as suffix from '../../../utilities/image-suffixes';
 
 
 /**

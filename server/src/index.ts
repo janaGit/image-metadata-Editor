@@ -8,9 +8,10 @@ import * as http from 'http';
 import * as dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
-import * as prefix from "../../utilities/image-prefixes";
+import * as suffix from "../../utilities/image-suffixes";
 import { ExifTool } from './exif-tool';
 import { ReturnObject } from '../../src/app/types/return-object.interface';
+import { METADATA_DELETED, IMAGE_EDITED } from '../../utilities/constants';
 
 
 export class Server {
@@ -223,7 +224,7 @@ export class Server {
 
     private copyImageToImageFolder = (req, res) => {
         let imageName = req.params.imageName;
-        let result = this.copyImage(this.imageDir_original, this.imageDir, imageName);
+        let result = this.copyImageAndMoveToImageFolder(imageName);
         result.then((value: ReturnObject) => {
             res.status(value.status).send(value);
         }, (error) => {
@@ -253,10 +254,9 @@ export class Server {
 
     private moveImageToImageComplete = (req, res) => {
         var imageName = req.params.imageName;
-        let imageNameWithoutPrefix = prefix.getImageNameWithoutPrefix(imageName);
-        console.log("Method: moveImageToImageComplete; imageNameWithoutPrefix: " + imageNameWithoutPrefix);
-        var imageName_new = req.params.imageName_new;
-        var result = this.moveImage(this.imageDir_edited, this.imageDir_complete, imageName, imageNameWithoutPrefix);
+        let imageNameWithoutSuffix = suffix.getImageNameWithoutSuffix(imageName);
+        console.log("Method: moveImageToImageComplete; imageNameWithoutSuffix: " + imageNameWithoutSuffix);
+        var result = this.moveImage(this.imageDir_edited, this.imageDir_complete, imageName, imageNameWithoutSuffix);
         result.then((value: ReturnObject) => {
             res.status(value.status).send(value);
         }, (error) => {
@@ -302,9 +302,9 @@ export class Server {
         });
     }
 
-    private copyImage = (imageDir_from, imageDir_to, imageName) => {
+    private copyImageAndMoveToImageFolder = ( imageName) => {
         return new Promise((resolve, reject) => {
-            fs.readdir(imageDir_from, (err, files) => {
+            fs.readdir(this.imageDir_original, (err, files) => {
                 if (err) {
                     var object = {
                         status: 500,
@@ -322,7 +322,7 @@ export class Server {
                     console.error(object);
                     reject(object);
                 }
-                fs.readFile(imageDir_from + '/' + imageName, (err, image) => {
+                fs.readFile(this.imageDir_original + '/' + imageName, (err, image) => {
                     if (err) {
                         let object: ReturnObject = {
                             status: 500,
@@ -332,13 +332,14 @@ export class Server {
                         console.error(object);
                         reject(object);
                     }
-                    fs.writeFileSync(imageDir_to + '/' + 'edited_' + imageName, image);
+                    const newImageName=imageName.replace(/\.([^\.]*)$/, IMAGE_EDITED+"."+ '$1');
+                    fs.writeFileSync(this.imageDir + '/' + newImageName, image);
                     let object = {
                         status: 200
                     };
                     resolve(object);
                 });
-
+ 
             });
         });
     }

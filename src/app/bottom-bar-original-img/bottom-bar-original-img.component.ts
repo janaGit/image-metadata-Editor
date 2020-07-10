@@ -7,7 +7,7 @@ import { MouseOverImageEvent } from '../types/mouse-over-image-event.type';
 import { ImageService } from '../services/image.service';
 import { ExifToolService } from '../services/exif-tool.service';
 import { EditorService } from '../services/editor.service';
-import * as prefix from "../../../utilities/image-prefixes";
+import * as suffix from "../../../utilities/image-suffixes";
 
 @Component({
   selector: 'bottom-bar-original-img',
@@ -122,8 +122,8 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInEditingModus(imageName: string): boolean {
     if (this._imageNames && this._imageNames_edited) {
-      let imageFolder = prefix.getImageNameInList_prefixNotConsidered(imageName, this._imageNames);
-      let image_editedFolder = prefix.getImageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
+      let imageFolder = suffix.getImageNameInList_suffixNotConsidered(imageName, this._imageNames);
+      let image_editedFolder = suffix.getImageNameInList_suffixNotConsidered(imageName, this._imageNames_edited);
       if (imageFolder || image_editedFolder) {
         return true;
       }
@@ -136,7 +136,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInImagesFolder(imageName: string): boolean {
     if (this._imageNames) {
-      let imageFolder = prefix.getImageNameInList_prefixNotConsidered(imageName, this._imageNames);
+      let imageFolder = suffix.getImageNameInList_suffixNotConsidered(imageName, this._imageNames);
       if (imageFolder) {
         return true;
       }
@@ -149,7 +149,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   isInImagesEditedFolder(imageName: string): boolean {
     if (this._imageNames_edited) {
-      let image_editedInFolder = prefix.getImageNameInList_prefixNotConsidered(imageName, this._imageNames_edited);
+      let image_editedInFolder = suffix.getImageNameInList_suffixNotConsidered(imageName, this._imageNames_edited);
 
       if (image_editedInFolder) {
         return true;
@@ -175,8 +175,8 @@ export class BottomBarOriginalImgComponent implements OnInit {
     // folder.
     if (title === this._contextMenuElements_edit[0].title) {
       console.info('Bottom Bar Original Image: Delete Image in Image Editing Mode! '+this._actualImage)
-      const imageWithPrefix = prefix.getImageNameInList_prefixNotConsidered(this._actualImage, this._imageNames);
-      this._imageService.deleteImage(imageWithPrefix).catch(
+      const imageWithSuffix = suffix.getImageNameInList_suffixNotConsidered(this._actualImage, this._imageNames);
+      this._imageService.deleteImage(imageWithSuffix).catch(
         error => { this._errorMessage_imageService = <any>error }
       );
     }
@@ -196,8 +196,8 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   copyAll() {
     let imageNames = this._imageNames_original.filter(imageName => {
-      let found_edited = prefix.getImageNameInList_prefixNotConsidered(imageName,this._imageNames_edited);
-      let found = prefix.getImageNameInList_prefixNotConsidered(imageName,this._imageNames);
+      let found_edited = suffix.getImageNameInList_suffixNotConsidered(imageName,this._imageNames_edited);
+      let found = suffix.getImageNameInList_suffixNotConsidered(imageName,this._imageNames);
       return !(found || found_edited);
     })
     this._imageService.copyImagesForEditing(imageNames);
