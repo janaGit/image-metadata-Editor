@@ -7,7 +7,7 @@ import { ExifToolService } from './../services/exif-tool.service';
 import { EditorService } from './../services/editor.service';
 import { ContextMenu } from './../types/context-menu.type';
 import { MouseOverImageEvent } from './../types/mouse-over-image-event.type';
-import * as prefix from "../../../utilities/image-prefixes";
+import * as suffix from "../../../utilities/image-suffixes";
 /**
  * This class is for the image gallery.
  * All the images that have been edited, are visualized
@@ -78,7 +78,7 @@ export class ImageGalleryComponent {
         { title: 'transfer for editing', subject: new Subject() },
         { title: 'transfer to complete', subject: new Subject() }
     ];
-    prefix = prefix;
+    suffix = suffix;
 
 
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService: EditorService, private _renderer: Renderer2) { }

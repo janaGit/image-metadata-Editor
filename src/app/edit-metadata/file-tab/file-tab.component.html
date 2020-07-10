@@ -35,7 +35,7 @@
       <div>
         <div class='img-thumbnail'
           style="height: 250px; width:380px;display: flex; align-items: center; justify-content: center"
-          *ngIf="_imageName" [class.deleteMetadataButton]="prefix.isMetadataDeleted(_imageName)">
+          *ngIf="_imageName" [class.deleteMetadataButton]="suffix.isMetadataDeleted(_imageName)">
           <img id="image" class="img-responsive" [src]="_imgPath" (click)="displayMetadataModal()"
             (onMouseOverImage)="null" [contextMenuElements]="_contextMenuElements">
         </div>

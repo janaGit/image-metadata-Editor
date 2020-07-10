@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "server": "node server/dist/index"
+    "server": "node server/dist/index",
+    "dev-server": "cd server && npm run webpack"
   },
   "repository": {
     "type": "git",

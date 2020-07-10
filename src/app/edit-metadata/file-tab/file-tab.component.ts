@@ -4,8 +4,9 @@ import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
 import { ContextMenu } from './../../types/context-menu.type';
-import * as prefix from "../../../../utilities/image-prefixes";
+import * as suffix from "../../../../utilities/image-suffixes";
 import { filterFilesToIgnore } from '../../../../utilities/utilitiy-methods';
+import { IMAGE_EDITED } from '../../../../utilities/constants';
 /**
  * This class provides the controller for the file-tab in the
  * editor view.
@@ -61,7 +62,7 @@ export class FileTabComponent implements OnInit {
     private _contextMenuElements: ContextMenu[] = [
         { title: 'transfer to image gallery', subject: new Subject() }
     ];
-    prefix = prefix;
+    suffix = suffix;
     constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _editorService: EditorService) { }
 
     ngOnInit() {
@@ -82,7 +83,7 @@ export class FileTabComponent implements OnInit {
                     // Get the names of the available images. The first name
                     // in the list is the current selected image.
                     if (this._imageNames) {
-                        this.setCurrentImage(null);
+                        this.setCurrentImage(0);
                     }
 
                 },
@@ -105,7 +106,7 @@ export class FileTabComponent implements OnInit {
      */
     addDroppedImage(file: File) {
         this._imageService.sendImage(file).then(fileName => {
-            this.setCurrentImage('edited_' + fileName);
+            this.setCurrentImage(fileName+IMAGE_EDITED);
         });
     }
 
@@ -286,7 +287,7 @@ export class FileTabComponent implements OnInit {
     async deleteMetadataOfCurrentImageAndChangeImageName(): Promise<string> {
         try {
             const imageName = await this._exifToolService.deleteAllMetadataOfImage(this._imageName);
-            this.setCurrentImage(0);
+        
             return imageName;
         } catch (error) {
             this.errorMessage = error;
@@ -296,7 +297,6 @@ export class FileTabComponent implements OnInit {
 
     onClickDeleteAllMetadataOfCurrentImage() {
         this.deleteMetadataOfCurrentImageAndChangeImageName();
-        this.setCurrentImage(0);
     }
     /**
      * Deletes the metadata of the current image.

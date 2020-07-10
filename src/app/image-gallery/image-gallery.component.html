@@ -17,11 +17,11 @@
             <li *ngFor="let imgName of (_imageNames_edited$|async)">
                 <a>
                     <img src="{{imgDir_edited}}/{{imgName}}" alt="description"
-                        [class.deleteMetadataButton]="prefix.isMetadataDeleted(imgName)" />
+                        [class.deleteMetadataButton]="suffix.isMetadataDeleted(imgName)" />
                     <img src="{{imgDir_edited}}/{{imgName}}" (onMouseOverImage)="onMouseOverImage($event)"
                         alt="description" class="preview" [contextMenuElements]="_contextMenuElements"
                         [class.clicked]="imageClicked(imgName)"
-                        [class.deleteMetadataButton]="prefix.isMetadataDeleted(imgName)" />
+                        [class.deleteMetadataButton]="suffix.isMetadataDeleted(imgName)" />
                 </a>
             </li>
 
