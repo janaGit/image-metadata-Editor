@@ -97,7 +97,7 @@ export class FileTabComponent implements OnInit {
      */
     set errorMessage(error) {
         this._errorMessage = error;
-        alert(error);
+        alert("errorMessage" + error);
     }
     /**
      * Put the dropped image into the folder for 
@@ -106,7 +106,7 @@ export class FileTabComponent implements OnInit {
      */
     addDroppedImage(file: File) {
         this._imageService.sendImage(file).then(fileName => {
-            this.setCurrentImage(fileName+IMAGE_EDITED);
+            this.setCurrentImage(fileName + IMAGE_EDITED);
         });
     }
 
@@ -206,7 +206,7 @@ export class FileTabComponent implements OnInit {
      */
     async deleteImage() {
         try {
-            const data = await this._imageService.deleteImage(this._imageName);
+            const data = await this._imageService.deleteImageAndUpdateImageNames(this._imageName);
             this.setCurrentImage(0);
             this._imageService.updateImageNamesInFolder()
         } catch (error) {
@@ -228,7 +228,7 @@ export class FileTabComponent implements OnInit {
                 if (this._exifToolService.metadata) {
                     this.start.emit();
                 } else {
-                    alert(this._exifToolService.errorMessage);
+                    alert("startEditing" + this._exifToolService.errorMessage);
                 }
             });
     }
@@ -287,7 +287,7 @@ export class FileTabComponent implements OnInit {
     async deleteMetadataOfCurrentImageAndChangeImageName(): Promise<string> {
         try {
             const imageName = await this._exifToolService.deleteAllMetadataOfImage(this._imageName);
-        
+
             return imageName;
         } catch (error) {
             this.errorMessage = error;
@@ -305,7 +305,7 @@ export class FileTabComponent implements OnInit {
         const imageName = await this.deleteMetadataOfCurrentImageAndChangeImageName();
         if (imageName) {
             this._imageService.moveImageToImageGallery(imageName);
-        }else{
+        } else {
             this.errorMessage = "Metadata could not be deleted!";
         }
     }
@@ -318,11 +318,30 @@ export class FileTabComponent implements OnInit {
             this.errorMessage = error
         }
     }
-    deleteMetadataOfALLImagesAndMoveThemToImageGallery() {
-        this._imageNames.filter(filterFilesToIgnore).map(async (imageName) => {
-            const newImageName = await this._exifToolService.deleteAllMetadataOfImage(imageName);
-            await this._imageService.moveImageToImageGallery(newImageName);
-        })
+    deleteMetadataOfAllImagesAndMoveThemToImageGallery() {
+        const imageNames = this._imageNames.filter(filterFilesToIgnore);
+        this.deleteMetadataOfAllImagesInImagesFolderAndMoveThemToImageGallery(imageNames);
+    }
+
+    /**
+* This method deletes all images that are declared
+* in the array and located in the images folder.
+*/
+    deleteMetadataOfAllImagesInImagesFolderAndMoveThemToImageGallery(imageNames: string[]): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            let count = 0;
+            let finish = imageNames.length;
+            for (let imageName of imageNames) {
+                this._exifToolService.deleteAllMetadataOfImage(imageName).then(async (newImageName) => {
+                    await this._imageService.moveImageToImageGallery(newImageName);
+                    count = this._editorService.countResolve(count, finish - 1, "Delete metadata and move to Image Gallery...", () => {
+                        this._imageService.updateImageNamesInFolder(); resolve();
+                    });
+                }, rejected => {
+                    reject(rejected);
+                });
+            }
+        });
     }
     /**
  * This method deletes all images in the images folder.

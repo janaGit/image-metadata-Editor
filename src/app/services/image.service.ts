@@ -213,7 +213,7 @@ export class ImageService {
             formData.append('image', imageFile);
             request.onloadend = (() => {
                 this.updateImageNamesInFolder_original();
-                this.copyImageForEditing(request.responseText).catch(error => {
+                this.copyImageForEditingAndUpdateImageNames(request.responseText).catch(error => {
                     reject(error);
                 });
                 resolve(request.responseText);
@@ -228,7 +228,7 @@ export class ImageService {
     /**
     * Method that does a delete request for images that are located in the path: imageDir. 
      */
-    deleteImage(imageName: string): Promise<string[]> {
+    deleteImageAndUpdateImageNames(imageName: string): Promise<string[]> {
         if (imageName !== "selectAll_Images.png") {
             let imageNames = this._editorService.imageNamesInFolder;
             if (imageNames.some(image => image === imageName)) {
@@ -236,6 +236,23 @@ export class ImageService {
                     const data = this._http.delete(this._deleteImageUrl + '/' + imageName).pipe(
                         map(this.extractData)).toPromise();
                     this.updateImageNamesInFolder();
+                    return data;
+                } catch (error) {
+                    this.handleError(error)
+                }
+            }
+        } else { return null }
+    }
+        /**
+    * Method that does a delete request for images that are located in the path: imageDir. 
+     */
+    deleteImage(imageName: string): Promise<string[]> {
+        if (imageName !== "selectAll_Images.png") {
+            let imageNames = this._editorService.imageNamesInFolder;
+            if (imageNames.some(image => image === imageName)) {
+                try {
+                    const data = this._http.delete(this._deleteImageUrl + '/' + imageName).pipe(
+                        map(this.extractData)).toPromise();
                     return data;
                 } catch (error) {
                     this.handleError(error)
@@ -302,11 +319,24 @@ export class ImageService {
      * Method that does a request for copying a specific image from the original images folder
      * (path: imageDir_original) to the editing view (path: imageDir_edited).
      */
-    async copyImageForEditing(imageName: string): Promise<string> {
+    async copyImageForEditingAndUpdateImageNames(imageName: string): Promise<string> {
         try {
             const data = await this._http.post(this._postCopyImage_ForEditing + '/' + imageName, "").pipe(
                 map(this.extractData)).toPromise();
             await this.updateImageNamesInFolder();
+            return data;
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+        /**
+     * Method that does a request for copying a specific image from the original images folder
+     * (path: imageDir_original) to the editing view (path: imageDir_edited).
+     */
+    async copyImageForEditing(imageName: string): Promise<string> {
+        try {
+            const data = await this._http.post(this._postCopyImage_ForEditing + '/' + imageName, "").pipe(
+                map(this.extractData)).toPromise();
             return data;
         } catch (error) {
             this.handleError(error);
@@ -322,7 +352,9 @@ export class ImageService {
             let finish = imageNames.length;
             for (let imageName of imageNames) {
                 this.copyImageForEditing(imageName).then(() => {
-                    count = this._editorService.countResolve(count, finish, resolve)
+                    count = this._editorService.countResolve(count, finish,"Copy files...", ()=>{
+                        this.updateImageNamesInFolder();resolve();
+                    })
                 });
             }
         });
@@ -337,13 +369,17 @@ export class ImageService {
             let finish = imageNames.length;
             for (let imageName of imageNames) {
                 this.deleteImage(imageName).then(() => {
-                    count = this._editorService.countResolve(count, finish, resolve);
+                    count = this._editorService.countResolve(count, finish-1,"Delete files...", ()=>{
+                        this.updateImageNamesInFolder();resolve();
+                    });
                 }, rejected => {
                     reject(rejected);
                 });
             }
         });
     }
+
+
     /**
      * This method updates the names of the images that are placed 
      * in the folders: images, images_edited and images_original.

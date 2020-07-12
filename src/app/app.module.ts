@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 
 import { AppComponent } from './app.component';
 import { BottomBarOriginalImgComponent } from './bottom-bar-original-img/bottom-bar-original-img.component';
@@ -35,6 +36,8 @@ import { BottomBarCompleteImgComponent } from './bottom-bar-complete-img/bottom-
 import { ImeTooltipDirecive } from './directives/ime-tooltip.directive';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import  './font-awesome';
+import { AppModalComponent } from './modals/app-modal/app-modal.component';
+import { ModalShowProgressComponent } from './modals/modal-show-progress/modal-show-progress.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,9 @@ import  './font-awesome';
     ImeTooltipDirecive,
     BottomBarComponent,
     BottomBarOriginalImgComponent,
-    BottomBarCompleteImgComponent
+    BottomBarCompleteImgComponent,
+    AppModalComponent,
+    ModalShowProgressComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +67,8 @@ import  './font-awesome';
     BrowserAnimationsModule,
     TabsModule.forRoot(),
     BsDropdownModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    ProgressbarModule.forRoot()
   ],
   providers: [EditorService, ImageService, ExifToolService, ContextMenuService],
   bootstrap: [AppComponent]

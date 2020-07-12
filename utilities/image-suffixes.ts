@@ -7,7 +7,7 @@ import { imageSuffixes, METADATA_DELETED } from "./constants";
 export function getImageNameInList_suffixNotConsidered(imageName, imageList: string[]): string {
     return imageList.find(imgName => {
         let name = imageSuffixes.find(suffix => {
-            return imgName == imageName+suffix;
+            return imgName.indexOf(suffix)>0;
         })
         if (name) {
             return true;

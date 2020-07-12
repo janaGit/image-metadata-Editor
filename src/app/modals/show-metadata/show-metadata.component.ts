@@ -1,11 +1,8 @@
-import { Component, OnInit, Input, Output,  EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { ExifToolService } from './../../services/exif-tool.service';
 
-/**
-* Different values for the css display variable.
-*/
-type css_display = 'block' | 'none'
+
 /**
  * This class provides a modal that shows a table with the metadata
  * of the actual selected image. It is used by the editor view at the 
@@ -16,11 +13,7 @@ type css_display = 'block' | 'none'
     templateUrl: 'show-metadata.component.html',
     styleUrls: ['show-metadata.component.css']
 })
-export class ShowMetadataComponent implements OnInit{
-    /**
-     * Actual value of css:display 
-     */
-    _display_css: css_display = 'none';
+export class ShowMetadataComponent implements OnInit {
     /**
      * Actual status of the modal
      * 
@@ -28,7 +21,7 @@ export class ShowMetadataComponent implements OnInit{
      * 
      * not shown: false
      */
-    private _display: boolean = false;
+    _display: boolean = false;
     /**
      * This variable stores the metadata of an image.
      */
@@ -44,18 +37,15 @@ export class ShowMetadataComponent implements OnInit{
     @Input() get display() {
         return this._display;
     }
-
     /**
-     * Event emitter that informs other components about the
-     * actual status (shown/hidden) of the modal.
-     */
+   * Event emitter that informs other components about the
+   * actual status (shown/hidden) of the modal.
+   */
     @Output() displayChange = new EventEmitter<boolean>();
-
     constructor(private _exifToolService: ExifToolService) { }
-    
-    ngOnInit(){
-        // To get sure that _display and _display_css are synchonized. 
-        this.display=this._display;
+
+    ngOnInit() {
+
     }
     /**
      * This method sets the value for the visibility of the modal.
@@ -67,34 +57,33 @@ export class ShowMetadataComponent implements OnInit{
      * 
      * false: hidden
      */
-    set display(display:boolean) {
-        //actualize _display variable
-        this._display = display;
+    set display(display: boolean) {
+
         this.displayChange.emit(this._display);
-        
-        if (this._display == false) {
-            this._display_css = 'none';
-        } else {
-            this.showMetadata();
+        if (display == true) {
+            this.showMetadata(display);
+        }else{
+            this._display = display;
         }
     }
-  
-  /**
-   * This method executes a request for getting the metadata 
-   * of the actual image by using the exifToolService.
-   * If the request was successfull, then the modal is shown.
-   * If not, then an alert-window with an error message is displayed. 
-   */
-    showMetadata() {
+
+    /**
+     * This method executes a request for getting the metadata 
+     * of the actual image by using the exifToolService.
+     * If the request was successfull, then the modal is shown.
+     * If not, then an alert-window with an error message is displayed. 
+     */
+    showMetadata(display: boolean) {
         this._exifToolService.requestMetadata().then(
             () => {
                 let __metadata = this._exifToolService.metadata;
                 if (__metadata) {
                     this.metadata = __metadata;
                     this.metadata_keys = Object.keys(this.metadata);
-                    this._display_css = 'block';
+                    //actualize _display variable
+                     this._display = display;
                 } else {
-                    alert(this._exifToolService.errorMessage);
+                    alert("showMetadata"+this._exifToolService.errorMessage);
                 }
             });
     }

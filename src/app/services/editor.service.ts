@@ -133,6 +133,17 @@ export class EditorService {
 
 
 
+    /** Post counter value for modal Progress  ---------------------------------------------------------- */
+    /**
+     * Variable that stores a BehaviorSubject to distribute the
+     * status of the progress.
+     */
+    private __progress_value: BehaviorSubject<{value:number, max:number, title:string}> = new BehaviorSubject(undefined);
+    /**
+     * Variable to subscribe to the Observable to get the current value for the progress.
+     */
+    public _progress_value$ = this.__progress_value.asObservable();
+
     /**
      * This variable stores an error message that was returned
      * by the image service.
@@ -193,6 +204,13 @@ export class EditorService {
      */
     get imageNamesInFolder() {
         return this._imageNamesInFolder;
+    }
+
+    /**
+     * Get the current value of the progress for the progressbar.
+     */
+    get progressValue() {
+        return this.__progress_value;
     }
 
     /**
@@ -263,6 +281,12 @@ export class EditorService {
         this.__fileTabOpen.next(isOpen);
     }
 
+        /**
+     * This method updates the value of the current progress for the progressbar
+     */
+    updateValueProgress(value: number, max:number, title:string) {
+        this.__progress_value.next({value,  max, title});
+    }
 
     /**
      * This method checks if all tasked have been resolved.
@@ -270,8 +294,9 @@ export class EditorService {
      * If all task have been resolved, then the resolve()-method is executed.
      * If not, then the actualized counter is returned.
      */
-    public countResolve(counter: number, finish: number, resolve): number {
+    public countResolve(counter: number, finish: number, title: string,resolve): number {
         counter = counter + 1;
+        this.updateValueProgress(counter, finish, title);
         if (counter === finish) {
             resolve(true);
         }
