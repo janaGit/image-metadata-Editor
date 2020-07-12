@@ -267,10 +267,10 @@ export class Server {
     private moveImage = (imageDir_from, imageDir_to, imageName, imageName_new): Promise<ReturnObject> => {
         return new Promise((resolve, reject) => {
             fs.readdir(imageDir_from, (err, files) => {
-                if (err) {
+                if (err) { 
                     var object = {
                         status: 500,
-                        error: err
+                        error: err 
                     };
                     console.error(object);
                     reject(object);
@@ -279,7 +279,7 @@ export class Server {
                     let object: ReturnObject = {
                         status: 400,
                         error: err,
-                        message: '400, File does not exist.'
+                        message: '400, File does not exist. imageName: '+imageName+' imageName_new  '+imageName_new 
                     };
                     console.error(object);
                     reject(object);
@@ -354,7 +354,7 @@ export class Server {
             result.then((data) => {
                 let _data = { body: data };
                 console.log('deleteAllMetadata server.ts message:' + _data.body);
-                res.status(200).send(_data);
+                res.status(data.status).send(_data);
             }, (error) => {
                 var _error = { body: error };
                 console.error('deleteAllMetadata server.ts  error:' + _error.body);

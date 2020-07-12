@@ -59,17 +59,17 @@ export class ExifTool {
           payload: { imageName: imageName_x }
         };
       } catch (errorData) {
-        if (errorData.includes('Warning: No writable tags set from ')) {
-          const _message = await this.copyAndRenameFile(imageData);
+        if (errorData.includes('Warning:')) {
+         // const _message = await this.copyAndRenameFile(imageData);
           data = {
             status: 200,
-            message: _message,
+            message: ""+errorData,
             payload: { imageName: imageName_x }
           }
         } else {
           data = {
             status: 500,
-            message: errorData,
+            message: ""+errorData,
             payload: null
           };
         }

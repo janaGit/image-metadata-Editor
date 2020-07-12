@@ -128,11 +128,27 @@ export class ExifToolService {
      * @param imageName Image name of Image that metadata should be deleted.
      * @return Name of Image after deleted image data. (Image is renamed after deleting image data)
      */
-    async deleteAllMetadataOfImage(imageName: string): Promise<string> {
+    async deleteAllMetadataOfImageAndUpdateImageNamesInImagesFolder(imageName: string): Promise<string> {
         try {
             const returnObject = await this._http.post(this._deleteAllMetadata + '/' + imageName, "").pipe(
                 map(this.extractReturnObject)).toPromise();
             this._imageService.updateImageNamesInFolder();
+            return returnObject.payload.imageName;
+        }
+        catch (error) {
+            this.handleError(error)
+        };
+
+    }
+        /** 
+     * Method that deletes the metadata of images of the editing view.
+     * @param imageName Image name of Image that metadata should be deleted.
+     * @return Name of Image after deleted image data. (Image is renamed after deleting image data)
+     */
+    async deleteAllMetadataOfImage(imageName: string): Promise<string> {
+        try {
+            const returnObject = await this._http.post(this._deleteAllMetadata + '/' + imageName, "").pipe(
+                map(this.extractReturnObject)).toPromise();
             return returnObject.payload.imageName;
         }
         catch (error) {

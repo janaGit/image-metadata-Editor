@@ -285,13 +285,29 @@ export class ImageService {
      * Method that does a request for moving a specific image from the editing view
      * (path: imageDir) to the image gallery (path: imageDir_edited).
      */
-    async moveImageToImageGallery(imageName: string): Promise<string> {
+    async moveImageToImageGalleryAndUpdateImagesInFolder_Edited(imageName: string): Promise<string> {
         try {
             if (imageName !== "selectAll_Images.png") {
             const data = this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "").pipe(
                 map(this.extractData)).toPromise();
             await this.updateImageNamesInFolder_edited();
             this.updateImageNamesInFolder();
+            return data;
+            }
+        } catch (error) {
+            this.handleError(error);
+        }
+
+    }
+    /**
+     * Method that does a request for moving a specific image from the editing view
+     * (path: imageDir) to the image gallery (path: imageDir_edited).
+     */
+    async moveImageToImageGallery(imageName: string): Promise<string> {
+        try {
+            if (imageName !== "selectAll_Images.png") {
+            const data = this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "").pipe(
+                map(this.extractData)).toPromise();
             return data;
             }
         } catch (error) {

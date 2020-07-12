@@ -286,7 +286,7 @@ export class FileTabComponent implements OnInit {
      */
     async deleteMetadataOfCurrentImageAndChangeImageName(): Promise<string> {
         try {
-            const imageName = await this._exifToolService.deleteAllMetadataOfImage(this._imageName);
+            const imageName = await this._exifToolService.deleteAllMetadataOfImageAndUpdateImageNamesInImagesFolder(this._imageName);
 
             return imageName;
         } catch (error) {
@@ -304,7 +304,7 @@ export class FileTabComponent implements OnInit {
     async deleteMetadataOfCurrentImageAndMove() {
         const imageName = await this.deleteMetadataOfCurrentImageAndChangeImageName();
         if (imageName) {
-            this._imageService.moveImageToImageGallery(imageName);
+            this._imageService.moveImageToImageGalleryAndUpdateImagesInFolder_Edited(imageName);
         } else {
             this.errorMessage = "Metadata could not be deleted!";
         }
@@ -312,7 +312,7 @@ export class FileTabComponent implements OnInit {
 
     async moveCurrentImageToImageGallery() {
         try {
-            const data = await this._imageService.moveImageToImageGallery(this._imageName);
+            const data = await this._imageService.moveImageToImageGalleryAndUpdateImagesInFolder_Edited(this._imageName);
             this.setCurrentImage(0)
         } catch (error) {
             this.errorMessage = error
@@ -331,11 +331,16 @@ export class FileTabComponent implements OnInit {
         return new Promise((resolve, reject) => {
             let count = 0;
             let finish = imageNames.length;
+            this._editorService.countResolve(count, finish , "Delete metadata and move to Image Gallery...", () => {
+                resolve(true);
+            });
             for (let imageName of imageNames) {
                 this._exifToolService.deleteAllMetadataOfImage(imageName).then(async (newImageName) => {
                     await this._imageService.moveImageToImageGallery(newImageName);
-                    count = this._editorService.countResolve(count, finish - 1, "Delete metadata and move to Image Gallery...", () => {
-                        this._imageService.updateImageNamesInFolder(); resolve();
+                    count = this._editorService.countResolve(count, finish, "Delete metadata and move to Image Gallery...", () => {
+                        this._imageService.updateImageNamesInFolder(); 
+                        this._imageService.updateImageNamesInFolder_edited();
+                        resolve(true);
                     });
                 }, rejected => {
                     reject(rejected);
