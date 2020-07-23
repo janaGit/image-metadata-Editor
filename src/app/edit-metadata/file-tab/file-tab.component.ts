@@ -222,15 +222,18 @@ export class FileTabComponent implements OnInit {
      * This method is executed when the 'Start Editing' 
      * button was clicked.
      */
-    startEditing() {
-        this._exifToolService.requestMetadata().then(
-            resolve => {
-                if (this._exifToolService.metadata) {
-                    this.start.emit();
-                } else {
-                    alert("startEditing" + this._exifToolService.errorMessage);
-                }
-            });
+    async startEditing() {
+        try {
+            const metadata = await this._exifToolService.requestMetadata();
+            if (this._exifToolService.metadata) {
+                this.start.emit();
+            } else {
+                alert("startEditing error:" + this._exifToolService.errorMessage);
+            }
+        } catch (e) {
+            alert("startEditing error:" + this._exifToolService.errorMessage);
+        }
+
     }
     /**
      * Shortcuts for the file tab:
@@ -331,14 +334,14 @@ export class FileTabComponent implements OnInit {
         return new Promise((resolve, reject) => {
             let count = 0;
             let finish = imageNames.length;
-            this._editorService.countResolve(count, finish , "Delete metadata and move to Image Gallery...", () => {
+            this._editorService.countResolve(count, finish, "Delete metadata and move to Image Gallery...", () => {
                 resolve(true);
             });
             for (let imageName of imageNames) {
                 this._exifToolService.deleteAllMetadataOfImage(imageName).then(async (newImageName) => {
                     await this._imageService.moveImageToImageGallery(newImageName);
                     count = this._editorService.countResolve(count, finish, "Delete metadata and move to Image Gallery...", () => {
-                        this._imageService.updateImageNamesInFolder(); 
+                        this._imageService.updateImageNamesInFolder();
                         this._imageService.updateImageNamesInFolder_edited();
                         resolve(true);
                     });

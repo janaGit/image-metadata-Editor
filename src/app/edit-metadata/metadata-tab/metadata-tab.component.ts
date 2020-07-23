@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
-    template:`
-    
-    
-    `
+    selector: 'metadata-tab',
+    templateUrl: 'metadata-tab.component.html',
+    styleUrls: ['metadata-tab.component.css', '../../css/global-app.css']
 })
 
-export class MetadataComponent{
-    
+export class MetadataTabComponent{
+    name = new FormControl('');
 }

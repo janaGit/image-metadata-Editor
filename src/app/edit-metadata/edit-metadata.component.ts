@@ -35,7 +35,7 @@ export class EditMetadataComponent implements OnInit {
      */
     public tabs: Array<any> = [
         { title: 'File', tab: 'file' },
-        { title: 'Edit Metadata', tab: 'Edit_Metadata', disabled: true },
+        { title: 'Edit Metadata', tab: 'metadata', disabled: true },
         { title: 'Additional Metadata', tab: 'Metadata', disabled: true },
         { title: 'Location', tab: 'Location', disabled: true },
         { title: 'Complete', tab: 'Complete', disabled: true }
@@ -66,7 +66,7 @@ export class EditMetadataComponent implements OnInit {
      * Used by the tab-directive, when a select-event is fired. 
      */
     public selectTab(tabTitle: string) {
-        let tab = this.tabs.find(tab => { return tab.tab == tabTitle });
+        let tab = this.tabs.find(tab => { return tab.title === tabTitle });
         this.selectedTab = tab.tab;
         if (this.selectedTab === 'file') {
             this._editorService.updateIsFileTabOpen(true);
@@ -86,12 +86,12 @@ export class EditMetadataComponent implements OnInit {
                 tab.active = false;
             } else {
                 tab.disabled = false;
-                if (tab.tab === 'Edit_Metadata') {
+                if (tab.tab === 'metadata') {
                     tab.active = true;
                 }
             }
         });
-        this.selectTab('Edit_Metadata');
+        this.selectTab('metadata');
         this._cdr.detectChanges();
     }
 

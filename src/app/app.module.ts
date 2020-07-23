@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -11,7 +11,7 @@ import { BottomBarOriginalImgComponent } from './bottom-bar-original-img/bottom-
 
 import { EditMetadataComponent } from './edit-metadata/edit-metadata.component';
 import { FileTabComponent } from './edit-metadata/file-tab/file-tab.component';
-import { MetadataComponent } from './edit-metadata/metadata-tab/metadata-tab.component';
+import { MetadataTabComponent } from './edit-metadata/metadata-tab/metadata-tab.component';
 import { LocationComponent } from './edit-metadata/location-tab/location-tab.component';
 import { CompleteComponent } from './edit-metadata/complete-tab/complete-tab.component';
 
@@ -45,7 +45,7 @@ import { ModalShowProgressComponent } from './modals/modal-show-progress/modal-s
     EditMetadataComponent,
     FileTabComponent,
     LocationComponent,
-    MetadataComponent,
+    MetadataTabComponent,
     CompleteComponent,
     ImageGalleryComponent,
     ShowMetadataComponent,
@@ -68,7 +68,8 @@ import { ModalShowProgressComponent } from './modals/modal-show-progress/modal-s
     TabsModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
-    ProgressbarModule.forRoot()
+    ProgressbarModule.forRoot(),
+    ReactiveFormsModule
   ],
   providers: [EditorService, ImageService, ExifToolService, ContextMenuService],
   bootstrap: [AppComponent]
