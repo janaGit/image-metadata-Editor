@@ -73,18 +73,21 @@ export class ShowMetadataComponent implements OnInit {
      * If the request was successfull, then the modal is shown.
      * If not, then an alert-window with an error message is displayed. 
      */
-    showMetadata(display: boolean) {
-        this._exifToolService.requestMetadata().then(
-            () => {
-                let __metadata = this._exifToolService.metadata;
+    async showMetadata(display: boolean) {
+    try{
+      await this._exifToolService.requestMetadata();
+      let __metadata = this._exifToolService.metadata;
                 if (__metadata) {
                     this.metadata = __metadata;
                     this.metadata_keys = Object.keys(this.metadata);
                     //actualize _display variable
                      this._display = display;
                 } else {
-                    alert("showMetadata"+this._exifToolService.errorMessage);
+                    alert("showMetadata error:"+this._exifToolService.errorMessage);
                 }
-            });
+        }catch(e){
+            alert("showMetadata error:"+e .errorMessage);
+        }
     }
+    
 }

@@ -1,0 +1,31 @@
+<div class="app-container">
+  <div class="template-container">
+    <label>Select Template:  </label>
+      <select class="form-control">
+        <option>No Template</option>
+        <option>Template1</option>
+        <option>Template2</option>
+        <option>Template3</option>
+        <option>Template4</option>
+      </select>
+  </div>
+
+  <div class="table-container">
+    <table class="table table-striped">
+      <tr>
+        <th>
+          <div class="table-header-copy"><input type="checkbox"/><span class="table-header-copy__title">Copy</span></div> 
+        </th>
+        <th>Key</th>
+        <th>Value</th>
+      </tr>
+      <tbody>
+        <tr *ngFor="let key of metadata_keys">
+          <td><input type="checkbox"></td>
+          <td>{{key}}</td>
+          <td>{{metadata[key]}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

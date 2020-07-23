@@ -12,6 +12,7 @@ import { BottomBarOriginalImgComponent } from './bottom-bar-original-img/bottom-
 import { EditMetadataComponent } from './edit-metadata/edit-metadata.component';
 import { FileTabComponent } from './edit-metadata/file-tab/file-tab.component';
 import { MetadataTabComponent } from './edit-metadata/metadata-tab/metadata-tab.component';
+import { MoreMetadataTabComponent } from './edit-metadata/more-metadata-tab/more-metadata-tab.component';
 import { LocationComponent } from './edit-metadata/location-tab/location-tab.component';
 import { CompleteComponent } from './edit-metadata/complete-tab/complete-tab.component';
 
@@ -46,6 +47,7 @@ import { ModalShowProgressComponent } from './modals/modal-show-progress/modal-s
     FileTabComponent,
     LocationComponent,
     MetadataTabComponent,
+    MoreMetadataTabComponent,
     CompleteComponent,
     ImageGalleryComponent,
     ShowMetadataComponent,
