@@ -12,29 +12,20 @@ export class MapComponent implements OnInit, AfterViewInit {
   private map;
   private openStreetMapTile;
   private marker;
+  private markerLayer;
 
   @Input()
   set areLayersRequested(areLayersRequested: boolean) {
+    this.initMap();
     if (areLayersRequested) {
-
       this.openStreetMapTile = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       });
 
-      if (this.map) {
-        this.openStreetMapTile.addTo(this.map);
-      }
-
-    } else {
-
-      if (this.openStreetMapTile && this.map) {
-        this.openStreetMapTile.remove();
-      }
-
+      this.openStreetMapTile.addTo(this.map);
+ 
     }
-
-    this.initMap();
   }
 
 
@@ -51,37 +42,39 @@ export class MapComponent implements OnInit, AfterViewInit {
 
 
   constructor() { }
-
   ngAfterViewInit(): void {
-    this.initMap();
+    
   }
 
   ngOnInit(): void {
   }
 
   private initMap(): void {
-    if(this.map || !this.latLongZoom){
+    if (!this.latLongZoom) {
       return;
     }
+    if (this.map) {
+      this.map.remove();
+    }
+    if(this.markerLayer){
+      this.markerLayer.clearLayers();
+    }
+    
+
     this.map = L.map('map', {
       center: [this.latLongZoom.lat, this.latLongZoom.long],
       zoom: this.latLongZoom.zoomLevel
     });
-
-    if (this.openStreetMapTile) {
-      this.openStreetMapTile.addTo(this.map);
-    }
-
-    this.marker = L.marker([this.latLongZoom.lat, this.latLongZoom.long], { draggable: true }).addTo(this.map);
+    this.markerLayer = new L.LayerGroup().addTo(this.map);
+  
+    this.marker = L.marker([this.latLongZoom.lat, this.latLongZoom.long], { draggable: true }).addTo(this.markerLayer);
     this.marker.on('move', this.onDragMarker.bind(this));
-
-
   }
 
 
   onDragMarker(e) {
     console.log("You dragged the marker to " + e.latlng);
-    this.markerLatLongChange.emit({lat:e.latlng.lat, long: e.latlng.lng}); 
+    this.markerLatLongChange.emit({ lat: e.latlng.lat, long: e.latlng.lng });
   }
 
 }
