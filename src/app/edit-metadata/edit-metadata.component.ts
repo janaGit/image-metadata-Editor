@@ -37,7 +37,7 @@ export class EditMetadataComponent implements OnInit {
         { title: 'File', tab: 'file' },
         { title: 'Edit Metadata', tab: 'metadata', disabled: true },
         { title: 'Existing Metadata', tab: 'existing_metadata', disabled: true },
-        { title: 'Location', tab: 'Location', disabled: true },
+        { title: 'Location', tab: 'location', disabled: true },
         { title: 'Complete', tab: 'Complete', disabled: true }
     ];
     constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService) {

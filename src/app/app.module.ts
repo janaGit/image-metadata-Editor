@@ -13,7 +13,7 @@ import { EditMetadataComponent } from './edit-metadata/edit-metadata.component';
 import { FileTabComponent } from './edit-metadata/file-tab/file-tab.component';
 import { MetadataTabComponent } from './edit-metadata/metadata-tab/metadata-tab.component';
 import { MoreMetadataTabComponent } from './edit-metadata/more-metadata-tab/more-metadata-tab.component';
-import { LocationComponent } from './edit-metadata/location-tab/location-tab.component';
+import { LocationTabComponent } from './edit-metadata/location-tab/location-tab.component';
 import { CompleteComponent } from './edit-metadata/complete-tab/complete-tab.component';
 
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
@@ -39,13 +39,14 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import  './font-awesome';
 import { AppModalComponent } from './modals/app-modal/app-modal.component';
 import { ModalShowProgressComponent } from './modals/modal-show-progress/modal-show-progress.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EditMetadataComponent,
     FileTabComponent,
-    LocationComponent,
+    LocationTabComponent,
     MetadataTabComponent,
     MoreMetadataTabComponent,
     CompleteComponent,
@@ -59,7 +60,8 @@ import { ModalShowProgressComponent } from './modals/modal-show-progress/modal-s
     BottomBarOriginalImgComponent,
     BottomBarCompleteImgComponent,
     AppModalComponent,
-    ModalShowProgressComponent
+    ModalShowProgressComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exif-tool.service';
 import { EditorService } from './services/editor.service';
-
 /**
  * Storage of labels for the change view button. 
  * Depending on the url of the actual view (Editor / Image Gallery),
