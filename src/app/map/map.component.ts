@@ -9,41 +9,73 @@ import { LatLongZoom } from '../types/latlongzoom.interface';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit, AfterViewInit {
-  private map;
+  private map: L.MapComponent;
   private openStreetMapTile;
   private marker;
-  private markerLayer;
+  private markerLayer: L.LayerGroup;
+  private _isDisabled: boolean;
+  private _areLayersRequested: boolean;
+  private _markerLatLong: LatLong;
 
   @Input()
   set areLayersRequested(areLayersRequested: boolean) {
     this.initMap();
+    this._areLayersRequested = areLayersRequested;
     if (areLayersRequested) {
+      this.marker.dragging.enable();
+
       this.openStreetMapTile = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       });
 
       this.openStreetMapTile.addTo(this.map);
- 
+
     }
   }
-
+  get areLayerRequested(): boolean {
+    return this._areLayersRequested;
+  }
 
   @Input() latLongZoom: LatLongZoom;
 
   @Input()
   set markerLatLong(latLong: LatLong) {
-    if (this.marker) {
+    this._markerLatLong = latLong;
+    if (this.marker && this._areLayersRequested) {
       this.marker.setLatLng(L.latLng(latLong.lat, latLong.long));
     }
 
   };
   @Output() markerLatLongChange = new EventEmitter<LatLong>();
 
+  @Input() set disabled(isDisabled: boolean) {
+    this._isDisabled = isDisabled;
+    if (!this.map) {
+      return;
+    }
+    if (isDisabled) {
+      this.map.dragging.disable();
+      this.map.touchZoom.disable();
+      this.map.doubleClickZoom.disable();
+      this.map.scrollWheelZoom.disable();
+      this.map.boxZoom.disable();
+      this.map.keyboard.disable();
+      this.map.removeLayer(this.markerLayer);
+    } else {
+      this.map.dragging.enable();
+      this.map.touchZoom.enable();
+      this.map.doubleClickZoom.enable();
+      this.map.scrollWheelZoom.enable();
+      this.map.boxZoom.enable();
+      this.map.keyboard.enable();
+      this.map.addLayer(this.markerLayer);
+    }
+  }
 
   constructor() { }
   ngAfterViewInit(): void {
-    
+
   }
 
   ngOnInit(): void {
@@ -53,21 +85,37 @@ export class MapComponent implements OnInit, AfterViewInit {
     if (!this.latLongZoom) {
       return;
     }
+    if (this.markerLayer) {
+      this.markerLayer.clearLayers();
+    }
     if (this.map) {
       this.map.remove();
     }
-    if(this.markerLayer){
-      this.markerLayer.clearLayers();
-    }
-    
 
-    this.map = L.map('map', {
-      center: [this.latLongZoom.lat, this.latLongZoom.long],
-      zoom: this.latLongZoom.zoomLevel
-    });
-    this.markerLayer = new L.LayerGroup().addTo(this.map);
-  
-    this.marker = L.marker([this.latLongZoom.lat, this.latLongZoom.long], { draggable: true }).addTo(this.markerLayer);
+
+    if (typeof this._markerLatLong !== "undefined") {
+      this.map = L.map('map', {
+        center: [this._markerLatLong.lat, this._markerLatLong.long],
+        zoom: this.latLongZoom.zoomLevel
+      });
+
+    } else {
+      this.map = L.map('map', {
+        center: [this.latLongZoom.lat, this.latLongZoom.long],
+        zoom: this.latLongZoom.zoomLevel
+      });
+    }
+
+    this.markerLayer = new L.LayerGroup();
+    this.markerLayer.addTo(this.map);
+
+    if (typeof this._markerLatLong !== undefined) {
+      this.marker = L.marker([this._markerLatLong.lat, this._markerLatLong.long]);
+    } else {
+      this.marker = L.marker([this.latLongZoom.lat, this.latLongZoom.long])
+    }
+
+    this.marker.addTo(this.markerLayer);
     this.marker.on('move', this.onDragMarker.bind(this));
   }
 

@@ -5,6 +5,10 @@ import { FormControl } from '@angular/forms';
 
 const SHOW_OSM_LAYER = "Show OSM Layer";
 const HIDE_OSM_LAYER = "Hide OSM Layer";
+
+const BUTTON_TITLE_TOGGLE_DISABLE_LOCATION = "Disable Location";
+const BUTTON_TITLE_TOGGLE_ENABLE_LOCATION = "Enable Location";
+
 const DEFAULT_LATITUDE = 52;
 const DEFAULT_LONGITUDE = 11;
 @Component({
@@ -35,8 +39,9 @@ export class LocationTabComponent implements OnInit {
 
 
     areLayersRequested = false;
+    isLocationDisabled= false;
     buttonShowOSMLayerTitle = SHOW_OSM_LAYER;
-
+    buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_DISABLE_LOCATION;
     constructor(private _cdr: ChangeDetectorRef) {
 
     }
@@ -50,6 +55,19 @@ export class LocationTabComponent implements OnInit {
             this.buttonShowOSMLayerTitle = HIDE_OSM_LAYER;
         } else {
             this.buttonShowOSMLayerTitle = SHOW_OSM_LAYER;
+        }
+    }
+
+    toogleEnableDisableLocation() {
+        this.isLocationDisabled = !this.isLocationDisabled;
+        if (this.buttonToggleEnableDisableLocation === BUTTON_TITLE_TOGGLE_DISABLE_LOCATION) {
+            this.buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_ENABLE_LOCATION;
+            this.latitudeControl.disable();
+            this.longitudeControl.disable();
+        } else {
+            this.buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_DISABLE_LOCATION;
+            this.latitudeControl.enable();
+            this.longitudeControl.enable();
         }
     }
 

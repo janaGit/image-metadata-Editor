@@ -1,21 +1,22 @@
 <div class="row" style="height: 100%;">
-    <div class="col-sm-6 app-container">
+    <div class="col-sm-6 app-container" style="height: 100%; display:flex; flex-direction:column">
 
         <div class="form-group app-form-field">
-            <label for="inputLatitude">Latitude</label>
-            <input type="number" class="form-control" id="inputLatitude" [formControl]="latitudeControl" (ngModelChange)="onChangeLatitude($event)">
+            <label for="inputLatitude" [class.label-disabled]="isLocationDisabled">Latitude</label>
+            <input type="number" class="form-control" [class.label-disabled]="isLocationDisabled" id="inputLatitude" [formControl]="latitudeControl" (ngModelChange)="onChangeLatitude($event)">
         </div>
         <div class="form-group app-form-field">
-            <label for="inputLongitude">Longitude</label>
-            <input type="number" class="form-control" id="inputLongitude" [formControl]="longitudeControl" (ngModelChange)="onChangeLongitude($event)">
+            <label for="inputLongitude" [class.label-disabled]="isLocationDisabled">Longitude</label>
+            <input type="number" class="form-control" id="inputLongitude" [class.label-disabled]="isLocationDisabled" [formControl]="longitudeControl" (ngModelChange)="onChangeLongitude($event)">
         </div>
+        <button type="button" class="btn btn-primary" (click)="toogleEnableDisableLocation()">{{buttonToggleEnableDisableLocation}}</button>
     </div>
     <div class="col-sm-6" style="height: 100%; display:flex; flex-direction:column">
-        <button type="button" class="btn btn-primary" (click)="toogleLayerView()">{{buttonShowOSMLayerTitle}}</button>
+        <button type="button" class="btn btn-primary" [disabled]="isLocationDisabled" (click)="toogleLayerView()">{{buttonShowOSMLayerTitle}}</button>
         <div style="flex: 1; position: relative;">
-            <app-map [areLayersRequested]="areLayersRequested" [latLongZoom]="latLongZoom"
+            <app-map [areLayersRequested]="areLayersRequested" [disabled]="isLocationDisabled" [latLongZoom]="latLongZoom"
                 [(markerLatLong)]="markerLatLong">
             </app-map>
         </div>
     </div>
-</div>
+</div> 

@@ -1,3 +1,6 @@
 .deleteMetadataButton{
   background-color: deepskyblue!important;
 }
+.label-disabled{
+color: #ddd;
+}
