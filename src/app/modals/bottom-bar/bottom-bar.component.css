@@ -1,6 +1,7 @@
 #button {
   background-color: white;
   display: flex;
+  height: 40px;
 }
 
 #show {
@@ -24,4 +25,7 @@
 
 .bottomBarChange {
   min-height: 100vh!important;
+}
+.bottom-bar_content-container{
+  position: relative;
 }

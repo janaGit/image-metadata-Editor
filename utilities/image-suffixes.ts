@@ -5,11 +5,11 @@ import { imageSuffixes, METADATA_DELETED } from "./constants";
  * taking the suffixes into account. Then it returns the Name with its suffix.
  */
 export function getImageNameInList_suffixNotConsidered(imageName, imageList: string[]): string {
+    const imageNameWithoutSuffix=getImageNameWithoutSuffix(imageName);
+
     return imageList.find(imgName => {
-        let name = imageSuffixes.find(suffix => {
-            return imgName.indexOf(suffix)>0;
-        })
-        if (name) {
+        const imgNameWithoutSuffix=getImageNameWithoutSuffix(imgName);
+        if (imgNameWithoutSuffix===imageNameWithoutSuffix) {
             return true;
         }
         return false;
@@ -22,7 +22,7 @@ export function getImageNameInList_suffixNotConsidered(imageName, imageList: str
  */
 export function isMetadataDeleted(imgName: string): boolean {
     let indexOfBeginSuffix = imgName.indexOf(METADATA_DELETED+".");
-    if (indexOfBeginSuffix>1) {
+    if (indexOfBeginSuffix>0) {
         return true;
     }
     return false;
@@ -33,8 +33,8 @@ export function isMetadataDeleted(imgName: string): boolean {
  * @param name 
  */
 export function getImageNameWithoutSuffix(name: string): string {
-    let indexOfSuffix = imageSuffixes.find(suffix => name.indexOf(suffix+".")>1);
-    if (indexOfSuffix) {
+    let indexOfSuffix = imageSuffixes.findIndex(suffix => name.indexOf(suffix+".")>1);
+    if (indexOfSuffix>-1) {
         return name.replace(imageSuffixes[indexOfSuffix],"");
     }
     return name;

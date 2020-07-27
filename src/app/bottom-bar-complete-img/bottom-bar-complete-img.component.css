@@ -7,7 +7,7 @@
   display: none;
   position: absolute;
   top: calc(150px - 33px);
-  width: 200px;
+  min-width: 200px;
   left: -45px;
   text-align: center;
   z-index: 10;
@@ -16,4 +16,8 @@
 }
 a:hover .preview_imgName{
   display: block;
+}
+#hoverbox ul{
+  position: absolute;
+  height: 100%;
 }

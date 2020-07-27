@@ -37,6 +37,8 @@
   overflow-y: auto;
   height: 85vh;
   padding-top: 30px;
+  padding-left: 60px;
+  padding-right: 60px;
 }
 
 .menuItems {

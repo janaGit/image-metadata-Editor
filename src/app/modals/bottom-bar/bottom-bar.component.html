@@ -1,5 +1,5 @@
-<div id='bottomBar' [class.bottomBarChange]="_showBottomBar">
-  <div id='button' (click)='clickBottomBar()' #button>
+<div id='bottomBar' [class.bottomBarChange]="_showBottomBar" >
+  <div id='button'  (click)='clickBottomBar()' #button>
     <div class="sideBox"></div>
     <div id="show">
       <div>{{title}}</div>
@@ -7,7 +7,7 @@
     <div class="sideBox"> </div>
   </div>
   <div *ngIf="_showBottomBar">
-    <div  [style.height]="_innerBottomBar_height">
+    <div class="bottom-bar_content-container" [style.height]="_innerBottomBar_height">
     <ng-content></ng-content>
     <div>
   </div>
