@@ -28,24 +28,7 @@ app {
   justify-content: space-between;
 }
 
-img {
-  image-orientation: from-image;
-}
-/* Tooltip */
-
-.tooltip.top .tooltip-arrow {
-  border-top-color: #009688;
-}
-.tooltip.right .tooltip-arrow {
-  border-right-color: #009688;
-}
-.tooltip-inner {
-  background-color: #009688;
-}
-
-.app-container{
-    padding: 40px;
-}
-.app-form-field{
-  margin-bottom: 20px;
+/* bootstrap timepicker */
+.label-disabled .form-control{
+  color: #ddd;
 }

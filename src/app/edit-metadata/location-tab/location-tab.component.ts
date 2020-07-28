@@ -9,21 +9,42 @@ const HIDE_OSM_LAYER = "Hide OSM Layer";
 const BUTTON_TITLE_TOGGLE_DISABLE_LOCATION = "Disable Location";
 const BUTTON_TITLE_TOGGLE_ENABLE_LOCATION = "Enable Location";
 
+const BUTTON_TITLE_TOGGLE_DISABLE_TIME = "Disable Time";
+const BUTTON_TITLE_TOGGLE_ENABLE_TIME = "Enable Time";
+
 const DEFAULT_LATITUDE = 52;
 const DEFAULT_LONGITUDE = 11;
 @Component({
     selector: 'location-tab',
     templateUrl: 'location-tab.component.html',
-    styleUrls: ['location-tab.component.css', '../../css/global-app.css']
+    styleUrls: ['location-tab.component.css', '../../css/global-app.css']  
 })
 
 export class LocationTabComponent implements OnInit {
     latitudeControl = new FormControl(DEFAULT_LATITUDE);
     longitudeControl = new FormControl(DEFAULT_LONGITUDE);
 
+    dateImageCreated = new FormControl(new Date());
+    timeImageCreated = new FormControl(new Date());
+
     latLongZoom: LatLongZoom = { lat: DEFAULT_LATITUDE, long: DEFAULT_LONGITUDE, zoomLevel: 6 }
 
     private _markerLatLong: LatLong = { lat: DEFAULT_LATITUDE, long: DEFAULT_LONGITUDE };
+    areLayersRequested = false;
+    isLocationDisabled= false;
+    isTimeDisabled= false;
+    buttonShowOSMLayerTitle = SHOW_OSM_LAYER;
+    buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_DISABLE_LOCATION;
+    buttonToggleEnableDisableTime = BUTTON_TITLE_TOGGLE_DISABLE_TIME;
+
+
+    constructor(private _cdr: ChangeDetectorRef) {
+
+    }
+
+    ngOnInit() {
+
+    }
 
     set markerLatLong(markerLatLng: LatLong) {
         if (typeof markerLatLng.lat !== "undefined" && typeof markerLatLng.long !== "undefined") {
@@ -37,18 +58,6 @@ export class LocationTabComponent implements OnInit {
         return this._markerLatLong;
     }
 
-
-    areLayersRequested = false;
-    isLocationDisabled= false;
-    buttonShowOSMLayerTitle = SHOW_OSM_LAYER;
-    buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_DISABLE_LOCATION;
-    constructor(private _cdr: ChangeDetectorRef) {
-
-    }
-
-    ngOnInit() {
-
-    }
     toogleLayerView() {
         this.areLayersRequested = !this.areLayersRequested;
         if (this.buttonShowOSMLayerTitle === SHOW_OSM_LAYER) {
@@ -60,7 +69,7 @@ export class LocationTabComponent implements OnInit {
 
     toogleEnableDisableLocation() {
         this.isLocationDisabled = !this.isLocationDisabled;
-        if (this.buttonToggleEnableDisableLocation === BUTTON_TITLE_TOGGLE_DISABLE_LOCATION) {
+        if (this.isLocationDisabled) {
             this.buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_ENABLE_LOCATION;
             this.latitudeControl.disable();
             this.longitudeControl.disable();
@@ -68,6 +77,19 @@ export class LocationTabComponent implements OnInit {
             this.buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_DISABLE_LOCATION;
             this.latitudeControl.enable();
             this.longitudeControl.enable();
+        }
+    }
+
+    toogleEnableDisableTime() {
+        this.isTimeDisabled = !this.isTimeDisabled;
+        if (this.isTimeDisabled) {
+            this.buttonToggleEnableDisableTime = BUTTON_TITLE_TOGGLE_ENABLE_TIME;
+            this.dateImageCreated.disable();
+            this.timeImageCreated.disable();
+        } else {
+            this.buttonToggleEnableDisableTime = BUTTON_TITLE_TOGGLE_DISABLE_TIME;
+            this.dateImageCreated.enable();
+            this.timeImageCreated.enable();
         }
     }
 
@@ -82,6 +104,15 @@ export class LocationTabComponent implements OnInit {
         if (value !== this.markerLatLong.long) {
             this.markerLatLong = { lat: this.markerLatLong.lat, long: value };
         }
+
+    }
+    onChangeDate(value) {
+
+
+    }
+    
+    onChangeTime(value) {
+
 
     }
 }

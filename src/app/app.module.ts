@@ -40,7 +40,8 @@ import  './font-awesome';
 import { AppModalComponent } from './modals/app-modal/app-modal.component';
 import { ModalShowProgressComponent } from './modals/modal-show-progress/modal-show-progress.component';
 import { MapComponent } from './map/map.component';
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +74,9 @@ import { MapComponent } from './map/map.component';
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ProgressbarModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BsDatepickerModule.forRoot(),
+    TimepickerModule.forRoot()
   ],
   providers: [EditorService, ImageService, ExifToolService, ContextMenuService],
   bootstrap: [AppComponent]

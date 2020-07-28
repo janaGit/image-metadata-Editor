@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open --proxy-config proxy.conf.json",
+    "start-no-debug": "ng serve --open --proxy-config proxy.conf.json --source-map=false --verbose --no-progress",
     "build": "ng build && npm run server",
     "test": "ng test",
     "lint": "ng lint",
