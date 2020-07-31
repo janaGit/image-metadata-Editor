@@ -14,14 +14,19 @@
     <table class="table table-striped">
       <tr>
         <th>
-          <div class="table-header-copy"><input type="checkbox"/><span class="table-header-copy__title">Copy</span></div> 
+          <div class="table-header-copy">
+            <input type="checkbox"  
+            [formControl]="selectAllControl"
+            (ngModelChange)="onChangeSelectAll($event)"/>
+            <span class="table-header-copy__title">Copy</span>
+          </div> 
         </th>
         <th>Key</th>
         <th>Value</th>
       </tr>
       <tbody>
-        <tr *ngFor="let key of metadata_keys">
-          <td><input type="checkbox"></td>
+        <tr *ngFor="let key of metadata_keys;">
+          <td><input type="checkbox" [formControl]="metadataControls.get(key)"></td>
           <td>{{key}}</td>
           <td>{{metadata[key]}}</td>
         </tr>

@@ -14,6 +14,10 @@ export class MoreMetadataTabComponent {
      * This variable stores the metadata of an image.
      */
     private metadata = {};
+
+    selectAllControl= new FormControl(false);
+
+    metadataControls: Map<string, FormControl> = new Map();
     /**
      * This variable stores the keys of the metadata.
      */
@@ -28,13 +32,28 @@ export class MoreMetadataTabComponent {
             let __metadata = this._exifToolService.metadata;
             if (__metadata) {
                 this.metadata = __metadata;
-                this.metadata_keys = Object.keys(this.metadata);
-    
+                const _metadata_keys = Object.keys(this.metadata);
+
+                _metadata_keys.forEach(key => {
+                  this.metadataControls.set(key,new FormControl(true))
+                });
+
+                this.metadata_keys = _metadata_keys;
             } else {
                 alert("showMetadata error:" + this._exifToolService.errorMessage);
             }
         } catch (e) {
             alert("showMetadata error:" + e.errorMessage);
         }
+    }
+
+    onChangeSelection(event, index: number) {
+
+    }
+
+    onChangeSelectAll(event){
+        this.metadataControls.forEach(formControl => {
+            formControl.setValue(event);
+        });
     }
 }
