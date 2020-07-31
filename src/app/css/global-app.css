@@ -24,14 +24,24 @@ img {
   margin-bottom: 20px;
   margin-top: 20px;
 }
-.app-form-field-row-element{
+.app-form-field__row-element{
   margin-right: 20px;
 }
+.app-form-field__max-width{
+  width: 300px;
+}
 
-/*colors*/
+.app-label-disabled{
+  color: #ddd;
+}
+
+.app-font-awesome__form-button{
+font-size: 20px;
+}
+
+
+/*button*/
 .deleteMetadataButton{
   background-color: deepskyblue!important;
 }
-.label-disabled{
-color: #ddd;
-}
+

@@ -30,6 +30,8 @@ export class EditMetadataComponent implements OnInit {
      */
     imgPath: string;
 
+    
+
     /**
      * Tabs for the different steps of the editing process.
      */
@@ -80,7 +82,7 @@ export class EditMetadataComponent implements OnInit {
      * Used by the tab-directive, when a select-event is fired. 
      */
     public selectTab(tab: string) {
-        let _tab = this.tabs.find(_tab => { return _tab.tab === tab });
+        let _tab = this.tabs.find(_tab => { return _tab.tab === tab});
         this.selectedTab = _tab.tab;
         if (this.selectedTab === 'file') {
             this._editorService.updateIsFileTabOpen(true);

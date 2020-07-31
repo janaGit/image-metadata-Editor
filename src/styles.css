@@ -29,6 +29,6 @@ app {
 }
 
 /* bootstrap timepicker */
-.label-disabled .form-control{
+.app-label-disabled .form-control{
   color: #ddd;
 }

@@ -1,9 +1,7 @@
-.app-container{
+.container{
     padding-bottom: 10px;
 }
-.template-container{
-    width: 300px;
-}
+
 .table-header-copy{
     padding: 8px;
     line-height: 1.42857143;

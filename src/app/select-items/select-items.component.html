@@ -1,0 +1,13 @@
+<div class="">
+    <div class="app-form-field">
+        <label [class.app-label-disabled]="areKeywordsDisabled">Keyword</label>
+        <div style="display:flex; align-items:center">
+            <input class="form-control app-form-field__row-element" [class.app-label-disabled]="areKeywordsDisabled" [formControl]="newKeyword">
+            <button type="button" class="btn btn-primary" (click)="addNewKeyword()">Add</button>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="btn keyword" *ngFor="let keyword of keywords; index as i" (click)="deleteKeyword(i)">{{keyword}}<i class="fas fa-times keyword__icon-delete"></i></button>
+    </div>
+
+</div>  

@@ -8,5 +8,36 @@ import { FormControl } from '@angular/forms';
 })
 
 export class MetadataTabComponent{
-    name = new FormControl('');
+    creator = new FormControl('');
+    contactInfo = new FormControl('');
+    license = new FormControl('');
+    subject = new FormControl('');
+    description = new FormControl('');
+
+    isCreatorDisabled= false;
+    isContactInfoDisabled= false;
+    isLicenseDisabled= false;
+    isSubjectDisabled= false;
+    isDescriptionDisabled= false;
+
+    onChangeCreator(value) {
+
+
+    }
+    onChangeContactInfo(value) {
+
+
+    }
+    onChangeLicense(value) {
+  
+
+    }
+    onChangeSubject(value) {
+
+
+    }
+    onChangeDescription(value) {
+ 
+
+    }
 }

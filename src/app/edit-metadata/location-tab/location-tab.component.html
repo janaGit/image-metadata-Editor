@@ -2,13 +2,13 @@
     <div class="col-sm-6 app-container" style="height: 100%; display:flex; flex-direction:column">
 
         <div class="form-group app-form-field">
-            <label for="inputLatitude" [class.label-disabled]="isLocationDisabled">Latitude</label>
-            <input type="number" class="form-control" [class.label-disabled]="isLocationDisabled" id="inputLatitude"
+            <label for="inputLatitude" [class.app-label-disabled]="isLocationDisabled">Latitude</label>
+            <input type="number" class="form-control" [class.app-label-disabled]="isLocationDisabled" id="inputLatitude"
                 [formControl]="latitudeControl" (ngModelChange)="onChangeLatitude($event)">
         </div>
         <div class="form-group app-form-field">
-            <label for="inputLongitude" [class.label-disabled]="isLocationDisabled">Longitude</label>
-            <input type="number" class="form-control" id="inputLongitude" [class.label-disabled]="isLocationDisabled"
+            <label for="inputLongitude" [class.app-label-disabled]="isLocationDisabled">Longitude</label>
+            <input type="number" class="form-control" id="inputLongitude" [class.app-label-disabled]="isLocationDisabled"
                 [formControl]="longitudeControl" (ngModelChange)="onChangeLongitude($event)">
         </div>
         <button type="button" class="btn btn-primary app-form-field"
@@ -16,9 +16,9 @@
         <div class="app-form-space" style="display:flex;flex-direction: column;">
             <div class="app-form-space"
                 style="display:flex; align-items: center; justify-content: center">
-                <input type="text" placeholder="Datepicker" class="form-control app-form-field-row-element" bsDatepicker
-                    [bsConfig]="{ dateInputFormat: 'YYYY:MM:DD' }" [class.label-disabled]="isTimeDisabled" [formControl]="dateImageCreated" (ngModelChange)="onChangeDate($event)">
-                <timepicker  [showSeconds]="true" [showMeridian]="false" [class.label-disabled]="isTimeDisabled" [formControl]="timeImageCreated" (ngModelChange)="onChangeTime($event)"></timepicker>
+                <input type="text" placeholder="Datepicker" class="form-control app-form-field__row-element" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'YYYY:MM:DD' }" [class.app-label-disabled]="isTimeDisabled" [formControl]="dateImageCreated" (ngModelChange)="onChangeDate($event)">
+                <timepicker  [showSeconds]="true" [showMeridian]="false" [class.app-label-disabled]="isTimeDisabled" [formControl]="timeImageCreated" (ngModelChange)="onChangeTime($event)"></timepicker>
             </div>
             <button type="button" class="btn btn-primary app-form-field"
                 (click)="toogleEnableDisableTime()">{{buttonToggleEnableDisableTime}}</button>

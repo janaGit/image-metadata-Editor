@@ -7,6 +7,7 @@ import * as faCopy from '@fortawesome/fontawesome-free-solid/faCopy';
 import * as faTrashAlt from '@fortawesome/fontawesome-free-solid/faTrashAlt';
 import * as faAngleLeft from '@fortawesome/fontawesome-free-solid/faAngleLeft';
 import * as faAngleRight from '@fortawesome/fontawesome-free-solid/faAngleRight';
+import * as faTimes from '@fortawesome/fontawesome-free-solid/faTimes';
 
 fontawesome.library.add(faEraser)
 fontawesome.library.add(faArrowRight)
@@ -17,3 +18,4 @@ fontawesome.library.add(faCopy)
 fontawesome.library.add(faTrashAlt)
 fontawesome.library.add(faAngleLeft)
 fontawesome.library.add(faAngleRight)
+fontawesome.library.add(faTimes)
