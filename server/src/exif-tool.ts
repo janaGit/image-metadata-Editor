@@ -44,10 +44,10 @@ export class ExifTool {
     public getMetadata(imageDir, imageName) {
     var json = {};
 
-    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, '-s']);
+    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, '--file:all','--ExifToolVersion', '-s',]);
     return new Promise((fulfill, reject) => {
       ls.stdout.on('data', (data) => {
-        console.log('exifTool getMetadata: ' + data);
+        console.log('exifTool getMetadata: ' + data); 
         var lines = data.toString().split('\n');
         for (var i = 0; i < lines.length; i++) {
           var line = lines[i].toString();

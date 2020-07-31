@@ -84,8 +84,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
             this._fileTabOpen = isOpen;
         })
         const map = new Map<string,TemplateMetadataKeys>();
-        map.set("Template 1",{name: "Template 1", keys:["ExifToolVersion","FileInodeChangeDate"], method: "COPY"});
-        map.set("Template 2",{name: "Template 2", keys:["FileName","FileSize"], method: "DELETE"});
+        map.set("Template 1",{name: "Template 1", keys:["ImageWidth","BitDepth"], method: "COPY"});
+        map.set("Template 2",{name: "Template 2", keys:["Interlace","Compression"], method: "DELETE"});
         this._editorService.updateTemplateForMoreMetadataTab(map)
     }
     ngAfterViewChecked() {

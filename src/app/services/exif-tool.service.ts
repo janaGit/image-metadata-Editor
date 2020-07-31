@@ -118,7 +118,7 @@ export class ExifToolService {
             this._metadata = data;
             this._errorMessage = null;
         } catch (error) {
-            this._errorMessage = error;
+            this._errorMessage = error.message;
             this._metadata = null;
         }
     }
@@ -135,7 +135,7 @@ export class ExifToolService {
             this._errorMessage = null;
         } catch (error) {
             this.handleError(error);
-            this._errorMessage = error;
+            this._errorMessage = error.message;
             this._metadata_edited = null;
         }
 
@@ -153,7 +153,7 @@ export class ExifToolService {
             this._errorMessage = null;
         } catch (error) {
             this.handleError(error);
-            this._errorMessage = error;
+            this._errorMessage = error.message;
             this._metadata_to_edit = null;
         }
 
