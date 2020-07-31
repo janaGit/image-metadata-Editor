@@ -42,7 +42,7 @@ import { ModalShowProgressComponent } from './modals/modal-show-progress/modal-s
 import { MapComponent } from './map/map.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { SelectItemsComponent } from './select-items/select-items.component';
+import { AddItemsComponent } from './add-items/add-items.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +64,7 @@ import { SelectItemsComponent } from './select-items/select-items.component';
     AppModalComponent,
     ModalShowProgressComponent,
     MapComponent,
-    SelectItemsComponent
+    AddItemsComponent
   ],
   imports: [
     BrowserModule,

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-select-items',
-  templateUrl: './select-items.component.html',
-  styleUrls: ['./select-items.component.css', '../css/global-app.css']
+  selector: 'app-add-items',
+  templateUrl: './add-items.component.html',
+  styleUrls: ['./add-items.component.css', '../css/global-app.css']
 })
-export class SelectItemsComponent implements OnInit {
+export class AddItemsComponent implements OnInit {
   keywords: string[] = [];
   newKeyword = new FormControl('');
   areKeywordsDisabled = false;
