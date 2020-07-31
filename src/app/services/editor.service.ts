@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ImageService } from './image.service';
 import * as suffix from '../../../utilities/image-suffixes';
-
+import {TemplateMetadataKeys} from "../types/template-metadata-keys";
 
 /**
  * This service class stores all the data that are created during the 
@@ -132,6 +132,23 @@ export class EditorService {
     public _imageNamesInFolder_complete$ = this.__imageNamesInFolder_complete.asObservable();
 
 
+    /**  templates_more_metadata            ---------------------------------------------           */
+    /**
+     * Variable that stores the tamplates for the more-metadata tab.
+     */
+    private templates_more_metadata: Map<string,TemplateMetadataKeys>;
+
+    /**
+     * Variable that stores a BehaviorSubject to distribute the 
+     * tamplates for the more-metadata tab to the registered subscribers.
+     */
+    private __templates_more_metadata: BehaviorSubject<Map<string,TemplateMetadataKeys>> = new BehaviorSubject<Map<string,TemplateMetadataKeys>>(new Map());
+    /**
+     * Variable to subscribe to the Observable to get
+     * the tamplates for the more-metadata tab.
+     */
+    public templates_more_metadata$ = this.__templates_more_metadata.asObservable();
+
 
     /** Post counter value for modal Progress  ---------------------------------------------------------- */
     /**
@@ -204,6 +221,13 @@ export class EditorService {
      */
     get imageNamesInFolder() {
         return this._imageNamesInFolder;
+    }
+
+    /**
+     * Get the templates for the more-metadata tab.
+     */
+    get templatesMoreMetadata() {
+        return this.__templates_more_metadata;
     }
 
     /**
@@ -281,6 +305,13 @@ export class EditorService {
         this.__fileTabOpen.next(isOpen);
     }
 
+    /**
+     * This method updates the templates for the more-metadata tab
+     */
+    updateTemplateForMoreMetadataTab(templates: Map<string,TemplateMetadataKeys>) {
+        this.templates_more_metadata = templates;
+        this.__templates_more_metadata.next(templates);
+    }
         /**
      * This method updates the value of the current progress for the progressbar
      */

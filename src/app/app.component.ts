@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exif-tool.service';
 import { EditorService } from './services/editor.service';
+import { TemplateMetadataKeys } from './types/template-metadata-keys';
 /**
  * Storage of labels for the change view button. 
  * Depending on the url of the actual view (Editor / Image Gallery),
@@ -82,6 +83,10 @@ export class AppComponent implements OnInit, AfterViewChecked {
         this._editorService._fileTabOpen$.subscribe(isOpen => {
             this._fileTabOpen = isOpen;
         })
+        const map = new Map<string,TemplateMetadataKeys>();
+        map.set("Template 1",{name: "Template 1", keys:["ExifToolVersion","FileInodeChangeDate"], method: "COPY"});
+        map.set("Template 2",{name: "Template 2", keys:["FileName","FileSize"], method: "DELETE"});
+        this._editorService.updateTemplateForMoreMetadataTab(map)
     }
     ngAfterViewChecked() {
         this._cdr.detectChanges();

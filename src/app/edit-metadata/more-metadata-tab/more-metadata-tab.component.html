@@ -1,12 +1,9 @@
 <div class="app-container container">
   <div class="app-form-field app-form-field__max-width">
     <label>Select Template:  </label>
-      <select class="form-control">
-        <option>No Template</option>
-        <option>Template1</option>
-        <option>Template2</option>
-        <option>Template3</option>
-        <option>Template4</option>
+      <select class="form-control" [formControl]="selectedTemplateControl"  (ngModelChange)="onChangeTemplate($event)">
+        <option></option>
+        <option *ngFor="let template of _templatesMetadataKeys | keyvalue">{{template.value.name}}</option>
       </select>
   </div>
 
