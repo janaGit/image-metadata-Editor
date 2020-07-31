@@ -90,7 +90,7 @@ export class Server {
             extended: false
         }));
         this.app.use(bodyParser.json());
-        this.app.use('/api', this.router);
+        this.app.use('/api', this.router); 
     }
     private configRoutes() {
         this.router.get('/getImageNames', this.getFileNames);
@@ -101,10 +101,11 @@ export class Server {
         this.router.get('/getMetadata/:imageName/:lang', this.getMetadata_edit);
         this.router.get('/getMetadata_edited/:imageName/:lang', this.getMetadata_edited);
         this.router.post('/deleteAllMetadata/:imageName', this.deleteAllMetadata);
+        this.router.get('/getMetadataToEdit/:imageName', this.getMetadataToEdit);
 
         this.router.post('/newImage', this.upload.single('image'), this.newImage);
         this.router.delete('/deleteImage/:imageName', this.deleteImage);
-
+ 
         this.router.post('/copyImageForEditing/:imageName', this.copyImageToImageFolder);
         this.router.post('/moveImageBackForEditing/:imageName', this.moveImageBackToImageFolder);
         this.router.post('/moveImageToImageGallery/:imageName', this.moveImageToImageGallery);
@@ -167,7 +168,42 @@ export class Server {
 
         });
     }
-
+    private getMetadata = (imageDir, imageName, lang) => {
+        return new Promise((resolve, reject) => {
+            fs.readdir(imageDir, (err, files) => {
+                if (files.indexOf(imageName) === -1) {
+                    reject('File with name: ' + imageName + ' does not exist.');
+                } else {
+                    let data = this.exifTool.getMetadataHumanreadable(imageDir, imageName, lang);
+                    data.then((data) => {
+                        console.log(data);
+                        let body = { data: data };
+                        resolve(body);
+                    }, (error) => {
+                        reject(error);
+                    });
+                }
+            });
+        });
+    }
+    private _getMetadataToEdit = (imageDir, imageName) => {
+        return new Promise((resolve, reject) => {
+            fs.readdir(imageDir, (err, files) => {
+                if (files.indexOf(imageName) === -1) {
+                    reject('File with name: ' + imageName + ' does not exist.');
+                } else {
+                    let data = this.exifTool.getMetadata(imageDir, imageName);
+                    data.then((data) => {
+                        console.log(data);
+                        let body = { data: data };
+                        resolve(body);
+                    }, (error) => {
+                        reject(error);
+                    });
+                }
+            });
+        });
+    }
     private getMetadata_edit = (req, res) => {
         var imageName = req.params.imageName;
         var lang = '';
@@ -203,24 +239,17 @@ export class Server {
         });
     }
 
-    private getMetadata = (imageDir, imageName, lang) => {
-        return new Promise((resolve, reject) => {
-            fs.readdir(imageDir, (err, files) => {
-                if (files.indexOf(imageName) === -1) {
-                    reject('File with name: ' + imageName + ' does not exist.');
-                } else {
-                    let data = this.exifTool.getMetadata(imageDir, imageName, lang);
-                    data.then((data) => {
-                        console.log(data);
-                        let body = { data: data };
-                        resolve(body);
-                    }, (error) => {
-                        reject(error);
-                    });
-                }
-            });
+    private getMetadataToEdit = (req, res) => {
+        var imageName = req.params.imageName;
+
+        var metadata = this._getMetadataToEdit(this.imageDir, imageName);
+        metadata.then((value) => {
+            res.send(value);
+        }, (error) => {
+            res.status(404).send(error); 
         });
-    }
+    }  
+
 
     private copyImageToImageFolder = (req, res) => {
         let imageName = req.params.imageName;
@@ -230,7 +259,7 @@ export class Server {
         }, (error) => {
             res.status(error.status).send(error);
         });
-    }
+    } 
 
     private moveImageBackToImageFolder = (req, res) => {
         var imageName = req.params.imageName;
@@ -363,6 +392,8 @@ export class Server {
         });
 
     }
+
+
 }
 
 let _server = Server.main();

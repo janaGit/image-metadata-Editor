@@ -33,6 +33,11 @@ export class ExifToolService {
      */
     private _deleteAllMetadata = this._serverBase + '/deleteAllMetadata';
 
+        /**
+     * Restful webservice URL to get the not humanreadabile metadata from an image that should be edited 
+     */
+    private _getMetadata_to_edit = this._serverBase + '/getMetadataToEdit';
+
     /**
      * Actual language-setting for the image metadata. 
      */
@@ -47,6 +52,12 @@ export class ExifToolService {
      * Stores the metadata of an image of the editing view. 
      */
     private _metadata: Object;
+
+
+    /**
+     * Stores the metadata of an image that is beeing edited. 
+     */
+    private _metadata_to_edit: Object;
 
     /**
      * Stores the metadata of an image of the image gallery. 
@@ -80,6 +91,13 @@ export class ExifToolService {
      */
     get metadata_edited() {
         return this._metadata_edited;
+    }
+
+    /**
+     * Get the metadata of an image of the image gallery. 
+     */
+    get metadata_to_edit() {
+        return this._metadata_to_edit;
     }
 
     /**
@@ -119,6 +137,24 @@ export class ExifToolService {
             this.handleError(error);
             this._errorMessage = error;
             this._metadata_edited = null;
+        }
+
+    }
+
+    /**
+     * Method that does a request to the backend to get the metadata with tag names
+     * of a specific image from the image folder.
+     */
+    async requestMetadata_toEdit() {
+        try {
+            const data = await this._http.get(this._getMetadata_to_edit + '/' + this._editorService.imageName).pipe(
+                map(this.extractData)).toPromise();
+            this._metadata_to_edit = data;
+            this._errorMessage = null;
+        } catch (error) {
+            this.handleError(error);
+            this._errorMessage = error;
+            this._metadata_to_edit = null;
         }
 
     }

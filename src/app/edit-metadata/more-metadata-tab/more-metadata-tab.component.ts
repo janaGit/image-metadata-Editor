@@ -28,8 +28,8 @@ export class MoreMetadataTabComponent {
     }
     async ngOnInit() {
         try {
-            await this._exifToolService.requestMetadata();
-            let __metadata = this._exifToolService.metadata;
+            await this._exifToolService.requestMetadata_toEdit();
+            let __metadata = this._exifToolService.metadata_to_edit;
             if (__metadata) {
                 this.metadata = __metadata;
                 const _metadata_keys = Object.keys(this.metadata);
