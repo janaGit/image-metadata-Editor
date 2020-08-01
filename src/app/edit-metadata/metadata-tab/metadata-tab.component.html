@@ -10,11 +10,8 @@
         <label [class.app-label-disabled]="isLicenseDisabled">License</label>
         <select class="form-control" [class.app-label-disabled]="isLicenseDisabled" [formControl]="license"
           (ngModelChange)="onChangeLicense($event)">
-          <option>CC-by</option>
-          <option>CC-by-sa</option>
-          <option>CC-by-nd</option>
-          <option>CC-by-nc</option>
-          <option>CC-by-nc-sa</option>
+          <option></option>
+          <option *ngFor="let licenseName of licenseNames">{{licenseName}}</option>
         </select>
       </div>
     </div>

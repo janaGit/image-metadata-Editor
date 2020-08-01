@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { EditorService } from 'app/services/editor.service';
 
 @Component({
     selector: 'metadata-tab',
@@ -7,18 +8,31 @@ import { FormControl } from '@angular/forms';
     styleUrls: ['metadata-tab.component.css', '../../css/global-app.css']
 })
 
-export class MetadataTabComponent{
+export class MetadataTabComponent implements OnInit {
+
     creator = new FormControl('');
     contactInfo = new FormControl('');
     license = new FormControl('');
     subject = new FormControl('');
     description = new FormControl('');
 
-    isCreatorDisabled= false;
-    isContactInfoDisabled= false;
-    isLicenseDisabled= false;
-    isSubjectDisabled= false;
-    isDescriptionDisabled= false;
+    isCreatorDisabled = false;
+    isContactInfoDisabled = false;
+    isLicenseDisabled = false;
+    isSubjectDisabled = false;
+    isDescriptionDisabled = false;
+
+    licenseNames: string[] = [];
+
+    constructor(private _editorService: EditorService) {
+
+    }
+
+    ngOnInit(): void {
+        this._editorService.license_names$.subscribe(licenseNames => {
+            this.licenseNames = licenseNames;
+        });
+    }
 
     onChangeCreator(value) {
 
@@ -29,7 +43,7 @@ export class MetadataTabComponent{
 
     }
     onChangeLicense(value) {
-  
+
 
     }
     onChangeSubject(value) {
@@ -37,7 +51,7 @@ export class MetadataTabComponent{
 
     }
     onChangeDescription(value) {
- 
+
 
     }
 }

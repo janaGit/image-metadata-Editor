@@ -83,10 +83,11 @@ export class AppComponent implements OnInit, AfterViewChecked {
         this._editorService._fileTabOpen$.subscribe(isOpen => {
             this._fileTabOpen = isOpen;
         })
+        this._editorService.updateLicenseNames(["CC-by","CC-by-sa","CC-by-nd","CC-by-nc","CC-by-nc-sa"]);
         const map = new Map<string,TemplateMetadataKeys>();
         map.set("Template 1",{name: "Template 1", keys:["ImageWidth","BitDepth"], method: "COPY"});
         map.set("Template 2",{name: "Template 2", keys:["Interlace","Compression"], method: "DELETE"});
-        this._editorService.updateTemplateForMoreMetadataTab(map)
+        this._editorService.updateTemplateForMoreMetadataTab(map);
     }
     ngAfterViewChecked() {
         this._cdr.detectChanges();

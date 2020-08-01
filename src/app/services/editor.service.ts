@@ -132,6 +132,26 @@ export class EditorService {
     public _imageNamesInFolder_complete$ = this.__imageNamesInFolder_complete.asObservable();
 
 
+
+    /**  license names            ---------------------------------------------           */
+    /**
+     * Variable that stores the license names.
+     */
+    private _license_names: string[];
+
+    /**
+     * Variable that stores a BehaviorSubject to distribute the 
+     * license names to the registered subscribers.
+     */
+    private __license_names: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+    /**
+     * Variable to subscribe to the Observable to get
+     * the license names.
+     */
+    public license_names$ = this.__license_names.asObservable();
+
+
+
     /**  templates_more_metadata            ---------------------------------------------           */
     /**
      * Variable that stores the tamplates for the more-metadata tab.
@@ -140,12 +160,12 @@ export class EditorService {
 
     /**
      * Variable that stores a BehaviorSubject to distribute the 
-     * tamplates for the more-metadata tab to the registered subscribers.
+     * templates for the more-metadata tab to the registered subscribers.
      */
     private __templates_more_metadata: BehaviorSubject<Map<string,TemplateMetadataKeys>> = new BehaviorSubject<Map<string,TemplateMetadataKeys>>(new Map());
     /**
      * Variable to subscribe to the Observable to get
-     * the tamplates for the more-metadata tab.
+     * the templates for the more-metadata tab.
      */
     public templates_more_metadata$ = this.__templates_more_metadata.asObservable();
 
@@ -221,6 +241,13 @@ export class EditorService {
      */
     get imageNamesInFolder() {
         return this._imageNamesInFolder;
+    }
+
+    /**
+     * Get the license names.
+     */
+    get getLicenseNames() {
+        return this._license_names;
     }
 
     /**
@@ -303,6 +330,14 @@ export class EditorService {
     updateIsFileTabOpen(isOpen: boolean) {
         this._fileTabOpen = isOpen;
         this.__fileTabOpen.next(isOpen);
+    }
+
+    /**
+     * This method updates the license names.
+     */
+    updateLicenseNames(licenseNames: string[]) {
+        this._license_names = licenseNames;
+        this.__license_names.next(licenseNames);
     }
 
     /**
