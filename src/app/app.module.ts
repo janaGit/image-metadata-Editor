@@ -37,6 +37,7 @@ import { BottomBarCompleteImgComponent } from './bottom-bar-complete-img/bottom-
 import { ImeTooltipDirecive } from './directives/ime-tooltip.directive';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import  './font-awesome';
+import 'typeface-roboto';
 import { AppModalComponent } from './modals/app-modal/app-modal.component';
 import { ModalShowProgressComponent } from './modals/modal-show-progress/modal-show-progress.component';
 import { MapComponent } from './map/map.component';
@@ -45,6 +46,11 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { AddItemsComponent } from './add-items/add-items.component';
 import { TemplateTabComponent } from './edit-metadata/template-tab/template-tab.component';
 import { CategoriesTabComponent } from './edit-metadata/categories-tab/categories-tab.component';
+import { TreeComponent } from './tree/tree.component';
+import { MatTreeModule } from '@angular/material/tree';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,7 +74,8 @@ import { CategoriesTabComponent } from './edit-metadata/categories-tab/categorie
     MapComponent,
     AddItemsComponent,
     TemplateTabComponent,
-    CategoriesTabComponent
+    CategoriesTabComponent,
+    TreeComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +89,11 @@ import { CategoriesTabComponent } from './edit-metadata/categories-tab/categorie
     ProgressbarModule.forRoot(),
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
-    TimepickerModule.forRoot()
+    TimepickerModule.forRoot(),
+    MatTreeModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCheckboxModule
   ],
   providers: [EditorService, ImageService, ExifToolService, ContextMenuService],
   bootstrap: [AppComponent]
