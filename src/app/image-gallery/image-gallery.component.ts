@@ -16,7 +16,7 @@ import * as suffix from "../../../utilities/image-suffixes";
  */
 @Component({
     templateUrl: 'image-gallery.component.html',
-    styleUrls: ['image-gallery.component.css', '../css/hover-box.css', '../css/global-app.css'],
+    styleUrls: ['image-gallery.component.scss', '../css/hover-box.scss', '../css/global-app.scss'],
     host: {
         '(window:keypress)': 'onKey($event)'
     }

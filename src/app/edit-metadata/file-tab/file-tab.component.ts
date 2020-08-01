@@ -14,7 +14,7 @@ import { IMAGE_EDITED } from '../../../../utilities/constants';
 @Component({
     selector: 'file-tab',
     templateUrl: 'file-tab.component.html',
-    styleUrls: ['file-tab.component.css', '../../css/global-app.css']
+    styleUrls: ['file-tab.component.scss', '../../css/global-app.scss']
 })
 export class FileTabComponent implements OnInit {
     /**

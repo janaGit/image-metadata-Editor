@@ -5,7 +5,7 @@ import { ImageService } from '../services/image.service';
 @Component({
   selector: 'bottom-bar-complete-img',
   templateUrl: './bottom-bar-complete-img.component.html',
-  styleUrls: ['./bottom-bar-complete-img.component.css', '../css/hover-box.css']
+  styleUrls: ['./bottom-bar-complete-img.component.scss', '../css/hover-box.scss']
 })
 export class BottomBarCompleteImgComponent implements OnInit {
   /**

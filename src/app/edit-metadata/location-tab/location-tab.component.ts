@@ -17,7 +17,7 @@ const DEFAULT_LONGITUDE = 11;
 @Component({
     selector: 'location-tab',
     templateUrl: 'location-tab.component.html',
-    styleUrls: ['location-tab.component.css', '../../css/global-app.css']  
+    styleUrls: ['location-tab.component.scss', '../../css/global-app.scss']  
 })
 
 export class LocationTabComponent implements OnInit {

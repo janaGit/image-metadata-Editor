@@ -6,7 +6,7 @@ import { Component, OnInit, Output, AfterViewChecked, Input, ElementRef, ViewChi
 @Component({
   selector: 'bottom-bar',
   templateUrl: './bottom-bar.component.html',
-  styleUrls: ['./bottom-bar.component.css']
+  styleUrls: ['./bottom-bar.component.scss']
 })
 export class BottomBarComponent implements OnInit, AfterViewChecked {
   @Input() title: string;

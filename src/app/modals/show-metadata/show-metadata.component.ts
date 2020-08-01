@@ -11,7 +11,7 @@ import { ExifToolService } from './../../services/exif-tool.service';
 @Component({
     selector: 'showMetadata',
     templateUrl: 'show-metadata.component.html',
-    styleUrls: ['show-metadata.component.css']
+    styleUrls: ['show-metadata.component.scss']
 })
 export class ShowMetadataComponent implements OnInit {
     /**

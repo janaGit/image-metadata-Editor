@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-add-items',
   templateUrl: './add-items.component.html',
-  styleUrls: ['./add-items.component.css', '../css/global-app.css']
+  styleUrls: ['./add-items.component.scss', '../css/global-app.scss']
 })
 export class AddItemsComponent implements OnInit {
   keywords: string[] = [];

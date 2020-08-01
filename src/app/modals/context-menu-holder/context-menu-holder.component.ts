@@ -28,7 +28,7 @@ import { ContextMenuService } from './../../services/context-menu.service';
  */
 @Component({
     selector: 'context-menu-holder',
-    styleUrls: ['context-menu-holder.component.css'],
+    styleUrls: ['context-menu-holder.component.scss'],
     templateUrl: 'context-menu-holder.component.html'
 })
 export class ContextMenuHolderComponent {

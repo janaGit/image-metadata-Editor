@@ -12,7 +12,7 @@ import * as suffix from "../../../utilities/image-suffixes";
 @Component({
   selector: 'bottom-bar-original-img',
   templateUrl: './bottom-bar-original-img.component.html',
-  styleUrls: ['./bottom-bar-original-img.component.css', '../css/hover-box.css']
+  styleUrls: ['./bottom-bar-original-img.component.scss', '../css/hover-box.scss']
 })
 export class BottomBarOriginalImgComponent implements OnInit {
   /**

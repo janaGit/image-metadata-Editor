@@ -10,7 +10,7 @@ import { ImageService } from './../services/image.service';
 @Component({
     selector: 'edit-metadata',
     templateUrl: 'edit-metadata.component.html',
-    styleUrls: ['edit-metadata.component.css']
+    styleUrls: ['edit-metadata.component.scss']
 })
 export class EditMetadataComponent implements OnInit {
     /**

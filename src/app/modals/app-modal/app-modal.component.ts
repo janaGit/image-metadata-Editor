@@ -8,7 +8,7 @@ type css_display = 'block' | 'none'
 @Component({
   selector: 'app-modal',
   templateUrl: './app-modal.component.html',
-  styleUrls: ['./app-modal.component.css']
+  styleUrls: ['./app-modal.component.scss']
 })
 export class AppModalComponent implements OnInit {
   /**

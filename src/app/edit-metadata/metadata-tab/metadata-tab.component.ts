@@ -5,7 +5,7 @@ import { EditorService } from 'app/services/editor.service';
 @Component({
     selector: 'metadata-tab',
     templateUrl: 'metadata-tab.component.html',
-    styleUrls: ['metadata-tab.component.css', '../../css/global-app.css']
+    styleUrls: ['metadata-tab.component.scss', '../../css/global-app.scss']
 })
 
 export class MetadataTabComponent implements OnInit {

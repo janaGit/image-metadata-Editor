@@ -5,7 +5,7 @@ import { EditorService } from 'app/services/editor.service';
 @Component({
   selector: 'modal-show-progress',
   templateUrl: './modal-show-progress.component.html',
-  styleUrls: ['./modal-show-progress.component.css']
+  styleUrls: ['./modal-show-progress.component.scss']
 })
 export class ModalShowProgressComponent implements OnInit {
   /**

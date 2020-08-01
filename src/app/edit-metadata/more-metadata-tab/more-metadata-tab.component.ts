@@ -8,7 +8,7 @@ import { TemplateMetadataKeys } from 'app/types/template-metadata-keys';
 @Component({
     selector: ' more-metadata-tab',
     templateUrl: 'more-metadata-tab.component.html',
-    styleUrls: ['more-metadata-tab.component.css', '../../css/global-app.css'],
+    styleUrls: ['more-metadata-tab.component.scss', '../../css/global-app.scss'],
     providers: [{ provide: BsDropdownConfig, useValue: { isAnimated: true, autoClose: true } }]
 })
 export class MoreMetadataTabComponent {
