@@ -11,7 +11,9 @@
   </div>
   <div style="position:relative; flex:1;">
     <file-tab *ngIf="selectedTab==='file'" (start)="startEditing()"></file-tab>
+    <app-template-tab *ngIf="selectedTab==='template'"></app-template-tab>
     <metadata-tab *ngIf="selectedTab==='metadata'"></metadata-tab>
+    <app-categories-tab *ngIf="selectedTab==='categories'"></app-categories-tab>
     <more-metadata-tab *ngIf="selectedTab==='existing_metadata'"></more-metadata-tab>
     <location-tab *ngIf="selectedTab==='location'"></location-tab>
   </div>

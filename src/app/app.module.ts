@@ -43,6 +43,8 @@ import { MapComponent } from './map/map.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { AddItemsComponent } from './add-items/add-items.component';
+import { TemplateTabComponent } from './edit-metadata/template-tab/template-tab.component';
+import { CategoriesTabComponent } from './edit-metadata/categories-tab/categories-tab.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +66,9 @@ import { AddItemsComponent } from './add-items/add-items.component';
     AppModalComponent,
     ModalShowProgressComponent,
     MapComponent,
-    AddItemsComponent
+    AddItemsComponent,
+    TemplateTabComponent,
+    CategoriesTabComponent
   ],
   imports: [
     BrowserModule,
