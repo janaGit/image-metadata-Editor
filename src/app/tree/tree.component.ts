@@ -8,6 +8,7 @@ import { MetadataService } from 'app/services/metadata.service';
 import { CategoriesTabComponent } from 'app/edit-metadata/categories-tab/categories-tab.component';
 import { first } from 'rxjs/operators'
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
+import { FormControl } from '@angular/forms';
 
 /**
  * Node for category item
@@ -31,9 +32,10 @@ export class CategoryFlatNode {
 @Component({
   selector: 'app-tree',
   templateUrl: 'tree.component.html',
-  styleUrls: ['tree.component.scss'],
+  styleUrls: ['tree.component.scss', '../css/global-app.scss'],
 })
 export class TreeComponent implements OnInit {
+  selectedCategories: string[];
 
   areNotSupportedCategoriesSelected = false;
   notSupprotedCategories = []
@@ -244,6 +246,6 @@ export class TreeComponent implements OnInit {
     }
     const uniqueCategories = categories.filter((item, index) => categories.indexOf(item) === index);
     this._metadataService.updateCategories(uniqueCategories);
-    console.log(uniqueCategories);
+    this.selectedCategories = uniqueCategories;
   }
 }
