@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ImageService } from './image.service';
-import * as suffix from '../../../utilities/image-suffixes';
 import {TemplateMetadataKeys} from "../types/template-metadata-keys";
 
 /**
@@ -169,6 +167,15 @@ export class EditorService {
      */
     public templates_more_metadata$ = this.__templates_more_metadata.asObservable();
 
+    /**  category tree           ---------------------------------------------           */
+
+    private _categoryTree: Object;
+
+ 
+    private __categoryTree: BehaviorSubject<Object> = new BehaviorSubject<Object>({});
+
+    public categoryTree$ = this.__categoryTree.asObservable();
+
 
     /** Post counter value for modal Progress  ---------------------------------------------------------- */
     /**
@@ -250,6 +257,10 @@ export class EditorService {
         return this._license_names;
     }
 
+
+    get categoryTree() {
+        return this.__categoryTree;
+    }
     /**
      * Get the templates for the more-metadata tab.
      */
@@ -338,6 +349,14 @@ export class EditorService {
     updateLicenseNames(licenseNames: string[]) {
         this._license_names = licenseNames;
         this.__license_names.next(licenseNames);
+    }
+
+    /**
+     * This method updates the templates for the more-metadata tab
+     */
+    updateCategoryTree(categoryTree: Object) {
+        this._categoryTree = categoryTree;
+        this.__categoryTree.next(categoryTree);
     }
 
     /**

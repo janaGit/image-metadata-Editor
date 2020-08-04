@@ -29,6 +29,7 @@ import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exif-tool.service';
 import { ContextMenuService } from './services/context-menu.service';
 import { EditorService } from './services/editor.service';
+import { MetadataService } from './services/metadata.service';
 
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -95,7 +96,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatButtonModule,
     MatCheckboxModule
   ],
-  providers: [EditorService, ImageService, ExifToolService, ContextMenuService],
+  providers: [EditorService, ImageService, ExifToolService, ContextMenuService,MetadataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

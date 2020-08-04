@@ -4,6 +4,31 @@ import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exif-tool.service';
 import { EditorService } from './services/editor.service';
 import { TemplateMetadataKeys } from './types/template-metadata-keys';
+const TREE_DATA = {
+    Forest: {
+        "Feciduous Forest": null,
+        "Coniferous Forest": null
+    },
+    "Open Fields": {
+        "Meadow": null,
+        "Field": null
+    },
+    "Mountains": null,
+    "River": null,
+    "See": null,
+    "Lake": null,
+    "Animal": {
+        "Insects": null,
+        "Birds": {
+            "oscine birds": null,
+            "Owl": null,
+            "Raven": null
+        }
+    },
+    "Town": {
+        "Buildings": null
+    }
+};
 /**
  * Storage of labels for the change view button. 
  * Depending on the url of the actual view (Editor / Image Gallery),
@@ -83,10 +108,13 @@ export class AppComponent implements OnInit, AfterViewChecked {
         this._editorService._fileTabOpen$.subscribe(isOpen => {
             this._fileTabOpen = isOpen;
         })
-        this._editorService.updateLicenseNames(["CC-by","CC-by-sa","CC-by-nd","CC-by-nc","CC-by-nc-sa"]);
-        const map = new Map<string,TemplateMetadataKeys>();
-        map.set("Template 1",{name: "Template 1", keys:["ImageWidth","BitDepth"], method: "COPY"});
-        map.set("Template 2",{name: "Template 2", keys:["Interlace","Compression"], method: "DELETE"});
+        this._editorService.updateLicenseNames(["CC-by", "CC-by-sa", "CC-by-nd", "CC-by-nc", "CC-by-nc-sa"]);
+
+        this._editorService.updateCategoryTree(TREE_DATA);
+
+        const map = new Map<string, TemplateMetadataKeys>();
+        map.set("Template 1", { name: "Template 1", keys: ["ImageWidth", "BitDepth"], method: "COPY" });
+        map.set("Template 2", { name: "Template 2", keys: ["Interlace", "Compression"], method: "DELETE" });
         this._editorService.updateTemplateForMoreMetadataTab(map);
     }
     ngAfterViewChecked() {
