@@ -7,6 +7,7 @@ import { EditorService } from 'app/services/editor.service';
 import { MetadataService } from 'app/services/metadata.service';
 import { CategoriesTabComponent } from 'app/edit-metadata/categories-tab/categories-tab.component';
 import { first } from 'rxjs/operators'
+import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 
 /**
  * Node for category item
@@ -61,7 +62,7 @@ export class TreeComponent implements OnInit {
   /** The selection for checklist */
   checklistSelection = new SelectionModel<CategoryFlatNode>(true /* multiple */);
 
-  constructor(private _editorService: EditorService, private _metadataService: MetadataService, private _cdr: ChangeDetectorRef) {
+  constructor(private _editorService: EditorService, private _metadataService: MetadataService, private _metadataFromImageService: MetadataFromImageService, private _cdr: ChangeDetectorRef) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
       this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl<CategoryFlatNode>(this.getLevel, this.isExpandable);
@@ -78,15 +79,21 @@ export class TreeComponent implements OnInit {
         const flatNode = this.categoryNameNodeMap.get(category);
         if (typeof flatNode !== "undefined") {
           this.categoryItemSelectionToggle(flatNode);
-        } else {
-          this.notSupprotedCategories=this.notSupprotedCategories.concat(category);
-         
+        }
+
+      });
+    });
+    this._metadataFromImageService.categories$.pipe(first()).subscribe(categories => {
+      categories.forEach(category => {
+        const flatNode = this.categoryNameNodeMap.get(category);
+        if (typeof flatNode === "undefined") {
+          this.notSupprotedCategories = this.notSupprotedCategories.concat(category);
         }
 
       })
 
     });
-  
+
   }
 
   getLevel = (node: CategoryFlatNode) => node.level;
