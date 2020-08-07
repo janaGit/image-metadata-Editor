@@ -224,7 +224,8 @@ export class FileTabComponent implements OnInit {
      */
     async startEditing() {
         try {
-            const metadata = await this._exifToolService.requestMetadata();
+            await this._exifToolService.requestMetadata();
+            this._exifToolService.requestMetadata_toEdit();
             if (this._exifToolService.metadata) {
                 this.start.emit();
             } else {

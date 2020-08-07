@@ -53,6 +53,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { InputTemplateButtonsComponent } from './input-template-buttons/input-template-buttons.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -77,7 +78,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     AddItemsComponent,
     TemplateTabComponent,
     CategoriesTabComponent,
-    TreeComponent
+    TreeComponent,
+    InputTemplateButtonsComponent
   ],
   imports: [
     BrowserModule,

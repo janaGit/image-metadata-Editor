@@ -1,0 +1,6 @@
+<div class="app-row">
+    <button type="button" class="btn button-template" (click)="onClickTemplateButton.emit(true)" [class.success]="isTemplateDataWithFormDataEqual"*ngIf="templateData">
+        <span class=" fas fa-sticky-note app-icon"></span>{{templateData}}</button>
+    <button type="button" class="btn button-template" (click)="onClickImageButton.emit(true)"[class.app-success]="isImageDataWithFormDataEqual" *ngIf="imageData">
+        <span class="fas fa-image app-icon"></span>{{imageData}}</button>
+</div> 

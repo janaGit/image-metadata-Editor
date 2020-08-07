@@ -1,10 +1,11 @@
 
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EditorService } from './editor.service';
 import { ImageService } from './image.service';
 import { ReturnObject } from '../types/return-object.interface'
+import { MetadataFromImageService } from './metadata-from-image.service';
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the image metadata.
@@ -33,9 +34,9 @@ export class ExifToolService {
      */
     private _deleteAllMetadata = this._serverBase + '/deleteAllMetadata';
 
-        /**
-     * Restful webservice URL to get the not humanreadabile metadata from an image that should be edited 
-     */
+    /**
+ * Restful webservice URL to get the not humanreadabile metadata from an image that should be edited 
+ */
     private _getMetadata_to_edit = this._serverBase + '/getMetadataToEdit';
 
     /**
@@ -64,7 +65,7 @@ export class ExifToolService {
      */
     private _metadata_edited: Object;
 
-    constructor(private _http: HttpClient, private _editorService: EditorService, private _imageService: ImageService) { }
+    constructor(private _http: HttpClient, private _editorService: EditorService, private _imageService: ImageService, private _metadataFromImageService: MetadataFromImageService) { }
 
     // Getter and setter
     /**
@@ -150,6 +151,7 @@ export class ExifToolService {
             const data = await this._http.get(this._getMetadata_to_edit + '/' + this._editorService.imageName).pipe(
                 map(this.extractData)).toPromise();
             this._metadata_to_edit = data;
+            this._metadataFromImageService.metadata = data;
             this._errorMessage = null;
         } catch (error) {
             this.handleError(error);
@@ -176,11 +178,11 @@ export class ExifToolService {
         };
 
     }
-        /** 
-     * Method that deletes the metadata of images of the editing view.
-     * @param imageName Image name of Image that metadata should be deleted.
-     * @return Name of Image after deleted image data. (Image is renamed after deleting image data)
-     */
+    /** 
+ * Method that deletes the metadata of images of the editing view.
+ * @param imageName Image name of Image that metadata should be deleted.
+ * @return Name of Image after deleted image data. (Image is renamed after deleting image data)
+ */
     async deleteAllMetadataOfImage(imageName: string): Promise<string> {
         try {
             const returnObject = await this._http.post(this._deleteAllMetadata + '/' + imageName, "").pipe(

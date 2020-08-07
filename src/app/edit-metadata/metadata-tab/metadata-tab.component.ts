@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { EditorService } from 'app/services/editor.service';
+import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
+import { MetadataFromMetadataTab } from 'app/types/metadata-from-metadata-tab.interface';
 
 @Component({
     selector: 'metadata-tab',
@@ -24,13 +26,18 @@ export class MetadataTabComponent implements OnInit {
 
     licenseNames: string[] = [];
 
-    constructor(private _editorService: EditorService) {
+    metadataFromImage: MetadataFromMetadataTab;
+
+    constructor(private _editorService: EditorService, private _metadataFromImageService: MetadataFromImageService) {
 
     }
 
     ngOnInit(): void {
         this._editorService.license_names$.subscribe(licenseNames => {
             this.licenseNames = licenseNames;
+        });
+        this._metadataFromImageService.editMetadata$.subscribe(metadataFromImage => {
+            this.metadataFromImage = metadataFromImage;
         });
     }
 
@@ -52,6 +59,34 @@ export class MetadataTabComponent implements OnInit {
     }
     onChangeDescription(value) {
 
+
+    }
+
+    getCreatorFromImage() {
+        this.creator.setValue(this.metadataFromImage.creator);
+    }
+    getCreatorFromTemplate() {
+
+    }
+
+    getContactInfoFromImage() {
+        this.contactInfo.setValue(this.metadataFromImage.contactInfo);
+    }
+    getContactInfoFromTemplate() {
+
+    }
+
+    getSubjectFromImage() {
+        this.subject.setValue(this.metadataFromImage.subject);
+    }
+    getSubjectFromTemplate() {
+
+    }
+
+    getDescriptionFromImage() {
+        this.description.setValue(this.metadataFromImage.description);
+    }
+    getDescriptionFromTemplate() {
 
     }
 }
