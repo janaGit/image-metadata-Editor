@@ -104,7 +104,7 @@ export class CategoriesTabComponent implements OnInit, OnDestroy {
     const _categories = this._metadataFromImageService.categories;
     _categories?.forEach(category => {
       const flatNode = this.categoryNameNodeMap.get(category);
-      if (typeof flatNode === "undefined") {
+      if (typeof flatNode === "undefined" && category !== null) {
         this.notSupprotedCategories = this.notSupprotedCategories.concat(category);
       }
     });
