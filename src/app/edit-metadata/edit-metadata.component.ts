@@ -3,6 +3,8 @@ import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { EditorService } from './../services/editor.service';
 import { ImageService } from './../services/image.service';
+import { MetadataService } from 'app/services/metadata.service';
+import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 
 /**
  *  Main component of the editor view.
@@ -30,7 +32,7 @@ export class EditMetadataComponent implements OnInit {
      */
     imgPath: string;
 
-    
+
 
     /**
      * Tabs for the different steps of the editing process.
@@ -38,13 +40,13 @@ export class EditMetadataComponent implements OnInit {
     public tabs: Array<any> = [
         { title: 'File', tab: 'file' },
         { title: 'Template', tab: 'template', disabled: true },
+        { title: 'Existing Metadata', tab: 'existing_metadata', disabled: true },
         { title: 'Edit Metadata', tab: 'metadata', disabled: true },
         { title: 'Categories', tab: 'categories', disabled: true },
-        { title: 'Existing Metadata', tab: 'existing_metadata', disabled: true },
         { title: 'Location', tab: 'location', disabled: true },
         { title: 'Complete', tab: 'Complete', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService) {
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService, private _metadataService: MetadataService, private _metadataFromImageService: MetadataFromImageService) {
 
     }
 
@@ -84,7 +86,7 @@ export class EditMetadataComponent implements OnInit {
      * Used by the tab-directive, when a select-event is fired. 
      */
     public selectTab(tab: string) {
-        let _tab = this.tabs.find(_tab => { return _tab.tab === tab});
+        let _tab = this.tabs.find(_tab => { return _tab.tab === tab });
         this.selectedTab = _tab.tab;
         if (this.selectedTab === 'file') {
             this._editorService.updateIsFileTabOpen(true);
@@ -104,12 +106,12 @@ export class EditMetadataComponent implements OnInit {
                 tab.active = false;
             } else {
                 tab.disabled = false;
-                if (tab.tab === 'metadata') {
+                if (tab.tab === 'template') {
                     tab.active = true;
                 }
             }
         });
-        this.selectTab('metadata');
+        this.selectTab('template');
         this._cdr.detectChanges();
     }
 
@@ -129,6 +131,9 @@ export class EditMetadataComponent implements OnInit {
         });
         this.selectTab('file');
         this._cdr.detectChanges();
+        this._metadataService.resetMetadata();
+        this._metadataFromImageService.resetMetadata();
+
     }
 
 

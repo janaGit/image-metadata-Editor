@@ -1,12 +1,4 @@
 <div class="app-container container">
-  <div class="app-form-field app-form-field__max-width">
-    <label>Select Template:  </label>
-      <select class="form-control" [formControl]="selectedTemplateControl"  (ngModelChange)="onChangeTemplate($event)">
-        <option></option>
-        <option *ngFor="let template of _templatesMetadataKeys | keyvalue">{{template.value.name}}</option>
-      </select>
-  </div>
-
   <div class="table-container">
     <table class="table table-striped">
       <tr>
@@ -22,10 +14,10 @@
         <th>Value</th>
       </tr>
       <tbody>
-        <tr *ngFor="let key of metadata_keys;">
-          <td><input type="checkbox" [formControl]="metadataControls.get(key)"></td>
-          <td>{{key}}</td>
-          <td>{{metadata[key]}}</td>
+        <tr *ngFor="let metadata of imageMetadata | keyvalue">
+          <td><input type="checkbox" [formControl]="metadataControls.get(metadata.key)"  (ngModelChange)="onChangeSelection($event,metadata.key)"></td>
+          <td>{{metadata.key}}</td>
+          <td>{{metadata.value}}</td>
         </tr>
       </tbody>
     </table>

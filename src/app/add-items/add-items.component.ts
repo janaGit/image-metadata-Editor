@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -7,9 +7,23 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./add-items.component.scss', '../css/global-app.scss']
 })
 export class AddItemsComponent implements OnInit {
-  keywords: string[] = [];
+
   newKeyword = new FormControl('');
   areKeywordsDisabled = false;
+  private _keywords = [];
+
+  @Input()
+  set keywords(keywords) {
+    if (keywords) {
+      this._keywords = keywords;
+    }
+  }
+
+  get keywords() {
+    return this._keywords;
+  }
+
+  @Output() keywordsChange = new EventEmitter<string[]>();
 
   constructor() { }
 
@@ -23,9 +37,12 @@ export class AddItemsComponent implements OnInit {
   addNewKeyword() {
     const keyword = this.newKeyword.value;
     this.keywords = this.keywords.concat([keyword]);
+    this.keywordsChange.emit(this.keywords);
+    this.newKeyword.setValue("");
   }
   deleteKeyword(index: number) {
     this.keywords.splice(index, 1);
-    this.keywords = Object.assign([],this.keywords);
+    this.keywords = Object.assign([], this.keywords);
+    this.keywordsChange.emit(this.keywords);
   }
 }

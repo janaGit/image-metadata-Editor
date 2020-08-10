@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ExifToolService } from 'app/services/exif-tool.service';
 import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 import { EditorService } from 'app/services/editor.service';
-import { TemplateMetadataKeys } from 'app/types/template-metadata-keys';
+import { MetadataService } from 'app/services/metadata.service';
+import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 
 @Component({
     selector: ' more-metadata-tab',
@@ -11,93 +11,58 @@ import { TemplateMetadataKeys } from 'app/types/template-metadata-keys';
     styleUrls: ['more-metadata-tab.component.scss', '../../css/global-app.scss'],
     providers: [{ provide: BsDropdownConfig, useValue: { isAnimated: true, autoClose: true } }]
 })
-export class MoreMetadataTabComponent {
+export class MoreMetadataTabComponent implements OnDestroy {
     /**
      * This variable stores the metadata of an image.
      */
-    private metadata = {};
+    imageMetadata = new Map<string, string>();
 
-    _templatesMetadataKeys: Map<string, TemplateMetadataKeys>;
+    selectedMetadata = new Map<string, string>();
 
     selectAllControl = new FormControl(false);
 
-    selectedTemplateControl = new FormControl("");
-
     metadataControls: Map<string, FormControl> = new Map();
 
-    selectedTemplate: string;
 
-    /**
-     * This variable stores the keys of the metadata.
-     */
-    metadata_keys = [];
-
-    constructor(private _exifToolService: ExifToolService, private _editorService: EditorService) {
+    constructor(private _editorService: EditorService, private _metadataService: MetadataService, private _metadataFromImageService: MetadataFromImageService) {
 
     }
+
+    ngOnDestroy(): void {
+        this._metadataService.updateExistingMetadata(this.selectedMetadata);
+    }
+
     async ngOnInit() {
-        this.requestMetadata();
-        this.getTemplates();
-    }
-
-    async requestMetadata() {
-        try {
-            await this._exifToolService.requestMetadata_toEdit();
-            let __metadata = this._exifToolService.metadata_to_edit;
-            if (__metadata) {
-                this.metadata = __metadata;
-                const _metadata_keys = Object.keys(this.metadata);
-
-                _metadata_keys.forEach(key => {
-                    this.metadataControls.set(key, new FormControl(true))
-                });
-
-                this.metadata_keys = _metadata_keys;
-            } else {
-                alert("showMetadata error:" + this._exifToolService.errorMessage);
-            }
-        } catch (e) {
-            alert("showMetadata error:" + e.errorMessage);
-        }
-    }
-
-    async getTemplates() {
-
-        this._editorService.templates_more_metadata$.subscribe(templates => {
-            this._templatesMetadataKeys = templates;
+        this.imageMetadata = this._metadataFromImageService.existingMetadata;
+        this.selectedMetadata = this._metadataService.existingMetadata;
+        this.imageMetadata.forEach((value, key) => {
+            this.metadataControls.set(key, new FormControl(false));
+        });
+        this.selectedMetadata.forEach((value, key) => {
+            this.metadataControls.get(key).setValue(true);
         });
 
-
     }
-    onChangeSelection(event, index: number) {
+
+
+
+    onChangeSelection(event, key: string) {
+        if (event) {
+            this.selectedMetadata.set(key, this.imageMetadata.get(key));
+        } else {
+            this.selectedMetadata.delete(key);
+        }
 
     }
 
     onChangeSelectAll(event) {
-        this.metadataControls.forEach(formControl => {
+        this.selectedMetadata = new Map();
+        this.metadataControls.forEach((formControl, key) => {
             formControl.setValue(event);
+            if (event) {
+                this.selectedMetadata.set(key, this.imageMetadata.get(key));
+            }
         });
-    }
-
-    onChangeTemplate(event) {
-        this.selectedTemplate = this._templatesMetadataKeys.get(event).name;
-        const template = this._templatesMetadataKeys.get(this.selectedTemplate);
-        const method = template.method;
-        if (method === "COPY") {
-            this.metadataControls.forEach(control=>{
-                control.setValue(false);
-            }) 
-            template.keys.forEach(key => {
-                this.metadataControls.get(key).setValue(true);
-            })
-        }else{
-            this.metadataControls.forEach(control=>{
-                control.setValue(true);
-            });
-            template.keys.forEach(key => {
-                this.metadataControls.get(key).setValue(false);
-            }); 
-        }
 
 
     }

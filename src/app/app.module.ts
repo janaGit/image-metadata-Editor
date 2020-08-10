@@ -48,7 +48,6 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { AddItemsComponent } from './add-items/add-items.component';
 import { TemplateTabComponent } from './edit-metadata/template-tab/template-tab.component';
 import { CategoriesTabComponent } from './edit-metadata/categories-tab/categories-tab.component';
-import { TreeComponent } from './tree/tree.component';
 import { MatTreeModule } from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -78,7 +77,6 @@ import { InputTemplateButtonsComponent } from './input-template-buttons/input-te
     AddItemsComponent,
     TemplateTabComponent,
     CategoriesTabComponent,
-    TreeComponent,
     InputTemplateButtonsComponent
   ],
   imports: [

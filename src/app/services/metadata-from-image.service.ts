@@ -13,23 +13,23 @@ export class MetadataFromImageService {
 
     private _editMetadata: MetadataFromMetadataTab;
 
-    private __editMetadata: BehaviorSubject<MetadataFromMetadataTab> = new BehaviorSubject<MetadataFromMetadataTab>({creator:"",contactInfo:"",description:"",keywords:[],license:"",subject:""});
+    private __editMetadata: BehaviorSubject<MetadataFromMetadataTab> = new BehaviorSubject<MetadataFromMetadataTab>({ creator: "", contactInfo: "", description: "", keywords: [], license: "", subject: "" });
 
     public editMetadata$ = this.__editMetadata.asObservable();
 
 
     private _categories: string[];
 
-    private __categories: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(["Animal", "Feciduous Forest", "Buildings", "Open Fields", "See", "Test", "Test2"]);
+    private __categories: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
     public categories$ = this.__categories.asObservable();
 
 
-    private _metadataKeys: string[];
+    private _existingMetadata: Map<string, string> = new Map();
 
-    private __metadataKeys: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+    private __existingMetadata: BehaviorSubject<Map<string, string>> = new BehaviorSubject<Map<string, string>>(new Map());
 
-    public metadataKeys$ = this.__metadataKeys.asObservable();
+    public existingMetadata$ = this.__existingMetadata.asObservable();
 
 
 
@@ -51,7 +51,9 @@ export class MetadataFromImageService {
         this.setEditMetadata();
         this.setCategories();
         this.setLocation();
+        this.setExistingMetadata();
     }
+
     get editMetadata() {
         return this._editMetadata;
     }
@@ -60,8 +62,8 @@ export class MetadataFromImageService {
         return this._categories;
     }
 
-    get metadataKeys() {
-        return this._metadataKeys;
+    get existingMetadata() {
+        return this._existingMetadata;
     }
 
     get location() {
@@ -74,13 +76,13 @@ export class MetadataFromImageService {
     }
 
     updateCategories(categories) {
-        this._categories = categories;
-        this.__categories.next(categories);
+        this._categories = [].concat(categories);
+        this.__categories.next(this._categories);
     }
 
-    updateMetadataKeys(metadataKeys) {
-        this._metadataKeys = metadataKeys;
-        this.__metadataKeys.next(metadataKeys);
+    updateExistingMetadata(existingMetadata: Map<string, string>) {
+        this._existingMetadata = existingMetadata;
+        this.__existingMetadata.next(existingMetadata);
     }
 
     updateLocation(location: MetadataFromLocationTab) {
@@ -97,23 +99,67 @@ export class MetadataFromImageService {
             subject: this._metadata["Subject"],
             description: this._metadata["Description"]
         };
+        this._editMetadata = editMetadata;
         this.updateEditMetadata(editMetadata);
 
     }
 
     setCategories() {
         if (this._metadata["Categories"]) {
-            this.updateCategories(this._metadata["Categories"]);
+            this._categories = this._metadata["Categories"]
+            this.updateCategories(this._categories);
         }
 
     }
+    setExistingMetadata() {
+        const keys = Object.keys(this._metadata);
+        keys.forEach(key => {
+            this._existingMetadata.set(key, this._metadata[key]);
+        })
+        this.updateExistingMetadata(this._existingMetadata);
+    }
 
     setLocation() {
-        this.updateLocation({
+        let date = this._metadata["DateTimeOriginal"];
+        if (typeof date !== "undefined") {
+            date = this.trandsormDate(date);
+        }
+        this._location = {
             latitude: this._metadata["GPSLatitude"],
             longitude: this._metadata["GPSLongitude"],
-            dateAndTime: this._metadata["DateTimeOriginal"]
+            dateAndTime: date,
+            isLocationDisabled: false,
+            isTimeDisabled: false
+        };
 
-        });
+        this.updateLocation(this._location);
+    }
+    trandsormDate(dateString: string): Date {
+        const splitted = dateString.split(" ");
+        if (splitted.length !== 2) {
+            throw new Error("splitted has not the right length")
+        }
+        const _date = new Date();
+        const date = splitted[0];
+        const time = splitted[1];
+        const dateSplitted = date.split(":");
+        const timeSplitted = time.split(":");
+        _date.setFullYear(+dateSplitted[0]);
+        _date.setMonth(+dateSplitted[1]);
+        _date.setDate(+dateSplitted[2]);
+        _date.setHours(+timeSplitted[0]);
+        _date.setMinutes(+timeSplitted[1]);
+        _date.setSeconds(+timeSplitted[2])
+
+        return _date;
+
+
+    }
+
+    resetMetadata(){
+        this.updateExistingMetadata(new Map());
+        this.updateEditMetadata(null);
+        this.updateCategories(null);
+        this.updateLocation(null);
     }
 }

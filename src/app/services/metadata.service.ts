@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MetadataFromMetadataTab } from 'app/types/metadata-from-metadata-tab.interface';
 import { MetadataFromLocationTab } from 'app/types/metadata-from-location-tab.interface';
+import { MetadataFromCategoriesTab } from 'app/types/metadata-from-categories-tab.interface';
 
 /**
  * This service class stores all the metadata for the currently edited image.
@@ -16,18 +17,18 @@ export class MetadataService {
     public editMetadata$ = this.__editMetadata.asObservable();
 
 
-    private _categories: string[];
+    private _categories: MetadataFromCategoriesTab;
 
-    private __categories: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(["Animal","Feciduous Forest", "Buildings", "Open Fields", "See", "Test","Test2"]);
+    private __categories: BehaviorSubject<MetadataFromCategoriesTab> = new BehaviorSubject<MetadataFromCategoriesTab>(null);
 
     public categories$ = this.__categories.asObservable();
 
 
-    private _metadataKeys: string[];
+    private _existingMetadata: Map<string,string>= new Map();
 
-    private __metadataKeys: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+    private __existingMetadata: BehaviorSubject<Map<string,string>> = new BehaviorSubject<Map<string,string>>(new Map());
 
-    public metadataKeys$ = this.__metadataKeys.asObservable();
+    public existingMetadata$ = this.__existingMetadata.asObservable();
 
 
 
@@ -51,31 +52,38 @@ export class MetadataService {
         return this._categories;
     }
 
-    get metadataKeys() {
-        return this._metadataKeys;
+    get existingMetadata() {
+        return this._existingMetadata;
     }
 
     get location() {
         return this._location;
     }
 
-    updateEditMetadata(metadata) {
+    updateEditMetadata(metadata: MetadataFromMetadataTab) {
         this._editMetadata = metadata;
         this.__editMetadata.next(metadata);
     }
 
-    updateCategories(categories) {
+    updateCategories(categories: MetadataFromCategoriesTab) {
         this._categories = categories;
         this.__categories.next(categories);
     }
 
-    updateMetadataKeys(metadataKeys) {
-        this._metadataKeys = metadataKeys;
-        this.__metadataKeys.next(metadataKeys);
+    updateExistingMetadata(existingMetadata: Map<string,string>) {
+        this._existingMetadata = existingMetadata;
+        this.__existingMetadata.next(existingMetadata);
     }
 
-    updateLocation(location) {
+    updateLocation(location: MetadataFromLocationTab) {
         this._location = location;
         this.__location.next(location);
+    }
+
+    resetMetadata(){
+        this.updateExistingMetadata(new Map());
+        this.updateEditMetadata(null);
+        this.updateCategories(null);
+        this.updateLocation(null);
     }
 }
