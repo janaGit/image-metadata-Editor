@@ -90,7 +90,7 @@ export class Server {
             extended: false
         }));
         this.app.use(bodyParser.json());
-        this.app.use('/api', this.router); 
+        this.app.use('/api', this.router);
     }
     private configRoutes() {
         this.router.get('/getImageNames', this.getFileNames);
@@ -101,15 +101,18 @@ export class Server {
         this.router.get('/getMetadata/:imageName/:lang', this.getMetadata_edit);
         this.router.get('/getMetadata_edited/:imageName/:lang', this.getMetadata_edited);
         this.router.post('/deleteAllMetadata/:imageName', this.deleteAllMetadata);
+        this.router.post('/editMetadata/:imageName', this.editMetadata);
         this.router.get('/getMetadataToEdit/:imageName', this.getMetadataToEdit);
 
         this.router.post('/newImage', this.upload.single('image'), this.newImage);
         this.router.delete('/deleteImage/:imageName', this.deleteImage);
- 
+
         this.router.post('/copyImageForEditing/:imageName', this.copyImageToImageFolder);
         this.router.post('/moveImageBackForEditing/:imageName', this.moveImageBackToImageFolder);
         this.router.post('/moveImageToImageGallery/:imageName', this.moveImageToImageGallery);
         this.router.post('/moveImageToImagesComplete/:imageName', this.moveImageToImageComplete);
+
+
         this.router.get('*', (req, res) => {
             res.sendFile(path.join(__dirname, 'dist/index.html'));
         });
@@ -246,9 +249,9 @@ export class Server {
         metadata.then((value) => {
             res.send(value);
         }, (error) => {
-            res.status(404).send(error); 
+            res.status(404).send(error);
         });
-    }  
+    }
 
 
     private copyImageToImageFolder = (req, res) => {
@@ -259,7 +262,7 @@ export class Server {
         }, (error) => {
             res.status(error.status).send(error);
         });
-    } 
+    }
 
     private moveImageBackToImageFolder = (req, res) => {
         var imageName = req.params.imageName;
@@ -296,10 +299,10 @@ export class Server {
     private moveImage = (imageDir_from, imageDir_to, imageName, imageName_new): Promise<ReturnObject> => {
         return new Promise((resolve, reject) => {
             fs.readdir(imageDir_from, (err, files) => {
-                if (err) { 
+                if (err) {
                     var object = {
                         status: 500,
-                        error: err 
+                        error: err
                     };
                     console.error(object);
                     reject(object);
@@ -308,7 +311,7 @@ export class Server {
                     let object: ReturnObject = {
                         status: 400,
                         error: err,
-                        message: '400, File does not exist. imageName: '+imageName+' imageName_new  '+imageName_new 
+                        message: '400, File does not exist. imageName: ' + imageName + ' imageName_new  ' + imageName_new
                     };
                     console.error(object);
                     reject(object);
@@ -331,7 +334,7 @@ export class Server {
         });
     }
 
-    private copyImageAndMoveToImageFolder = ( imageName) => {
+    private copyImageAndMoveToImageFolder = (imageName) => {
         return new Promise((resolve, reject) => {
             fs.readdir(this.imageDir_original, (err, files) => {
                 if (err) {
@@ -361,14 +364,14 @@ export class Server {
                         console.error(object);
                         reject(object);
                     }
-                    const newImageName=imageName.replace(/\.([^\.]*)$/, IMAGE_EDITED+"."+ '$1');
+                    const newImageName = imageName.replace(/\.([^\.]*)$/, IMAGE_EDITED + "." + '$1');
                     fs.writeFileSync(this.imageDir + '/' + newImageName, image);
                     let object = {
                         status: 200
                     };
                     resolve(object);
                 });
- 
+
             });
         });
     }
@@ -391,6 +394,13 @@ export class Server {
             });
         });
 
+    }
+
+    private editMetadata = (req, res) => {
+        let imageName = req.params.imageName;
+        let metadata = req.body.metadata;
+        console.log(metadata);
+        res.status(200).send("OK");
     }
 
 

@@ -3,12 +3,19 @@ import { BehaviorSubject } from 'rxjs';
 import { MetadataFromMetadataTab } from 'app/types/metadata-from-metadata-tab.interface';
 import { MetadataFromLocationTab } from 'app/types/metadata-from-location-tab.interface';
 import { MetadataFromCategoriesTab } from 'app/types/metadata-from-categories-tab.interface';
+import { map } from 'rxjs/operators';
+import { ReturnObject } from 'app/types/return-object.interface';
+import { HttpClient } from '@angular/common/http';
+import { EditorService } from './editor.service';
 
 /**
  * This service class stores all the metadata for the currently edited image.
  */
 @Injectable()
 export class MetadataService {
+    private _serverBase = '/api';
+
+    private _uri_editMetadata = this._serverBase + '/editMetadata';
 
     private _editMetadata: MetadataFromMetadataTab;
 
@@ -41,7 +48,7 @@ export class MetadataService {
 
 
 
-    constructor() {
+    constructor(private _http: HttpClient, private _editorService: EditorService) {
     }
 
     get editMetadata() {
@@ -119,4 +126,40 @@ export class MetadataService {
         }
         return allMetadata;
     }
+
+
+    async sendMetadataToBackend() {
+        try {
+            const returnObject = await this._http.post(this._uri_editMetadata + '/' + this._editorService.imageName, { metadata: this.getAllMetadata() }).pipe(
+                map(this.extractReturnObject)).toPromise();
+            return returnObject.payload.imageName;
+        }
+        catch (error) {
+            this.handleError(error)
+        };
+    }
+
+    private extractData(res: any) {
+        if (res.status < 200 || res.status >= 300) {
+            throw new Error('Bad response status: ' + res.status);
+        }
+        return res.data || {};
+    }
+    private extractReturnObject(res: any): ReturnObject {
+        if (res.status < 200 || res.status >= 300) {
+            throw new Error('Bad response status: ' + res.status);
+        }
+
+        return res.body || {};
+    }
+    private handleError(error: any) {
+        let err = error || 'Error on server communication';
+        if (error.status === 404) {
+            console.warn(error);
+        } else {
+            console.error(err);
+        }
+
+    }
+
 }

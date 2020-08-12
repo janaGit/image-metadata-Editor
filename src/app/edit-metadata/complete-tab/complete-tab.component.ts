@@ -9,7 +9,7 @@ import { MetadataService } from 'app/services/metadata.service';
 })
 export class CompleteComponent implements OnInit, OnDestroy {
     metadata: Object = {};
-    metadataKeys: string[]=[];
+    metadataKeys: string[] = [];
     constructor(private _cdr: ChangeDetectorRef, private _metadataService: MetadataService) {
 
     }
@@ -20,6 +20,10 @@ export class CompleteComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         this.metadata = this._metadataService.getAllMetadata();
-        this.metadataKeys= Object.keys(this.metadata);
+        this.metadataKeys = Object.keys(this.metadata);
+    }
+
+    onClickSave() {
+        this._metadataService.sendMetadataToBackend();
     }
 }
