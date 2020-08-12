@@ -24,9 +24,9 @@ export class MetadataService {
     public categories$ = this.__categories.asObservable();
 
 
-    private _existingMetadata: Map<string,string>= new Map();
+    private _existingMetadata: Map<string, string> = new Map();
 
-    private __existingMetadata: BehaviorSubject<Map<string,string>> = new BehaviorSubject<Map<string,string>>(new Map());
+    private __existingMetadata: BehaviorSubject<Map<string, string>> = new BehaviorSubject<Map<string, string>>(new Map());
 
     public existingMetadata$ = this.__existingMetadata.asObservable();
 
@@ -39,7 +39,7 @@ export class MetadataService {
     public location$ = this.__categories.asObservable();
 
 
-    
+
 
     constructor() {
     }
@@ -70,7 +70,7 @@ export class MetadataService {
         this.__categories.next(categories);
     }
 
-    updateExistingMetadata(existingMetadata: Map<string,string>) {
+    updateExistingMetadata(existingMetadata: Map<string, string>) {
         this._existingMetadata = existingMetadata;
         this.__existingMetadata.next(existingMetadata);
     }
@@ -80,10 +80,43 @@ export class MetadataService {
         this.__location.next(location);
     }
 
-    resetMetadata(){
+    resetMetadata() {
         this.updateExistingMetadata(new Map());
         this.updateEditMetadata(null);
         this.updateCategories(null);
         this.updateLocation(null);
+    }
+
+    getAllMetadata(): Object {
+        const allMetadata: Object = {};
+        if (this.editMetadata) {
+            for (const key of Object.keys(this.editMetadata)) {
+                if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
+                    allMetadata[key] = this.editMetadata[key];
+                }
+            }
+        }
+
+        this.existingMetadata.forEach((value, key) => {
+            allMetadata[key] = value;
+        })
+
+        if (this.categories && this.categories.categories) {
+            allMetadata["Categories"] = this.categories.categories.toString();
+        }
+
+        if (this.location) {
+            if (typeof this.location.latitude !== "undefined" && !this.location.isLocationDisabled) {
+                allMetadata["GPSLatitude"] = this.location.latitude;
+            }
+            if (typeof this.location.longitude !== "undefined" && !this.location.isLocationDisabled) {
+                allMetadata["GPSLongitude"] = this.location.longitude;
+            }
+            if (typeof this.location.dateAndTime !== "undefined" && !this.location.isTimeDisabled) {
+                allMetadata["DateTimeOriginal"] = this.location.dateAndTime;
+            }
+
+        }
+        return allMetadata;
     }
 }

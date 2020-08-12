@@ -78,9 +78,13 @@ export class LocationTabComponent implements OnInit, OnDestroy {
 
         if (typeof metadata !== "undefined" || metadata === null) {
             this.isTimeDisabled = metadata.isTimeDisabled;
-            this.isLocationDisabled = metadata.isLocationDisabled;
-            this.timeImageCreated.setValue(metadata.dateAndTime);
-            this.dateImageCreated.setValue(metadata.dateAndTime);
+            this.isLocationDisabled = metadata.isLocationDisabled
+            if (this.isTimeDisabled) {
+                this.disableTime();
+            }
+            if (this.isLocationDisabled) {
+                this.disableLocation();
+            }
 
             if (typeof metadata.latitude !== "undefined" && typeof metadata.longitude !== "undefined") {
                 this.markerLatLong = {

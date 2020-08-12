@@ -25,7 +25,7 @@
        
       </div>
 
-      <button class="btn" (click)="changeView()" style="margin:5px"> {{_changeView_button_text}}</button>
+      <button class="btn" (click)="changeView()" style="margin:5px" *ngIf="_fileTabOpen || router.url === '/image_gallery'"> {{_changeView_button_text}}</button>
     </div>
   </div>
   <div style="position: relative;" [ngStyle]="{'flex': (_fileTabOpen) ? 15 : 16}">
