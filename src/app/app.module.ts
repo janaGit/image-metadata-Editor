@@ -16,6 +16,10 @@ import { MoreMetadataTabComponent } from './edit-metadata/more-metadata-tab/more
 import { LocationTabComponent } from './edit-metadata/location-tab/location-tab.component';
 import { CompleteComponent } from './edit-metadata/complete-tab/complete-tab.component';
 
+import{EditTemplateComponent} from './edit-template/edit-template.component';
+import{StartTemplateTabComponent} from './edit-template/start-template-tab/start-template-tab.component';
+import{CompleteTemplateTabComponent} from './edit-template/complete-template-tab/complete-template-tab.component';
+
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
 
 import { ContextMenuHolderComponent } from './modals/context-menu-holder/context-menu-holder.component';
@@ -77,7 +81,10 @@ import { InputTemplateButtonsComponent } from './input-template-buttons/input-te
     AddItemsComponent,
     TemplateTabComponent,
     CategoriesTabComponent,
-    InputTemplateButtonsComponent
+    InputTemplateButtonsComponent,
+    StartTemplateTabComponent,
+    CompleteTemplateTabComponent,
+    EditTemplateComponent
   ],
   imports: [
     BrowserModule,
