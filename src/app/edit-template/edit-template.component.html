@@ -4,10 +4,10 @@
       <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [disabled]="tabz.disabled" [active]="tabz.active" (selectTab)="selectTabByTitle($event.heading)">
       </tab>
     </tabset>
-    <div id='image_place_Thumbnail' *ngIf="imgPath!=null && selectedTab!=='file'">
+    <div id='image_place_Thumbnail' *ngIf="imgPath!=null && selectedTab!=='start_template'">
       <img id='image_Thumbnail' src={{imgPath}}>
     </div>
-    <button id="abort_Button" class="btn" (click)="click_Abort()" *ngIf="selectedTab!=='file'"> Abort </button>
+    <button id="abort_Button" class="btn" (click)="click_Abort()" *ngIf="selectedTab!=='start_template'"> Abort </button>
   </div>
   <div style="position:relative; flex:1;">
     <app-start-template-tab *ngIf="selectedTab==='start_template'" (start)="startEditing()"></app-start-template-tab>

@@ -55,7 +55,6 @@ export class EditTemplateComponent implements OnInit {
         this.tabs.forEach(tab => {
             if (tab.tab === 'start_template') {
                 tab.active = true;
-                this._editorService.updateIsFileTabOpen(true);
                 this._cdr.detectChanges();
             }
         });
@@ -87,11 +86,6 @@ export class EditTemplateComponent implements OnInit {
     public selectTab(tab: string) {
         let _tab = this.tabs.find(_tab => { return _tab.tab === tab });
         this.selectedTab = _tab.tab;
-        if (this.selectedTab === 'start_template') {
-            this._editorService.updateIsFileTabOpen(true);
-        } else {
-            this._editorService.updateIsFileTabOpen(false);
-        }
     }
 
     /**
