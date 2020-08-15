@@ -11,7 +11,7 @@ const routes: Routes = [
         component: EditMetadataComponent
     },
     {
-        path: 'edit_template',
+        path: 'edit_templates',
         component: EditTemplateComponent
     },
     {

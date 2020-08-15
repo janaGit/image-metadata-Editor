@@ -39,6 +39,14 @@ const _changeView_button_map_items = [
     { path: '/', text: 'Image Gallery' },
     { path: '/image_gallery', text: 'Editor' }
 ];
+
+const _changeEditTemplateView_button_map_items = [
+    { path: '/edit_metadata', text: 'Edit Templates' },
+    { path: '/', text: 'Edit Templates' },
+    { path: '/image_gallery', text: 'Edit Templates' },
+    { path: '/edit_templates', text: 'Editor' }
+];
+
 var imageDir = 'images';
 var imageDir_edited = 'images_edited'
 var imageDir_original = 'images_original'
@@ -55,10 +63,15 @@ export class AppComponent implements OnInit, AfterViewChecked {
      * Map for an easily access to the labels for the 'changeView'-button.
      */
     private _changeView_button_map = new Map<string, string>(_changeView_button_map_items.map(x => [x.path, x.text] as [string, string]));
+
+    private _changeEditTemplateView_button_map = new Map<string, string>(_changeEditTemplateView_button_map_items.map(x => [x.path, x.text] as [string, string]));
     /**
      * Actual label for the 'changeView'-button.
      */
     _changeView_button_text: string;
+
+    
+    _changeEditTemplateView_button_text: string;
 
     /**
      * Possible languages that can be selected for the image metadata.
@@ -104,7 +117,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
         // Set the language for the image metadata 
         this._exifToolService.language = this._lang;
         // Subscribe to router events to update the label of the 'changeView'-button
-        this._router.events.subscribe((val) => { this.setChangeViewButtonText(); });
+        this._router.events.subscribe((val) => { this.setChangeViewButtonText(); this.setChangeEditTemplateViewButtonText();});
         this._editorService._fileTabOpen$.subscribe(isOpen => {
             this._fileTabOpen = isOpen;
         })
@@ -127,6 +140,10 @@ export class AppComponent implements OnInit, AfterViewChecked {
      */
     setChangeViewButtonText() {
         this._changeView_button_text = this._changeView_button_map.get(this._router.url);
+    }
+
+    setChangeEditTemplateViewButtonText() {
+        this._changeEditTemplateView_button_text = this._changeEditTemplateView_button_map.get(this._router.url);
     }
 
     onClickRefreshButton() {
@@ -159,6 +176,20 @@ export class AppComponent implements OnInit, AfterViewChecked {
             this._editorService.updateIsFileTabOpen(false);
             this._router.navigate(['image_gallery']).then(
                 () => this.setChangeViewButtonText()
+            );
+        }
+    }
+
+    changeEditTemplateView() {
+        if (this._router.url === '/edit_templates') {
+            this._router.navigate(['edit_metadata']).then(
+                () => this.setChangeEditTemplateViewButtonText()
+
+            );
+        } else {
+            this._editorService.updateIsFileTabOpen(false);
+            this._router.navigate(['edit_templates']).then(
+                () => this.setChangeEditTemplateViewButtonText()
             );
         }
     }
