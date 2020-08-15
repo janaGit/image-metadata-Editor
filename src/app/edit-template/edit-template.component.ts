@@ -18,7 +18,7 @@ export class EditTemplateComponent implements OnInit {
     /**
      * Name of the actual selected tab.
      */
-    public selectedTab: string = 'file';
+    public selectedTab: string = 'start_template';
 
     /*
      * Name of the folder where the images are stored 
@@ -53,7 +53,7 @@ export class EditTemplateComponent implements OnInit {
     ngOnInit() {
         // Set the File tab to be active.
         this.tabs.forEach(tab => {
-            if (tab.tab === 'file') {
+            if (tab.tab === 'start_template') {
                 tab.active = true;
                 this._editorService.updateIsFileTabOpen(true);
                 this._cdr.detectChanges();
@@ -73,7 +73,7 @@ export class EditTemplateComponent implements OnInit {
     public selectTabByTitle(tabTitle: string) {
         let tab = this.tabs.find(tab => { return tab.title === tabTitle });
         this.selectedTab = tab.tab;
-        if (this.selectedTab === 'file') {
+        if (this.selectedTab === 'start_template') {
             this._editorService.updateIsFileTabOpen(true);
         } else {
             this._editorService.updateIsFileTabOpen(false);
@@ -87,7 +87,7 @@ export class EditTemplateComponent implements OnInit {
     public selectTab(tab: string) {
         let _tab = this.tabs.find(_tab => { return _tab.tab === tab });
         this.selectedTab = _tab.tab;
-        if (this.selectedTab === 'file') {
+        if (this.selectedTab === 'start_template') {
             this._editorService.updateIsFileTabOpen(true);
         } else {
             this._editorService.updateIsFileTabOpen(false);
@@ -100,17 +100,17 @@ export class EditTemplateComponent implements OnInit {
      */
     startEditing() {
         this.tabs.forEach(tab => {
-            if (tab.tab === 'file') {
+            if (tab.tab === 'start_template') {
                 tab.disabled = true;
                 tab.active = false;
             } else {
                 tab.disabled = false;
-                if (tab.tab === 'template') {
+                if (tab.tab === 'existing_metadata') {
                     tab.active = true;
                 }
             }
         });
-        this.selectTab('template');
+        this.selectTab('existing_metadata');
         this._cdr.detectChanges();
     }
 
@@ -120,7 +120,7 @@ export class EditTemplateComponent implements OnInit {
      */
     click_Abort() {
         this.tabs.forEach(tab => {
-            if (tab.tab === 'file') {
+            if (tab.tab === 'start_template') {
                 tab.disabled = false;
                 tab.active = true;
             } else {
@@ -128,7 +128,7 @@ export class EditTemplateComponent implements OnInit {
                 tab.active = false;
             }
         });
-        this.selectTab('file');
+        this.selectTab('start_template');
         this._cdr.detectChanges();
         this._metadataService.resetMetadata();
         this._metadataFromImageService.resetMetadata();

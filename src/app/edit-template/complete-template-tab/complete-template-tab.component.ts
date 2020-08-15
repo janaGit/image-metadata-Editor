@@ -3,7 +3,7 @@ import { MetadataService } from 'app/services/metadata.service';
 
 
 @Component({
-    selector: 'complete-template-tab',
+    selector: 'app-complete-template-tab',
     templateUrl: 'complete-template-tab.component.html',
     styleUrls: ['complete-template-tab.component.scss', '../../css/global-app.scss']
 })

@@ -10,12 +10,12 @@
     <button id="abort_Button" class="btn" (click)="click_Abort()" *ngIf="selectedTab!=='file'"> Abort </button>
   </div>
   <div style="position:relative; flex:1;">
-    <file-tab *ngIf="selectedTab==='start_template'" (start)="startEditing()"></file-tab>
+    <app-start-template-tab *ngIf="selectedTab==='start_template'" (start)="startEditing()"></app-start-template-tab>
     <metadata-tab *ngIf="selectedTab==='metadata'"></metadata-tab>
     <app-categories-tab *ngIf="selectedTab==='categories'"></app-categories-tab>
     <more-metadata-tab *ngIf="selectedTab==='existing_metadata'"></more-metadata-tab>
     <location-tab *ngIf="selectedTab==='location'"></location-tab>
-    <complete-tab *ngIf="selectedTab==='complete'"></complete-tab>
+    <app-complete-template-tab *ngIf="selectedTab==='complete_template'"></app-complete-template-tab>
   </div>
 </div>
 
