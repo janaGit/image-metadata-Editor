@@ -24,7 +24,7 @@
       </div>
       <div class="app-form-field app-form-field__width" *ngIf="isNewTemplateShown">
         <label>Copy</label>
-        <select class="form-control" [formControl]="copyTemplate" (ngModelChange)="onChangeCopyTemplate($event)">
+        <select class="form-control" [formControl]="copyTemplate">
           <option></option>
           <option *ngFor="let templateName of copyTemplateKeys" [ngValue]="templateName">{{templateName}}</option>
         </select>

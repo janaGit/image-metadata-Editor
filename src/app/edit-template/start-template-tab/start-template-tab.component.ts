@@ -4,6 +4,7 @@ import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
 import { FormControl, ValidatorFn, AbstractControl, Validators } from '@angular/forms';
 import { AppTemplate } from 'app/types/app-template.interface';
+import { EditTemplateService } from '../edit-template.service';
 
 const NEW_TEMPLATE = "New Template";
 const newTemplate: AppTemplate = {
@@ -61,15 +62,19 @@ export class StartTemplateTabComponent implements OnInit {
      */
     @Output() start = new EventEmitter();
 
-    constructor(private _exifToolService: ExifToolService, private _editorService: EditorService) { }
+    constructor(private _exifToolService: ExifToolService, private _editorService: EditorService, private _editTemplateService: EditTemplateService) { }
 
     ngOnInit() {
         this.templates = new Map(this._editorService.templates);
         this.templates.set(newTemplate.name, newTemplate);
         this.templateKeys = [...this.templates.keys()];
+
+
         this.copyTemplates = new Map(this._editorService.templates);
         this.copyTemplateKeys = [...this.copyTemplates.keys()];
         this.selectTemplate.setValue(NEW_TEMPLATE);
+
+
         this.isNewTemplateShown = true;
     }
 
@@ -79,9 +84,20 @@ export class StartTemplateTabComponent implements OnInit {
 
 
     async startEditing() {
-            // await this._exifToolService.requestMetadata();
-            // this._exifToolService.requestMetadata_toEdit();
-            this.start.emit();
+        let template: AppTemplate;
+        if (this.selectTemplate.value === NEW_TEMPLATE) {
+        
+            if (this.copyTemplate.value !== "") {
+                template = this.copyTemplates.get(this.copyTemplate.value);
+            } else {
+                template = this.templates.get(NEW_TEMPLATE);
+            }
+            template.name = this.templateName.value;
+        } else {
+            template = this.copyTemplates.get(this.selectTemplate.value);
+        }
+        this._editTemplateService.setTemplate(template);
+        this.start.emit();
     }
 
     onChangeSelectTemplate(event) {
@@ -90,10 +106,6 @@ export class StartTemplateTabComponent implements OnInit {
         } else {
             this.isNewTemplateShown = false;
         }
-    }
-
-    onChangeCopyTemplate(event) {
-        console.log(event)
     }
 
 

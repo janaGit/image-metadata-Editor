@@ -35,6 +35,7 @@ import { ContextMenuService } from './services/context-menu.service';
 import { EditorService } from './services/editor.service';
 import { MetadataService } from './edit-metadata/metadata.service';
 import { MetadataFromImageService } from './edit-metadata/metadata-from-image.service';
+import { EditTemplateService } from './edit-template/edit-template.service';
 
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -104,7 +105,7 @@ import { InputTemplateButtonsComponent } from './input-template-buttons/input-te
     MatButtonModule,
     MatCheckboxModule
   ],
-  providers: [EditorService, ImageService, ExifToolService, ContextMenuService,MetadataService, MetadataFromImageService],
+  providers: [EditorService, ImageService, ExifToolService, ContextMenuService,MetadataService, MetadataFromImageService, EditTemplateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -59,9 +59,6 @@ export class EditTemplateComponent implements OnInit {
             }
         });
 
-        this._editorService.imageName$.subscribe(imgName => {
-            this.imgPath = this._imageService.imageDir + '/' + imgName;
-        });
     }
 
     /**
