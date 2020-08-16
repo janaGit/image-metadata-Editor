@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@ang
 import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, ValidatorFn, AbstractControl, Validators } from '@angular/forms';
 import { AppTemplate } from 'app/types/app-template.interface';
 
 const NEW_TEMPLATE = "New Template";
@@ -45,8 +45,9 @@ export class StartTemplateTabComponent implements OnInit {
 
     templateKeys: string[];
     copyTemplateKeys: string[];
-    templateName = new FormControl("");
+    templateName = new FormControl("", [Validators.required, this.templateNameValidator(new RegExp(NEW_TEMPLATE))]);
     selectTemplate = new FormControl("");
+    copyTemplate = new FormControl("");
 
     isNewTemplateShown = false;
 
@@ -78,18 +79,9 @@ export class StartTemplateTabComponent implements OnInit {
 
 
     async startEditing() {
-        try {
             // await this._exifToolService.requestMetadata();
             // this._exifToolService.requestMetadata_toEdit();
-            if (this._exifToolService.metadata) {
-                this.start.emit();
-            } else {
-                alert("startEditing error:" + this._exifToolService.errorMessage);
-            }
-        } catch (e) {
-            alert("startEditing error:" + this._exifToolService.errorMessage);
-        }
-
+            this.start.emit();
     }
 
     onChangeSelectTemplate(event) {
@@ -105,6 +97,12 @@ export class StartTemplateTabComponent implements OnInit {
     }
 
 
+    templateNameValidator(nameRe: RegExp): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } | null => {
+            const forbidden = nameRe.test(control.value);
+            return forbidden ? { forbiddenName: { value: control.value } } : null;
+        };
+    }
 
 
 
