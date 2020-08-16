@@ -5,6 +5,7 @@ import { ExifToolService } from './../../services/exif-tool.service';
 import { FormControl, ValidatorFn, AbstractControl, Validators } from '@angular/forms';
 import { AppTemplate } from 'app/types/app-template.interface';
 import { EditTemplateService } from '../edit-template.service';
+import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 
 const NEW_TEMPLATE = "New Template";
 const newTemplate: AppTemplate = {
@@ -66,7 +67,7 @@ export class StartTemplateTabComponent implements OnInit {
 
     ngOnInit() {
         this.templates = new Map(this._editorService.templates);
-        this.templates.set(newTemplate.name, newTemplate);
+        this.templates.set(newTemplate.name, deepCopyFunction(newTemplate));
         this.templateKeys = [...this.templates.keys()];
 
 
