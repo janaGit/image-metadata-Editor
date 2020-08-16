@@ -5,6 +5,7 @@ import { EditorService } from '../services/editor.service';
 import { ImageService } from '../services/image.service';
 import { MetadataService } from '../edit-metadata/metadata.service';
 import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
+import { EditTemplateService } from './edit-template.service';
 
 /**
  *  Main component of the editor view.
@@ -45,7 +46,7 @@ export class EditTemplateComponent implements OnInit {
         { title: 'Location', tab: 'location', disabled: true },
         { title: 'Complete', tab: 'complete_template', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService, private _metadataService: MetadataService, private _metadataFromImageService: MetadataFromImageService) {
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService,  private _editTemplateService: EditTemplateService) {
 
     }
 
@@ -69,11 +70,6 @@ export class EditTemplateComponent implements OnInit {
     public selectTabByTitle(tabTitle: string) {
         let tab = this.tabs.find(tab => { return tab.title === tabTitle });
         this.selectedTab = tab.tab;
-        if (this.selectedTab === 'start_template') {
-            this._editorService.updateIsFileTabOpen(true);
-        } else {
-            this._editorService.updateIsFileTabOpen(false);
-        }
     }
     /**
      * Set the name of the actual selected tab.
@@ -121,8 +117,8 @@ export class EditTemplateComponent implements OnInit {
         });
         this.selectTab('start_template');
         this._cdr.detectChanges();
-        this._metadataService.resetMetadata();
-        this._metadataFromImageService.resetMetadata();
+        this._editTemplateService.resetMetadata();
+
 
     }
 
