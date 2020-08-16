@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { EditorService } from 'app/services/editor.service';
-import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
+import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
 import { MetadataFromMetadataTab } from 'app/types/metadata-from-metadata-tab.interface';
-import { MetadataService } from 'app/services/metadata.service';
+import { MetadataService } from '../metadata.service';
 import { Subscription } from 'rxjs';
 
 @Component({

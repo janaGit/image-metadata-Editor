@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 import { EditorService } from 'app/services/editor.service';
-import { MetadataService } from 'app/services/metadata.service';
-import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
+import { MetadataService } from '../metadata.service';
+import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
 
 @Component({
     selector: ' more-metadata-tab',

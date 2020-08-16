@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MetadataFromLocationTab } from '../types/metadata-from-location-tab.interface';
 import { MetadataFromMetadataTab } from '../types/metadata-from-metadata-tab.interface';
-import { ExifToolService } from './exif-tool.service';
+import { ExifToolService } from '../services/exif-tool.service';
 
 /**
  * This service class stores all the metadata for the currently edited image.

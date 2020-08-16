@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
-import { MetadataService } from 'app/services/metadata.service';
+import { MetadataService } from '../metadata.service';
 
 
 @Component({

@@ -6,7 +6,7 @@ import { MetadataFromCategoriesTab } from 'app/types/metadata-from-categories-ta
 import { map } from 'rxjs/operators';
 import { ReturnObject } from 'app/types/return-object.interface';
 import { HttpClient } from '@angular/common/http';
-import { EditorService } from './editor.service';
+import { EditorService } from '../services/editor.service';
 
 /**
  * This service class stores all the metadata for the currently edited image.

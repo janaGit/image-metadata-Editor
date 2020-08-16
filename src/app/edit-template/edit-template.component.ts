@@ -3,8 +3,8 @@ import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { EditorService } from '../services/editor.service';
 import { ImageService } from '../services/image.service';
-import { MetadataService } from 'app/services/metadata.service';
-import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
+import { MetadataService } from '../edit-metadata/metadata.service';
+import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
 
 /**
  *  Main component of the editor view.

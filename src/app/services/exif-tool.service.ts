@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { EditorService } from './editor.service';
 import { ImageService } from './image.service';
 import { ReturnObject } from '../types/return-object.interface'
-import { MetadataFromImageService } from './metadata-from-image.service';
+import { MetadataFromImageService } from '../edit-metadata/metadata-from-image.service';
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the image metadata.

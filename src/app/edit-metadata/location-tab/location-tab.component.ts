@@ -2,10 +2,10 @@ import { Component, OnInit, ChangeDetectorRef, EventEmitter, OnDestroy } from '@
 import { LatLongZoom } from 'app/types/latlongzoom.interface';
 import { LatLong } from 'app/types/latlong.interface';
 import { FormControl } from '@angular/forms';
-import { MetadataService } from 'app/services/metadata.service';
+import { MetadataService } from '../metadata.service';
 import { Z_DATA_ERROR } from 'zlib';
 import { MetadataFromLocationTab } from 'app/types/metadata-from-location-tab.interface';
-import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
+import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
 
 const SHOW_OSM_LAYER = "Show OSM Layer";
 const HIDE_OSM_LAYER = "Hide OSM Layer";

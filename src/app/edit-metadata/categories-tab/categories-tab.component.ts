@@ -3,8 +3,8 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EditorService } from 'app/services/editor.service';
-import { MetadataService } from 'app/services/metadata.service';
-import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
+import { MetadataService } from '../metadata.service';
+import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
 import { Subscription } from 'rxjs';
 
 /**
