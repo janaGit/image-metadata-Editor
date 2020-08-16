@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exif-tool.service';
 import { EditorService } from './services/editor.service';
-import { TemplateMetadataKeys } from './types/template-metadata-keys';
+import { TemplateMetadataKeys } from './types/template-metadata-keys.interface';
+import { AppTemplate } from './types/app-template.interface';
 const TREE_DATA = {
     Forest: {
         "Feciduous Forest": null,
@@ -29,6 +30,34 @@ const TREE_DATA = {
         "Buildings": null
     }
 };
+
+
+const template1:AppTemplate={
+    name: "Template 1",
+    categoryTab:{
+        areNotSupportedCategoriesSelected: false,
+        categories:["See","Test"]
+    },
+    existingMetadataTab:{
+        keys:["Creator"],
+        method: "COPY",
+    },
+    locationTab:{
+        dateAndTime:new Date(2020,2,22),
+        isLocationDisabled: true,
+        isTimeDisabled: false,
+        latitude: 52,
+        longitude: 11
+    },
+    metadataTab:{
+        contactInfo:"test@eMail.de",
+        creator:"Creator1234",
+        description:"beautiful picture",
+        keywords:["keyword1"],
+        license:"CC-by",
+        subject:"Object"
+    }
+}
 /**
  * Storage of labels for the change view button. 
  * Depending on the url of the actual view (Editor / Image Gallery),
@@ -125,10 +154,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
         this._editorService.updateCategoryTree(TREE_DATA);
 
-        const map = new Map<string, TemplateMetadataKeys>();
-        map.set("Template 1", { name: "Template 1", keys: ["ImageWidth", "BitDepth"], method: "COPY" });
-        map.set("Template 2", { name: "Template 2", keys: ["Interlace", "Compression"], method: "DELETE" });
-        this._editorService.updateTemplateForMoreMetadataTab(map);
+        const templates = new Map<string, AppTemplate>();
+        templates.set(template1.name, template1);
+        this._editorService.updateTemplateForMoreMetadataTab(templates);
     }
     ngAfterViewChecked() {
         this._cdr.detectChanges();

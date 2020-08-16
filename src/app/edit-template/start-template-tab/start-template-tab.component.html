@@ -1,7 +1,30 @@
-<div id='window' style=" display: flex;flex-wrap: wrap;padding-top:2%">
+<div id='window' class="app-container" style=" display: flex;">
 
+  <div style="display:flex; justify-content: center; flex:1;">
+    <div> 
+      <div class="app-form-field app-form-field__width">
+        <label>Templates</label>
+        <select class="form-control" [formControl]="selectTemplate" (ngModelChange)="onChangeSelectTemplate($event)">
+          <option *ngFor="let templateName of templateKeys" [ngValue]="templateName">{{templateName}}</option>
+        </select>
+      </div>
+      <div class="form-group app-form-field app-form-field__width" *ngIf="isNewTemplateShown">
+        <label for="templateName" >Name</label>
+        <input class="form-control" id="templateName"
+          [formControl]="templateName">
+      </div>
+      <div class="app-form-field app-form-field__width" *ngIf="isNewTemplateShown">
+        <label >Copy</label>
+        <select class="form-control" [formControl]="selectTemplate" (ngModelChange)="onChangeCopyTemplate($event)">
+          <option></option>
+          <option *ngFor="let templateName of copyTemplateKeys" [ngValue]="templateName">{{templateName}}</option>
+        </select>
+      </div>
 
-  <div style="flex:1;display:flex;align-items: flex-end; justify-content:flex-end">
+    </div>
+
+  </div>
+  <div style="display:flex;align-items: flex-end; justify-content:flex-end">
     <div>
       <button type='button' class='btn btn-start' id='startEditingButton' style="margin-bottom:10%"
         (click)=startEditing()> start editing </button>

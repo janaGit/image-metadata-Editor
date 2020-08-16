@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {TemplateMetadataKeys} from "../types/template-metadata-keys";
+import {TemplateMetadataKeys} from "../types/template-metadata-keys.interface";
+import {AppTemplate} from "../types/app-template.interface";
 
 /**
  * This service class stores all the data that are created during the 
@@ -150,22 +151,15 @@ export class EditorService {
 
 
 
-    /**  templates_more_metadata            ---------------------------------------------           */
-    /**
-     * Variable that stores the tamplates for the more-metadata tab.
-     */
-    private templates_more_metadata: Map<string,TemplateMetadataKeys>;
+    /**  templates       ---------------------------------------------           */
 
-    /**
-     * Variable that stores a BehaviorSubject to distribute the 
-     * templates for the more-metadata tab to the registered subscribers.
-     */
-    private __templates_more_metadata: BehaviorSubject<Map<string,TemplateMetadataKeys>> = new BehaviorSubject<Map<string,TemplateMetadataKeys>>(new Map());
-    /**
-     * Variable to subscribe to the Observable to get
-     * the templates for the more-metadata tab.
-     */
-    public templates_more_metadata$ = this.__templates_more_metadata.asObservable();
+    private _templates: Map<string,AppTemplate>;
+
+
+    private __templates: BehaviorSubject<Map<string,AppTemplate>> = new BehaviorSubject<Map<string,AppTemplate>>(new Map());
+
+
+    public templates_more_metadata$ = this.__templates.asObservable();
 
     /**  category tree           ---------------------------------------------           */
 
@@ -264,8 +258,8 @@ export class EditorService {
     /**
      * Get the templates for the more-metadata tab.
      */
-    get templatesMoreMetadata() {
-        return this.__templates_more_metadata;
+    get templates() {
+        return this._templates;
     }
 
     /**
@@ -360,11 +354,11 @@ export class EditorService {
     }
 
     /**
-     * This method updates the templates for the more-metadata tab
+     * This method updates the templates
      */
-    updateTemplateForMoreMetadataTab(templates: Map<string,TemplateMetadataKeys>) {
-        this.templates_more_metadata = templates;
-        this.__templates_more_metadata.next(templates);
+    updateTemplateForMoreMetadataTab(templates: Map<string,AppTemplate>) {
+        this._templates = templates;
+        this.__templates.next(templates);
     }
         /**
      * This method updates the value of the current progress for the progressbar
