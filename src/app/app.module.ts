@@ -57,7 +57,11 @@ import { MatTreeModule } from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
 import { InputTemplateButtonsComponent } from './input-template-buttons/input-template-buttons.component';
+import { ExistingMetadataTemplateTabComponent } from './edit-template/existing-metadata-template-tab/existing-metadata-template-tab.component';
+import { AddItemsVerticalComponent } from './add-items-vertical/add-items-vertical.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -85,7 +89,9 @@ import { InputTemplateButtonsComponent } from './input-template-buttons/input-te
     InputTemplateButtonsComponent,
     StartTemplateTabComponent,
     CompleteTemplateTabComponent,
-    EditTemplateComponent
+    EditTemplateComponent,
+    ExistingMetadataTemplateTabComponent,
+    AddItemsVerticalComponent
   ],
   imports: [
     BrowserModule,
@@ -103,7 +109,8 @@ import { InputTemplateButtonsComponent } from './input-template-buttons/input-te
     MatTreeModule,
     MatIconModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule
   ],
   providers: [EditorService, ImageService, ExifToolService, ContextMenuService,MetadataService, MetadataFromImageService, EditTemplateService],
   bootstrap: [AppComponent]

@@ -45,5 +45,13 @@ mat-checkbox label {
   background-color: #4863A0;
 }
 
+/* Angular material radio button */
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+  border-color:  #4863A0;
+}
+.mat-radio-button.mat-accent .mat-radio-inner-circle{
+  background-color: #4863A0;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

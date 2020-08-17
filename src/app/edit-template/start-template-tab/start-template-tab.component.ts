@@ -6,6 +6,7 @@ import { FormControl, ValidatorFn, AbstractControl, Validators } from '@angular/
 import { AppTemplate } from 'app/types/app-template.interface';
 import { EditTemplateService } from '../edit-template.service';
 import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
+import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
 
 const NEW_TEMPLATE = "New Template";
 const newTemplate: AppTemplate = {
@@ -15,8 +16,7 @@ const newTemplate: AppTemplate = {
         categories: []
     },
     existingMetadataTab: {
-        keys: [],
-        method: "COPY",
+        method: ExistingMetadataTemplateMethods.COPY_ALL,
     },
     locationTab: {
         dateAndTime: undefined,

@@ -1,0 +1,18 @@
+<div class="app-container" style=" display: flex;justify-content: center;">
+    <div class="form">
+        <mat-radio-group [(ngModel)]="selectedValue" (ngModelChange)="onChangeSelectedItem($event)">
+            <mat-radio-button class="radioSelect app-form-field" [value]="methods.COPY_ALL">Copy all metadata</mat-radio-button>
+            <mat-radio-button class="radioSelect app-form-field-end" [value]="methods.COPY_CUSTOM">Copy custom metadata
+            </mat-radio-button>
+            <mat-radio-button class="radioSelect app-form-field" [value]="methods.DELETE_ALL">Delete all metadata
+            </mat-radio-button>
+            <mat-radio-button class="radioSelect app-form-field" [value]="methods.DELETE_CUSTOM">Delete custom metadata
+            </mat-radio-button>
+        </mat-radio-group>
+
+        <app-add-items-vertical *ngIf="isMetadataKeysShown" [title]="'Metadata Keys'" [(items)]="metadataKeys"></app-add-items-vertical>
+
+    </div>
+
+
+</div> 

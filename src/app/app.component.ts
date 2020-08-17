@@ -5,6 +5,7 @@ import { ExifToolService } from './services/exif-tool.service';
 import { EditorService } from './services/editor.service';
 import { TemplateMetadataKeys } from './types/template-metadata-keys.interface';
 import { AppTemplate } from './types/app-template.interface';
+import { ExistingMetadataTemplateMethods } from './types/existing-metadata-templete-methods.type';
 const TREE_DATA = {
     Forest: {
         "Feciduous Forest": null,
@@ -40,7 +41,7 @@ const template1:AppTemplate={
     },
     existingMetadataTab:{
         keys:["Creator"],
-        method: "COPY",
+        method: ExistingMetadataTemplateMethods.COPY_CUSTOM,
     },
     locationTab:{
         dateAndTime:new Date(2020,2,22),

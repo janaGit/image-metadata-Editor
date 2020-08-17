@@ -15,14 +15,14 @@ img {
 }
 /*paddings*/
 .app-container{
-    padding: 40px;
+   padding: 40px;
 }
+
 .app-form-field{
   margin-bottom: 20px;
 }
-.app-form-space{
-  margin-bottom: 20px;
-  margin-top: 20px;
+.app-form-field-end{
+  margin-bottom: 40px;
 }
 .app-form-field__row-element{
   margin-right: 20px;
@@ -30,6 +30,12 @@ img {
 .app-form-field__width{
   width: 300px;
 }
+
+.app-form-space{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
 
 .app-label-disabled{
   color: #ddd;

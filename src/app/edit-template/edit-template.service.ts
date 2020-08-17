@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { EditorService } from '../services/editor.service';
 import { AppTemplate } from 'app/types/app-template.interface';
 import { TemplateMetadataKeys } from 'app/types/template-metadata-keys.interface';
-
+import { TemplateExistingMetadataType } from '../types/template-existing-metadata.type';
 
 @Injectable()
 export class EditTemplateService {
@@ -37,9 +37,9 @@ export class EditTemplateService {
     public categories$ = this.__categories.asObservable();
 
 
-    private _existingMetadata: TemplateMetadataKeys;
+    private _existingMetadata: TemplateExistingMetadataType;
 
-    private __existingMetadata: BehaviorSubject<TemplateMetadataKeys> = new BehaviorSubject<TemplateMetadataKeys>(null);
+    private __existingMetadata: BehaviorSubject<TemplateExistingMetadataType> = new BehaviorSubject<TemplateExistingMetadataType>(null);
 
     public existingMetadata$ = this.__existingMetadata.asObservable();
 
@@ -91,7 +91,7 @@ export class EditTemplateService {
         this.__categories.next(categories);
     }
 
-    updateExistingMetadata(existingMetadata: TemplateMetadataKeys) {
+    updateExistingMetadata(existingMetadata: TemplateExistingMetadataType) {
         this._existingMetadata = existingMetadata;
         this.__existingMetadata.next(existingMetadata);
     }
