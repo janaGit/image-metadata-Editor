@@ -61,6 +61,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { InputTemplateButtonsComponent } from './input-template-buttons/input-template-buttons.component';
 import { ExistingMetadataTemplateTabComponent } from './edit-template/existing-metadata-template-tab/existing-metadata-template-tab.component';
 import { AddItemsVerticalComponent } from './add-items-vertical/add-items-vertical.component';
+import { EditMetadataTemplateTabComponent } from './edit-template/edit-metadata-template-tab/edit-metadata-template-tab.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { AddItemsVerticalComponent } from './add-items-vertical/add-items-vertic
     CompleteTemplateTabComponent,
     EditTemplateComponent,
     ExistingMetadataTemplateTabComponent,
-    AddItemsVerticalComponent
+    AddItemsVerticalComponent,
+    EditMetadataTemplateTabComponent
   ],
   imports: [
     BrowserModule,

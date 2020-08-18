@@ -1,13 +1,15 @@
 <div class="">
-    <div class="app-form-field">
+    <div class="">
         <label [class.app-label-disabled]="areItemsDisabled">{{title}}</label>
         <div style="display:flex; align-items:center">
-            <input class="form-control app-form-field__row-element" [class.app-label-disabled]="areItemsDisabled" [formControl]="newItem">
+            <input class="form-control app-form-field__row-element" [class.app-label-disabled]="areItemsDisabled"
+                [attr.disabled]="areItemsDisabled?'':null" [formControl]="newItem">
             <button type="button" class="btn btn-primary" (click)="addNewItem()">Add</button>
         </div>
     </div>
     <div>
-        <button type="button" class="btn item" *ngFor="let item of items; index as i" (click)="deleteItem(i)">{{item}}<i class="fas fa-times item__icon-delete"></i></button>
+        <button type="button" class="btn item" *ngFor="let item of items; index as i" (click)="deleteItem(i)">{{item}}<i
+                class="fas fa-times item__icon-delete"></i></button>
     </div>
 
-</div> 
+</div>

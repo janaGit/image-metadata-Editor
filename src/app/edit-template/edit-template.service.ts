@@ -10,6 +10,7 @@ import { EditorService } from '../services/editor.service';
 import { AppTemplate } from 'app/types/app-template.interface';
 import { TemplateMetadataKeys } from 'app/types/template-metadata-keys.interface';
 import { TemplateExistingMetadataType } from '../types/template-existing-metadata.type';
+import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
 
 @Injectable()
 export class EditTemplateService {
@@ -23,9 +24,9 @@ export class EditTemplateService {
 
 
 
-    private _editMetadata: MetadataFromMetadataTab;
+    private _editMetadata: MetadataFromMetadataTemplateTab;
 
-    private __editMetadata: BehaviorSubject<MetadataFromMetadataTab> = new BehaviorSubject<MetadataFromMetadataTab>(null);
+    private __editMetadata: BehaviorSubject<MetadataFromMetadataTemplateTab> = new BehaviorSubject<MetadataFromMetadataTemplateTab>(null);
 
     public editMetadata$ = this.__editMetadata.asObservable();
 
@@ -81,7 +82,7 @@ export class EditTemplateService {
         this.__templateName.next(templateName);
     }
 
-    updateEditMetadata(metadata: MetadataFromMetadataTab) {
+    updateEditMetadata(metadata: MetadataFromMetadataTemplateTab) {
         this._editMetadata = metadata;
         this.__editMetadata.next(metadata);
     }

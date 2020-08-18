@@ -26,12 +26,18 @@ const newTemplate: AppTemplate = {
         longitude: undefined
     },
     metadataTab: {
-        contactInfo: "",
-        creator: "",
-        description: "",
-        keywords: [],
-        license: "",
-        subject: ""
+        contactInfo:"",
+        isContactInfoCopiedFromImage: false,
+        creator:"",
+        isCreatorCopiedFromImage: false,
+        description:"",
+        isDescriptionCopiedFromImage: false,
+        keywords:[],
+        areKeywordsCopiedFromImage: false,
+        license:"",
+        isLicenseCopiedFromImage: false,
+        subject:"",
+        isSubjectCopiedFromImage: false
     }
 }
 

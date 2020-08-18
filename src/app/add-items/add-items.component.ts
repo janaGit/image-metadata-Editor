@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 export class AddItemsComponent implements OnInit {
 
   newKeyword = new FormControl('');
-  areKeywordsDisabled = false;
+  @Input() areKeywordsDisabled = false;
   private _keywords = [];
 
   @Input()

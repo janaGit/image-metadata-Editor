@@ -1,0 +1,63 @@
+<div class="app-container container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group app-form-field">
+                <label for="creator" [class.app-label-disabled]="">Creator</label>
+                <input class="form-control" [class.app-label-disabled]="isCreatorCopiedFromImage" id="creator"
+                    [attr.disabled]="isCreatorCopiedFromImage?'':null" [formControl]="creator">
+                <mat-checkbox [(ngModel)]="isCreatorCopiedFromImage">Copy from Image
+                </mat-checkbox>
+            </div>
+            <div class="app-form-field">
+                <label [class.app-label-disabled]="">License</label>
+                <select class="form-control" [class.app-label-disabled]="isLicenseCopiedFromImage"
+                    [attr.disabled]="isLicenseCopiedFromImage?'':null" [formControl]="license">
+                    <option></option>
+                    <option *ngFor="let licenseName of licenseNames" [ngValue]="licenseName">{{licenseName}}</option>
+                </select>
+                <mat-checkbox [(ngModel)]="isLicenseCopiedFromImage">Copy from Image
+                </mat-checkbox>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group app-form-field">
+                <label for="contactInfo" [class.app-label-disabled]="">Contact Info</label>
+                <input class="form-control" [class.app-label-disabled]="isContactInfoCopiedFromImage" id="contactInfo"
+                    [formControl]="contactInfo" [attr.disabled]="isContactInfoCopiedFromImage?'':null">
+                <mat-checkbox [(ngModel)]="isContactInfoCopiedFromImage">Copy from Image
+                </mat-checkbox>
+            </div>
+        </div>
+    </div>
+
+    <div class="row app-form-space ">
+        <div class="col-xs-6">
+            <app-add-items [(keywords)]="keywords" [areKeywordsDisabled]="areKeywordsCopiedFromImage"></app-add-items>
+            <mat-checkbox [(ngModel)]="areKeywordsCopiedFromImage">Copy from Image
+            </mat-checkbox>
+        </div>
+    </div>
+
+    <div class="row app-form-space">
+        <div class="col-xs-6">
+            <div class="app-form-field">
+                <label for="subject" [class.app-label-disabled]="">Subject</label>
+                <textarea class="form-control" rows="10" id="subject"
+                    [class.app-label-disabled]="isSubjectCopiedFromImage" [formControl]="subject"
+                    [attr.disabled]="isSubjectCopiedFromImage?'':null"></textarea>
+                <mat-checkbox [(ngModel)]="isSubjectCopiedFromImage">Copy from Image
+                </mat-checkbox>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="app-form-field">
+                <label for="description" [class.app-label-disabled]="">Description</label>
+                <textarea class="form-control" rows="10" id="subject"
+                    [class.app-label-disabled]="isDescriptionCopiedFromImage" [formControl]="description"
+                    [attr.disabled]="isDescriptionCopiedFromImage?'':null" id="description"></textarea>
+                <mat-checkbox [(ngModel)]="isDescriptionCopiedFromImage">Copy from Image
+                </mat-checkbox>
+            </div>
+        </div>
+    </div>
+</div>

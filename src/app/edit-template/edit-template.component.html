@@ -11,12 +11,10 @@
   </div>
   <div style="position:relative; flex:1;">
     <app-start-template-tab *ngIf="selectedTab==='start_template'" (start)="startEditing()"></app-start-template-tab>
-    <metadata-tab *ngIf="selectedTab==='metadata'"></metadata-tab>
+    <app-edit-metadata-template-tab *ngIf="selectedTab==='metadata'"></app-edit-metadata-template-tab>
     <app-categories-tab *ngIf="selectedTab==='categories'"></app-categories-tab>
     <app-existing-metadata-template-tab *ngIf="selectedTab==='existing_metadata'"></app-existing-metadata-template-tab>
     <location-tab *ngIf="selectedTab==='location'"></location-tab>
     <app-complete-template-tab *ngIf="selectedTab==='complete_template'"></app-complete-template-tab>
   </div>
 </div>
-
-

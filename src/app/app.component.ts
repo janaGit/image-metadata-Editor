@@ -52,11 +52,17 @@ const template1:AppTemplate={
     },
     metadataTab:{
         contactInfo:"test@eMail.de",
+        isContactInfoCopiedFromImage: false,
         creator:"Creator1234",
+        isCreatorCopiedFromImage: false,
         description:"beautiful picture",
+        isDescriptionCopiedFromImage: false,
         keywords:["keyword1"],
+        areKeywordsCopiedFromImage: false,
         license:"CC-by",
-        subject:"Object"
+        isLicenseCopiedFromImage: false,
+        subject:"Object",
+        isSubjectCopiedFromImage: false
     }
 }
 /**
