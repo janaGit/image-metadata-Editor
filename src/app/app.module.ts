@@ -62,6 +62,8 @@ import { InputTemplateButtonsComponent } from './input-template-buttons/input-te
 import { ExistingMetadataTemplateTabComponent } from './edit-template/existing-metadata-template-tab/existing-metadata-template-tab.component';
 import { AddItemsVerticalComponent } from './add-items-vertical/add-items-vertical.component';
 import { EditMetadataTemplateTabComponent } from './edit-template/edit-metadata-template-tab/edit-metadata-template-tab.component';
+import { CategoriesTemplateTabComponent } from './edit-template/categories-template-tab/categories-template-tab.component';
+import { SelectCategoryTreeComponent } from './select-category-tree/select-category-tree.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +95,9 @@ import { EditMetadataTemplateTabComponent } from './edit-template/edit-metadata-
     EditTemplateComponent,
     ExistingMetadataTemplateTabComponent,
     AddItemsVerticalComponent,
-    EditMetadataTemplateTabComponent
+    EditMetadataTemplateTabComponent,
+    CategoriesTemplateTabComponent,
+    SelectCategoryTreeComponent
   ],
   imports: [
     BrowserModule,

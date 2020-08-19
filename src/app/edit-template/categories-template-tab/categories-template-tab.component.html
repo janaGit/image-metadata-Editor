@@ -1,0 +1,19 @@
+<div class="app-container container-fluid">
+    <div class="app-form-field">
+        <label>
+            Selected Categories:
+            <button type="button" class="btn btn-primary item_selected-category"
+                *ngFor="let category of allSelectedCategories">{{category}}</button>
+        </label>
+    </div>
+
+    <div class="app-form-field app-tree">
+       <app-select-category-tree [(selectedCategories)]="selectedCategories" (categoriesOfTree)="onGetCategorieOfTree($event)"></app-select-category-tree>
+    </div>
+    <div class="app-form-field">
+        <mat-checkbox class="checklist-leaf-node" [checked]="areNotSupportedCategoriesSelected"
+            (change)="onChangeSelectNotSupportedCategories($event)">
+            {{notSupprotedCategoriesText+notSupprotedCategories}}
+        </mat-checkbox>
+    </div>
+</div>
