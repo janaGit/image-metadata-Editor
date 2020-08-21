@@ -34,7 +34,7 @@ export class CategoriesTabComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._metadataService.updateCategories({ categories: this.selectedCategories, areNotSupportedCategoriesSelected: this.areNotSupportedCategoriesSelected });;
+    this._metadataService.updateCategories({ categories: this.allSelectedCategories, areNotSupportedCategoriesSelected: this.areNotSupportedCategoriesSelected });;
   }
 
   ngOnInit() {
@@ -44,7 +44,7 @@ export class CategoriesTabComponent implements OnInit, OnDestroy {
       this.inputCategories = __categories.categories;
       this.areNotSupportedCategoriesSelected = __categories.areNotSupportedCategoriesSelected;
     } else {
-      this.inputCategories = this._metadataFromImageService.categories;
+      this.inputCategories = this._metadataFromImageService.categories.split(",");
     }
 
     this.updateMetadata();
@@ -54,9 +54,8 @@ export class CategoriesTabComponent implements OnInit, OnDestroy {
 
 
   identifyNotSupportedCategories(categoriesOfTree: string[]) {
-    const _categories = this._metadataFromImageService.categories;
     this.notSupprotedCategories = [];
-    _categories?.forEach(category => {
+    this.inputCategories.forEach(category => {
       if (category) {
         const indexOfCategory = categoriesOfTree.indexOf(category);
         if (indexOfCategory === -1) {
