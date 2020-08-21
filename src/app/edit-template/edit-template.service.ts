@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { MetadataFromMetadataTab } from 'app/types/metadata-from-metadata-tab.interface';
 import { MetadataFromLocationTab } from 'app/types/metadata-from-location-tab.interface';
 import { MetadataFromCategoriesTab } from 'app/types/metadata-from-categories-tab.interface';
-import { map } from 'rxjs/operators';
-import { ReturnObject } from 'app/types/return-object.interface';
 import { HttpClient } from '@angular/common/http';
 import { EditorService } from '../services/editor.service';
 import { AppTemplate } from 'app/types/app-template.interface';
-import { TemplateMetadataKeys } from 'app/types/template-metadata-keys.interface';
 import { TemplateExistingMetadataType } from '../types/template-existing-metadata.type';
 import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
+import { TemplateCategoriesTab } from 'app/types/template-categories-tab.interface';
 
 @Injectable()
 export class EditTemplateService {
@@ -31,9 +28,9 @@ export class EditTemplateService {
     public editMetadata$ = this.__editMetadata.asObservable();
 
 
-    private _categories: MetadataFromCategoriesTab;
+    private _categories: TemplateCategoriesTab;
 
-    private __categories: BehaviorSubject<MetadataFromCategoriesTab> = new BehaviorSubject<MetadataFromCategoriesTab>(null);
+    private __categories: BehaviorSubject<TemplateCategoriesTab> = new BehaviorSubject<TemplateCategoriesTab>(null);
 
     public categories$ = this.__categories.asObservable();
 
@@ -87,7 +84,7 @@ export class EditTemplateService {
         this.__editMetadata.next(metadata);
     }
 
-    updateCategories(categories: MetadataFromCategoriesTab) {
+    updateCategories(categories: TemplateCategoriesTab) {
         this._categories = categories;
         this.__categories.next(categories);
     }

@@ -31,15 +31,14 @@ export class CategoryFlatNode {
 })
 export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
 
-  areNotSupportedCategoriesSelected = false;
-  notSupprotedCategories = []
-  notSupprotedCategoriesText = "Further categories from image: "
+  isSupportedCategoriesToCopy = false;
+  isNotSupportedCategoriesToCopy = false;
 
   allSelectedCategories: string[] = [];
-  inputCategories: string[]=[];
+  inputCategories: string[] = [];
 
 
-    
+
   _selectedCategories: string[] = [];
   set selectedCategories(selectedCategories: string[]) {
     this._selectedCategories = selectedCategories;
@@ -56,49 +55,33 @@ export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._editTemplateService.updateCategories({ categories: this.selectedCategories, areNotSupportedCategoriesSelected: this.areNotSupportedCategoriesSelected });
+    this._editTemplateService.updateCategories({ categories: this.selectedCategories, isSupportedCategoriesToCopy: this.isSupportedCategoriesToCopy, isNotSupportedCategoriesToCopy: this.isNotSupportedCategoriesToCopy });
   }
 
   ngOnInit() {
 
     let __categories = this._editTemplateService.categories;
-    if (__categories) {
-      this.inputCategories = __categories.categories;
-      this.areNotSupportedCategoriesSelected = __categories.areNotSupportedCategoriesSelected;
-    } else {
-      this.inputCategories = this._metadataFromImageService.categories;
-    }
+
+    this.inputCategories = __categories.categories;
+    this.isSupportedCategoriesToCopy = __categories.isSupportedCategoriesToCopy;
+    this.isNotSupportedCategoriesToCopy = __categories.isNotSupportedCategoriesToCopy;
+
 
     this.updateMetadata();
   }
 
-  identifyNotSupportedCategories(categoriesOfTree: string[]) {
-    const _categories = this._metadataFromImageService.categories;
 
-    _categories?.forEach(category => {
-      if (category) {
-        const indexOfCategory = categoriesOfTree.indexOf(category);
-        if (indexOfCategory === -1) {
-          this.notSupprotedCategories = this.notSupprotedCategories.concat(category);
-        }
-      }
-
-    });
-  }
   onChangeSelectNotSupportedCategories(event) {
-    this.areNotSupportedCategoriesSelected = event.checked;
+    this.isNotSupportedCategoriesToCopy = event.checked;
     this.updateMetadata();
 
   }
 
   updateMetadata() {
     let categories = deepCopyFunction(this.selectedCategories);
-    if (this.areNotSupportedCategoriesSelected) {
-      this.notSupprotedCategories.forEach(_category => {
-        categories.push(_category);
-      })
-    }
+
     const uniqueCategories = categories.filter((item, index) => categories.indexOf(item) === index);
+
     this.allSelectedCategories = uniqueCategories;
   }
 

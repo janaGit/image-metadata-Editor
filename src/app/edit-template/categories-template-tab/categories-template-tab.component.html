@@ -8,12 +8,17 @@
     </div>
 
     <div class="app-form-field app-tree">
-       <app-select-category-tree [inputCategories]="inputCategories" (onChangeCategory)="selectedCategories=$event" (categoriesOfTree)="identifyNotSupportedCategories($event)"></app-select-category-tree>
+        <app-select-category-tree [inputCategories]="inputCategories" (onChangeCategory)="selectedCategories=$event">
+        </app-select-category-tree>
     </div>
     <div class="app-form-field">
-        <mat-checkbox class="checklist-leaf-node" [checked]="areNotSupportedCategoriesSelected"
-            (change)="onChangeSelectNotSupportedCategories($event)">
-            {{notSupprotedCategoriesText+notSupprotedCategories}}
+        <mat-checkbox class="checklist-leaf-node" [(ngModel)]="isSupportedCategoriesToCopy">
+            Supported categories should be copied
+        </mat-checkbox>
+    </div>
+    <div class="app-form-field">
+        <mat-checkbox class="checklist-leaf-node" [(ngModel)]="isNotSupportedCategoriesToCopy">
+            Not supported categories should be copied
         </mat-checkbox>
     </div>
 </div>
