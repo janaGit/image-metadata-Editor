@@ -3,8 +3,9 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EditorService } from 'app/services/editor.service';
-import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
-import { Subscription } from 'rxjs';
+/**
+ * Code and comments used from: https://material.angular.io/components/tree/examples
+ */
 
 /**
  * Node for category item
@@ -28,21 +29,16 @@ export class CategoryFlatNode {
 })
 export class SelectCategoryTreeComponent implements OnInit, OnDestroy {
 
-  _selectedCategories: string[] = [];
-  @Input() set selectedCategories(selectedCategories: string[]) {
-    selectedCategories.forEach(category => {
-      const flatNode = this.categoryNameNodeMap.get(category);
-      if (typeof flatNode !== "undefined") {
-        this.checklistSelection.select(flatNode);
-        this._selectedCategories.push(category);
-      }
-    });
-  };
-
-  get selectedCategories() {
-    return this._selectedCategories;
+  _inputCategories: string[] = [];
+  @Input() set inputCategories(selectedCategories) {
+    this._inputCategories = selectedCategories;
+    this.selectCategories();
   }
-  @Output() selectedCategoriesChange = new EventEmitter<string[]>();
+  get inputCategories(){
+    return this._inputCategories;
+  }
+
+  @Output() onChangeCategory = new EventEmitter<string[]>();
 
   notSupprotedCategoriesText = "Further categories from image: "
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
@@ -65,7 +61,6 @@ export class SelectCategoryTreeComponent implements OnInit, OnDestroy {
 
   dataSource: MatTreeFlatDataSource<CategoryNode, CategoryFlatNode>;
 
-  subscriptionCategoryTree: Subscription;
 
   @Output() categoriesOfTree = new EventEmitter<string[]>();
 
@@ -82,19 +77,25 @@ export class SelectCategoryTreeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    const categoryTree = this._editorService.categoryTree;
+
+    this.dataSource.data = this.buildTree(categoryTree, 0);
+
+
     const _categoriesOfTree = [];
-    for (let key in this.categoryNameNodeMap.keys()) {
+    this.categoryNameNodeMap.forEach((value, key: string) => {
       _categoriesOfTree.push(key);
-    }
+    });
     this.categoriesOfTree.emit(_categoriesOfTree);
 
-    this.subscriptionCategoryTree = this._editorService.categoryTree.subscribe(treeData => {
-      this.dataSource.data = this.buildTree(treeData, 0);
-    });
+
+    this.selectCategories();
+
+    this.updateMetadata();
   }
 
   ngOnDestroy(): void {
-    this.subscriptionCategoryTree.unsubscribe();
+
   }
   getLevel = (node: CategoryFlatNode) => node.level;
 
@@ -222,7 +223,14 @@ export class SelectCategoryTreeComponent implements OnInit, OnDestroy {
     }, []);
   }
 
-
+  selectCategories() {
+    this.inputCategories.forEach(category => {
+      const flatNode = this.categoryNameNodeMap.get(category);
+      if (typeof flatNode !== "undefined") {
+        this.checklistSelection.select(flatNode);
+      }
+    });
+  }
   updateMetadata() {
     const categories = [];
     this.checklistSelection.selected.forEach(category => {
@@ -235,7 +243,7 @@ export class SelectCategoryTreeComponent implements OnInit, OnDestroy {
     })
 
     const uniqueCategories = categories.filter((item, index) => categories.indexOf(item) === index);
-    this._selectedCategories = uniqueCategories;
-    this.selectedCategoriesChange.emit(this._selectedCategories);
+  
+    this.onChangeCategory.emit(uniqueCategories);
   }
 }

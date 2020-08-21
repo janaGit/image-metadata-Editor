@@ -253,7 +253,7 @@ export class EditorService {
 
 
     get categoryTree() {
-        return this.__categoryTree;
+        return this._categoryTree;
     }
     /**
      * Get the templates for the more-metadata tab.

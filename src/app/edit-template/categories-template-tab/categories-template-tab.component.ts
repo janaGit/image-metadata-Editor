@@ -31,20 +31,24 @@ export class CategoryFlatNode {
 })
 export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
 
-  _selectedCategories: string[] = [];
+  areNotSupportedCategoriesSelected = false;
+  notSupprotedCategories = []
+  notSupprotedCategoriesText = "Further categories from image: "
+
   allSelectedCategories: string[] = [];
+  inputCategories: string[]=[];
+
+
+    
+  _selectedCategories: string[] = [];
   set selectedCategories(selectedCategories: string[]) {
     this._selectedCategories = selectedCategories;
     this.updateMetadata();
   }
-
   get selectedCategories() {
     return this._selectedCategories;
   }
-  areNotSupportedCategoriesSelected = false;
-  notSupprotedCategories = []
 
-  notSupprotedCategoriesText = "Further categories from image: "
 
   constructor(private _editTemplateService: EditTemplateService, private _metadataFromImageService: MetadataFromImageService, private _cdr: ChangeDetectorRef) {
 
@@ -59,16 +63,16 @@ export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
 
     let __categories = this._editTemplateService.categories;
     if (__categories) {
-      this.selectedCategories = __categories.categories;
+      this.inputCategories = __categories.categories;
       this.areNotSupportedCategoriesSelected = __categories.areNotSupportedCategoriesSelected;
     } else {
-      this.selectedCategories = this._metadataFromImageService.categories;
+      this.inputCategories = this._metadataFromImageService.categories;
     }
 
     this.updateMetadata();
   }
 
-  onGetCategorieOfTree(categoriesOfTree: string[]) {
+  identifyNotSupportedCategories(categoriesOfTree: string[]) {
     const _categories = this._metadataFromImageService.categories;
 
     _categories?.forEach(category => {
@@ -88,8 +92,7 @@ export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
   }
 
   updateMetadata() {
-    let categories = [];
-    categories = deepCopyFunction(this.selectedCategories);
+    let categories = deepCopyFunction(this.selectedCategories);
     if (this.areNotSupportedCategoriesSelected) {
       this.notSupprotedCategories.forEach(_category => {
         categories.push(_category);
@@ -97,7 +100,6 @@ export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
     }
     const uniqueCategories = categories.filter((item, index) => categories.indexOf(item) === index);
     this.allSelectedCategories = uniqueCategories;
-    this._cdr.detectChanges();
   }
 
 

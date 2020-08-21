@@ -8,7 +8,7 @@
     </div>
 
     <div class="app-form-field app-tree">
-       <app-select-category-tree [(selectedCategories)]="selectedCategories" (categoriesOfTree)="onGetCategorieOfTree($event)"></app-select-category-tree>
+       <app-select-category-tree [inputCategories]="inputCategories" (onChangeCategory)="selectedCategories=$event" (categoriesOfTree)="identifyNotSupportedCategories($event)"></app-select-category-tree>
     </div>
     <div class="app-form-field">
         <mat-checkbox class="checklist-leaf-node" [checked]="areNotSupportedCategoriesSelected"
