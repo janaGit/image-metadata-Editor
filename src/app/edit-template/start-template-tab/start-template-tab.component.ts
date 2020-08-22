@@ -12,7 +12,8 @@ const NEW_TEMPLATE = "New Template";
 const newTemplate: AppTemplate = {
     name: NEW_TEMPLATE,
     categoryTab: {
-        areNotSupportedCategoriesSelected: false,
+        isNotSupportedCategoriesToCopy: false,
+        isSupportedCategoriesToCopy: false,
         categories: []
     },
     existingMetadataTab: {

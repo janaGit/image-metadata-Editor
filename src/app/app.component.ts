@@ -36,7 +36,8 @@ const TREE_DATA = {
 const template1:AppTemplate={
     name: "Template 1",
     categoryTab:{
-        areNotSupportedCategoriesSelected: false,
+        isNotSupportedCategoriesToCopy: false,
+        isSupportedCategoriesToCopy: false,
         categories:["See","Test"]
     },
     existingMetadataTab:{
