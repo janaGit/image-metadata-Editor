@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MetadataFromLocationTab } from 'app/types/metadata-from-location-tab.interface';
-import { MetadataFromCategoriesTab } from 'app/types/metadata-from-categories-tab.interface';
+import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
 import { HttpClient } from '@angular/common/http';
 import { EditorService } from '../services/editor.service';
 import { AppTemplate } from 'app/types/app-template.interface';
@@ -43,9 +43,9 @@ export class EditTemplateService {
 
 
 
-    private _location: MetadataFromLocationTab;
+    private _location: TemplateLocationTab;
 
-    private __location: BehaviorSubject<MetadataFromLocationTab> = new BehaviorSubject<MetadataFromLocationTab>(null);
+    private __location: BehaviorSubject<TemplateLocationTab> = new BehaviorSubject<TemplateLocationTab>(null);
 
     public location$ = this.__categories.asObservable();
 
@@ -94,7 +94,7 @@ export class EditTemplateService {
         this.__existingMetadata.next(existingMetadata);
     }
 
-    updateLocation(location: MetadataFromLocationTab) {
+    updateLocation(location: TemplateLocationTab) {
         this._location = location;
         this.__location.next(location);
     }

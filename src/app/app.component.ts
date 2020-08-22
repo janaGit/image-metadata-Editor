@@ -33,36 +33,38 @@ const TREE_DATA = {
 };
 
 
-const template1:AppTemplate={
+const template1: AppTemplate = {
     name: "Template 1",
-    categoryTab:{
+    categoryTab: {
         isNotSupportedCategoriesToCopy: false,
         isSupportedCategoriesToCopy: false,
-        categories:["See","Test"]
+        categories: ["See", "Test"]
     },
-    existingMetadataTab:{
-        keys:["Creator"],
+    existingMetadataTab: {
+        keys: ["Creator"],
         method: ExistingMetadataTemplateMethods.COPY_CUSTOM,
     },
-    locationTab:{
-        dateAndTime:new Date(2020,2,22),
-        isLocationDisabled: true,
-        isTimeDisabled: false,
+    locationTab: {
+        dateAndTime: new Date(2020, 2, 22),
+        isLocationCopiedFromImage: false,
+        isLocationDisabledByDefault: false,
+        isTimeCopiedFromImage: false,
+        isTimeDisabledByDefault: false,
         latitude: 52,
         longitude: 11
     },
-    metadataTab:{
-        contactInfo:"test@eMail.de",
+    metadataTab: {
+        contactInfo: "test@eMail.de",
         isContactInfoCopiedFromImage: false,
-        creator:"Creator1234",
+        creator: "Creator1234",
         isCreatorCopiedFromImage: false,
-        description:"beautiful picture",
+        description: "beautiful picture",
         isDescriptionCopiedFromImage: false,
-        keywords:["keyword1"],
+        keywords: ["keyword1"],
         areKeywordsCopiedFromImage: false,
-        license:"CC-by",
+        license: "CC-by",
         isLicenseCopiedFromImage: false,
-        subject:"Object",
+        subject: "Object",
         isSubjectCopiedFromImage: false
     }
 }
@@ -107,7 +109,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
      */
     _changeView_button_text: string;
 
-    
+
     _changeEditTemplateView_button_text: string;
 
     /**
@@ -154,7 +156,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
         // Set the language for the image metadata 
         this._exifToolService.language = this._lang;
         // Subscribe to router events to update the label of the 'changeView'-button
-        this._router.events.subscribe((val) => { this.setChangeViewButtonText(); this.setChangeEditTemplateViewButtonText();});
+        this._router.events.subscribe((val) => { this.setChangeViewButtonText(); this.setChangeEditTemplateViewButtonText(); });
         this._editorService._fileTabOpen$.subscribe(isOpen => {
             this._fileTabOpen = isOpen;
         })

@@ -64,6 +64,7 @@ import { AddItemsVerticalComponent } from './add-items-vertical/add-items-vertic
 import { EditMetadataTemplateTabComponent } from './edit-template/edit-metadata-template-tab/edit-metadata-template-tab.component';
 import { CategoriesTemplateTabComponent } from './edit-template/categories-template-tab/categories-template-tab.component';
 import { SelectCategoryTreeComponent } from './select-category-tree/select-category-tree.component';
+import { LocationTemplateTabComponent } from './edit-template/location-template-tab/location-template-tab.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { SelectCategoryTreeComponent } from './select-category-tree/select-categ
     AddItemsVerticalComponent,
     EditMetadataTemplateTabComponent,
     CategoriesTemplateTabComponent,
-    SelectCategoryTreeComponent
+    SelectCategoryTreeComponent,
+    LocationTemplateTabComponent
   ],
   imports: [
     BrowserModule,
