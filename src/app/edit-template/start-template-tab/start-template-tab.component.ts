@@ -51,8 +51,8 @@ const newTemplate: AppTemplate = {
 })
 export class StartTemplateTabComponent implements OnInit {
 
-    templates: Map<string, AppTemplate>;
-    copyTemplates: Map<string, AppTemplate>;
+    templates: Map<string, AppTemplate> = new Map();
+    copyTemplates: Map<string, AppTemplate> = new Map();
 
     templateKeys: string[];
     copyTemplateKeys: string[];
@@ -61,6 +61,7 @@ export class StartTemplateTabComponent implements OnInit {
     copyTemplate = new FormControl("");
 
     isNewTemplateShown = false;
+    isStartDisabled = false;
 
     /**
      * Event emitter that imforms the parent of this class
@@ -86,6 +87,9 @@ export class StartTemplateTabComponent implements OnInit {
 
 
         this.isNewTemplateShown = true;
+        if(this.templateName.errors && this.isNewTemplateShown){
+            this.isStartDisabled= true;
+        }
     }
 
     set errorMessage(error) {
@@ -113,8 +117,12 @@ export class StartTemplateTabComponent implements OnInit {
     onChangeSelectTemplate(event) {
         if (event === NEW_TEMPLATE) {
             this.isNewTemplateShown = true;
+            if (this.templateName.errors) {
+                this.isStartDisabled = true;
+            }
         } else {
             this.isNewTemplateShown = false;
+            this.isStartDisabled = false;
         }
     }
 
@@ -122,10 +130,23 @@ export class StartTemplateTabComponent implements OnInit {
     templateNameValidator(nameRe: RegExp): ValidatorFn {
         return (control: AbstractControl): { [key: string]: any } | null => {
             const forbidden = nameRe.test(control.value);
-            return forbidden ? { forbiddenName: { value: control.value } } : null;
+            if (forbidden) {
+                return { forbiddenName: { value: control.value } };
+            }
+            if (typeof this.copyTemplates.get(control.value) !== "undefined") {
+                return { exists: { value: control.value } };
+            }
+            return null;
         };
     }
 
+    onChangeTemplateName(name: string) {
+        if (this.templateName.errors) {
+            this.isStartDisabled = true;
+        } else {
+            this.isStartDisabled = false;
+        }
+    }
 
 
 }

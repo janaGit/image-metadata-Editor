@@ -10,7 +10,7 @@
       </div>
       <div class="form-group app-form-field app-form-field__width" *ngIf="isNewTemplateShown">
         <label for="templateName">Name</label>
-        <input class="form-control" id="templateName" [formControl]="templateName" required>
+        <input class="form-control" id="templateName" [formControl]="templateName" (ngModelChange)="onChangeTemplateName($event)" required>
         <div *ngIf="templateName.invalid && (templateName.dirty || templateName.touched)" class="alert alert-danger">
 
           <div *ngIf="templateName.errors.required">
@@ -19,6 +19,10 @@
 
           <div *ngIf="templateName.errors.forbiddenName">
             Name cannot be "New Template".
+          </div>
+
+          <div *ngIf="templateName.errors.exists">
+            Template with that name already exists.
           </div>
         </div>
       </div>
@@ -35,7 +39,7 @@
   </div>
   <div style="display:flex;align-items: flex-end; justify-content:flex-end">
     <div>
-      <button type='button' class='btn btn-start' id='startEditingButton' style="margin-bottom:10%"
+      <button type='button' class='btn btn-start' id='startEditingButton' [attr.disabled]="isStartDisabled?'':null" style="margin-bottom:10%"
         (click)=startEditing()> start editing </button>
     </div>
   </div>
