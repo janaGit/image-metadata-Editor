@@ -141,7 +141,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     /**
      * Variable stores the status, if the filetab is open or not.
      */
-    _fileTabOpen: Boolean;
+    _startTabOpen: Boolean;
 
     router: Router;
     constructor(private _cdr: ChangeDetectorRef, private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
@@ -157,8 +157,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
         this._exifToolService.language = this._lang;
         // Subscribe to router events to update the label of the 'changeView'-button
         this._router.events.subscribe((val) => { this.setChangeViewButtonText(); this.setChangeEditTemplateViewButtonText(); });
-        this._editorService._fileTabOpen$.subscribe(isOpen => {
-            this._fileTabOpen = isOpen;
+        this._editorService._startTabOpen$.subscribe(isOpen => {
+            this._startTabOpen = isOpen;
         })
         this._editorService.updateLicenseNames(["CC-by", "CC-by-sa", "CC-by-nd", "CC-by-nc", "CC-by-nc-sa"]);
 

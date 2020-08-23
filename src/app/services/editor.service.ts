@@ -51,15 +51,15 @@ export class EditorService {
     /**
      * This variable stores the information if the FileTab is shown (true) or not (false).
      */
-    private _fileTabOpen: boolean;
+    private _startTabOpen: boolean;
     /**
      * Variable that stores a BehaviorSubject to distribute if the file-Tab is actually open or not.
      */
-    private __fileTabOpen: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
+    private __startTabOpen: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
     /**
      * variable to subscribe, if the file tab is open or not.
      */
-    public _fileTabOpen$ = this.__fileTabOpen.asObservable();
+    public _startTabOpen$ = this.__startTabOpen.asObservable();
 
 
     /**  image name in images folder     ---------------------------------------------   */
@@ -209,15 +209,15 @@ export class EditorService {
      * Get the variable that stores the information 
      * if the FileTab is shown (true) or not (false).
      */
-    get fileTabOpen(): boolean {
-        return this._fileTabOpen;
+    get startTabOpen(): boolean {
+        return this._startTabOpen;
     }
     /**
      *  Set the variable that stores the information 
      * if the FileTab is shown (true) or not (false).
      */
-    set fileTabOpen(isOpen: boolean) {
-        this._fileTabOpen = isOpen;
+    set startTabOpen(isOpen: boolean) {
+        this._startTabOpen = isOpen;
     }
     /**
      * Get the image names of the images in the images_original folder.
@@ -333,8 +333,8 @@ export class EditorService {
      * and send the status to all subscribers
      */
     updateIsFileTabOpen(isOpen: boolean) {
-        this._fileTabOpen = isOpen;
-        this.__fileTabOpen.next(isOpen);
+        this._startTabOpen = isOpen;
+        this.__startTabOpen.next(isOpen);
     }
 
     /**

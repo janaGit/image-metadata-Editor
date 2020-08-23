@@ -55,7 +55,7 @@ export class EditTemplateComponent implements OnInit {
         this.tabs.forEach(tab => {
             if (tab.tab === 'start_template') {
                 tab.active = true;
-                this._cdr.detectChanges();
+                this._editorService.updateIsFileTabOpen(true);
             }
         });
 
@@ -96,6 +96,7 @@ export class EditTemplateComponent implements OnInit {
                 }
             }
         });
+        this._editorService.updateIsFileTabOpen(false);
         this.selectTab('existing_metadata');
         this._cdr.detectChanges();
     }
@@ -110,10 +111,11 @@ export class EditTemplateComponent implements OnInit {
                 tab.disabled = false;
                 tab.active = true;
             } else {
-                tab.disabled = true;
+                tab.disabled = true
                 tab.active = false;
             }
         });
+        this._editorService.updateIsFileTabOpen(true);
         this.selectTab('start_template');
         this._cdr.detectChanges();
         this._editTemplateService.resetMetadata();

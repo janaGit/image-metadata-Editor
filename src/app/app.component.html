@@ -5,14 +5,14 @@
     <!--title -->
     <div style="align-self: center;display:inline-flex">
       <h1> Image Metadata Editor </h1>
-      <span id="titleIcon" class="glyphicon glyphicon-edit"style="margin:1em 1em"></span>
+      <span id="titleIcon" class="glyphicon glyphicon-edit"style="margin-left: 5px"></span>
     </div>
 
     <!-- buttons right -->
     <div style="display:flex; flex-direction: column; justify-content: space-between; padding:5px">
       <!-- menu buttons -->
-      <div style="display:flex; justify-content: end; margin:5px">
-        <button class="btn" (click)="changeEditTemplateView()" style="margin:5px" *ngIf="_fileTabOpen || router.url === '/image_gallery' || router.url === '/edit_templates'"> {{_changeEditTemplateView_button_text}}</button>
+      <div style="display:flex; justify-content: end; align-items: center; margin:5px">
+        <button class="btn" (click)="changeEditTemplateView()" style="margin:5px" *ngIf="_startTabOpen || (router.url === '/image_gallery')"> {{_changeEditTemplateView_button_text}}</button>
 
         <button class="btn bgwhite" (click)="onClickRefreshButton()"><span class="glyphicon glyphicon-refresh"  ></span></button>
        
@@ -27,14 +27,14 @@
        
       </div>
 
-      <button class="btn" (click)="changeView()" style="margin:5px" *ngIf="(_fileTabOpen && router.url === '/edit_metadata')|| router.url === '/image_gallery'"> {{_changeView_button_text}}</button>
+      <button class="btn" (click)="changeView()" style="margin:5px" *ngIf="(_startTabOpen && router.url === '/edit_metadata')|| router.url === '/image_gallery'"> {{_changeView_button_text}}</button>
     </div>
   </div>
-  <div style="position: relative;" [ngStyle]="{'flex': (_fileTabOpen) ? 15 : 16}">
+  <div style="position: relative;" [ngStyle]="{'flex': (_startTabOpen) ? 15 : 16}">
     <router-outlet></router-outlet>
   </div>
 
 </div>
-<bottom-bar-original-img *ngIf="_fileTabOpen" style="flex: 1;"></bottom-bar-original-img>
+<bottom-bar-original-img *ngIf="_startTabOpen && router.url === '/edit_metadata'" style="flex: 1;"></bottom-bar-original-img>
 <bottom-bar-complete-img *ngIf="router.url === '/image_gallery'" style="flex: 1;"></bottom-bar-complete-img>
 <modal-show-progress></modal-show-progress>
