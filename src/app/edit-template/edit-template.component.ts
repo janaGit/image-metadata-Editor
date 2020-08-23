@@ -33,7 +33,7 @@ export class EditTemplateComponent implements OnInit {
      */
     imgPath: string;
 
-
+    templateName: string = "";
 
     /**
      * Tabs for the different steps of the editing process.
@@ -45,7 +45,7 @@ export class EditTemplateComponent implements OnInit {
         { title: 'Categories', tab: 'categories', disabled: true },
         { title: 'Location', tab: 'location', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService,  private _editTemplateService: EditTemplateService) {
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService, private _editTemplateService: EditTemplateService) {
 
     }
 
@@ -98,6 +98,7 @@ export class EditTemplateComponent implements OnInit {
         });
         this._editorService.updateIsFileTabOpen(false);
         this.selectTab('existing_metadata');
+        this.templateName = this._editTemplateService.templateName;
         this._cdr.detectChanges();
     }
 
@@ -117,13 +118,14 @@ export class EditTemplateComponent implements OnInit {
         });
         this._editorService.updateIsFileTabOpen(true);
         this.selectTab('start_template');
+        this.templateName = "";
         this._cdr.detectChanges();
         this._editTemplateService.resetMetadata();
 
 
     }
 
-    clickSaveAndQuit(){
-        
+    clickSaveAndQuit() {
+
     }
 }

@@ -5,10 +5,11 @@
         (selectTab)="selectTabByTitle($event.heading)">
       </tab>
     </tabset>
-    <div id='image_place_Thumbnail' *ngIf="imgPath!=null && selectedTab!=='start_template'">
-      <img id='image_Thumbnail' src={{imgPath}}>
-    </div>
+
     <div class="buttons">
+      <div id='template_name'>
+        {{templateName}}
+      </div>
       <button id="button_save" class="btn btn-primary app-form-field__row-element" (click)="clickSaveAndQuit()" *ngIf="selectedTab!=='start_template'">
         Save and Quit </button>
       <button id="abort_Button" class="btn" (click)="click_Abort()" *ngIf="selectedTab!=='start_template'"> Abort
