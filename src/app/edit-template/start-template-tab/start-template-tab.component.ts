@@ -21,23 +21,25 @@ const newTemplate: AppTemplate = {
     },
     locationTab: {
         dateAndTime: undefined,
-        isLocationDisabled: false,
-        isTimeDisabled: false,
+        isLocationDisabledByDefault: false,
+        isTimeDisabledByDefault: false,
         latitude: undefined,
-        longitude: undefined
+        longitude: undefined,
+        isLocationCopiedFromImage: false,
+        isTimeCopiedFromImage: false
     },
     metadataTab: {
-        contactInfo:"",
+        contactInfo: "",
         isContactInfoCopiedFromImage: false,
-        creator:"",
+        creator: "",
         isCreatorCopiedFromImage: false,
-        description:"",
+        description: "",
         isDescriptionCopiedFromImage: false,
-        keywords:[],
+        keywords: [],
         areKeywordsCopiedFromImage: false,
-        license:"",
+        license: "",
         isLicenseCopiedFromImage: false,
-        subject:"",
+        subject: "",
         isSubjectCopiedFromImage: false
     }
 }
@@ -94,7 +96,7 @@ export class StartTemplateTabComponent implements OnInit {
     async startEditing() {
         let template: AppTemplate;
         if (this.selectTemplate.value === NEW_TEMPLATE) {
-        
+
             if (this.copyTemplate.value !== "") {
                 template = this.copyTemplates.get(this.copyTemplate.value);
             } else {
