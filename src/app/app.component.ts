@@ -95,7 +95,7 @@ var imageDir_complete = 'images_complete'
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss', './css/global-app.scss'] 
 })
 export class AppComponent implements OnInit, AfterViewChecked {
     /**
