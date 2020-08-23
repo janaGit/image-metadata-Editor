@@ -18,7 +18,6 @@ import { CompleteComponent } from './edit-metadata/complete-tab/complete-tab.com
 
 import{EditTemplateComponent} from './edit-template/edit-template.component';
 import{StartTemplateTabComponent} from './edit-template/start-template-tab/start-template-tab.component';
-import{CompleteTemplateTabComponent} from './edit-template/complete-template-tab/complete-template-tab.component';
 
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
 
@@ -92,7 +91,6 @@ import { LocationTemplateTabComponent } from './edit-template/location-template-
     CategoriesTabComponent,
     InputTemplateButtonsComponent,
     StartTemplateTabComponent,
-    CompleteTemplateTabComponent,
     EditTemplateComponent,
     ExistingMetadataTemplateTabComponent,
     AddItemsVerticalComponent,

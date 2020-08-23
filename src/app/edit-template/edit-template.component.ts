@@ -13,7 +13,7 @@ import { EditTemplateService } from './edit-template.service';
 @Component({
     selector: 'edit-template',
     templateUrl: 'edit-template.component.html',
-    styleUrls: ['edit-template.component.scss']
+    styleUrls: ['edit-template.component.scss', '../css/global-app.scss']
 })
 export class EditTemplateComponent implements OnInit {
     /**
@@ -43,8 +43,7 @@ export class EditTemplateComponent implements OnInit {
         { title: 'Existing Metadata', tab: 'existing_metadata', disabled: true },
         { title: 'Edit Metadata', tab: 'metadata', disabled: true },
         { title: 'Categories', tab: 'categories', disabled: true },
-        { title: 'Location', tab: 'location', disabled: true },
-        { title: 'Complete', tab: 'complete_template', disabled: true }
+        { title: 'Location', tab: 'location', disabled: true }
     ];
     constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService,  private _editTemplateService: EditTemplateService) {
 
@@ -122,5 +121,7 @@ export class EditTemplateComponent implements OnInit {
 
     }
 
-
+    clickSaveAndQuit(){
+        
+    }
 }
