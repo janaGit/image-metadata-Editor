@@ -1,6 +1,5 @@
 //https://auth0.com/blog/use-typescript-to-create-a-secure-api-with-nodejs-and-express-getting-started/
 import express from 'express';
-import * as bodyParser from 'body-parser';
 import multer from 'multer';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -23,7 +22,7 @@ export class Server {
     private fileNameForCategoryTree: string; 
     private configDir: string;
     public app: express.Express;
-    private router;
+    private router; 
     private exifTool: ExifTool;
     private port: number;
     /** 
@@ -67,6 +66,9 @@ export class Server {
         this.app.use(helmet());
         this.app.use(cors());
         this.app.use(express.json());
+        this.app.use(express.urlencoded({
+            extended: false
+        }));
         this.router = express.Router();
         this.exifTool = new ExifTool();
     }
@@ -92,10 +94,6 @@ export class Server {
         });
         this.app.use(express.static(path.join(__dirname, 'dist')));
 
-        this.app.use(bodyParser.urlencoded({
-            extended: false
-        }));
-        this.app.use(bodyParser.json());
         this.app.use('/api', this.router);
     }
     private configRoutes() {
