@@ -79,26 +79,26 @@ export class StartTemplateTabComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        this.templateSubscription = this._editorService.templates$.subscribe(templates=>{
-        this.templates = new Map(templates);
-        this.templates.set(newTemplate.name, deepCopyFunction(newTemplate));
-        this.templateKeys = [...this.templates.keys()];
+        this.templateSubscription = this._editorService.templates$.subscribe(templates => {
+            this.templates = new Map(templates);
+            this.templates.set(newTemplate.name, deepCopyFunction(newTemplate));
+            this.templateKeys = [...this.templates.keys()];
 
 
-        this.copyTemplates = new Map(templates);
-        this.copyTemplateKeys = [...this.copyTemplates.keys()];
-        this.selectTemplate.setValue(NEW_TEMPLATE);
+            this.copyTemplates = new Map(templates);
+            this.copyTemplateKeys = [...this.copyTemplates.keys()];
+            this.selectTemplate.setValue(NEW_TEMPLATE);
 
         })
 
 
 
         this.isNewTemplateShown = true;
-        if(this.templateName.errors && this.isNewTemplateShown){
-            this.isStartDisabled= true;
+        if (this.templateName.errors && this.isNewTemplateShown) {
+            this.isStartDisabled = true;
         }
     }
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.templateSubscription.unsubscribe();
     }
 
@@ -158,5 +158,8 @@ export class StartTemplateTabComponent implements OnInit, OnDestroy {
         }
     }
 
-
+    deleteTemplate() {
+        const template = this.copyTemplates.get(this.selectTemplate.value);
+        this._editorService.deleteTemplateBackend(template);
+    }
 }

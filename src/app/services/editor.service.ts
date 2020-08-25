@@ -4,7 +4,7 @@ import { TemplateMetadataKeys } from "../types/template-metadata-keys.interface"
 import { AppTemplate } from "../types/app-template.interface";
 import { map } from 'rxjs/operators';
 import { extractData, handleError } from '../../../utilities/utilitiy-methods';
-import { REST_GET_TEMPLATES, REST_GET_CATEGORY_TREE } from '../../../utilities/constants';
+import { REST_GET_TEMPLATES, REST_GET_CATEGORY_TREE, REST_DELETE_TEMPLATE } from '../../../utilities/constants';
 import { HttpClient } from '@angular/common/http';
 
 /**
@@ -219,6 +219,15 @@ export class EditorService {
             const categoryTree = await this._http.get(REST_GET_CATEGORY_TREE).pipe(
                 map(extractData)).toPromise();
             this.updateCategoryTree(categoryTree);
+        } catch (error) {
+            handleError(error);
+        }
+    }
+
+    async deleteTemplateBackend(template: AppTemplate) {
+        try {
+            await this._http.delete(REST_DELETE_TEMPLATE+"/"+template.name.trim()).pipe(
+                map(extractData)).toPromise();
         } catch (error) {
             handleError(error);
         }

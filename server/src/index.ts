@@ -12,6 +12,7 @@ import * as suffix from "../../utilities/image-suffixes";
 import { ExifTool } from './exif-tool';
 import { ReturnObject } from '../../src/app/types/return-object.interface';
 import { METADATA_DELETED, IMAGE_EDITED } from '../../utilities/constants';
+import { debug } from 'console';
 
 
 export class Server {
@@ -119,7 +120,7 @@ export class Server {
 
         this.router.get('/getTemplates', this.readTemplates);
         this.router.post('/writeTemplate', this.writeTemplate);
-        this.router.delete('/deleteTemplate', this.deleteTemplate);
+        this.router.delete('/deleteTemplate/:templateName', this.deleteTemplate);
 
         this.router.get('/getCategoryTree', this.readCategoryTree);
 
@@ -431,13 +432,13 @@ export class Server {
     private writeTemplate = (req: Request, res: Response) => {
         const template = req.body.template;
         let data = JSON.stringify(template);
-        fs.writeFileSync(this.templateDir + "/" + template.name.trim() + '.json', data);
+        fs.writeFileSync(this.templateDir + "/" + (<string>template.name).replace(" ", "").toLocaleLowerCase() + '.json', data);
         res.status(200).send("OK");
     }
 
     private deleteTemplate = (req: Request, res: Response) => {
-        const template = req.body.template;
-        fs.unlinkSync(this.templateDir + "/" + template.name.trim() + '.json'); 
+        const templateName = req.params.templateName;
+        fs.unlinkSync(this.templateDir + "/" + templateName.replace(" ", "").toLocaleLowerCase() + '.json'); 
         res.status(200).send("OK");
     }
 
