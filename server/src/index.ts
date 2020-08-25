@@ -433,13 +433,15 @@ export class Server {
         const template = req.body.template;
         let data = JSON.stringify(template);
         fs.writeFileSync(this.templateDir + "/" + (<string>template.name).replace(" ", "").toLocaleLowerCase() + '.json', data);
-        res.status(200).send("OK");
+        let body: { data:any} = { data: "OK" };
+        res.status(200).send(body);
     }
 
     private deleteTemplate = (req: Request, res: Response) => {
         const templateName = req.params.templateName;
         fs.unlinkSync(this.templateDir + "/" + templateName.replace(" ", "").toLocaleLowerCase() + '.json'); 
-        res.status(200).send("OK");
+        let body: { data:any} = { data: "OK" };
+        res.status(200).send(body);
     }
 
     private readCategoryTree = (req, res) => {

@@ -226,8 +226,8 @@ export class EditorService {
 
     async deleteTemplateBackend(template: AppTemplate) {
         try {
-            await this._http.delete(REST_DELETE_TEMPLATE+"/"+template.name.trim()).pipe(
-                map(extractData)).toPromise();
+            await this._http.delete(REST_DELETE_TEMPLATE+"/"+template.name.replace(" ","")).toPromise();
+            await this.getTemplatesFromBackend();
         } catch (error) {
             handleError(error);
         }

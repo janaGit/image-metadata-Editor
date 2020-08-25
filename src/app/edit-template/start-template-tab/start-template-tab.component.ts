@@ -75,7 +75,7 @@ export class StartTemplateTabComponent implements OnInit, OnDestroy {
      */
     @Output() start = new EventEmitter();
 
-    constructor(private _exifToolService: ExifToolService, private _editorService: EditorService, private _editTemplateService: EditTemplateService) { }
+    constructor(private _cdr: ChangeDetectorRef, private _exifToolService: ExifToolService, private _editorService: EditorService, private _editTemplateService: EditTemplateService) { }
 
     ngOnInit() {
 
