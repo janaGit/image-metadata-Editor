@@ -6,68 +6,7 @@ import { EditorService } from './services/editor.service';
 import { TemplateMetadataKeys } from './types/template-metadata-keys.interface';
 import { AppTemplate } from './types/app-template.interface';
 import { ExistingMetadataTemplateMethods } from './types/existing-metadata-templete-methods.type';
-const TREE_DATA = {
-    Forest: {
-        "Feciduous Forest": null,
-        "Coniferous Forest": null
-    },
-    "Open Fields": {
-        "Meadow": null,
-        "Field": null
-    },
-    "Mountains": null,
-    "River": null,
-    "See": null,
-    "Lake": null,
-    "Animal": {
-        "Insects": null,
-        "Birds": {
-            "oscine birds": null,
-            "Owl": null,
-            "Raven": null
-        }
-    },
-    "Town": {
-        "Buildings": null
-    }
-};
 
-
-const template1: AppTemplate = {
-    name: "Template 1",
-    categoryTab: {
-        isNotSupportedCategoriesToCopy: false,
-        isSupportedCategoriesToCopy: false,
-        categories: ["See", "Test"]
-    },
-    existingMetadataTab: {
-        keys: ["Creator"],
-        method: ExistingMetadataTemplateMethods.COPY_CUSTOM,
-    },
-    locationTab: {
-        dateAndTime: new Date(2020, 2, 22),
-        isLocationCopiedFromImage: false,
-        isLocationDisabledByDefault: false,
-        isTimeCopiedFromImage: false,
-        isTimeDisabledByDefault: false,
-        latitude: 52,
-        longitude: 11
-    },
-    metadataTab: {
-        contactInfo: "test@eMail.de",
-        isContactInfoCopiedFromImage: false,
-        creator: "Creator1234",
-        isCreatorCopiedFromImage: false,
-        description: "beautiful picture",
-        isDescriptionCopiedFromImage: false,
-        keywords: ["keyword1"],
-        areKeywordsCopiedFromImage: false,
-        license: "CC-by",
-        isLicenseCopiedFromImage: false,
-        subject: "Object",
-        isSubjectCopiedFromImage: false
-    }
-}
 /**
  * Storage of labels for the change view button. 
  * Depending on the url of the actual view (Editor / Image Gallery),
@@ -162,11 +101,6 @@ export class AppComponent implements OnInit, AfterViewChecked {
         })
         this._editorService.updateLicenseNames(["CC-by", "CC-by-sa", "CC-by-nd", "CC-by-nc", "CC-by-nc-sa"]);
 
-        this._editorService.updateCategoryTree(TREE_DATA);
-
-        const templates = new Map<string, AppTemplate>();
-        templates.set(template1.name, template1);
-        this._editorService.updateTemplateForMoreMetadataTab(templates);
     }
     ngAfterViewChecked() {
         this._cdr.detectChanges();

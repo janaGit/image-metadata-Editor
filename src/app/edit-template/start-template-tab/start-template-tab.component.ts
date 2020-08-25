@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
@@ -7,6 +7,7 @@ import { AppTemplate } from 'app/types/app-template.interface';
 import { EditTemplateService } from '../edit-template.service';
 import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
+import { Subscription } from 'rxjs';
 
 const NEW_TEMPLATE = "New Template";
 const newTemplate: AppTemplate = {
@@ -49,7 +50,7 @@ const newTemplate: AppTemplate = {
     templateUrl: './start-template-tab.component.html',
     styleUrls: ['./start-template-tab.component.scss', '../../css/global-app.scss']
 })
-export class StartTemplateTabComponent implements OnInit {
+export class StartTemplateTabComponent implements OnInit, OnDestroy {
 
     templates: Map<string, AppTemplate> = new Map();
     copyTemplates: Map<string, AppTemplate> = new Map();
@@ -62,6 +63,7 @@ export class StartTemplateTabComponent implements OnInit {
 
     isNewTemplateShown = false;
     isStartDisabled = false;
+    templateSubscription: Subscription;
 
     /**
      * Event emitter that imforms the parent of this class
@@ -76,20 +78,28 @@ export class StartTemplateTabComponent implements OnInit {
     constructor(private _exifToolService: ExifToolService, private _editorService: EditorService, private _editTemplateService: EditTemplateService) { }
 
     ngOnInit() {
-        this.templates = new Map(this._editorService.templates);
+
+        this.templateSubscription = this._editorService.templates$.subscribe(templates=>{
+        this.templates = new Map(templates);
         this.templates.set(newTemplate.name, deepCopyFunction(newTemplate));
         this.templateKeys = [...this.templates.keys()];
 
 
-        this.copyTemplates = new Map(this._editorService.templates);
+        this.copyTemplates = new Map(templates);
         this.copyTemplateKeys = [...this.copyTemplates.keys()];
         this.selectTemplate.setValue(NEW_TEMPLATE);
+
+        })
+
 
 
         this.isNewTemplateShown = true;
         if(this.templateName.errors && this.isNewTemplateShown){
             this.isStartDisabled= true;
         }
+    }
+    ngOnDestroy(){
+        this.templateSubscription.unsubscribe();
     }
 
     set errorMessage(error) {

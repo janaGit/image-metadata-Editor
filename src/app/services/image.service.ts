@@ -3,6 +3,7 @@ import {map} from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EditorService } from './editor.service';
+import { extractData, handleError } from '../../../utilities/utilitiy-methods';
 /**
  * This service class provides methods for requests to the backend 
  * for the management of the images.
@@ -157,9 +158,9 @@ export class ImageService {
     async getImageNames(): Promise<string[]> {
         try {
             return this._http.get(this._getImagesUrl).pipe(
-                map(this.extractData)).toPromise();
+                map(extractData)).toPromise();
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
     }
 
@@ -169,9 +170,9 @@ export class ImageService {
     getImageNames_edited(): Promise<string[]> {
         try {
             return this._http.get(this._getImages_editedUrl).pipe(
-                map(this.extractData)).toPromise();
+                map(extractData)).toPromise();
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
     }
     /**
@@ -180,9 +181,9 @@ export class ImageService {
     getImageNames_complete(): Promise<string[]> {
         try {
             return this._http.get(this._getImages_completeUrl).pipe(
-                map(this.extractData)).toPromise();
+                map(extractData)).toPromise();
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
     }
     /**
@@ -191,9 +192,9 @@ export class ImageService {
     getImageNames_original(): Promise<string[]> {
         try {
             return this._http.get(this._getImages_originalUrl).pipe(
-                map(this.extractData)).toPromise();
+                map(extractData)).toPromise();
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
     }
 
@@ -234,11 +235,11 @@ export class ImageService {
             if (imageNames.some(image => image === imageName)) {
                 try {
                     const data = this._http.delete(this._deleteImageUrl + '/' + imageName).pipe(
-                        map(this.extractData)).toPromise();
+                        map(extractData)).toPromise();
                     this.updateImageNamesInFolder();
                     return data;
                 } catch (error) {
-                    this.handleError(error)
+                    handleError(error)
                 }
             }
         } else { return null }
@@ -252,10 +253,10 @@ export class ImageService {
             if (imageNames.some(image => image === imageName)) {
                 try {
                     const data = this._http.delete(this._deleteImageUrl + '/' + imageName).pipe(
-                        map(this.extractData)).toPromise();
+                        map(extractData)).toPromise();
                     return data;
                 } catch (error) {
-                    this.handleError(error)
+                    handleError(error)
                 }
             }
         } else { return null }
@@ -268,14 +269,14 @@ export class ImageService {
     async  moveImageBackForEditing(imageName: string): Promise<string> {
         try {
             const data = await this._http.post(this._postMoveImage_Back + '/' + imageName, "").pipe(
-                map(this.extractData)).
+                map(extractData)).
                 toPromise();
             await this.updateImageNamesInFolder_edited();
             this.updateImageNamesInFolder();
             return data;
 
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
 
 
@@ -289,13 +290,13 @@ export class ImageService {
         try {
             if (imageName !== "selectAll_Images.png") {
             const data = this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "").pipe(
-                map(this.extractData)).toPromise();
+                map(extractData)).toPromise();
             await this.updateImageNamesInFolder_edited();
             this.updateImageNamesInFolder();
             return data;
             }
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
 
     }
@@ -307,11 +308,11 @@ export class ImageService {
         try {
             if (imageName !== "selectAll_Images.png") {
             const data = this._http.post(this._postMoveImage_ToImageGallery + '/' + imageName, "").pipe(
-                map(this.extractData)).toPromise();
+                map(extractData)).toPromise();
             return data;
             }
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
 
     }
@@ -323,12 +324,12 @@ export class ImageService {
     async  moveImageToImagesComplete(imageName: string): Promise<string> {
         try {
             const data = await this._http.post(this._postMoveImage_ToImagesComplete + '/' + imageName, "").pipe(
-                map(this.extractData)).toPromise();
+                map(extractData)).toPromise();
             await this.updateImageNamesInFolder_edited();
             this.updateImageNamesInFolder_complete();
             return data;
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
     }
     /**
@@ -338,11 +339,11 @@ export class ImageService {
     async copyImageForEditingAndUpdateImageNames(imageName: string): Promise<string> {
         try {
             const data = await this._http.post(this._postCopyImage_ForEditing + '/' + imageName, "").pipe(
-                map(this.extractData)).toPromise();
+                map(extractData)).toPromise();
             await this.updateImageNamesInFolder();
             return data;
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
     }
         /**
@@ -352,10 +353,10 @@ export class ImageService {
     async copyImageForEditing(imageName: string): Promise<string> {
         try {
             const data = await this._http.post(this._postCopyImage_ForEditing + '/' + imageName, "").pipe(
-                map(this.extractData)).toPromise();
+                map(extractData)).toPromise();
             return data;
         } catch (error) {
-            this.handleError(error);
+            handleError(error);
         }
     }
     /**
@@ -460,16 +461,5 @@ export class ImageService {
         } catch (error) {
             console.error(error);
         }
-    }
-
-    private extractData(res: any) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        return res.data || {};
-    }
-    private handleError(error: any) {
-        let err = error.message || 'Server error';
-        console.error(err);
     }
 }

@@ -23,3 +23,14 @@ export function deepCopyFunction(inObject) {
 
         return outObject
 }
+
+export function extractData(res: any) {
+        if (res.status < 200 || res.status >= 300) {
+                throw new Error('Bad response status: ' + res.status);
+        }
+        return res.data || {};
+}
+export function handleError(error: any) {
+        let err = error.message || 'Server error';
+        console.error(err);
+}

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {TemplateMetadataKeys} from "../types/template-metadata-keys.interface";
-import {AppTemplate} from "../types/app-template.interface";
+import { TemplateMetadataKeys } from "../types/template-metadata-keys.interface";
+import { AppTemplate } from "../types/app-template.interface";
+import { map } from 'rxjs/operators';
+import { extractData, handleError } from '../../../utilities/utilitiy-methods';
+import { REST_GET_TEMPLATES, REST_GET_CATEGORY_TREE } from '../../../utilities/constants';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This service class stores all the data that are created during the 
@@ -153,19 +157,19 @@ export class EditorService {
 
     /**  templates       ---------------------------------------------           */
 
-    private _templates: Map<string,AppTemplate>;
+    private _templates: Map<string, AppTemplate> = new Map();
 
 
-    private __templates: BehaviorSubject<Map<string,AppTemplate>> = new BehaviorSubject<Map<string,AppTemplate>>(new Map());
+    private __templates: BehaviorSubject<Map<string, AppTemplate>> = new BehaviorSubject<Map<string, AppTemplate>>(new Map());
 
 
-    public templates_more_metadata$ = this.__templates.asObservable();
+    public templates$ = this.__templates.asObservable();
 
     /**  category tree           ---------------------------------------------           */
 
-    private _categoryTree: Object;
+    private _categoryTree: Object={};
 
- 
+
     private __categoryTree: BehaviorSubject<Object> = new BehaviorSubject<Object>({});
 
     public categoryTree$ = this.__categoryTree.asObservable();
@@ -176,7 +180,7 @@ export class EditorService {
      * Variable that stores a BehaviorSubject to distribute the
      * status of the progress.
      */
-    private __progress_value: BehaviorSubject<{value:number, max:number, title:string}> = new BehaviorSubject(undefined);
+    private __progress_value: BehaviorSubject<{ value: number, max: number, title: string }> = new BehaviorSubject(undefined);
     /**
      * Variable to subscribe to the Observable to get the current value for the progress.
      */
@@ -189,7 +193,35 @@ export class EditorService {
     private _errorMessage_imageService: string;
 
 
-    constructor() {
+    constructor(private _http: HttpClient) {
+        this.getTemplatesFromBackend();
+        this.getCategoryTreeFromBackend();
+    }
+
+    private async getTemplatesFromBackend() {
+        try {
+            const templates: AppTemplate[] = await this._http.get(REST_GET_TEMPLATES).pipe(
+                map(extractData)).toPromise();
+
+            const templateMap: Map<string,AppTemplate> = new Map();
+
+            for(let template of templates){
+                templateMap.set(template.name, template)
+            }
+
+            this.updateTemplates(templateMap);
+        } catch (error) {
+            handleError(error);
+        }
+    }
+    private async getCategoryTreeFromBackend() {
+        try {
+            const categoryTree = await this._http.get(REST_GET_CATEGORY_TREE).pipe(
+                map(extractData)).toPromise();
+            this.updateCategoryTree(categoryTree);
+        } catch (error) {
+            handleError(error);
+        }
     }
     /**
      * Get the image name of the actual selected image of the editing view.
@@ -356,15 +388,15 @@ export class EditorService {
     /**
      * This method updates the templates
      */
-    updateTemplateForMoreMetadataTab(templates: Map<string,AppTemplate>) {
+    updateTemplates(templates: Map<string, AppTemplate>) {
         this._templates = templates;
         this.__templates.next(templates);
     }
-        /**
-     * This method updates the value of the current progress for the progressbar
-     */
-    updateValueProgress(value: number, max:number, title:string) {
-        this.__progress_value.next({value,  max, title});
+    /**
+ * This method updates the value of the current progress for the progressbar
+ */
+    updateValueProgress(value: number, max: number, title: string) {
+        this.__progress_value.next({ value, max, title });
     }
 
     /**
@@ -373,7 +405,7 @@ export class EditorService {
      * If all task have been resolved, then the resolve()-method is executed.
      * If not, then the actualized counter is returned.
      */
-    public countResolve(counter: number, finish: number, title: string,resolve): number {
+    public countResolve(counter: number, finish: number, title: string, resolve): number {
         counter = counter + 1;
         this.updateValueProgress(counter, finish, title);
         if (counter === finish) {

@@ -423,7 +423,8 @@ export class Server {
             const template = JSON.parse(fs.readFileSync(this.templateDir + "/" + templateName).toString());
             templates.push(template);
         }
-        res.status(200).send(templates);
+        let body: { data:any} = { data: templates };
+        res.status(200).send(body);
 
     }
 
@@ -442,7 +443,8 @@ export class Server {
 
     private readCategoryTree = (req, res) => {
         const categoryTree = JSON.parse(fs.readFileSync(this.configDir+"/"+this.fileNameForCategoryTree).toString());
-        res.status(200).send(categoryTree);
+        let body: { data:any} = { data: categoryTree };
+        res.status(200).send(body);
     }
 
 }
