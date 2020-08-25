@@ -1,0 +1,35 @@
+{
+    "name": "Template 2",
+    "categoryTab": {
+        "isNotSupportedCategoriesToCopy": false,
+        "isSupportedCategoriesToCopy": false,
+        "categories": ["See", "Forest", "Test2"]
+    },
+    "existingMetadataTab": {
+        "keys": ["Creator2"],
+        "method": "COPY_CUSTOM"
+    },
+    "locationTab": {
+        "dateAndTime": "2020-04-23T18:25:43.511Z",
+        "isLocationCopiedFromImage": false,
+        "isLocationDisabledByDefault": false,
+        "isTimeCopiedFromImage": false,
+        "isTimeDisabledByDefault": false,
+        "latitude": 52,
+        "longitude": 11
+    },
+    "metadataTab": {
+        "contactInfo": "test2@eMail.de",
+        "isContactInfoCopiedFromImage": false,
+        "creator": "Creator1234",
+        "isCreatorCopiedFromImage": false,
+        "description": "beautiful picture",
+        "isDescriptionCopiedFromImage": false,
+        "keywords": ["keyword1"],
+        "areKeywordsCopiedFromImage": false,
+        "license": "CC-by",
+        "isLicenseCopiedFromImage": false,
+        "subject": "Object",
+        "isSubjectCopiedFromImage": false
+    }
+}

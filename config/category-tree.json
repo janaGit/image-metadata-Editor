@@ -1,0 +1,25 @@
+{
+    "Forest": {
+        "Feciduous Forest": null,
+        "Coniferous Forest": null
+    },
+    "Open Fields": {
+        "Meadow": null,
+        "Field": null
+    },
+    "Mountains": null,
+    "River": null,
+    "See": null,
+    "Lake": null,
+    "Animal": {
+        "Insects": null,
+        "Birds": {
+            "oscine birds": null,
+            "Owl": null,
+            "Raven": null
+        }
+    },
+    "Town": {
+        "Buildings": null
+    }
+}

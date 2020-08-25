@@ -19,6 +19,9 @@ export class Server {
     private imageDir_edited: string;
     private imageDir_original: string;
     private imageDir_complete: string;
+    private templateDir: string;
+    private fileNameForCategoryTree: string; 
+    private configDir: string;
     public app: express.Express;
     private router;
     private exifTool: ExifTool;
@@ -49,6 +52,9 @@ export class Server {
         this.imageDir_edited = './images_edited';
         this.imageDir_original = './images_original';
         this.imageDir_complete = './images_complete';
+        this.configDir = './config';
+        this.templateDir = this.configDir + '/templates';
+        this.fileNameForCategoryTree = "category-tree.json"
         dotenv.config();
 
         if (!process.env.PORT) {
@@ -112,9 +118,14 @@ export class Server {
         this.router.post('/moveImageToImageGallery/:imageName', this.moveImageToImageGallery);
         this.router.post('/moveImageToImagesComplete/:imageName', this.moveImageToImageComplete);
 
+        this.router.get('/getTemplates', this.readTemplates);
+        this.router.post('/writeTemplate', this.writeTemplate);
+        this.router.delete('/deleteTemplate', this.deleteTemplate);
+
+        this.router.get('/getCategoryTree', this.readCategoryTree);
 
         this.router.get('*', (req, res) => {
-            res.sendFile(path.join(__dirname, 'dist/index.html'));
+            res.sendFile(path.join(__dirname, 'dist/index.html')); 
         });
     }
 
@@ -403,6 +414,37 @@ export class Server {
         res.status(200).send("OK");
     }
 
+    private readTemplates = (req, res) => {
+        const templates = [];
+        let templateNames;
+
+        templateNames = fs.readdirSync(this.templateDir);
+
+        for (let templateName of templateNames) {
+            const template = JSON.parse(fs.readFileSync(this.templateDir + "/" + templateName).toString());
+            templates.push(template);
+        }
+        res.status(200).send(templates);
+
+    }
+
+    private writeTemplate = (req, res) => {
+        const template = req.params.template;
+        let data = JSON.stringify(template);
+        fs.writeFileSync(this.templateDir + "/" + template.name.trim() + '.json', data);
+        res.status(200).send("OK");
+    }
+
+    private deleteTemplate = (req, res) => {
+        const template = req.body.template;
+        fs.unlinkSync(this.templateDir + "/" + template.name.trim() + '.json'); 
+        res.status(200).send("OK");
+    }
+
+    private readCategoryTree = (req, res) => {
+        const categoryTree = JSON.parse(fs.readFileSync(this.configDir+"/"+this.fileNameForCategoryTree).toString());
+        res.status(200).send(categoryTree);
+    }
 
 }
 
