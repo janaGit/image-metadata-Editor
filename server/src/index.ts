@@ -1,5 +1,6 @@
 //https://auth0.com/blog/use-typescript-to-create-a-secure-api-with-nodejs-and-express-getting-started/
 import express from 'express';
+import {Request, Response} from 'express';
 import multer from 'multer';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -127,16 +128,16 @@ export class Server {
         });
     }
 
-    private getFileNames = (req, res) => {
+    private getFileNames = (req: Request, res: Response) => {
         fs.readdir(this.imageDir, (err, files) => {
             console.log('REQUEST:getFileNames: ');
             console.log(files);
             let body: { data: string[] } = { data: files };
-            res.send(body);
+            res.status(200).send(body);
         });
     }
 
-    private getFileNames_edited = (req, res) => {
+    private getFileNames_edited = (req: Request, res: Response) => {
         fs.readdir(this.imageDir_edited, (err, files) => {
             console.log('REQUEST:getFileNames_edited: ');
             console.log(files);
@@ -145,7 +146,7 @@ export class Server {
         });
     }
 
-    private getFileNames_complete = (req, res) => {
+    private getFileNames_complete = (req: Request, res: Response) => {
         fs.readdir(this.imageDir_complete, (err, files) => {
             console.log('REQUEST:getFileNames_complete: ');
             console.log(files);
@@ -154,7 +155,7 @@ export class Server {
         });
     }
 
-    private getFileNames_original = (req, res) => {
+    private getFileNames_original = (req: Request, res: Response) => {
         fs.readdir(this.imageDir_original, (err, files) => {
             console.log('REQUEST:getFileNames_original: ');
             console.log(files);
@@ -163,12 +164,12 @@ export class Server {
         });
     }
 
-    private newImage = (req, res) => {
+    private newImage = (req: Request, res: Response) => {
         console.log('REQUEST:newImage: ' + req.file.filename);
         res.send(req.file.filename);
     }
 
-    private deleteImage = (req, res) => {
+    private deleteImage = (req: Request, res: Response) => {
         var imageName = req.params.imageName;
         fs.unlink(this.imageDir + '/' + imageName, (err) => {
             if (err) {
@@ -216,7 +217,7 @@ export class Server {
             });
         });
     }
-    private getMetadata_edit = (req, res) => {
+    private getMetadata_edit = (req: Request, res: Response) => {
         var imageName = req.params.imageName;
         var lang = '';
 
@@ -235,7 +236,7 @@ export class Server {
 
     }
 
-    private getMetadata_edited = (req, res) => {
+    private getMetadata_edited = (req: Request, res: Response) => {
         var imageName = req.params.imageName;
         var lang = '';
         if (req.params.lang) {
@@ -251,7 +252,7 @@ export class Server {
         });
     }
 
-    private getMetadataToEdit = (req, res) => {
+    private getMetadataToEdit = (req: Request, res: Response) => {
         var imageName = req.params.imageName;
 
         var metadata = this._getMetadataToEdit(this.imageDir, imageName);
@@ -263,7 +264,7 @@ export class Server {
     }
 
 
-    private copyImageToImageFolder = (req, res) => {
+    private copyImageToImageFolder = (req: Request, res: Response) => {
         let imageName = req.params.imageName;
         let result = this.copyImageAndMoveToImageFolder(imageName);
         result.then((value: ReturnObject) => {
@@ -273,7 +274,7 @@ export class Server {
         });
     }
 
-    private moveImageBackToImageFolder = (req, res) => {
+    private moveImageBackToImageFolder = (req: Request, res: Response) => {
         var imageName = req.params.imageName;
         var result = this.moveImage(this.imageDir_edited, this.imageDir, imageName, imageName);
         result.then((value: ReturnObject) => {
@@ -283,7 +284,7 @@ export class Server {
         });
     }
 
-    private moveImageToImageGallery = (req, res) => {
+    private moveImageToImageGallery = (req: Request, res: Response) => {
         var imageName = req.params.imageName;
         var result = this.moveImage(this.imageDir, this.imageDir_edited, imageName, imageName);
         result.then((value: ReturnObject) => {
@@ -293,7 +294,7 @@ export class Server {
         });
     }
 
-    private moveImageToImageComplete = (req, res) => {
+    private moveImageToImageComplete = (req: Request, res: Response) => {
         var imageName = req.params.imageName;
         let imageNameWithoutSuffix = suffix.getImageNameWithoutSuffix(imageName);
         console.log("Method: moveImageToImageComplete; imageNameWithoutSuffix: " + imageNameWithoutSuffix);
@@ -385,7 +386,7 @@ export class Server {
         });
     }
 
-    private deleteAllMetadata = (req, res) => {
+    private deleteAllMetadata = (req: Request, res: Response) => {
         let imageName = req.params.imageName;
         fs.readdir(this.imageDir, (err, files) => {
             if (files.indexOf(imageName) === -1) {
@@ -405,14 +406,14 @@ export class Server {
 
     }
 
-    private editMetadata = (req, res) => {
+    private editMetadata = (req: Request, res: Response) => {
         let imageName = req.params.imageName;
         let metadata = req.body.metadata;
         console.log(metadata);
         res.status(200).send("OK");
     }
 
-    private readTemplates = (req, res) => {
+    private readTemplates = (req: Request, res: Response) => {
         const templates = [];
         let templateNames;
 
@@ -426,14 +427,14 @@ export class Server {
 
     }
 
-    private writeTemplate = (req, res) => {
-        const template = req.params.template;
+    private writeTemplate = (req: Request, res: Response) => {
+        const template = req.body.template;
         let data = JSON.stringify(template);
         fs.writeFileSync(this.templateDir + "/" + template.name.trim() + '.json', data);
         res.status(200).send("OK");
     }
 
-    private deleteTemplate = (req, res) => {
+    private deleteTemplate = (req: Request, res: Response) => {
         const template = req.body.template;
         fs.unlinkSync(this.templateDir + "/" + template.name.trim() + '.json'); 
         res.status(200).send("OK");
