@@ -1,6 +1,6 @@
 //https://auth0.com/blog/use-typescript-to-create-a-secure-api-with-nodejs-and-express-getting-started/
 import express from 'express';
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import multer from 'multer';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -21,10 +21,10 @@ export class Server {
     private imageDir_original: string;
     private imageDir_complete: string;
     private templateDir: string;
-    private fileNameForCategoryTree: string; 
+    private fileNameForCategoryTree: string;
     private configDir: string;
     public app: express.Express;
-    private router; 
+    private router;
     private exifTool: ExifTool;
     private port: number;
     /** 
@@ -125,7 +125,7 @@ export class Server {
         this.router.get('/getCategoryTree', this.readCategoryTree);
 
         this.router.get('*', (req, res) => {
-            res.sendFile(path.join(__dirname, 'dist/index.html')); 
+            res.sendFile(path.join(__dirname, 'dist/index.html'));
         });
     }
 
@@ -407,11 +407,17 @@ export class Server {
 
     }
 
-    private editMetadata = (req: Request, res: Response) => {
+    private editMetadata = async (req: Request, res: Response) => {
         let imageName = req.params.imageName;
         let metadata = req.body.metadata;
         console.log(metadata);
-        res.status(200).send("OK");
+        try {
+            const result = await this.exifTool.writeMetadata(this.imageDir, imageName, metadata);
+            res.status(200).send(result);
+        } catch (error) {
+            res.status(500).send("Server error");
+        }
+
     }
 
     private readTemplates = (req: Request, res: Response) => {
@@ -424,7 +430,7 @@ export class Server {
             const template = JSON.parse(fs.readFileSync(this.templateDir + "/" + templateName).toString());
             templates.push(template);
         }
-        let body: { data:any} = { data: templates };
+        let body: { data: any } = { data: templates };
         res.status(200).send(body);
 
     }
@@ -433,20 +439,20 @@ export class Server {
         const template = req.body.template;
         let data = JSON.stringify(template);
         fs.writeFileSync(this.templateDir + "/" + (<string>template.name).replace(" ", "").toLocaleLowerCase() + '.json', data);
-        let body: { data:any} = { data: "OK" };
+        let body: { data: any } = { data: "OK" };
         res.status(200).send(body);
     }
 
     private deleteTemplate = (req: Request, res: Response) => {
         const templateName = req.params.templateName;
-        fs.unlinkSync(this.templateDir + "/" + templateName.replace(" ", "").toLocaleLowerCase() + '.json'); 
-        let body: { data:any} = { data: "OK" };
+        fs.unlinkSync(this.templateDir + "/" + templateName.replace(" ", "").toLocaleLowerCase() + '.json');
+        let body: { data: any } = { data: "OK" };
         res.status(200).send(body);
     }
 
     private readCategoryTree = (req, res) => {
-        const categoryTree = JSON.parse(fs.readFileSync(this.configDir+"/"+this.fileNameForCategoryTree).toString());
-        let body: { data:any} = { data: categoryTree };
+        const categoryTree = JSON.parse(fs.readFileSync(this.configDir + "/" + this.fileNameForCategoryTree).toString());
+        let body: { data: any } = { data: categoryTree };
         res.status(200).send(body);
     }
 

@@ -41,13 +41,13 @@ export class ExifTool {
       });
     });
   }
-    public getMetadata(imageDir, imageName) {
+  public getMetadata(imageDir, imageName) {
     var json = {};
 
-    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, '--file:all','--ExifToolVersion','-a', '-s',]);
+    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, '--file:all', '--ExifToolVersion', '-a', '-s',]);
     return new Promise((fulfill, reject) => {
       ls.stdout.on('data', (data) => {
-        console.log('exifTool getMetadata: ' + data); 
+        console.log('exifTool getMetadata: ' + data);
         var lines = data.toString().split('\n');
         for (var i = 0; i < lines.length; i++) {
           var line = lines[i].toString();
@@ -62,6 +62,26 @@ export class ExifTool {
       });
       ls.stderr.on('data', (data) => {
         console.error('exifTool getMetadata error: ' + data);
+        reject(data);
+      });
+    });
+  }
+
+  public writeMetadata(imageDir, imageName, metadata) {
+    var json = {};
+    const metadataArray: string[] = [];
+    for (let metadataKey of Object.keys(metadata)) {
+      metadataArray.push("-" + metadataKey + "=" + metadata[metadataKey]);
+    }
+    console.log(metadataArray);
+
+    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, ...metadataArray]);
+    return new Promise((fulfill, reject) => {
+      ls.stdout.on('data', (data) => {
+        fulfill("OK");
+      });
+      ls.stderr.on('data', (data) => {
+        console.error('exifTool writeMetadata error: ' + data);
         reject(data);
       });
     });
@@ -85,16 +105,16 @@ export class ExifTool {
         };
       } catch (errorData) {
         if (errorData.includes('Warning:')) {
-         // const _message = await this.copyAndRenameFile(imageData);
+          // const _message = await this.copyAndRenameFile(imageData);
           data = {
             status: 200,
-            message: ""+errorData,
+            message: "" + errorData,
             payload: { imageName: imageName_x }
           }
         } else {
           data = {
             status: 500,
-            message: ""+errorData,
+            message: "" + errorData,
             payload: null
           };
         }
