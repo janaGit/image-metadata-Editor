@@ -4,8 +4,9 @@ import { TemplateMetadataKeys } from "../types/template-metadata-keys.interface"
 import { AppTemplate } from "../types/app-template.interface";
 import { map } from 'rxjs/operators';
 import { extractData, handleError } from '../../../utilities/utilitiy-methods';
-import { REST_GET_TEMPLATES, REST_GET_CATEGORY_TREE, REST_DELETE_TEMPLATE } from '../../../utilities/constants';
+import { REST_GET_TEMPLATES, REST_GET_CATEGORY_TREE, REST_DELETE_TEMPLATE, REST_WRITE_TEMPLATE } from '../../../utilities/constants';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 /**
  * This service class stores all the data that are created during the 
@@ -193,12 +194,12 @@ export class EditorService {
     private _errorMessage_imageService: string;
 
 
-    constructor(private _http: HttpClient) {
+    constructor(private _http: HttpClient,private _router: Router) {
         this.getTemplatesFromBackend();
         this.getCategoryTreeFromBackend();
     }
 
-    private async getTemplatesFromBackend() {
+    async getTemplatesFromBackend() {
         try {
             const templates: AppTemplate[] = await this._http.get(REST_GET_TEMPLATES).pipe(
                 map(extractData)).toPromise();
@@ -228,6 +229,14 @@ export class EditorService {
         try {
             await this._http.delete(REST_DELETE_TEMPLATE+"/"+template.name.replace(" ","")).toPromise();
             await this.getTemplatesFromBackend();
+        } catch (error) {
+            handleError(error);
+        }
+    }
+
+    async writeTemplateBackend(template: AppTemplate) {
+        try {
+            await this._http.post(REST_WRITE_TEMPLATE, {template:template}).toPromise();
         } catch (error) {
             handleError(error);
         }

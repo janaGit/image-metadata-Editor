@@ -125,7 +125,9 @@ export class EditTemplateComponent implements OnInit {
 
     }
 
-    clickSaveAndQuit() {
-
+    async clickSaveAndQuit() {
+        await this._editorService.writeTemplateBackend(this._editTemplateService.returnTemplate());
+        await this._editorService.getTemplatesFromBackend();
+        this.click_Abort();
     }
 }

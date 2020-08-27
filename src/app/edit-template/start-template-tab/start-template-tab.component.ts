@@ -9,7 +9,7 @@ import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
 import { Subscription } from 'rxjs';
 
-const NEW_TEMPLATE = "New Template";
+const NEW_TEMPLATE = "NEW TEMPLATE";
 const newTemplate: AppTemplate = {
     name: NEW_TEMPLATE,
     categoryTab: {

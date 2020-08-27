@@ -5,4 +5,5 @@ export const FILE_NAMES_TO_IGNORE = ["selectAll_Images.png"];
 export const SERVER_BASE = '/api'
 export const REST_GET_TEMPLATES= SERVER_BASE+"/getTemplates";
 export const REST_DELETE_TEMPLATE= SERVER_BASE+"/deleteTemplate";
+export const REST_WRITE_TEMPLATE= SERVER_BASE+"/writeTemplate";
 export const REST_GET_CATEGORY_TREE= SERVER_BASE+"/getCategoryTree";
