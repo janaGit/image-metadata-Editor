@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MetadataFromMetadataTab } from '../types/metadata-from-metadata-tab.interface';
 import { MetadataFromLocationTab } from '../types/metadata-from-location-tab.interface';
+import { AppTemplate } from 'app/types/app-template.interface';
+import { TemplateExistingMetadataType } from 'app/types/template-existing-metadata.type';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +24,11 @@ export class MetadataFromTemplateService {
   public categories$ = this.__categories.asObservable();
 
 
-  private _metadataKeys: string[];
+  private _existingMetadata: TemplateExistingMetadataType;
 
-  private __metadataKeys: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  private __existingMetadata: BehaviorSubject<TemplateExistingMetadataType> = new BehaviorSubject<TemplateExistingMetadataType>(null);
 
-  public metadataKeys$ = this.__metadataKeys.asObservable();
+  public existingMetadata$ = this.__existingMetadata.asObservable();
 
 
 
@@ -42,6 +44,14 @@ export class MetadataFromTemplateService {
   constructor() {
   }
 
+  setTemplate(template: AppTemplate) {
+    this.updateCategories(template.categoryTab);
+    this.updateEditMetadata(template.metadataTab);
+    this.updateExistingMetadata(template.existingMetadataTab);
+    this.updateLocation(template.locationTab);
+}
+
+
   get editMetadata() {
       return this._editMetadata;
   }
@@ -50,9 +60,9 @@ export class MetadataFromTemplateService {
       return this._categories;
   }
 
-  get metadataKeys() {
-      return this._metadataKeys;
-  }
+  get existingMetadata() {
+    return this._existingMetadata;
+}
 
   get location() {
       return this._location;
@@ -68,10 +78,10 @@ export class MetadataFromTemplateService {
       this.__categories.next(categories);
   }
 
-  updateMetadataKeys(metadataKeys) {
-      this._metadataKeys = metadataKeys;
-      this.__metadataKeys.next(metadataKeys);
-  }
+  updateExistingMetadata(existingMetadata: TemplateExistingMetadataType) {
+    this._existingMetadata = existingMetadata;
+    this.__existingMetadata.next(existingMetadata);
+}
 
   updateLocation(location) {
       this._location = location;

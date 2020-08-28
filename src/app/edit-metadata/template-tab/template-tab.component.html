@@ -1,1 +1,14 @@
-<p>template-tab works!</p>
+<div id='window' class="app-container" style=" display: flex;">
+
+    <div style="display:flex; justify-content: center; flex:1;">
+        <div>
+            <div class="app-form-field app-form-field__width">
+                <label>Select Template</label>
+                <select class="form-control" [formControl]="selectTemplate"
+                    (ngModelChange)="onChangeSelectTemplate($event)">
+                    <option *ngFor="let templateName of templateKeys" [ngValue]="templateName">{{templateName}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
