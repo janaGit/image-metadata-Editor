@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { ReturnObject } from 'app/types/return-object.interface';
 import { HttpClient } from '@angular/common/http';
 import { EditorService } from '../services/editor.service';
+import { AppTemplate } from 'app/types/app-template.interface';
 
 /**
  * This service class stores all the metadata for the currently edited image.
@@ -139,12 +140,28 @@ export class MetadataService {
         };
     }
 
-    private extractData(res: any) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        return res.data || {};
+    setMetadataFromAppTemplate(template: AppTemplate) {
+        this.updateEditMetadata({
+            creator: template.metadataTab.creator,
+            contactInfo: template.metadataTab.contactInfo,
+            license: template.metadataTab.license,
+            keywords: template.metadataTab.keywords,
+            subject: template.metadataTab.subject,
+            description: template.metadataTab.description
+        });
+        this.updateCategories({
+            areNotSupportedCategoriesSelected:template.categoryTab.isNotSupportedCategoriesToCopy,
+            categories: template.categoryTab.categories
+        });
+        this.updateLocation({
+            dateAndTime: template.locationTab.dateAndTime,
+            isLocationDisabled: template.locationTab.isLocationDisabledByDefault,
+            isTimeDisabled: template.locationTab.isTimeDisabledByDefault,
+            latitude: template.locationTab.latitude,
+            longitude: template.locationTab.longitude
+        });
     }
+
     private extractReturnObject(res: any): ReturnObject {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);
