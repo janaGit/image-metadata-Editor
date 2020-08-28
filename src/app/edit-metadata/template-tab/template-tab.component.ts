@@ -6,7 +6,44 @@ import { AppTemplate } from 'app/types/app-template.interface';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MetadataFromTemplateService } from '../metadata-from-template.service';
+import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
+import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 const NO_TEMPLATE = "NO TEMPLATE";
+
+const noTemplate: AppTemplate = {
+  name: "",
+  categoryTab: {
+      isNotSupportedCategoriesToCopy: false,
+      isSupportedCategoriesToCopy: false,
+      categories: []
+  },
+  existingMetadataTab: {
+      method: ExistingMetadataTemplateMethods.COPY_ALL,
+  },
+  locationTab: {
+      dateAndTime: undefined,
+      isLocationDisabledByDefault: false,
+      isTimeDisabledByDefault: false,
+      latitude: undefined,
+      longitude: undefined,
+      isLocationCopiedFromImage: false,
+      isTimeCopiedFromImage: false
+  },
+  metadataTab: {
+      contactInfo: "",
+      isContactInfoCopiedFromImage: false,
+      creator: "",
+      isCreatorCopiedFromImage: false,
+      description: "",
+      isDescriptionCopiedFromImage: false,
+      keywords: [],
+      areKeywordsCopiedFromImage: false,
+      license: "",
+      isLicenseCopiedFromImage: false,
+      subject: "",
+      isSubjectCopiedFromImage: false
+  }
+}
 
 @Component({
   selector: 'app-template-tab',
@@ -24,17 +61,18 @@ export class TemplateTabComponent implements OnInit, OnDestroy {
   constructor(private _cdr: ChangeDetectorRef, private _editorService: EditorService, private _metadataFromTemplateService: MetadataFromTemplateService) { }
 
   ngOnInit(): void {
-
+ 
     this.templateSubscription = this._editorService.templates$.subscribe(templates => {
       this.templates = new Map(templates);
+      this.templates.set(noTemplate.name, deepCopyFunction(noTemplate));
 
-      this.templateKeys = [NO_TEMPLATE, ...this.templates.keys()];
+      this.templateKeys = [...this.templates.keys()];
 
       this.selectTemplate.setValue(NO_TEMPLATE);
 
-    })
+    }) 
 
-  }
+  } 
 
   ngOnDestroy() {
     this.templateSubscription.unsubscribe();

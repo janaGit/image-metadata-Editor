@@ -1,13 +1,21 @@
 <div style="display:flex; flex-direction:column;height: 100%;">
   <div id='tab-row'>
     <tabset>
-      <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [disabled]="tabz.disabled" [active]="tabz.active" (selectTab)="selectTabByTitle($event.heading)">
+      <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [disabled]="tabz.disabled" [active]="tabz.active"
+        (selectTab)="selectTabByTitle($event.heading)">
       </tab>
     </tabset>
-    <div id='image_place_Thumbnail' *ngIf="imgPath!=null && selectedTab!=='file'">
-      <img id='image_Thumbnail' src={{imgPath}}>
+
+    <div class="items">
+      <div id='template_name' *ngIf="selectedTab!=='file'">
+        {{templateName}}
+      </div>
+      <div id='image_place_Thumbnail' *ngIf="imgPath!=null && selectedTab!=='file'">
+        <img id='image_Thumbnail' src={{imgPath}}>
+      </div>
+      <button id="abort_Button" class="btn" (click)="click_Abort()" *ngIf="selectedTab!=='file'"> Abort </button>
     </div>
-    <button id="abort_Button" class="btn" (click)="click_Abort()" *ngIf="selectedTab!=='file'"> Abort </button>
+
   </div>
   <div style="position:relative; flex:1;">
     <file-tab *ngIf="selectedTab==='file'" (start)="startEditing()"></file-tab>
@@ -19,5 +27,3 @@
     <complete-tab *ngIf="selectedTab==='complete'"></complete-tab>
   </div>
 </div>
-
-

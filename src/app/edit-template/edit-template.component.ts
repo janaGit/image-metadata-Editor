@@ -21,17 +21,6 @@ export class EditTemplateComponent implements OnInit {
      */
     public selectedTab: string = 'start_template';
 
-    /*
-     * Name of the folder where the images are stored 
-     * that should be edited.
-     */
-    public imgDir: string;
-    /**
-     * Returns the path  to the actual selected image:
-     * 
-     * imgDir/imgName
-     */
-    imgPath: string;
 
     templateName: string = "";
 

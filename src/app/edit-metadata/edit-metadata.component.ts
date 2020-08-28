@@ -5,6 +5,7 @@ import { EditorService } from './../services/editor.service';
 import { ImageService } from './../services/image.service';
 import { MetadataService } from './metadata.service';
 import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
+import { MetadataFromTemplateService } from './metadata-from-template.service';
 
 /**
  *  Main component of the editor view.
@@ -33,7 +34,7 @@ export class EditMetadataComponent implements OnInit {
     imgPath: string;
 
 
-
+    templateName: string = "";
     /**
      * Tabs for the different steps of the editing process.
      */
@@ -46,7 +47,7 @@ export class EditMetadataComponent implements OnInit {
         { title: 'Location', tab: 'location', disabled: true },
         { title: 'Complete', tab: 'complete', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService, private _metadataService: MetadataService, private _metadataFromImageService: MetadataFromImageService) {
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService, private _metadataService: MetadataService, private _metadataFromImageService: MetadataFromImageService, private _metadataFromTemplateService: MetadataFromTemplateService) {
 
     }
 
@@ -63,6 +64,10 @@ export class EditMetadataComponent implements OnInit {
 
         this._editorService.imageName$.subscribe(imgName => {
             this.imgPath = this._imageService.imageDir + '/' + imgName;
+        });
+
+        this._metadataFromTemplateService.templateName$.subscribe(templateName => {
+            this.templateName = templateName;
         });
     }
 

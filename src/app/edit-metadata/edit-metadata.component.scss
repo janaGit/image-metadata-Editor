@@ -1,7 +1,7 @@
 #abort_Button {
-  position: absolute;
-  right: 1%;
-  bottom: 10%;
+  max-height: 30px;
+  justify-self: end;
+  align-self: flex-end;
 }
 
 #tab-row {
@@ -9,11 +9,8 @@
 }
 
 #image_place_Thumbnail {
-  width: 7%;
-  height: 130%;
-  position: absolute;
-  bottom: 10%;
-  right: 12%
+  height: 60px;
+  margin-right: 50px;
 }
 
 #image_Thumbnail {
@@ -23,6 +20,17 @@
   border-radius: 4px;
   padding: 5px;
   image-orientation: from-image;
+}
+#template_name {
+  margin-right: 100px;
+  justify-self: end;
+  align-self: flex-end;
+ }
+ .items{
+  position: absolute;
+  right: 0%;
+  bottom: 10%;
+  display: flex;
 }
 
 
