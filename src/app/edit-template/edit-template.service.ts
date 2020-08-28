@@ -108,22 +108,22 @@ export class EditTemplateService {
 
     returnTemplate(): AppTemplate {
         const appTemplate: AppTemplate = {
-            categoryTab: this.categories,
+            name: this.templateName,
             existingMetadataTab: this.existingMetadata,
-            locationTab: this.location,
             metadataTab: this.editMetadata,
-            name: this.templateName
+            categoryTab: this.categories,
+            locationTab: this.location,
         };
 
         return appTemplate;
     }
 
     setTemplate(template: AppTemplate) {
-        this.updateCategories(template.categoryTab);
-        this.updateEditMetadata(template.metadataTab);
-        this.updateExistingMetadata(template.existingMetadataTab);
-        this.updateLocation(template.locationTab);
         this.updateTemplateName(template.name);
+        this.updateExistingMetadata(template.existingMetadataTab); 
+        this.updateEditMetadata(template.metadataTab);
+        this.updateCategories(template.categoryTab);
+        this.updateLocation(template.locationTab);
     }
 
 

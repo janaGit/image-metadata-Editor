@@ -437,10 +437,10 @@ export class Server {
 
     private writeTemplate = (req: Request, res: Response) => {
         const template = req.body.template;
-        let data = JSON.stringify(template);
+        let data = JSON.stringify(template, null, 4);
         fs.writeFileSync(this.templateDir + "/" + (<string>template.name).replace(" ", "").toLocaleLowerCase() + '.json', data);
         let body: { data: any } = { data: "OK" };
-        res.status(200).send(body);
+        res.status(200).send(body); 
     }
 
     private deleteTemplate = (req: Request, res: Response) => {
