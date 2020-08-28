@@ -100,8 +100,8 @@ export class LocationTabComponent implements OnInit, OnDestroy {
                 this.dateImageCreated.setValue(new Date());
                 this.timeImageCreated.setValue(new Date());
             }else{
-                this.dateImageCreated.setValue(metadata.dateAndTime);
-                this.timeImageCreated.setValue(metadata.dateAndTime);
+                this.dateImageCreated.setValue(new Date(metadata.dateAndTime));
+                this.timeImageCreated.setValue(new Date(metadata.dateAndTime));
             }
             this._cdr.detectChanges();
         }
