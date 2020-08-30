@@ -137,6 +137,7 @@ export class EditMetadataComponent implements OnInit {
         this.selectTab('file');
         this._cdr.detectChanges();
         this._metadataService.resetMetadata();
+        this._metadataFromTemplateService.resetTemplate();
         this._metadataFromImageService.resetMetadata();
 
     }

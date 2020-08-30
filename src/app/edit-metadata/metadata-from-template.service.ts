@@ -66,6 +66,14 @@ export class MetadataFromTemplateService {
         this.updateLocation(copyTemplate.locationTab);
     }
 
+    resetTemplate() {
+        this.updateExistingMetadata(null);
+        this.updateEditMetadata(null);
+        this.updateCategories(null);
+        this.updateLocation(null);
+        this.updateTemplateName(null);
+    }
+
     getTemplate(): AppTemplate {
         return {
             name: this._templateName,
@@ -108,6 +116,11 @@ export class MetadataFromTemplateService {
     }
 
     updateCategories(templateCategories: TemplateCategoriesTab) {
+        if (templateCategories === null) {
+            this._categories = templateCategories;
+            this.__categories.next(templateCategories);
+            return;
+        }
         const allCategories: string[] = [];
         const categoriesFromImage = this._metadataFromImageService.categories;
         const categoriesFromTree = this.getCategoriesFromTree(templateCategories.categories, this._editorService.categoryTree);
