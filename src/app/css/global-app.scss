@@ -16,7 +16,9 @@ img {
 /*paddings*/
 .app-container{
    padding: 40px;
-}
+   height: calc(100vh - (3 * 1vh) - 42px - 150px);
+   overflow: auto;
+} 
 
 .app-form-field{
   margin-bottom: 20px;
