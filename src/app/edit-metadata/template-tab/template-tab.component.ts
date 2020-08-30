@@ -88,7 +88,7 @@ export class TemplateTabComponent implements OnInit, OnDestroy {
 
   onChangeSelectTemplate(event) {
     this._metadataFromTemplateService.setTemplate(this.templates.get(event));
-    this._metadataService.setMetadataFromAppTemplate(this.templates.get(event));
+    this._metadataService.setMetadataFromAppTemplate(this._metadataFromTemplateService.getTemplate());
   }
 
 }

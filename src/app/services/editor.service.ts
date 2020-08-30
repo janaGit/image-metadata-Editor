@@ -7,6 +7,7 @@ import { extractData, handleError } from '../../../utilities/utilitiy-methods';
 import { REST_GET_TEMPLATES, REST_GET_CATEGORY_TREE, REST_DELETE_TEMPLATE, REST_WRITE_TEMPLATE } from '../../../utilities/constants';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { NgModuleResolver } from '@angular/compiler';
 
 /**
  * This service class stores all the data that are created during the 
@@ -168,7 +169,7 @@ export class EditorService {
 
     /**  category tree           ---------------------------------------------           */
 
-    private _categoryTree: Object={};
+    private _categoryTree: Object = {};
 
 
     private __categoryTree: BehaviorSubject<Object> = new BehaviorSubject<Object>({});
@@ -194,7 +195,7 @@ export class EditorService {
     private _errorMessage_imageService: string;
 
 
-    constructor(private _http: HttpClient,private _router: Router) {
+    constructor(private _http: HttpClient, private _router: Router) {
         this.getTemplatesFromBackend();
         this.getCategoryTreeFromBackend();
     }
@@ -204,9 +205,9 @@ export class EditorService {
             const templates: AppTemplate[] = await this._http.get(REST_GET_TEMPLATES).pipe(
                 map(extractData)).toPromise();
 
-            const templateMap: Map<string,AppTemplate> = new Map();
+            const templateMap: Map<string, AppTemplate> = new Map();
 
-            for(let template of templates){
+            for (let template of templates) {
                 templateMap.set(template.name, template)
             }
 
@@ -225,9 +226,36 @@ export class EditorService {
         }
     }
 
+    getSupportedCategories(): string[] {
+        let categories = [];
+
+        for (let category of Object.keys(this.categoryTree)) {
+            if (this.categoryTree[category] !== null) {
+                categories = [...categories, category, ...this.getCategories(this.categoryTree[category], [])];
+            } else {
+                categories = [...categories, category];
+            }
+        }
+
+
+        return categories;
+
+    }
+
+    getCategories(tree: {}, nodes: string[]): string[] {
+        for (let key of Object.keys(tree)) {
+            if (tree[key] !== null) {
+                return this.getCategories(tree[key], [...nodes, key]);
+            } else {
+                return [...nodes, key]
+            }
+
+        }
+    }
+
     async deleteTemplateBackend(template: AppTemplate) {
         try {
-            await this._http.delete(REST_DELETE_TEMPLATE+"/"+template.name.replace(" ","")).toPromise();
+            await this._http.delete(REST_DELETE_TEMPLATE + "/" + template.name.replace(" ", "")).toPromise();
             await this.getTemplatesFromBackend();
         } catch (error) {
             handleError(error);
@@ -236,7 +264,7 @@ export class EditorService {
 
     async writeTemplateBackend(template: AppTemplate) {
         try {
-            await this._http.post(REST_WRITE_TEMPLATE, {template:template}).toPromise();
+            await this._http.post(REST_WRITE_TEMPLATE, { template: template }).toPromise();
         } catch (error) {
             handleError(error);
         }

@@ -4,6 +4,12 @@ import { MetadataFromMetadataTab } from '../types/metadata-from-metadata-tab.int
 import { MetadataFromLocationTab } from '../types/metadata-from-location-tab.interface';
 import { AppTemplate } from 'app/types/app-template.interface';
 import { TemplateExistingMetadataType } from 'app/types/template-existing-metadata.type';
+import { TemplateCategoriesTab } from 'app/types/template-categories-tab.interface';
+import { MetadataFromImageService } from './metadata-from-image.service';
+import { deepCopyFunction } from '../../../utilities/utilitiy-methods';
+import { EditorService } from 'app/services/editor.service';
+import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
+import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -17,16 +23,16 @@ export class MetadataFromTemplateService {
     public templateName$ = this.__templateName.asObservable();
 
 
-    private _editMetadata: MetadataFromMetadataTab;
+    private _editMetadata: MetadataFromMetadataTemplateTab;
 
-    private __editMetadata: BehaviorSubject<MetadataFromMetadataTab> = new BehaviorSubject<MetadataFromMetadataTab>(null);
+    private __editMetadata: BehaviorSubject<MetadataFromMetadataTemplateTab> = new BehaviorSubject<MetadataFromMetadataTemplateTab>(null);
 
     public editMetadata$ = this.__editMetadata.asObservable();
 
 
-    private _categories: string[];
+    private _categories: TemplateCategoriesTab;
 
-    private __categories: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(["Animal", "Feciduous Forest", "Buildings", "Open Fields", "See", "Test", "Test2"]);
+    private __categories: BehaviorSubject<TemplateCategoriesTab> = new BehaviorSubject<TemplateCategoriesTab>(null);
 
     public categories$ = this.__categories.asObservable();
 
@@ -39,24 +45,35 @@ export class MetadataFromTemplateService {
 
 
 
-    private _location: MetadataFromLocationTab;
+    private _location: TemplateLocationTab;
 
-    private __location: BehaviorSubject<MetadataFromLocationTab> = new BehaviorSubject<MetadataFromLocationTab>(null);
+    private __location: BehaviorSubject<TemplateLocationTab> = new BehaviorSubject<TemplateLocationTab>(null);
 
     public location$ = this.__categories.asObservable();
 
 
 
 
-    constructor() {
+    constructor(private _metadataFromImageService: MetadataFromImageService, private _editorService: EditorService) {
     }
 
     setTemplate(template: AppTemplate) {
-        this.updateTemplateName(template.name);
-        this.updateCategories(template.categoryTab);
-        this.updateEditMetadata(template.metadataTab);
-        this.updateExistingMetadata(template.existingMetadataTab);
-        this.updateLocation(template.locationTab);
+        const copyTemplate = deepCopyFunction(template);
+        this.updateTemplateName(copyTemplate.name);
+        this.updateCategories(copyTemplate.categoryTab);
+        this.updateEditMetadata(copyTemplate.metadataTab);
+        this.updateExistingMetadata(copyTemplate.existingMetadataTab);
+        this.updateLocation(copyTemplate.locationTab);
+    }
+
+    getTemplate(): AppTemplate {
+        return {
+            name: this._templateName,
+            categoryTab: this.categories,
+            existingMetadataTab: this.existingMetadata,
+            locationTab: this.location,
+            metadataTab: this.editMetadata
+        }
     }
 
     get templateName() {
@@ -85,14 +102,40 @@ export class MetadataFromTemplateService {
         this.__templateName.next(templateName);
     }
 
-    updateEditMetadata(metadata) {
+    updateEditMetadata(metadata: MetadataFromMetadataTemplateTab) {
         this._editMetadata = metadata;
         this.__editMetadata.next(metadata);
     }
 
-    updateCategories(categories) {
-        this._categories = categories;
-        this.__categories.next(categories);
+    updateCategories(templateCategories: TemplateCategoriesTab) {
+        const allCategories: string[] = [];
+        const categoriesFromImage = this._metadataFromImageService.categories;
+        const categoriesFromTree = this.getCategoriesFromTree(templateCategories.categories, this._editorService.categoryTree);
+        const supportedCategories = this._editorService.getSupportedCategories();
+
+        if (templateCategories.categories.length > 0) {
+            allCategories.push(...templateCategories.categories);
+        }
+        if (categoriesFromTree.length > 0) {
+            allCategories.push(...categoriesFromTree);
+        }
+
+
+
+        for (let category of categoriesFromImage) {
+            if (templateCategories.isSupportedCategoriesToCopy && supportedCategories.includes(category)) {
+                allCategories.push(category);
+            }
+            if (templateCategories.isNotSupportedCategoriesToCopy && !supportedCategories.includes(category)) {
+                allCategories.push(category);
+            }
+
+        }
+        const uniqueCategories = allCategories.filter((item, index) => allCategories.indexOf(item) === index);
+        templateCategories.categories = uniqueCategories;
+
+        this._categories = templateCategories;
+        this.__categories.next(templateCategories);
     }
 
     updateExistingMetadata(existingMetadata: TemplateExistingMetadataType) {
@@ -100,8 +143,30 @@ export class MetadataFromTemplateService {
         this.__existingMetadata.next(existingMetadata);
     }
 
-    updateLocation(location) {
+    updateLocation(location: TemplateLocationTab) {
         this._location = location;
         this.__location.next(location);
+    }
+
+    getCategoriesFromTree(categories: string[], tree: {}): string[] {
+        let nodes = [];
+        for (let category of Object.keys(categories)) {
+            nodes = [...nodes, ...this.getCategories(category, tree, [])];
+        }
+        return nodes;
+    }
+
+    getCategories(category: string, tree: {}, nodes: string[]): string[] {
+        if (tree !== null) {
+            for (let key of Object.keys(tree)) {
+                if (category.toLowerCase().trim() === key.toLowerCase().trim()) {
+                    return nodes;
+                }
+                return this.getCategories(category, tree[key], [...nodes, key]);
+            }
+        } else {
+            return [];
+        }
+
     }
 }

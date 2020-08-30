@@ -18,9 +18,9 @@ export class MetadataFromImageService {
     public editMetadata$ = this.__editMetadata.asObservable();
 
 
-    private _categories: string;
+    private _categories: string[];
 
-    private __categories: BehaviorSubject<string> = new BehaviorSubject<string>("");
+    private __categories: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
     public categories$ = this.__categories.asObservable();
 
@@ -75,7 +75,7 @@ export class MetadataFromImageService {
         this.__editMetadata.next(metadata);
     }
 
-    updateCategories(categories) {
+    updateCategories(categories: string[]) {
         this._categories = categories;
         this.__categories.next(this._categories);
     }
@@ -106,7 +106,7 @@ export class MetadataFromImageService {
 
     setCategories() {
         if (this._metadata["Categories"]) {
-            this._categories = this._metadata["Categories"]
+            this._categories = this._metadata["Categories"].split(",")
             this.updateCategories(this._categories);
         }
 
