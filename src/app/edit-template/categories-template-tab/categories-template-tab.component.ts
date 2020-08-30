@@ -31,31 +31,50 @@ export class CategoryFlatNode {
 })
 export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
 
-  isSupportedCategoriesToCopy = false;
-  isNotSupportedCategoriesToCopy = false;
+  private _isSupportedCategoriesToCopy: boolean = false;
+  set isSupportedCategoriesToCopy(isSupportedCategoriesToCopy: boolean) {
+    this._isSupportedCategoriesToCopy = isSupportedCategoriesToCopy;
+    this.sendMetadataToService();
+  }
+  get isSupportedCategoriesToCopy() {
+    return this._isSupportedCategoriesToCopy;
+  }
+
+
+  private _isNotSupportedCategoriesToCopy: boolean = false;
+  set isNotSupportedCategoriesToCopy(isNotSupportedCategoriesToCopy: boolean) {
+    this._isNotSupportedCategoriesToCopy = isNotSupportedCategoriesToCopy;
+    this.sendMetadataToService();
+  }
+  get isNotSupportedCategoriesToCopy() {
+    return this._isNotSupportedCategoriesToCopy;
+  }
 
   allSelectedCategories: string[] = [];
   inputCategories: string[] = [];
 
 
 
-  _selectedCategories: string[] = [];
+  private _selectedCategories: string[] = [];
   set selectedCategories(selectedCategories: string[]) {
     this._selectedCategories = selectedCategories;
     this.updateMetadata();
+    this.sendMetadataToService();
   }
   get selectedCategories() {
     return this._selectedCategories;
   }
 
 
-  constructor(private _editTemplateService: EditTemplateService, private _metadataFromImageService: MetadataFromImageService, private _cdr: ChangeDetectorRef) {
+  constructor(private _editTemplateService: EditTemplateService,
+    private _metadataFromImageService: MetadataFromImageService,
+    private _cdr: ChangeDetectorRef) {
 
 
   }
 
   ngOnDestroy(): void {
-    this._editTemplateService.updateCategories({ categories: this.selectedCategories, isSupportedCategoriesToCopy: this.isSupportedCategoriesToCopy, isNotSupportedCategoriesToCopy: this.isNotSupportedCategoriesToCopy });
+
   }
 
   ngOnInit() {
@@ -71,11 +90,6 @@ export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
   }
 
 
-  onChangeSelectNotSupportedCategories(event) {
-    this.isNotSupportedCategoriesToCopy = event.checked;
-    this.updateMetadata();
-
-  }
 
   updateMetadata() {
     let categories = deepCopyFunction(this.selectedCategories);
@@ -85,5 +99,12 @@ export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
     this.allSelectedCategories = uniqueCategories;
   }
 
+  sendMetadataToService() {
+    this._editTemplateService.updateCategories({
+      categories: this.allSelectedCategories,
+      isSupportedCategoriesToCopy: this.isSupportedCategoriesToCopy,
+      isNotSupportedCategoriesToCopy: this.isNotSupportedCategoriesToCopy
+    });
+  }
 
 }

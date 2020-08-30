@@ -28,24 +28,27 @@
         </div>
 
         <div class="app-form-space" style="display:flex;flex-direction: column;">
-            <div class="app-form-space">
                 <div style="display:flex; align-items: center; justify-content: center">
                     <input type="text" placeholder="Datepicker" class="form-control app-form-field__row-element"
                         [attr.disabled]="isTimeCopiedFromImage?'':null" bsDatepicker
-                        [bsConfig]="{ dateInputFormat: 'YYYY:MM:DD' }"
+                        [bsConfig]="{}"
                         [class.app-label-disabled]="isTimeCopiedFromImage" [formControl]="dateImageCreated"
                         (ngModelChange)="onChangeDate($event)">
                     <timepicker [showSeconds]="true" [showMeridian]="false"
                         [class.app-label-disabled]="isTimeCopiedFromImage" [disabled]="isTimeCopiedFromImage"
                         [formControl]="timeImageCreated" (ngModelChange)="onChangeTime($event)"></timepicker>
                 </div>
-                <mat-checkbox [(ngModel)]="isTimeCopiedFromImage">Copy from Image
-                </mat-checkbox>
+            <div class="">
+                <div class="app-form-field">
+                    <mat-checkbox [(ngModel)]="isTimeCopiedFromImage">Copy from Image
+                    </mat-checkbox>
+                </div>
+                <div class="app-form-field">
+                    <mat-checkbox [(ngModel)]="isTimeDisabled">Disable Time by default
+                    </mat-checkbox>
+                </div>
             </div>
         </div>
-        <mat-checkbox [(ngModel)]="isTimeDisabled">Disable Time by default
-        </mat-checkbox>
-
     </div>
     <div class="col-sm-6" style="height: 100%; display:flex; flex-direction:column">
         <button type="button" class="btn btn-primary" (click)="toogleLayerView()">{{buttonShowOSMLayerTitle}}</button>

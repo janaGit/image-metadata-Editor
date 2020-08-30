@@ -15,43 +15,113 @@ import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 export class EditMetadataTemplateTabComponent implements OnInit {
 
   creator = new FormControl('');
-  contactInfo = new FormControl('');
-  license = new FormControl('');
-  subject = new FormControl('');
-  description = new FormControl('');
-  keywords: string[] = [];
+  onChangeCreator(event) {
+    this.sendMetadataToService();
+  }
 
-  isCreatorCopiedFromImage = false;
-  isContactInfoCopiedFromImage = false;
-  isLicenseCopiedFromImage = false;
-  areKeywordsCopiedFromImage = false;
-  isSubjectCopiedFromImage = false;
-  isDescriptionCopiedFromImage = false;
+  contactInfo = new FormControl('');
+  onChangeContactInfo(event) {
+    this.sendMetadataToService();
+  }
+
+  license = new FormControl('');
+  onChangeLicense(event) {
+    this.sendMetadataToService();
+  }
+
+  subject = new FormControl('');
+  onChangeSubject(event) {
+    this.sendMetadataToService();
+  }
+
+  description = new FormControl('');
+  onChangeDescription(event) {
+    this.sendMetadataToService();
+  }
+
+  private _keywords: string[] = [];
+  set keywords(keywords: string[]) {
+    this._keywords = keywords;
+    this.sendMetadataToService();
+  }
+  get keywords() {
+    return this._keywords;
+  }
+
+
+  private _isCreatorCopiedFromImage: boolean = false;
+  set isCreatorCopiedFromImage(isCreatorCopiedFromImage: boolean) {
+    this._isCreatorCopiedFromImage = isCreatorCopiedFromImage;
+    this.sendMetadataToService();
+  }
+  get isCreatorCopiedFromImage() {
+    return this._isCreatorCopiedFromImage;
+  }
+
+
+  private _isContactInfoCopiedFromImage: boolean = false;
+  set isContactInfoCopiedFromImage(isContactInfoCopiedFromImage: boolean) {
+    this._isContactInfoCopiedFromImage = isContactInfoCopiedFromImage;
+    this.sendMetadataToService();
+  }
+  get isContactInfoCopiedFromImage() {
+    return this._isContactInfoCopiedFromImage;
+  }
+
+
+  private _isLicenseCopiedFromImage: boolean = false;
+  set isLicenseCopiedFromImage(isLicenseCopiedFromImage: boolean) {
+    this._isLicenseCopiedFromImage = isLicenseCopiedFromImage;
+    this.sendMetadataToService();
+  }
+  get isLicenseCopiedFromImage() {
+    return this._isLicenseCopiedFromImage;
+  }
+
+
+  private _areKeywordsCopiedFromImage: boolean = false;
+  set areKeywordsCopiedFromImage(areKeywordsCopiedFromImage: boolean) {
+    this._areKeywordsCopiedFromImage = areKeywordsCopiedFromImage;
+    this.sendMetadataToService();
+  }
+  get areKeywordsCopiedFromImage() {
+    return this._areKeywordsCopiedFromImage;
+  }
+
+
+  private _isSubjectCopiedFromImage: boolean = false;
+  set isSubjectCopiedFromImage(isSubjectCopiedFromImage: boolean) {
+    this._isSubjectCopiedFromImage = isSubjectCopiedFromImage;
+    this.sendMetadataToService();
+  }
+  get isSubjectCopiedFromImage() {
+    return this._isSubjectCopiedFromImage;
+  }
+
+
+  private _isDescriptionCopiedFromImage: boolean = false;
+  set isDescriptionCopiedFromImage(isDescriptionCopiedFromImage: boolean) {
+    this._isDescriptionCopiedFromImage = isDescriptionCopiedFromImage;
+    this.sendMetadataToService();
+  }
+  get isDescriptionCopiedFromImage() {
+    return this._isDescriptionCopiedFromImage;
+  }
+
 
   licenseNames: string[] = [];
 
 
   metadataFromImage: MetadataFromMetadataTab;
 
-  constructor(private _cdr: ChangeDetectorRef, private _editorService: EditorService, private _editTemplateService: EditTemplateService) {
+  constructor(private _cdr: ChangeDetectorRef,
+    private _editorService: EditorService,
+    private _editTemplateService: EditTemplateService) {
 
   }
 
   ngOnDestroy(): void {
-    this._editTemplateService.updateEditMetadata({
-      creator: this.creator.value,
-      isCreatorCopiedFromImage: this.isCreatorCopiedFromImage,
-      contactInfo: this.contactInfo.value,
-      isContactInfoCopiedFromImage: this.isContactInfoCopiedFromImage,
-      license: this.license.value,
-      isLicenseCopiedFromImage: this.isLicenseCopiedFromImage,
-      keywords: this.keywords,
-      areKeywordsCopiedFromImage: this.areKeywordsCopiedFromImage,
-      subject: this.subject.value,
-      isSubjectCopiedFromImage: this.isSubjectCopiedFromImage,
-      description: this.description.value,
-      isDescriptionCopiedFromImage: this.isDescriptionCopiedFromImage
-    });
+
 
   }
 
@@ -76,5 +146,20 @@ export class EditMetadataTemplateTabComponent implements OnInit {
 
   }
 
-
+  sendMetadataToService() {
+    this._editTemplateService.updateEditMetadata({
+      creator: this.creator.value,
+      isCreatorCopiedFromImage: this.isCreatorCopiedFromImage,
+      contactInfo: this.contactInfo.value,
+      isContactInfoCopiedFromImage: this.isContactInfoCopiedFromImage,
+      license: this.license.value,
+      isLicenseCopiedFromImage: this.isLicenseCopiedFromImage,
+      keywords: this.keywords,
+      areKeywordsCopiedFromImage: this.areKeywordsCopiedFromImage,
+      subject: this.subject.value,
+      isSubjectCopiedFromImage: this.isSubjectCopiedFromImage,
+      description: this.description.value,
+      isDescriptionCopiedFromImage: this.isDescriptionCopiedFromImage
+    });
+  }
 }

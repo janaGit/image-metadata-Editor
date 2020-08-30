@@ -13,7 +13,17 @@ export class ExistingMetadataTemplateTabComponent implements OnInit, OnDestroy {
 
   selectedValue: ExistingMetadataTemplateMethods = null;
   methods = ExistingMetadataTemplateMethods;
-  metadataKeys: string[] = [];
+
+  private _metadataKeys: string[] = [];
+  set metadataKeys(metadataKeys: string[]) {
+    this._metadataKeys = metadataKeys;
+    this.sendMetadataToService();
+  }
+  get metadataKeys() {
+    return this._metadataKeys;
+  }
+
+
   isMetadataKeysShown: boolean = false;
 
 
@@ -23,11 +33,24 @@ export class ExistingMetadataTemplateTabComponent implements OnInit, OnDestroy {
     this.selectedValue = this._editTemplateService.existingMetadata.method;
     if (this._editTemplateService.existingMetadata["keys"]) {
       this.metadataKeys = (<TemplateMetadataKeys>this._editTemplateService.existingMetadata).keys;
-      this.isMetadataKeysShown= true;
+      this.isMetadataKeysShown = true;
     }
   }
 
   ngOnDestroy(): void {
+
+  }
+
+  onChangeSelectedItem(event) {
+    if (event === ExistingMetadataTemplateMethods.COPY_CUSTOM || event === ExistingMetadataTemplateMethods.DELETE_CUSTOM) {
+      this.isMetadataKeysShown = true;
+    } else {
+      this.isMetadataKeysShown = false;
+    }
+    this.sendMetadataToService();
+  }
+
+  sendMetadataToService() {
     if (this.selectedValue === ExistingMetadataTemplateMethods.COPY_CUSTOM || this.selectedValue === ExistingMetadataTemplateMethods.DELETE_CUSTOM) {
       this._editTemplateService.updateExistingMetadata({
         keys: this.metadataKeys,
@@ -37,15 +60,6 @@ export class ExistingMetadataTemplateTabComponent implements OnInit, OnDestroy {
       this._editTemplateService.updateExistingMetadata({
         method: this.selectedValue
       });
-    }
-
-
-  }
-  onChangeSelectedItem(event) {
-    if (event === ExistingMetadataTemplateMethods.COPY_CUSTOM || event === ExistingMetadataTemplateMethods.DELETE_CUSTOM) {
-      this.isMetadataKeysShown = true;
-    } else {
-      this.isMetadataKeysShown = false;
     }
   }
 }
