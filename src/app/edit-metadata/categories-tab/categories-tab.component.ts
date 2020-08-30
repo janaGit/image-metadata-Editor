@@ -54,7 +54,7 @@ export class CategoriesTabComponent implements OnInit, OnDestroy {
       this.inputCategories = __categories.categories;
       this.areNotSupportedCategoriesSelected = __categories.areNotSupportedCategoriesSelected;
     } else {
-      this.inputCategories = this._metadataFromImageService.categories.split(",");
+      this.inputCategories = this._metadataFromImageService.categories;
     }
 
     this.updateMetadata();
