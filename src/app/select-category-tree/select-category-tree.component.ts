@@ -224,6 +224,8 @@ export class SelectCategoryTreeComponent implements OnInit, OnDestroy {
   }
 
   selectCategories() {
+    this.checklistSelection.clear();
+    
     this.inputCategories.forEach(category => {
       const flatNode = this.categoryNameNodeMap.get(category);
       if (typeof flatNode !== "undefined") {

@@ -1,17 +1,17 @@
-.button-template{
+.component__button_template{
     margin-top: 5px;
     margin-right: 5px;
     margin-bottom: 5px;
     padding-bottom: 1px;
     padding-top: 1px;
 }
-.app-row{
+.component__row{
     display: flex;
 }
-.app-icon{
+.component__icon{
   margin-right: 3px;
   vertical-align: middle;
 }
-.app-success{
+.component__success{
     color: green;
 }

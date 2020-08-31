@@ -58,7 +58,6 @@ export class EditMetadataComponent implements OnInit {
             if (tab.tab === 'file') {
                 tab.active = true;
                 this._editorService.updateIsFileTabOpen(true);
-                this._cdr.detectChanges();
             }
         });
 
@@ -117,7 +116,6 @@ export class EditMetadataComponent implements OnInit {
             }
         });
         this.selectTab('template');
-        this._cdr.detectChanges();
     }
 
     /**
@@ -135,7 +133,6 @@ export class EditMetadataComponent implements OnInit {
             }
         });
         this.selectTab('file');
-        this._cdr.detectChanges();
         this._metadataService.resetMetadata();
         this._metadataFromTemplateService.resetTemplate();
         this._metadataFromImageService.resetMetadata();

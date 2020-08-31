@@ -122,7 +122,7 @@ export class MetadataFromTemplateService {
             return;
         }
         const allCategories: string[] = [];
-        const categoriesFromImage = this._metadataFromImageService.categories;
+        const categoriesFromImage: string[] = this._metadataFromImageService.categories || [];
         const categoriesFromTree = this.getCategoriesFromTree(templateCategories.categories, this._editorService.categoryTree);
         const supportedCategories = this._editorService.getSupportedCategories();
 

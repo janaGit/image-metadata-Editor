@@ -1,19 +1,26 @@
 <div class="app-container container-fluid">
-    <div class="app-form-field">
-        <label>
-          Selected Categories:
-          <button type="button" class="btn btn-primary item_selected-category" *ngFor="let category of allSelectedCategories">{{category}}</button>
-        </label>
-      </div>
-      
-      <div class="app-form-field app-tree">
-        <app-select-category-tree [inputCategories]="inputCategories" (onChangeCategory)="selectedCategories=$event"  (categoriesOfTree)="identifyNotSupportedCategories($event)"></app-select-category-tree>
+  <div class="app-form-field">
+    <label>
+      Selected Categories:
+      <button type="button" class="btn btn-primary item_selected-category"
+        *ngFor="let category of allSelectedCategories">{{category}}</button>
+    </label>
+  </div>
 
-      </div>
-      <div class="app-form-field">
-        <mat-checkbox class="checklist-leaf-node" *ngIf="notSupprotedCategories.length > 0" [checked]="areNotSupportedCategoriesSelected"
-          (change)="onChangeSelectNotSupportedCategories($event)">{{notSupprotedCategoriesText+notSupprotedCategories}}
-        </mat-checkbox>
-      </div>
+  <div class="app-form-field app-tree">
+    <app-select-category-tree [inputCategories]="inputCategories" (onChangeCategory)="selectedCategories=$event"
+      (categoriesOfTree)="identifyNotSupportedCategories($event)"></app-select-category-tree>
+
+  </div>
+  <div class="app-form-field">
+    <mat-checkbox class="checklist-leaf-node" *ngIf="notSupprotedCategories.length > 0"
+      [checked]="areNotSupportedCategoriesSelected" (change)="onChangeSelectNotSupportedCategories($event)">
+      {{notSupprotedCategoriesText+notSupprotedCategories}}
+    </mat-checkbox>
+  </div>
+  <div class="app-form-field">
+    <app-input-template-buttons [templateData]="categoriesFromTemplate" [imageData]="categoriesFromImage"
+      (onClickTemplateButton)="setCategoriesFromTemplate()" (onClickImageButton)="setCategoriesFromImage()"
+      [formData]="allSelectedCategories"></app-input-template-buttons>
+   </div>
 </div>
-

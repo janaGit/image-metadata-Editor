@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { areArraysEqual } from '../../../utilities/utilitiy-methods';
 
 @Component({
   selector: 'app-input-template-buttons',
@@ -7,30 +8,45 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class InputTemplateButtonsComponent implements OnInit {
 
-  @Input() templateData: string;
-  @Input() imageData: string;
-  @Input()
-  set formData(data) {
-    if (data === this.templateData && data!=="") {
+  @Input() templateData: string | string[] | undefined;
+  @Input() imageData: string | string[] | undefined;
+@Input()
+set formData(data: string | string[] | undefined) {
+  if (Array.isArray(data)) {
+    if (areArraysEqual(data, this.templateData) && data !== []) {
       this.isTemplateDataWithFormDataEqual = true;
     } else {
       this.isTemplateDataWithFormDataEqual = false;
     }
 
-    if (data === this.imageData && data!=="") {
+    if (areArraysEqual(data, this.imageData) && data !== []) {
+      this.isImageDataWithFormDataEqual = true;
+    } else {
+      this.isImageDataWithFormDataEqual = false;
+    }
+  } else {
+    if (data === this.templateData && data !== "") {
+      this.isTemplateDataWithFormDataEqual = true;
+    } else {
+      this.isTemplateDataWithFormDataEqual = false;
+    }
+
+    if (data === this.imageData && data !== "") {
       this.isImageDataWithFormDataEqual = true;
     } else {
       this.isImageDataWithFormDataEqual = false;
     }
   }
-  @Output() onClickTemplateButton = new EventEmitter<boolean>();
-  @Output() onClickImageButton = new EventEmitter<boolean>();
 
-  isTemplateDataWithFormDataEqual: boolean = false;
-  isImageDataWithFormDataEqual: boolean = false;
-  constructor() { }
+}
+@Output() onClickTemplateButton = new EventEmitter<boolean>();
+@Output() onClickImageButton = new EventEmitter<boolean>();
 
-  ngOnInit(): void {
-  }
+isTemplateDataWithFormDataEqual: boolean = false;
+isImageDataWithFormDataEqual: boolean = false;
+constructor() { }
+
+ngOnInit(): void {
+}
 
 }
