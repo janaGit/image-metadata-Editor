@@ -1,13 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ExifToolService } from 'app/services/exif-tool.service';
 import { EditorService } from 'app/services/editor.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'modal-show-progress',
   templateUrl: './modal-show-progress.component.html',
   styleUrls: ['./modal-show-progress.component.scss']
 })
-export class ModalShowProgressComponent implements OnInit {
+export class ModalShowProgressComponent implements OnInit, OnDestroy {
   /**
      * Actual status of the modal
      * 
@@ -23,6 +24,7 @@ export class ModalShowProgressComponent implements OnInit {
 
   _title: string;
 
+  private _progessSubscription: Subscription;
   /**
  * This method sets the value for the visibility of the modal.
  * 
@@ -46,20 +48,23 @@ export class ModalShowProgressComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this._progessSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
-    this._editorService._progress_value$.subscribe(newProgress => {
+    this._progessSubscription = this._editorService._progress_value$.subscribe(newProgress => {
       if (newProgress) {
         this._value = newProgress.value;
         this._max = newProgress.max;
         this._title = newProgress.title;
         if (newProgress.value === newProgress.max) {
           this.display = false;
-        }else{
-          if(newProgress.value<newProgress.max){
-             this.display=true;
+        } else {
+          if (newProgress.value < newProgress.max) {
+            this.display = true;
           }
-         
+
         }
         this._cdr.detectChanges();
       }

@@ -1,7 +1,7 @@
 
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, Subscription } from 'rxjs';
 import { ImageService } from './../services/image.service';
 import { ExifToolService } from './../services/exif-tool.service';
 import { EditorService } from './../services/editor.service';
@@ -22,6 +22,7 @@ import * as suffix from "../../../utilities/image-suffixes";
     }
 })
 export class ImageGalleryComponent {
+    private _contextMenuElementsSubscriptions: Subscription[] = [];
     /**
      * To control  the table with the shortcuts: s,w
      */
@@ -83,6 +84,10 @@ export class ImageGalleryComponent {
 
     constructor(private _imageService: ImageService, private _exifToolService: ExifToolService, private _editorService: EditorService, private _renderer: Renderer2) { }
 
+    ngOnDestroy(): void {
+        this._contextMenuElementsSubscriptions.forEach(subscription => subscription.unsubscribe());
+
+    }
     ngOnInit() {
         this.imgDir_edited = this._imageService.imageDir_edited;
         // Set the variables
@@ -94,7 +99,10 @@ export class ImageGalleryComponent {
         }
         ));
         // Subscribe to the subjects of the context elements and assign the contextMenu() to them.
-        this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
+        this._contextMenuElements.forEach(elements => {
+            const sub = elements.subject.subscribe(val => this.contextMenu(val))
+            this._contextMenuElementsSubscriptions.push(sub);
+        });
     }
     /**
      * This method is executed when the mouse is 

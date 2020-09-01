@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 
 import { ContextMenu } from '../types/context-menu.type';
 import { MouseOverImageEvent } from '../types/mouse-over-image-event.type';
@@ -14,7 +14,7 @@ import * as suffix from "../../../utilities/image-suffixes";
   templateUrl: './bottom-bar-original-img.component.html',
   styleUrls: ['./bottom-bar-original-img.component.scss', '../css/hover-box.scss']
 })
-export class BottomBarOriginalImgComponent implements OnInit {
+export class BottomBarOriginalImgComponent implements OnInit, OnDestroy {
   /**
    * Title of the Bottom bar
    */
@@ -73,11 +73,32 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   private _errorMessage_imageService: string;
 
+  private _contextMenuElementsSubscriptions: Subscription[] = [];
+  private _contextMenuElementsEditSubscriptions: Subscription[] = [];
+
+  private _imageNamesSubscription: Subscription;
+  private _imageNamesSubscriptionOriginal: Subscription;
+  private _imageNamesSubscriptionEdited: Subscription;
+
+
   constructor(private _editorService: EditorService, private _imageService: ImageService) { }
+  ngOnDestroy(): void {
+    this._contextMenuElementsSubscriptions.forEach(subscription=> subscription.unsubscribe());
+    this._contextMenuElementsEditSubscriptions.forEach(subscription=> subscription.unsubscribe());
+    this._imageNamesSubscription.unsubscribe();
+    this._imageNamesSubscriptionOriginal.unsubscribe();
+    this._imageNamesSubscriptionEdited.unsubscribe();
+  }
 
   ngOnInit() {
-    this._contextMenuElements.forEach(element => element.subject.subscribe(title => this.contextMenuBottomBar(title)));
-    this._contextMenuElements_edit.forEach(element => element.subject.subscribe(title => this.contextMenuBottomBar(title)));
+    this._contextMenuElements.forEach(element => {
+      const sub = element.subject.subscribe(title => this.contextMenuBottomBar(title));
+      this._contextMenuElementsSubscriptions.push(sub);
+    });
+    this._contextMenuElements_edit.forEach(element => {
+      const sub = element.subject.subscribe(title => this.contextMenuBottomBar(title));
+      this._contextMenuElementsEditSubscriptions.push(sub);
+    });
     this.getImageNamesOriginal();
     this.getImageNames();
     this.getImageNamesEdited();
@@ -87,7 +108,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
      * Get the image names of the original images folder (images_original).
      */
   getImageNamesOriginal() {
-    this._editorService._imageNamesInFolder_original$.subscribe(
+    this._imageNamesSubscriptionOriginal = this._editorService._imageNamesInFolder_original$.subscribe(
       images => {
         this._imageNames_original = images;
       },
@@ -98,7 +119,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    * Get the image names of the images folder (images).
    */
   getImageNames() {
-    this._editorService._imageNamesInFolder$.subscribe(
+    this._imageNamesSubscription =this._editorService._imageNamesInFolder$.subscribe(
       images => {
         this._imageNames = images;
       },
@@ -109,7 +130,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    * Get the image names of the images_edited folder.
    */
   getImageNamesEdited() {
-    this._editorService._imageNamesInFolder_edited$.subscribe(
+    this._imageNamesSubscriptionEdited =this._editorService._imageNamesInFolder_edited$.subscribe(
       images => {
         this._imageNames_edited = images;
       },
@@ -162,7 +183,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
    * original images in the bottom bar.
    */
   private contextMenuBottomBar(title) {
-    console.info('Bottom Bar Original Image: Context Menu action: '+ title);
+    console.info('Bottom Bar Original Image: Context Menu action: ' + title);
     // For copying an image to the editing view (images folder)
     if (title === this._contextMenuElements[0].title) {
       if (!this.isInEditingModus(this._actualImage)) {
@@ -174,7 +195,7 @@ export class BottomBarOriginalImgComponent implements OnInit {
     // For deleting a copy of an image that is located in the images
     // folder.
     if (title === this._contextMenuElements_edit[0].title) {
-      console.info('Bottom Bar Original Image: Delete Image in Image Editing Mode! '+this._actualImage)
+      console.info('Bottom Bar Original Image: Delete Image in Image Editing Mode! ' + this._actualImage)
       const imageWithSuffix = suffix.getImageNameInList_suffixNotConsidered(this._actualImage, this._imageNames);
       this._imageService.deleteImageAndUpdateImageNames(imageWithSuffix).catch(
         error => { this._errorMessage_imageService = <any>error }
@@ -196,8 +217,8 @@ export class BottomBarOriginalImgComponent implements OnInit {
    */
   copyAll() {
     let imageNames = this._imageNames_original.filter(imageName => {
-      let found_edited = suffix.getImageNameInList_suffixNotConsidered(imageName,this._imageNames_edited);
-      let found = suffix.getImageNameInList_suffixNotConsidered(imageName,this._imageNames);
+      let found_edited = suffix.getImageNameInList_suffixNotConsidered(imageName, this._imageNames_edited);
+      let found = suffix.getImageNameInList_suffixNotConsidered(imageName, this._imageNames);
       return !(found || found_edited);
     })
     this._imageService.copyImagesForEditing(imageNames);

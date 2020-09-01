@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, Inject, HostListener } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Component, OnInit, Output, EventEmitter, Inject, HostListener, OnDestroy } from '@angular/core';
+import { Subject, Observable, Subscription } from 'rxjs';
 import { ImageService } from './../../services/image.service';
 import { EditorService } from './../../services/editor.service';
 import { ExifToolService } from './../../services/exif-tool.service';
@@ -16,7 +16,17 @@ import { IMAGE_EDITED } from '../../../../utilities/constants';
     templateUrl: 'file-tab.component.html',
     styleUrls: ['file-tab.component.scss', '../../css/global-app.scss']
 })
-export class FileTabComponent implements OnInit {
+export class FileTabComponent implements OnInit, OnDestroy {
+    /**
+     * Context menu elements for the displayed image in
+     * this tab.
+     */
+    private _contextMenuElements: ContextMenu[] = [
+        { title: 'transfer to image gallery', subject: new Subject() }
+    ];
+    private _selectedImageNameSubscription: Subscription;
+    private _contextMenuElementsSubscriptions: Subscription[] = [];
+    private _imageNamesSubscription: Subscription;
     /**
      * Names of the images that can be shwn and edited.
      */
@@ -55,27 +65,30 @@ export class FileTabComponent implements OnInit {
      *
      */
     @Output() start = new EventEmitter();
-    /**
-     * Context menu elements for the displayed image in
-     * this tab.
-     */
-    private _contextMenuElements: ContextMenu[] = [
-        { title: 'transfer to image gallery', subject: new Subject() }
-    ];
+
     suffix = suffix;
     constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _editorService: EditorService) { }
+
+    ngOnDestroy(): void {
+        this._contextMenuElementsSubscriptions.forEach(subscription => subscription.unsubscribe());
+        this._selectedImageNameSubscription.unsubscribe();
+        this._imageNamesSubscription.unsubscribe();
+    }
 
     ngOnInit() {
         // Set the method that should be executed when a context menu element
         // has been selected.
-        this._contextMenuElements.forEach(elements => elements.subject.subscribe(val => this.contextMenu(val)));
+        this._contextMenuElements.forEach(elements => {
+            const sub = elements.subject.subscribe(val => this.contextMenu(val));
+            this._contextMenuElementsSubscriptions.push(sub);
+        });
         // Subscribe to the image service to update the name 
         // of the current selected image
-        this._editorService.imageName$.subscribe(imgName => {
+        this._selectedImageNameSubscription = this._editorService.imageName$.subscribe(imgName => {
             this._imageName = imgName;
         });
 
-        this._editorService._imageNamesInFolder$
+        this._imageNamesSubscription = this._editorService._imageNamesInFolder$
             .subscribe(
                 images => {
                     //alert(images)
@@ -224,8 +237,8 @@ export class FileTabComponent implements OnInit {
      */
     async startEditing() {
         try {
-             await this._exifToolService.requestMetadata();
-             this._exifToolService.requestMetadata_toEdit();
+            await this._exifToolService.requestMetadata();
+            this._exifToolService.requestMetadata_toEdit();
             if (this._exifToolService.metadata) {
                 this.start.emit();
             } else {

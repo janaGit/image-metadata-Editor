@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 
 
 import { EditorService } from './../services/editor.service';
@@ -6,6 +6,7 @@ import { ImageService } from './../services/image.service';
 import { MetadataService } from './metadata.service';
 import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
 import { MetadataFromTemplateService } from './metadata-from-template.service';
+import { Subscription } from 'rxjs';
 
 /**
  *  Main component of the editor view.
@@ -15,7 +16,9 @@ import { MetadataFromTemplateService } from './metadata-from-template.service';
     templateUrl: 'edit-metadata.component.html',
     styleUrls: ['edit-metadata.component.scss']
 })
-export class EditMetadataComponent implements OnInit {
+export class EditMetadataComponent implements OnInit, OnDestroy {
+    private _imageSelectedImageNameSubscription: Subscription;
+    private _templateNameSubscription: Subscription;
     /**
      * Name of the actual selected tab.
      */
@@ -51,7 +54,10 @@ export class EditMetadataComponent implements OnInit {
 
     }
 
-
+    ngOnDestroy(): void {
+        this._imageSelectedImageNameSubscription.unsubscribe();
+        this._templateNameSubscription.unsubscribe();
+      }
     ngOnInit() {
         // Set the File tab to be active.
         this.tabs.forEach(tab => {
@@ -61,11 +67,11 @@ export class EditMetadataComponent implements OnInit {
             }
         });
 
-        this._editorService.imageName$.subscribe(imgName => {
+        this._imageSelectedImageNameSubscription = this._editorService.imageName$.subscribe(imgName => {
             this.imgPath = this._imageService.imageDir + '/' + imgName;
         });
 
-        this._metadataFromTemplateService.templateName$.subscribe(templateName => {
+        this._templateNameSubscription = this._metadataFromTemplateService.templateName$.subscribe(templateName => {
             this.templateName = templateName;
         });
     }

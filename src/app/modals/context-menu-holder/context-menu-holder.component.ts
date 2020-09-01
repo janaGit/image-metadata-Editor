@@ -1,5 +1,6 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ContextMenuService } from './../../services/context-menu.service';
+import { Subscription } from 'rxjs';
 
 /**
  * This class provides the context menu component. 
@@ -31,7 +32,7 @@ import { ContextMenuService } from './../../services/context-menu.service';
     styleUrls: ['context-menu-holder.component.scss'],
     templateUrl: 'context-menu-holder.component.html'
 })
-export class ContextMenuHolderComponent {
+export class ContextMenuHolderComponent implements OnInit, OnDestroy{
     /**
      * Elements that are listed in the context menu.
      */
@@ -46,12 +47,19 @@ export class ContextMenuHolderComponent {
      */
     private mouseLocation: { left: number, top: number } = { left: 0, top: 0 };
 
+    private _menuSubscription: Subscription;
 
     constructor(private _contextMenuService: ContextMenuService) {
+
+    }
+    ngOnInit(): void {
         // Subscribe to the ContextMenuService.
-        this._contextMenuService.show.subscribe(e => this.showMenu(e.event, e.menuElements));
+        this._menuSubscription = this._contextMenuService.show.subscribe(e => this.showMenu(e.event, e.menuElements));
     }
 
+    ngOnDestroy() {
+        this._menuSubscription.unsubscribe();
+    }
     /** 
      * The css for the div: 'container'.
      */

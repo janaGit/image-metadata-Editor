@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewChecked, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exif-tool.service';
@@ -6,6 +6,7 @@ import { EditorService } from './services/editor.service';
 import { TemplateMetadataKeys } from './types/template-metadata-keys.interface';
 import { AppTemplate } from './types/app-template.interface';
 import { ExistingMetadataTemplateMethods } from './types/existing-metadata-templete-methods.type';
+import { Subscription } from 'rxjs';
 
 /**
  * Storage of labels for the change view button. 
@@ -36,7 +37,7 @@ var imageDir_complete = 'images_complete'
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss', './css/global-app.scss'] 
 })
-export class AppComponent implements OnInit, AfterViewChecked {
+export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     /**
      * Map for an easily access to the labels for the 'changeView'-button.
      */
@@ -77,6 +78,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
     private _lang_select: string = this._lang;
 
 
+    private _routerSubscription: Subscription; 
+
+    private _startTabOpenSubscription: Subscription; 
     /**
      * Variable stores the status, if the filetab is open or not.
      */
@@ -86,6 +90,11 @@ export class AppComponent implements OnInit, AfterViewChecked {
     constructor(private _cdr: ChangeDetectorRef, private _editorService: EditorService, private _imageService: ImageService, private _exifToolService: ExifToolService, private _router: Router) {
         this.router = _router;
     }
+    ngOnDestroy(): void {
+        this._routerSubscription.unsubscribe();
+        this._startTabOpenSubscription.unsubscribe();
+    }
+
     ngOnInit() {
         //Set the image directiories
         this._imageService.imageDir = imageDir;
@@ -95,8 +104,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
         // Set the language for the image metadata 
         this._exifToolService.language = this._lang;
         // Subscribe to router events to update the label of the 'changeView'-button
-        this._router.events.subscribe((val) => { this.setChangeViewButtonText(); this.setChangeEditTemplateViewButtonText(); });
-        this._editorService._startTabOpen$.subscribe(isOpen => {
+        this._routerSubscription = this._router.events.subscribe((val) => { this.setChangeViewButtonText(); this.setChangeEditTemplateViewButtonText(); });
+        this._startTabOpenSubscription = this._editorService._startTabOpen$.subscribe(isOpen => {
             this._startTabOpen = isOpen;
         })
         this._editorService.updateLicenseNames(["CC-by", "CC-by-sa", "CC-by-nd", "CC-by-nc", "CC-by-nc-sa"]);
