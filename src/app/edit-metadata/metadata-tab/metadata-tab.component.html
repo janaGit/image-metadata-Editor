@@ -5,7 +5,8 @@
         <label for="creator" [class.app-label-disabled]="isCreatorDisabled">Creator</label>
         <input class="form-control" [class.app-label-disabled]="isCreatorDisabled" id="creator" [formControl]="creator"
           (ngModelChange)="onChangeCreator($event)">
-        <app-input-template-buttons [templateData]="metadataFromTemplate?.creator" [imageData]="metadataFromImage?.creator"
+        <app-input-template-buttons [templateData]="metadataFromTemplate.creator" [imageData]="metadataFromImage.creator"
+          [isToCopyFromImage]="metadataFromTemplate.isCreatorCopiedFromImage"
           (onClickTemplateButton)="getCreatorFromTemplate()" (onClickImageButton)="getCreatorFromImage()"
           [formData]="creator.value"></app-input-template-buttons>
       </div>
@@ -16,7 +17,8 @@
           <option></option>
           <option *ngFor="let licenseName of licenseNames" [ngValue]="licenseName">{{licenseName}}</option>
         </select>
-        <app-input-template-buttons [templateData]="metadataFromTemplate?.license" [imageData]="metadataFromImage?.license"
+        <app-input-template-buttons [templateData]="metadataFromTemplate.license" [imageData]="metadataFromImage?.license"
+        [isToCopyFromImage]="metadataFromTemplate.isLicenseCopiedFromImage"
         (onClickTemplateButton)="getLicenseFromTemplate()" (onClickImageButton)="getLicenseFromImage()"
         [formData]="license.value"></app-input-template-buttons>
       </div>
@@ -26,7 +28,8 @@
         <label for="contactInfo" [class.app-label-disabled]="isContactInfoDisabled">Contact Info</label>
         <input class="form-control" [class.app-label-disabled]="isContactInfoDisabled" id="contactInfo"
           [formControl]="contactInfo" (ngModelChange)="onChangeContactInfo($event)">
-        <app-input-template-buttons [templateData]="metadataFromTemplate?.contactInfo" [imageData]="metadataFromImage?.contactInfo"
+        <app-input-template-buttons [templateData]="metadataFromTemplate.contactInfo" [imageData]="metadataFromImage.contactInfo"
+          [isToCopyFromImage]="metadataFromTemplate.isContactInfoCopiedFromImage"
           (onClickTemplateButton)="getContactInfoFromTemplate()" (onClickImageButton)="getContactInfoFromImage()"
           [formData]="contactInfo.value"></app-input-template-buttons>
       </div>
@@ -36,7 +39,8 @@
   <div class="row app-form-space ">
     <div class="col-xs-6">
       <app-add-items [(keywords)]="keywords"></app-add-items>
-      <app-input-template-buttons [templateData]="metadataFromTemplate?.keywords" [imageData]="metadataFromImage?.keywords"
+      <app-input-template-buttons [templateData]="metadataFromTemplate.keywords" [imageData]="metadataFromImage.keywords"
+      [isToCopyFromImage]="metadataFromTemplate.areKeywordsCopiedFromImage"
       (onClickTemplateButton)="getKeywordsFromTemplate()" (onClickImageButton)="getKeywordsFromImage()"
       [formData]="keywords"></app-input-template-buttons>
     </div>
@@ -48,7 +52,8 @@
         <label for="subject" [class.app-label-disabled]="isSubjectDisabled">Subject</label>
         <textarea class="form-control" rows="10" id="subject" [class.app-label-disabled]="isSubjectDisabled"
           [formControl]="subject" (ngModelChange)="onChangeSubject($event)"></textarea>
-        <app-input-template-buttons [templateData]="metadataFromTemplate?.subject" [imageData]="metadataFromImage?.subject"
+        <app-input-template-buttons [templateData]="metadataFromTemplate.subject" [imageData]="metadataFromImage.subject"
+          [isToCopyFromImage]="metadataFromTemplate.isSubjectCopiedFromImage"
           (onClickTemplateButton)="getSubjectFromTemplate()" (onClickImageButton)="getSubjectFromImage()"
           [formData]="subject.value">
           </app-input-template-buttons>
@@ -59,7 +64,8 @@
         <label for="description" [class.app-label-disabled]="isDescriptionDisabled">Description</label>
         <textarea class="form-control" rows="10" id="subject" [class.app-label-disabled]="isDescriptionDisabled"
           [formControl]="description" (ngModelChange)="onChangeDescription($event)" id="description"></textarea>
-        <app-input-template-buttons [templateData]="metadataFromTemplate?.description" [imageData]="metadataFromImage?.description"
+        <app-input-template-buttons [templateData]="metadataFromTemplate.description" [imageData]="metadataFromImage.description"
+          [isToCopyFromImage]="metadataFromTemplate.isDescriptionCopiedFromImage"
           (onClickTemplateButton)="getDescriptionFromTemplate()" (onClickImageButton)="getDescriptionFromImage()"
           [formData]="description.value"></app-input-template-buttons>
       </div>

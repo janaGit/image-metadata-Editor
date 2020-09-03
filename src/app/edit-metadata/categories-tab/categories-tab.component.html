@@ -20,6 +20,7 @@
   </div>
   <div class="app-form-field">
     <app-input-template-buttons [templateData]="categoriesFromTemplate" [imageData]="categoriesFromImage"
+      [isToCopyFromImage]="templateIsSupportedCategoriesToCopy"
       (onClickTemplateButton)="setCategoriesFromTemplate()" (onClickImageButton)="setCategoriesFromImage()"
       [formData]="allSelectedCategories"></app-input-template-buttons>
    </div>

@@ -34,6 +34,14 @@ export class InputTemplateButtonsComponent implements OnInit {
     return this._imageData;
   }
 
+  private _isToCopyFromImage: boolean = false;
+  @Input()
+  set isToCopyFromImage(isToCopyFromImage) {
+      this._isToCopyFromImage = isToCopyFromImage;
+  }
+  get isToCopyFromImage() {
+    return this._isToCopyFromImage;
+  }
 
   private _formData: string | string[];
   @Input()

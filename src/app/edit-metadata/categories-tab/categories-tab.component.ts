@@ -34,6 +34,8 @@ export class CategoriesTabComponent implements OnInit, OnDestroy {
   categoriesFromImage: string[];
   categoriesFromTemplate: string[];
 
+  templateIsSupportedCategoriesToCopy: boolean;
+
   constructor(private _editorService: EditorService,
     private _metadataService: MetadataService,
     private _metadataFromImageService: MetadataFromImageService,
@@ -64,6 +66,7 @@ export class CategoriesTabComponent implements OnInit, OnDestroy {
     }
 
     this.categoriesFromTemplate = this._metadataFromTemplateService.categories.categories;
+    this.templateIsSupportedCategoriesToCopy = this._metadataFromTemplateService.categories.isNotSupportedCategoriesToCopy;
 
   }
 
