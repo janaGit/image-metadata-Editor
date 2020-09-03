@@ -52,17 +52,10 @@ export class CategoriesTabComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     let __categories = this._metadataService.categories;
-    if (__categories) {
-      this.inputCategories = __categories.categories;
-      this.areNotSupportedCategoriesSelected = __categories.areNotSupportedCategoriesSelected;
-    } else {
-      if (this._metadataFromImageService.categories) {
-        this.inputCategories = this._metadataFromImageService.categories;
-      } else {
-        this.inputCategories = [];
-      }
 
-    }
+    this.inputCategories = __categories.categories;
+    this.areNotSupportedCategoriesSelected = __categories.areNotSupportedCategoriesSelected;
+
 
     this.updateMetadata();
 
@@ -70,9 +63,7 @@ export class CategoriesTabComponent implements OnInit, OnDestroy {
       this.categoriesFromImage = this._metadataFromImageService.categories;
     }
 
-    if (this._metadataFromTemplateService.categories) {
-      this.categoriesFromTemplate = this._metadataFromTemplateService.categories.categories;
-    }
+    this.categoriesFromTemplate = this._metadataFromTemplateService.categories.categories;
 
   }
 

@@ -10,15 +10,14 @@ export class AddItemsComponent implements OnInit {
 
   newKeyword = new FormControl('');
   @Input() areKeywordsDisabled = false;
+ 
   private _keywords = [];
-
   @Input()
   set keywords(keywords) {
     if (keywords) {
       this._keywords = keywords;
     }
   }
-
   get keywords() {
     return this._keywords;
   }

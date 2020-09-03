@@ -7,6 +7,9 @@ import { ContextMenu } from './../../types/context-menu.type';
 import * as suffix from "../../../../utilities/image-suffixes";
 import { filterFilesToIgnore } from '../../../../utilities/utilitiy-methods';
 import { IMAGE_EDITED } from '../../../../utilities/constants';
+import { emptyTemplate } from 'app/templates';
+import { MetadataFromTemplateService } from '../metadata-from-template.service';
+import { MetadataService } from '../metadata.service';
 /**
  * This class provides the controller for the file-tab in the
  * editor view.
@@ -67,7 +70,12 @@ export class FileTabComponent implements OnInit, OnDestroy {
     @Output() start = new EventEmitter();
 
     suffix = suffix;
-    constructor(private _exifToolService: ExifToolService, private _imageService: ImageService, private _editorService: EditorService) { }
+ 
+    constructor(private _exifToolService: ExifToolService,
+         private _imageService: ImageService,
+         private _editorService: EditorService,
+         private _metadataFromTemplateService: MetadataFromTemplateService,
+         private _metadataService: MetadataService) { }
 
     ngOnDestroy(): void {
         this._contextMenuElementsSubscriptions.forEach(subscription => subscription.unsubscribe());
@@ -239,6 +247,9 @@ export class FileTabComponent implements OnInit, OnDestroy {
         try {
             await this._exifToolService.requestMetadata();
             this._exifToolService.requestMetadata_toEdit();
+            this._metadataFromTemplateService.setTemplate(emptyTemplate);
+            this._metadataService.setMetadataFromAppTemplate(emptyTemplate);
+            
             if (this._exifToolService.metadata) {
                 this.start.emit();
             } else {

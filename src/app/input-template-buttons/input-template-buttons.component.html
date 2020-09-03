@@ -1,8 +1,8 @@
 <div class="component__row">
     <button type="button" class="btn component__button_template" (click)="onClickTemplateButton.emit(true)"
-        [class.component__success]="isTemplateDataWithFormDataEqual" *ngIf="templateData">
-        <span class=" fas fa-sticky-note component_icon"></span>{{templateData}}</button>
+        [class.component__success]="isTemplateDataWithFormDataEqual" *ngIf="templateData && templateData.length!== 0">
+        <span class=" fas fa-sticky-note component__icon"></span>{{templateData}}</button>
     <button type="button" class="btn component__button_template" (click)="onClickImageButton.emit(true)"
-        [class.component__success]="isImageDataWithFormDataEqual" *ngIf="imageData">
+        [class.component__success]="isImageDataWithFormDataEqual" *ngIf="imageData && imageData.length!== 0">
         <span class="fas fa-image component__icon"></span>{{imageData}}</button>
 </div>

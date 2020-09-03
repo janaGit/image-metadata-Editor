@@ -8,6 +8,7 @@ import { ReturnObject } from 'app/types/return-object.interface';
 import { HttpClient } from '@angular/common/http';
 import { EditorService } from '../services/editor.service';
 import { AppTemplate } from 'app/types/app-template.interface';
+import { MetadataFromImageService } from './metadata-from-image.service';
 
 /**
  * This service class stores all the metadata for the currently edited image.
@@ -49,7 +50,10 @@ export class MetadataService {
 
 
 
-    constructor(private _http: HttpClient, private _editorService: EditorService) {
+    constructor(
+        private _http: HttpClient,
+        private _editorService: EditorService,
+        private _metadataFromImageService: MetadataFromImageService) {
     }
 
     get editMetadata() {
@@ -142,23 +146,23 @@ export class MetadataService {
 
     setMetadataFromAppTemplate(template: AppTemplate) {
         this.updateEditMetadata({
-            creator: template.metadataTab.creator,
-            contactInfo: template.metadataTab.contactInfo,
-            license: template.metadataTab.license,
-            keywords: template.metadataTab.keywords,
-            subject: template.metadataTab.subject,
-            description: template.metadataTab.description
+            creator: template.metadataTab.isCreatorCopiedFromImage?this._metadataFromImageService.editMetadata.creator:template.metadataTab.creator,
+            contactInfo: template.metadataTab.isContactInfoCopiedFromImage?this._metadataFromImageService.editMetadata.contactInfo:template.metadataTab.contactInfo,
+            license: template.metadataTab.isLicenseCopiedFromImage?this._metadataFromImageService.editMetadata.license:template.metadataTab.license,
+            keywords: template.metadataTab.areKeywordsCopiedFromImage?this._metadataFromImageService.editMetadata.keywords:template.metadataTab.keywords,
+            subject: template.metadataTab.isSubjectCopiedFromImage?this._metadataFromImageService.editMetadata.subject:template.metadataTab.subject,
+            description: template.metadataTab.isDescriptionCopiedFromImage?this._metadataFromImageService.editMetadata.description:template.metadataTab.description
         });
         this.updateCategories({
-            areNotSupportedCategoriesSelected:template.categoryTab.isNotSupportedCategoriesToCopy,
-            categories: template.categoryTab.categories
+            areNotSupportedCategoriesSelected: template.categoryTab.isNotSupportedCategoriesToCopy,
+            categories: template.categoryTab.isNotSupportedCategoriesToCopy?this._metadataFromImageService.categories:template.categoryTab.categories
         });
         this.updateLocation({
-            dateAndTime: template.locationTab.dateAndTime,
+            dateAndTime: template.locationTab.isTimeCopiedFromImage?this._metadataFromImageService.location.dateAndTime:template.locationTab.dateAndTime,
             isLocationDisabled: template.locationTab.isLocationDisabledByDefault,
             isTimeDisabled: template.locationTab.isTimeDisabledByDefault,
-            latitude: template.locationTab.latitude,
-            longitude: template.locationTab.longitude
+            latitude: template.locationTab.isLocationCopiedFromImage?this._metadataFromImageService.location.latitude:template.locationTab.latitude,
+            longitude: template.locationTab.isLocationCopiedFromImage?this._metadataFromImageService.location.longitude:template.locationTab.longitude
         });
     }
 

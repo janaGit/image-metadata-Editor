@@ -9,42 +9,8 @@ import { MetadataFromTemplateService } from '../metadata-from-template.service';
 import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
 import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 import { MetadataService } from '../metadata.service';
-const NO_TEMPLATE = "NO TEMPLATE";
+import { EMPTY_TEMPLATE, emptyTemplate } from 'app/templates';
 
-const noTemplate: AppTemplate = {
-  name: "",
-  categoryTab: {
-    isNotSupportedCategoriesToCopy: false,
-    isSupportedCategoriesToCopy: false,
-    categories: []
-  },
-  existingMetadataTab: {
-    method: ExistingMetadataTemplateMethods.COPY_ALL,
-  },
-  locationTab: {
-    dateAndTime: undefined,
-    isLocationDisabledByDefault: false,
-    isTimeDisabledByDefault: false,
-    latitude: undefined,
-    longitude: undefined,
-    isLocationCopiedFromImage: false,
-    isTimeCopiedFromImage: false
-  },
-  metadataTab: {
-    contactInfo: "",
-    isContactInfoCopiedFromImage: false,
-    creator: "",
-    isCreatorCopiedFromImage: false,
-    description: "",
-    isDescriptionCopiedFromImage: false,
-    keywords: [],
-    areKeywordsCopiedFromImage: false,
-    license: "",
-    isLicenseCopiedFromImage: false,
-    subject: "",
-    isSubjectCopiedFromImage: false
-  }
-}
 
 @Component({
   selector: 'app-template-tab',
@@ -61,13 +27,15 @@ export class TemplateTabComponent implements OnInit, OnDestroy {
 
   metadataFromTemplateServiceSubscription: Subscription;
 
-  constructor(private _cdr: ChangeDetectorRef, private _editorService: EditorService, private _metadataFromTemplateService: MetadataFromTemplateService, private _metadataService: MetadataService) { }
+  constructor(private _cdr: ChangeDetectorRef,
+    private _editorService: EditorService,
+    private _metadataFromTemplateService: MetadataFromTemplateService,
+    private _metadataService: MetadataService) { }
 
   ngOnInit(): void {
 
     this.templateSubscription = this._editorService.templates$.subscribe(templates => {
       this.templates = new Map(templates);
-      this.templates.set(noTemplate.name, deepCopyFunction(noTemplate));
 
       this.templateKeys = [...this.templates.keys()];
 
@@ -76,9 +44,9 @@ export class TemplateTabComponent implements OnInit, OnDestroy {
     this.metadataFromTemplateServiceSubscription = this._metadataFromTemplateService.templateName$.subscribe(templateName => {
       if (templateName !== this.selectTemplate.value) {
         this.selectTemplate.setValue(templateName);
-      }
-
-    })
+      } 
+      
+    });
 
   }
 
@@ -88,7 +56,7 @@ export class TemplateTabComponent implements OnInit, OnDestroy {
 
   onChangeSelectTemplate(event) {
     this._metadataFromTemplateService.setTemplate(this.templates.get(event));
-    this._metadataService.setMetadataFromAppTemplate(this._metadataFromTemplateService.getTemplate());
+    this._metadataService.setMetadataFromAppTemplate(this.templates.get(event));
   }
 
 }

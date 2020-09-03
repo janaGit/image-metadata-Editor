@@ -3,11 +3,13 @@ import { BehaviorSubject } from 'rxjs';
 import { TemplateMetadataKeys } from "../types/template-metadata-keys.interface";
 import { AppTemplate } from "../types/app-template.interface";
 import { map } from 'rxjs/operators';
+import { emptyTemplate, IMAGE_COPY_TEMPLATE, imageCopyTemplate, EMPTY_TEMPLATE } from "../templates"
 import { extractData, handleError } from '../../../utilities/utilitiy-methods';
 import { REST_GET_TEMPLATES, REST_GET_CATEGORY_TREE, REST_DELETE_TEMPLATE, REST_WRITE_TEMPLATE } from '../../../utilities/constants';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgModuleResolver } from '@angular/compiler';
+import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
 
 /**
  * This service class stores all the data that are created during the 
@@ -210,7 +212,8 @@ export class EditorService {
             for (let template of templates) {
                 templateMap.set(template.name, template)
             }
-
+            templateMap.set(EMPTY_TEMPLATE, emptyTemplate);
+            templateMap.set(IMAGE_COPY_TEMPLATE, imageCopyTemplate);
             this.updateTemplates(templateMap);
         } catch (error) {
             handleError(error);

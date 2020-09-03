@@ -95,7 +95,7 @@ export class MetadataFromImageService {
             creator: this._metadata["Creator"],
             contactInfo: this._metadata["ContactInfo"],
             license: this._metadata["License"],
-            keywords: this._metadata["Keywords"],
+            keywords:  [].concat(this._metadata["Keywords"]),
             subject: this._metadata["Subject"],
             description: this._metadata["Description"]
         };

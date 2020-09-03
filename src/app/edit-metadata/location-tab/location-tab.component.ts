@@ -72,39 +72,35 @@ export class LocationTabComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         let metadata: MetadataFromLocationTab = this._metadataService.location;
-        if (typeof metadata === "undefined" || metadata === null) {
-            metadata = this._metadataFromImageService.location;
+
+        this.isTimeDisabled = metadata.isTimeDisabled;
+        this.isLocationDisabled = metadata.isLocationDisabled
+        if (this.isTimeDisabled) {
+            this.disableTime();
+        }
+        if (this.isLocationDisabled) {
+            this.disableLocation();
         }
 
-        if (typeof metadata !== "undefined" || metadata === null) {
-            this.isTimeDisabled = metadata.isTimeDisabled;
-            this.isLocationDisabled = metadata.isLocationDisabled
-            if (this.isTimeDisabled) {
-                this.disableTime();
+        if (typeof metadata.latitude !== "undefined" && typeof metadata.longitude !== "undefined") {
+            this.markerLatLong = {
+                lat: metadata.latitude,
+                long: metadata.longitude
             }
-            if (this.isLocationDisabled) {
-                this.disableLocation();
-            }
-
-            if (typeof metadata.latitude !== "undefined" && typeof metadata.longitude !== "undefined") {
-                this.markerLatLong = {
-                    lat: metadata.latitude,
-                    long: metadata.longitude
-                }
-            } else {
-                this.disableLocation();
-            }
-
-            if (typeof metadata.dateAndTime === "undefined") {
-                this.disableTime();
-                this.dateImageCreated.setValue(new Date());
-                this.timeImageCreated.setValue(new Date());
-            }else{
-                this.dateImageCreated.setValue(new Date(metadata.dateAndTime));
-                this.timeImageCreated.setValue(new Date(metadata.dateAndTime));
-            }
-            this._cdr.detectChanges();
+        } else {
+            this.disableLocation();
         }
+
+        if (typeof metadata.dateAndTime === "undefined") {
+            this.disableTime();
+            this.dateImageCreated.setValue(new Date());
+            this.timeImageCreated.setValue(new Date());
+        } else {
+            this.dateImageCreated.setValue(new Date(metadata.dateAndTime));
+            this.timeImageCreated.setValue(new Date(metadata.dateAndTime));
+        }
+        this._cdr.detectChanges();
+
 
     }
 

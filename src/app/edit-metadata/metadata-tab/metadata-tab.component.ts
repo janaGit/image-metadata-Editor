@@ -5,6 +5,9 @@ import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.
 import { MetadataFromMetadataTab } from 'app/types/metadata-from-metadata-tab.interface';
 import { MetadataService } from '../metadata.service';
 import { Subscription } from 'rxjs';
+import { MetadataFromTemplateService } from '../metadata-from-template.service';
+import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
+import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 
 @Component({
     selector: 'metadata-tab',
@@ -31,8 +34,13 @@ export class MetadataTabComponent implements OnInit, OnDestroy {
 
 
     metadataFromImage: MetadataFromMetadataTab;
+    metadataFromTemplate: MetadataFromMetadataTemplateTab;
 
-    constructor(private _cdr: ChangeDetectorRef, private _editorService: EditorService, private _metadataFromImageService: MetadataFromImageService, private _metadataService: MetadataService) {
+    constructor(private _cdr: ChangeDetectorRef,
+        private _editorService: EditorService,
+        private _metadataFromImageService: MetadataFromImageService,
+        private _metadataFromTemplateService: MetadataFromTemplateService,
+        private _metadataService: MetadataService) {
 
     }
 
@@ -51,18 +59,20 @@ export class MetadataTabComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.licenseNames = this._editorService.getLicenseNames;
 
-        this.metadataFromImage  = this._metadataFromImageService.editMetadata;
+        this.metadataFromImage = this._metadataFromImageService.editMetadata;
 
         const editMetadata = this._metadataService.editMetadata;
 
-        this.creator.setValue(editMetadata?.creator);
-        this.contactInfo.setValue(editMetadata?.contactInfo);
-        this.license.setValue(editMetadata?.license);
-        this.subject.setValue(editMetadata?.subject);
-        this.description.setValue(editMetadata?.description);
-        this.keywords = editMetadata?.keywords;
+        this.creator.setValue(editMetadata.creator);
+        this.contactInfo.setValue(editMetadata.contactInfo);
+        this.license.setValue(editMetadata.license);
+        this.subject.setValue(editMetadata.subject);
+        this.description.setValue(editMetadata.description);
+        this.keywords = editMetadata.keywords;
 
-
+        if (this._metadataFromTemplateService.editMetadata) {
+            this.metadataFromTemplate = deepCopyFunction(this._metadataFromTemplateService.editMetadata);
+        }
     }
 
     onChangeCreator(value) {
@@ -86,30 +96,42 @@ export class MetadataTabComponent implements OnInit, OnDestroy {
     }
 
     getCreatorFromImage() {
-        this.creator.setValue(this.metadataFromImage.creator);
+        this.creator.setValue(deepCopyFunction(this.metadataFromImage.creator));
     }
     getCreatorFromTemplate() {
-
+        this.creator.setValue(deepCopyFunction(this.metadataFromTemplate.creator));
     }
 
     getContactInfoFromImage() {
-        this.contactInfo.setValue(this.metadataFromImage.contactInfo);
+        this.contactInfo.setValue(deepCopyFunction(this.metadataFromImage.contactInfo));
     }
     getContactInfoFromTemplate() {
-
+        this.contactInfo.setValue(deepCopyFunction(this.metadataFromTemplate.contactInfo));
     }
 
     getSubjectFromImage() {
-        this.subject.setValue(this.metadataFromImage.subject);
+        this.subject.setValue(deepCopyFunction(this.metadataFromImage.subject));
     }
     getSubjectFromTemplate() {
-
+        this.subject.setValue(deepCopyFunction(this.metadataFromTemplate.subject));
     }
 
     getDescriptionFromImage() {
-        this.description.setValue(this.metadataFromImage.description);
+        this.description.setValue(deepCopyFunction(this.metadataFromImage.description));
     }
     getDescriptionFromTemplate() {
-
+        this.description.setValue(deepCopyFunction(this.metadataFromTemplate.description));
+    }
+    getKeywordsFromImage() {
+        this.keywords = deepCopyFunction(this.metadataFromImage.keywords);
+    }
+    getKeywordsFromTemplate() {
+        this.keywords = deepCopyFunction(this.metadataFromTemplate.keywords);
+    }
+    getLicenseFromImage() {
+        this.license.setValue(deepCopyFunction(this.metadataFromImage.license));
+    }
+    getLicenseFromTemplate() {
+        this.license.setValue(deepCopyFunction(this.metadataFromTemplate.license));
     }
 }

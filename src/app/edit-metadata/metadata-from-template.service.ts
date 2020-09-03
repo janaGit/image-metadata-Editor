@@ -10,6 +10,7 @@ import { deepCopyFunction } from '../../../utilities/utilitiy-methods';
 import { EditorService } from 'app/services/editor.service';
 import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
 import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
+import { EMPTY_TEMPLATE, emptyTemplate } from 'app/templates';
 
 @Injectable({
     providedIn: 'root'
@@ -67,11 +68,7 @@ export class MetadataFromTemplateService {
     }
 
     resetTemplate() {
-        this.updateExistingMetadata(null);
-        this.updateEditMetadata(null);
-        this.updateCategories(null);
-        this.updateLocation(null);
-        this.updateTemplateName(null);
+        this.setTemplate(emptyTemplate);
     }
 
     getTemplate(): AppTemplate {
