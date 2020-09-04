@@ -3,7 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 import { MetadataFromMetadataTab } from '../types/metadata-from-metadata-tab.interface';
 import { MetadataFromLocationTab } from '../types/metadata-from-location-tab.interface';
 import { AppTemplate } from 'app/types/app-template.interface';
-import { TemplateExistingMetadataType } from 'app/types/template-existing-metadata.type';
 import { TemplateCategoriesTab } from 'app/types/template-categories-tab.interface';
 import { MetadataFromImageService } from './metadata-from-image.service';
 import { deepCopyFunction } from '../../../utilities/utilitiy-methods';
@@ -11,6 +10,8 @@ import { EditorService } from 'app/services/editor.service';
 import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
 import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
 import { EMPTY_TEMPLATE, emptyTemplate } from 'app/templates';
+import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
+import { TemplateExistingMetadata } from 'app/types/template-existing-metadata.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -38,9 +39,9 @@ export class MetadataFromTemplateService {
     public categories$ = this.__categories.asObservable();
 
 
-    private _existingMetadata: TemplateExistingMetadataType;
+    private _existingMetadata: TemplateExistingMetadata;
 
-    private __existingMetadata: BehaviorSubject<TemplateExistingMetadataType> = new BehaviorSubject<TemplateExistingMetadataType>(null);
+    private __existingMetadata: BehaviorSubject<TemplateExistingMetadata> = new BehaviorSubject<TemplateExistingMetadata>(null);
 
     public existingMetadata$ = this.__existingMetadata.asObservable();
 
@@ -55,7 +56,9 @@ export class MetadataFromTemplateService {
 
 
 
-    constructor(private _metadataFromImageService: MetadataFromImageService, private _editorService: EditorService) {
+    constructor(
+        private _metadataFromImageService: MetadataFromImageService,
+        private _editorService: EditorService) {
     }
 
     setTemplate(template: AppTemplate) {
@@ -148,7 +151,39 @@ export class MetadataFromTemplateService {
         this.__categories.next(templateCategories);
     }
 
-    updateExistingMetadata(existingMetadata: TemplateExistingMetadataType) {
+    updateExistingMetadata(existingMetadata: TemplateExistingMetadata) {
+        let keys: string[] = [];
+        switch (existingMetadata.method) {
+            case ExistingMetadataTemplateMethods.COPY_CUSTOM:
+                existingMetadata.keys.forEach(key => {
+                    if (typeof this._metadataFromImageService.existingMetadata.get(key) !== "undefined") {
+                        keys.push(key);
+                    }
+                });
+                break;
+            case ExistingMetadataTemplateMethods.DELETE_CUSTOM:
+                this._metadataFromImageService.existingMetadata.forEach((value, key) => {
+                    keys.push(key);
+                });
+                existingMetadata.keys.forEach(key => {
+                    if (typeof this._metadataFromImageService.existingMetadata.get(key) !== "undefined") {
+                        const index = keys.indexOf(key);
+                        keys.splice(index, 1);
+                    }
+                });
+                break;
+            case ExistingMetadataTemplateMethods.COPY_ALL:
+                this._metadataFromImageService.existingMetadata.forEach((value, key) => {
+                    keys.push(key);
+                });
+                break;
+            case ExistingMetadataTemplateMethods.DELETE_ALL:
+
+                break;
+            default:
+                throw Error("method not supported!");
+        }
+        existingMetadata.keys = keys;
         this._existingMetadata = existingMetadata;
         this.__existingMetadata.next(existingMetadata);
     }

@@ -5,9 +5,9 @@ import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
 import { HttpClient } from '@angular/common/http';
 import { EditorService } from '../services/editor.service';
 import { AppTemplate } from 'app/types/app-template.interface';
-import { TemplateExistingMetadataType } from '../types/template-existing-metadata.type';
 import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
 import { TemplateCategoriesTab } from 'app/types/template-categories-tab.interface';
+import { TemplateExistingMetadata } from 'app/types/template-existing-metadata.interface';
 
 @Injectable()
 export class EditTemplateService {
@@ -35,9 +35,9 @@ export class EditTemplateService {
     public categories$ = this.__categories.asObservable();
 
 
-    private _existingMetadata: TemplateExistingMetadataType;
+    private _existingMetadata: TemplateExistingMetadata;
 
-    private __existingMetadata: BehaviorSubject<TemplateExistingMetadataType> = new BehaviorSubject<TemplateExistingMetadataType>(null);
+    private __existingMetadata: BehaviorSubject<TemplateExistingMetadata> = new BehaviorSubject<TemplateExistingMetadata>(null);
 
     public existingMetadata$ = this.__existingMetadata.asObservable();
 
@@ -89,7 +89,7 @@ export class EditTemplateService {
         this.__categories.next(categories);
     }
 
-    updateExistingMetadata(existingMetadata: TemplateExistingMetadataType) {
+    updateExistingMetadata(existingMetadata: TemplateExistingMetadata) {
         this._existingMetadata = existingMetadata;
         this.__existingMetadata.next(existingMetadata);
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { TemplateMetadataKeys } from "../types/template-metadata-keys.interface";
+import { TemplateExistingMetadata } from "../types/template-existing-metadata.interface";
 import { AppTemplate } from "../types/app-template.interface";
 import { map } from 'rxjs/operators';
 import { emptyTemplate, IMAGE_COPY_TEMPLATE, imageCopyTemplate, EMPTY_TEMPLATE } from "../templates"

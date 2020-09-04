@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { EditorService } from '../services/editor.service';
 import { AppTemplate } from 'app/types/app-template.interface';
 import { MetadataFromImageService } from './metadata-from-image.service';
+import { TemplateExistingMetadata } from 'app/types/template-existing-metadata.interface';
 
 /**
  * This service class stores all the metadata for the currently edited image.
@@ -87,6 +88,16 @@ export class MetadataService {
         this.__existingMetadata.next(existingMetadata);
     }
 
+    updateExistingMetadataFromTemplate(existingMetadata:TemplateExistingMetadata) {
+        const existingMetadataMap = new Map();
+        existingMetadata.keys.forEach((key) => {
+            existingMetadataMap.set(key, this._metadataFromImageService.existingMetadata.get(key));
+        })
+        this._existingMetadata = existingMetadataMap;
+        this.__existingMetadata.next(existingMetadataMap);
+    }
+
+
     updateLocation(location: MetadataFromLocationTab) {
         this._location = location;
         this.__location.next(location);
@@ -146,24 +157,28 @@ export class MetadataService {
 
     setMetadataFromAppTemplate(template: AppTemplate) {
         this.updateEditMetadata({
-            creator: template.metadataTab.isCreatorCopiedFromImage?this._metadataFromImageService.editMetadata.creator:template.metadataTab.creator,
-            contactInfo: template.metadataTab.isContactInfoCopiedFromImage?this._metadataFromImageService.editMetadata.contactInfo:template.metadataTab.contactInfo,
-            license: template.metadataTab.isLicenseCopiedFromImage?this._metadataFromImageService.editMetadata.license:template.metadataTab.license,
-            keywords: template.metadataTab.areKeywordsCopiedFromImage?this._metadataFromImageService.editMetadata.keywords:template.metadataTab.keywords,
-            subject: template.metadataTab.isSubjectCopiedFromImage?this._metadataFromImageService.editMetadata.subject:template.metadataTab.subject,
-            description: template.metadataTab.isDescriptionCopiedFromImage?this._metadataFromImageService.editMetadata.description:template.metadataTab.description
+            creator: template.metadataTab.isCreatorCopiedFromImage ? this._metadataFromImageService.editMetadata.creator : template.metadataTab.creator,
+            contactInfo: template.metadataTab.isContactInfoCopiedFromImage ? this._metadataFromImageService.editMetadata.contactInfo : template.metadataTab.contactInfo,
+            license: template.metadataTab.isLicenseCopiedFromImage ? this._metadataFromImageService.editMetadata.license : template.metadataTab.license,
+            keywords: template.metadataTab.areKeywordsCopiedFromImage ? this._metadataFromImageService.editMetadata.keywords : template.metadataTab.keywords,
+            subject: template.metadataTab.isSubjectCopiedFromImage ? this._metadataFromImageService.editMetadata.subject : template.metadataTab.subject,
+            description: template.metadataTab.isDescriptionCopiedFromImage ? this._metadataFromImageService.editMetadata.description : template.metadataTab.description
         });
+        
         this.updateCategories({
             areNotSupportedCategoriesSelected: template.categoryTab.isNotSupportedCategoriesToCopy,
-            categories: template.categoryTab.isNotSupportedCategoriesToCopy?this._metadataFromImageService.categories:template.categoryTab.categories
+            categories: template.categoryTab.isNotSupportedCategoriesToCopy ? this._metadataFromImageService.categories : template.categoryTab.categories
         });
+
         this.updateLocation({
-            dateAndTime: template.locationTab.isTimeCopiedFromImage?this._metadataFromImageService.location.dateAndTime:template.locationTab.dateAndTime,
+            dateAndTime: template.locationTab.isTimeCopiedFromImage ? this._metadataFromImageService.location.dateAndTime : template.locationTab.dateAndTime,
             isLocationDisabled: template.locationTab.isLocationDisabledByDefault,
             isTimeDisabled: template.locationTab.isTimeDisabledByDefault,
-            latitude: template.locationTab.isLocationCopiedFromImage?this._metadataFromImageService.location.latitude:template.locationTab.latitude,
-            longitude: template.locationTab.isLocationCopiedFromImage?this._metadataFromImageService.location.longitude:template.locationTab.longitude
+            latitude: template.locationTab.isLocationCopiedFromImage ? this._metadataFromImageService.location.latitude : template.locationTab.latitude,
+            longitude: template.locationTab.isLocationCopiedFromImage ? this._metadataFromImageService.location.longitude : template.locationTab.longitude
         });
+
+        this.updateExistingMetadataFromTemplate(template.existingMetadataTab);
     }
 
     private extractReturnObject(res: any): ReturnObject {

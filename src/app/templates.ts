@@ -10,7 +10,8 @@ export const emptyTemplate: AppTemplate = {
         categories: []
     },
     existingMetadataTab: {
-        method: ExistingMetadataTemplateMethods.COPY_ALL,
+        keys:[],
+        method: ExistingMetadataTemplateMethods.DELETE_ALL,
     },
     locationTab: {
         dateAndTime: undefined,
@@ -46,6 +47,7 @@ export const imageCopyTemplate: AppTemplate = {
         categories: []
     },
     existingMetadataTab: {
+        keys:[],
         method: ExistingMetadataTemplateMethods.COPY_ALL,
     },
     locationTab: {

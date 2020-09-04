@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ImageService } from './services/image.service';
 import { ExifToolService } from './services/exif-tool.service';
 import { EditorService } from './services/editor.service';
-import { TemplateMetadataKeys } from './types/template-metadata-keys.interface';
+import { TemplateExistingMetadata } from './types/template-existing-metadata.interface';
 import { AppTemplate } from './types/app-template.interface';
 import { ExistingMetadataTemplateMethods } from './types/existing-metadata-templete-methods.type';
 import { Subscription } from 'rxjs';

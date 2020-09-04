@@ -18,6 +18,7 @@ const newTemplate: AppTemplate = {
         categories: []
     },
     existingMetadataTab: {
+        keys: [],
         method: ExistingMetadataTemplateMethods.COPY_ALL,
     },
     locationTab: {

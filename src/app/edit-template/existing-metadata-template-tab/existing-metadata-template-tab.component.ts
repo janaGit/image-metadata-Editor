@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { EditTemplateService } from '../edit-template.service';
 import { ExistingMetadataTemplateMethods } from '../../types/existing-metadata-templete-methods.type'
-import { TemplateMetadataKeys } from '../../types/template-metadata-keys.interface'
+import { TemplateExistingMetadata } from '../../types/template-existing-metadata.interface'
 
 @Component({
   selector: 'app-existing-metadata-template-tab',
@@ -32,7 +32,7 @@ export class ExistingMetadataTemplateTabComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.selectedValue = this._editTemplateService.existingMetadata.method;
     if (this._editTemplateService.existingMetadata["keys"]) {
-      this.metadataKeys = (<TemplateMetadataKeys>this._editTemplateService.existingMetadata).keys;
+      this.metadataKeys = (<TemplateExistingMetadata>this._editTemplateService.existingMetadata).keys;
       this.isMetadataKeysShown = true;
     }
   }
@@ -51,15 +51,9 @@ export class ExistingMetadataTemplateTabComponent implements OnInit, OnDestroy {
   }
 
   sendMetadataToService() {
-    if (this.selectedValue === ExistingMetadataTemplateMethods.COPY_CUSTOM || this.selectedValue === ExistingMetadataTemplateMethods.DELETE_CUSTOM) {
       this._editTemplateService.updateExistingMetadata({
         keys: this.metadataKeys,
         method: this.selectedValue
       });
-    } else {
-      this._editTemplateService.updateExistingMetadata({
-        method: this.selectedValue
-      });
-    }
   }
 }
