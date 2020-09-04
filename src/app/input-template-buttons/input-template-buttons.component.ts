@@ -9,6 +9,10 @@ import { areArraysEqual } from '../../../utilities/utilitiy-methods';
 export class InputTemplateButtonsComponent implements OnInit {
 
   private _templateData: string | string[];
+
+  @Input() buttonTitleImageMetadata: string = "";
+  @Input() buttonTitleTemplateMetadata: string = "";
+
   @Input()
   set templateData(templateData) {
     if (templateData) {
@@ -37,7 +41,7 @@ export class InputTemplateButtonsComponent implements OnInit {
   private _isToCopyFromImage: boolean = false;
   @Input()
   set isToCopyFromImage(isToCopyFromImage) {
-      this._isToCopyFromImage = isToCopyFromImage;
+    this._isToCopyFromImage = isToCopyFromImage;
   }
   get isToCopyFromImage() {
     return this._isToCopyFromImage;
@@ -66,6 +70,7 @@ export class InputTemplateButtonsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
   testEquality() {
     if (Array.isArray(this.formData)) {

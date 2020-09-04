@@ -1,9 +1,17 @@
 <div class="component__row">
     <button type="button" class="btn component__button_template" (click)="onClickTemplateButton.emit(true)"
-        [class.component__success]="isTemplateDataWithFormDataEqual" *ngIf="templateData && templateData.length!== 0 && !isToCopyFromImage">
-        <span class=" fas fa-sticky-note component__icon"></span>{{templateData}}</button>
+        [class.component__success]="isTemplateDataWithFormDataEqual"
+        *ngIf="templateData && templateData.length!== 0 && !isToCopyFromImage">
+        <span class=" fas fa-sticky-note component__icon"></span>
+        <span class="fas fa-image component__icon" *ngIf="isToCopyFromImage"></span>
+        <span *ngIf="buttonTitleTemplateMetadata.length === 0">{{templateData}}</span>
+        <span *ngIf="buttonTitleTemplateMetadata.length > 0">{{buttonTitleTemplateMetadata}}</span>
+    </button>
     <button type="button" class="btn component__button_template" (click)="onClickImageButton.emit(true)"
         [class.component__success]="isImageDataWithFormDataEqual" *ngIf="imageData && imageData.length!== 0">
-        <span class=" fas fa-sticky-note component__icon"*ngIf="isToCopyFromImage"></span>
-        <span class="fas fa-image component__icon"></span>{{imageData}}</button>
+        <span class=" fas fa-sticky-note component__icon" *ngIf="isToCopyFromImage"></span>
+        <span class="fas fa-image component__icon"></span>
+        <span *ngIf="buttonTitleImageMetadata.length === 0">{{imageData}}</span>
+        <span *ngIf="buttonTitleImageMetadata.length > 0">{{buttonTitleImageMetadata}}</span>
+    </button>
 </div>
