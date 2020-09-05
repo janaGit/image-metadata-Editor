@@ -5,11 +5,13 @@ import { AppTemplate } from "../types/app-template.interface";
 import { map } from 'rxjs/operators';
 import { emptyTemplate, IMAGE_COPY_TEMPLATE, imageCopyTemplate, EMPTY_TEMPLATE } from "../templates"
 import { extractData, handleError } from '../../../utilities/utilitiy-methods';
-import { REST_GET_TEMPLATES, REST_GET_CATEGORY_TREE, REST_DELETE_TEMPLATE, REST_WRITE_TEMPLATE } from '../../../utilities/constants';
+import { REST_GET_TEMPLATES, REST_GET_CATEGORY_TREE, REST_DELETE_TEMPLATE, REST_WRITE_TEMPLATE, REST_GET_CONFIG } from '../../../utilities/constants';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgModuleResolver } from '@angular/compiler';
 import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
+import { AppConfig } from 'app/types/app-config.interface';
+
 
 /**
  * This service class stores all the data that are created during the 
@@ -179,6 +181,16 @@ export class EditorService {
     public categoryTree$ = this.__categoryTree.asObservable();
 
 
+    /**  config           ---------------------------------------------           */
+
+    private _config: AppConfig;
+
+
+    private __config: BehaviorSubject<AppConfig> = new BehaviorSubject<AppConfig>(undefined);
+
+    public config$ = this.__config.asObservable();
+
+
     /** Post counter value for modal Progress  ---------------------------------------------------------- */
     /**
      * Variable that stores a BehaviorSubject to distribute the
@@ -200,6 +212,7 @@ export class EditorService {
     constructor(private _http: HttpClient, private _router: Router) {
         this.getTemplatesFromBackend();
         this.getCategoryTreeFromBackend();
+        this.getConfigFromBackend();
     }
 
     async getTemplatesFromBackend() {
@@ -224,6 +237,16 @@ export class EditorService {
             const categoryTree = await this._http.get(REST_GET_CATEGORY_TREE).pipe(
                 map(extractData)).toPromise();
             this.updateCategoryTree(categoryTree);
+        } catch (error) {
+            handleError(error);
+        }
+    }
+
+    private async getConfigFromBackend() {
+        try {
+            const config = await this._http.get(REST_GET_CONFIG).pipe(
+                map(extractData)).toPromise();
+            this.updateConfig(config);
         } catch (error) {
             handleError(error);
         }
@@ -336,6 +359,10 @@ export class EditorService {
     get categoryTree() {
         return this._categoryTree;
     }
+
+    get config() {
+        return this._config;
+    }
     /**
      * Get the templates for the more-metadata tab.
      */
@@ -432,6 +459,13 @@ export class EditorService {
     updateCategoryTree(categoryTree: Object) {
         this._categoryTree = categoryTree;
         this.__categoryTree.next(categoryTree);
+    }
+
+
+    updateConfig(config: AppConfig) {
+        this._config = config;
+        this.__config.next(config);
+        this.updateLicenseNames(config.licenses);
     }
 
     /**

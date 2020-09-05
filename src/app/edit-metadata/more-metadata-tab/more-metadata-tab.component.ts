@@ -30,6 +30,11 @@ export class MoreMetadataTabComponent implements OnDestroy {
 
     selectedKeys: string[] = [];
 
+    keysNotDeletable: string[]=[];
+
+    editableKeys: string[] = ["Creator", "Categories", "Description","Subject","Keywords", 
+    "License","ContactInfo","GPSLatitude","GPSLongitude","GPSPosition","DateTimeOriginal"];
+
     constructor(private _editorService: EditorService,
         private _metadataService: MetadataService,
         private _metadataFromImageService: MetadataFromImageService,

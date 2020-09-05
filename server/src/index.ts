@@ -22,6 +22,7 @@ export class Server {
     private imageDir_complete: string;
     private templateDir: string;
     private fileNameForCategoryTree: string;
+    private fileNameForConfigFile: string;
     private configDir: string;
     public app: express.Express;
     private router;
@@ -56,6 +57,7 @@ export class Server {
         this.configDir = './config';
         this.templateDir = this.configDir + '/templates';
         this.fileNameForCategoryTree = "category-tree.json"
+        this.fileNameForConfigFile = "config.json";
         dotenv.config();
 
         if (!process.env.PORT) {
@@ -123,6 +125,7 @@ export class Server {
         this.router.delete('/deleteTemplate/:templateName', this.deleteTemplate);
 
         this.router.get('/getCategoryTree', this.readCategoryTree);
+        this.router.get('/getConfig', this.readConfig);
 
         this.router.get('*', (req, res) => {
             res.sendFile(path.join(__dirname, 'dist/index.html'));
@@ -440,7 +443,7 @@ export class Server {
         let data = JSON.stringify(template, null, 4);
         fs.writeFileSync(this.templateDir + "/" + (<string>template.name).replace(" ", "").toLocaleLowerCase() + '.json', data);
         let body: { data: any } = { data: "OK" };
-        res.status(200).send(body); 
+        res.status(200).send(body);
     }
 
     private deleteTemplate = (req: Request, res: Response) => {
@@ -453,6 +456,12 @@ export class Server {
     private readCategoryTree = (req, res) => {
         const categoryTree = JSON.parse(fs.readFileSync(this.configDir + "/" + this.fileNameForCategoryTree).toString());
         let body: { data: any } = { data: categoryTree };
+        res.status(200).send(body);
+    }
+
+    private readConfig = (req, res) => {
+        const config = JSON.parse(fs.readFileSync(this.configDir + "/" + this.fileNameForConfigFile).toString());
+        let body: { data: any } = { data: config };
         res.status(200).send(body);
     }
 

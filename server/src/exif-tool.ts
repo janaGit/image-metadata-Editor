@@ -44,7 +44,7 @@ export class ExifTool {
   public getMetadata(imageDir, imageName) {
     var json = {};
 
-    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, '--file:all', '--ExifToolVersion', '-a', '-s',]);
+    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, '-a', '-s',]);
     return new Promise((fulfill, reject) => {
       ls.stdout.on('data', (data) => {
         console.log('exifTool getMetadata: ' + data);

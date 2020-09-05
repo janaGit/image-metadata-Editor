@@ -35,7 +35,7 @@ var imageDir_complete = 'images_complete'
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss', './css/global-app.scss'] 
+    styleUrls: ['./app.component.scss', './css/global-app.scss']
 })
 export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     /**
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
      * 
      * Default: 'de'
      */
-    _lang: string = "de";
+    _lang: string;
     /**
      * Chache for the short cut: '1', 
      * that can switch between English and the last selected language.
@@ -78,9 +78,11 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     private _lang_select: string = this._lang;
 
 
-    private _routerSubscription: Subscription; 
+    private _routerSubscription: Subscription;
 
-    private _startTabOpenSubscription: Subscription; 
+    private _startTabOpenSubscription: Subscription;
+
+    private _configSubscription: Subscription;
     /**
      * Variable stores the status, if the filetab is open or not.
      */
@@ -101,14 +103,19 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this._imageService.imageDir_edited = imageDir_edited;
         this._imageService.imageDir_original = imageDir_original;
         this._imageService.imageDir_complete = imageDir_complete;
-        // Set the language for the image metadata 
-        this._exifToolService.language = this._lang;
         // Subscribe to router events to update the label of the 'changeView'-button
         this._routerSubscription = this._router.events.subscribe((val) => { this.setChangeViewButtonText(); this.setChangeEditTemplateViewButtonText(); });
         this._startTabOpenSubscription = this._editorService._startTabOpen$.subscribe(isOpen => {
             this._startTabOpen = isOpen;
         })
-        this._editorService.updateLicenseNames(["CC-by", "CC-by-sa", "CC-by-nd", "CC-by-nc", "CC-by-nc-sa"]);
+        this._configSubscription = this._editorService.config$.subscribe(config => {
+            if (config) {
+                this._lang = config.defaultLanguage;
+                this._exifToolService.language = this._lang;
+            }
+
+        })
+
 
     }
     ngAfterViewChecked() {
