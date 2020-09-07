@@ -19,6 +19,9 @@ import { AppConfig } from 'app/types/app-config.interface';
  */
 @Injectable()
 export class EditorService {
+    editableKeys: string[] = ["Creator", "Categories", "Description", "Subject", "Keywords",
+        "License", "ContactInfo", "GPSLatitude", "GPSLongitude", "GPSPosition", "DateTimeOriginal"];
+    importantMetadataKeys: string;
 
     /**  imageName            ---------------------------------------------           */
     /**
@@ -247,6 +250,7 @@ export class EditorService {
             const config = await this._http.get(REST_GET_CONFIG).pipe(
                 map(extractData)).toPromise();
             this.updateConfig(config);
+        
         } catch (error) {
             handleError(error);
         }
@@ -496,6 +500,14 @@ export class EditorService {
         }
         return counter;
     }
+
+    public isEditableKey(key: string): boolean {
+        return this.editableKeys.indexOf(key) > -1;
+    }
+    public isImportantMetadataKey(key: string): boolean {
+        return this.config.importantMetadataKeys.indexOf(key) > -1;
+    }
+
     /**
      * This method returns all strings of an array that contain a specific substring.
      */

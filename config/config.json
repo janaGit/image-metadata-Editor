@@ -1,6 +1,6 @@
 {
     "licenses":["CC-by", "CC-by-sa", "CC-by-nd", "CC-by-nc", "CC-by-nc-sa"],
-    "unimportantMetadataKeys":[],
+    "importantMetadataKeys":["FileName", "Orientation"],
     "defaultLanguage":"de"  ,
     "__comment_defaultLanguages": "'cs' 'de' 'en' 'es' 'fr' 'it' 'ja' 'ko', 'nl', 'pl', 'ru', 'sv', 'tr', 'zh_cn', 'zh_tw'"
 }

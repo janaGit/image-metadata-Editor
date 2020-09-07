@@ -1,5 +1,5 @@
 export interface AppConfig {
     licenses: string[];
-    unimportantMetadataKeys:string[];
+    importantMetadataKeys:string[];
     defaultLanguage: string
 }

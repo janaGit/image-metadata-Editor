@@ -30,10 +30,6 @@ export class MoreMetadataTabComponent implements OnDestroy {
 
     selectedKeys: string[] = [];
 
-    keysNotDeletable: string[]=[];
-
-    editableKeys: string[] = ["Creator", "Categories", "Description","Subject","Keywords", 
-    "License","ContactInfo","GPSLatitude","GPSLongitude","GPSPosition","DateTimeOriginal"];
 
     constructor(private _editorService: EditorService,
         private _metadataService: MetadataService,
@@ -52,7 +48,10 @@ export class MoreMetadataTabComponent implements OnDestroy {
         this.templateMetadataKeys = this._metadataFromTemplateService.existingMetadata.keys;
 
         this.imageMetadata.forEach((value, key) => {
-            this.metadataControls.set(key, new FormControl(false));
+            if (!this.isEditableKey(key)) {
+                this.metadataControls.set(key, new FormControl(false));
+            }
+
         });
         this.selectedMetadata.forEach((value, key) => {
             this.metadataControls.get(key).setValue(true);
@@ -61,8 +60,43 @@ export class MoreMetadataTabComponent implements OnDestroy {
 
 
 
+
     }
 
+    shiftEditableKeysUp(a, b) {
+        if (!this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
+            return 1;
+        }
+        if (this.isEditableKey(a.key) && !this.isEditableKey(b.key)) {
+            return -1;
+        }
+        if (this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
+            if ([a.key, b.key].sort()[0] === a.key) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+        if (!this.isImportantMetadataKey(a.key) && this.isImportantMetadataKey(b.key)) {
+            return 1;
+        }
+        if (this.isImportantMetadataKey(a.key) && !this.isImportantMetadataKey(b.key)) {
+            return -1;
+        }
+        if ([a.key, b.key].sort()[0] === a.key) {
+            return -1;
+        } else {
+            return 1;
+        }
+    };
+
+    isEditableKey(key: string) {
+        return this._editorService.isEditableKey(key);
+    }
+
+    isImportantMetadataKey(key: string) {
+        return this._editorService.isImportantMetadataKey(key);
+    }
 
 
     onChangeSelection(event, key: string) {
@@ -91,6 +125,8 @@ export class MoreMetadataTabComponent implements OnDestroy {
         this.selectAllControl.setValue(false);
         this.templateMetadataKeys.forEach(key => {
             this.metadataControls.get(key).setValue(true);
+
+
         })
     }
 }

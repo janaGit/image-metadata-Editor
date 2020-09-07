@@ -157,13 +157,17 @@ export class MetadataFromTemplateService {
             case ExistingMetadataTemplateMethods.COPY_CUSTOM:
                 existingMetadata.keys.forEach(key => {
                     if (typeof this._metadataFromImageService.existingMetadata.get(key) !== "undefined") {
-                        keys.push(key);
+                        if (!this._editorService.isEditableKey(key)) {
+                            keys.push(key);
+                        }
                     }
                 });
                 break;
             case ExistingMetadataTemplateMethods.DELETE_CUSTOM:
                 this._metadataFromImageService.existingMetadata.forEach((value, key) => {
-                    keys.push(key);
+                    if (!this._editorService.isEditableKey(key)) {
+                        keys.push(key);
+                    }
                 });
                 existingMetadata.keys.forEach(key => {
                     if (typeof this._metadataFromImageService.existingMetadata.get(key) !== "undefined") {
@@ -174,7 +178,9 @@ export class MetadataFromTemplateService {
                 break;
             case ExistingMetadataTemplateMethods.COPY_ALL:
                 this._metadataFromImageService.existingMetadata.forEach((value, key) => {
-                    keys.push(key);
+                    if (!this._editorService.isEditableKey(key)) {
+                        keys.push(key);
+                    }
                 });
                 break;
             case ExistingMetadataTemplateMethods.DELETE_ALL:
