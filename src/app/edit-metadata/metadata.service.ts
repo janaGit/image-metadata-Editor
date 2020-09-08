@@ -88,7 +88,7 @@ export class MetadataService {
         this.__existingMetadata.next(existingMetadata);
     }
 
-    updateExistingMetadataFromTemplate(existingMetadata:TemplateExistingMetadata) {
+    updateExistingMetadataFromTemplate(existingMetadata: TemplateExistingMetadata) {
         const existingMetadataMap = new Map();
         existingMetadata.keys.forEach((key) => {
             existingMetadataMap.set(key, this._metadataFromImageService.existingMetadata.get(key));
@@ -113,11 +113,32 @@ export class MetadataService {
     getAllMetadata(): Object {
         const allMetadata: Object = {};
         if (this.editMetadata) {
-            for (const key of Object.keys(this.editMetadata)) {
-                if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
-                    allMetadata[key] = this.editMetadata[key];
-                }
+
+            let key = "creator";
+            if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
+                allMetadata["Creator"] = this.editMetadata[key];
             }
+            key = "license";
+            if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
+                allMetadata["License"] = this.editMetadata[key];
+            }
+            key = "contactInfo";
+            if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
+                allMetadata["ContactInfo"] = this.editMetadata[key];
+            }
+            key = "keywords";
+            if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
+                allMetadata["Keywords"] = this.editMetadata[key];
+            }
+            key = "subject";
+            if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
+                allMetadata["Subject"] = this.editMetadata[key];
+            }
+            key = "description";
+            if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
+                allMetadata["Description"] = this.editMetadata[key];
+            }
+
         }
 
         this.existingMetadata.forEach((value, key) => {
@@ -164,7 +185,7 @@ export class MetadataService {
             subject: template.metadataTab.isSubjectCopiedFromImage ? this._metadataFromImageService.editMetadata.subject : template.metadataTab.subject,
             description: template.metadataTab.isDescriptionCopiedFromImage ? this._metadataFromImageService.editMetadata.description : template.metadataTab.description
         });
-        
+
         this.updateCategories({
             areNotSupportedCategoriesSelected: template.categoryTab.isNotSupportedCategoriesToCopy,
             categories: template.categoryTab.isNotSupportedCategoriesToCopy ? this._metadataFromImageService.categories : template.categoryTab.categories

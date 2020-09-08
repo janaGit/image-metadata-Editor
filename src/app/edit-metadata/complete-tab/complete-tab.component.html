@@ -3,7 +3,7 @@
         <div class="table-container app-form-field__row-element">
             <table class="table table-striped">
                 <tbody>
-                    <tr *ngFor="let key of metadataKeys">
+                    <tr *ngFor="let key of metadataKeys" [class.color-key]="isEditableKey(key)||isImportantMetadataKey(key)">
                         <td class="app-capitalize">{{key}}</td>
                         <td>{{metadata[key]}}</td>
                     </tr>

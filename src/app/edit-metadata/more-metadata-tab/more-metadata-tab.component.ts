@@ -5,8 +5,6 @@ import { EditorService } from 'app/services/editor.service';
 import { MetadataService } from '../metadata.service';
 import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
 import { MetadataFromTemplateService } from '../metadata-from-template.service';
-import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
-import { TemplateExistingMetadata } from 'app/types/template-existing-metadata.interface';
 
 @Component({
     selector: ' more-metadata-tab',
@@ -63,32 +61,7 @@ export class MoreMetadataTabComponent implements OnDestroy {
 
     }
 
-    shiftEditableKeysUp(a, b) {
-        if (!this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
-            return 1;
-        }
-        if (this.isEditableKey(a.key) && !this.isEditableKey(b.key)) {
-            return -1;
-        }
-        if (this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
-            if ([a.key, b.key].sort()[0] === a.key) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
-        if (!this.isImportantMetadataKey(a.key) && this.isImportantMetadataKey(b.key)) {
-            return 1;
-        }
-        if (this.isImportantMetadataKey(a.key) && !this.isImportantMetadataKey(b.key)) {
-            return -1;
-        }
-        if ([a.key, b.key].sort()[0] === a.key) {
-            return -1;
-        } else {
-            return 1;
-        }
-    };
+
 
     isEditableKey(key: string) {
         return this._editorService.isEditableKey(key);
@@ -129,4 +102,32 @@ export class MoreMetadataTabComponent implements OnDestroy {
 
         })
     }
+
+    shiftEditableKeysUp(this, a, b) {
+        if (!this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
+            return 1;
+        }
+        if (this.isEditableKey(a.key) && !this.isEditableKey(b.key)) {
+            return -1;
+        }
+        if (this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
+            if ([a.key, b.key].sort()[0] === a.key) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+        if (!this.isImportantMetadataKey(a.key) && this.isImportantMetadataKey(b.key)) {
+            return 1;
+        }
+        if (this.isImportantMetadataKey(a.key) && !this.isImportantMetadataKey(b.key)) {
+            return -1;
+        }
+        if ([a.key, b.key].sort()[0] === a.key) {
+            return -1;
+        } else {
+            return 1;
+        }
+
+    };
 }

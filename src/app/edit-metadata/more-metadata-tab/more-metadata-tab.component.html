@@ -14,7 +14,7 @@
         <th>Value</th>
       </tr>
       <tbody>
-        <tr *ngFor="let metadata of imageMetadata | keyvalue:shiftEditableKeysUp.bind(this)" [class.editable-key]="isEditableKey(metadata.key)||isImportantMetadataKey(metadata.key)">
+        <tr *ngFor="let metadata of imageMetadata | keyvalue:shiftEditableKeysUp.bind(this)" [class.color-key]="isEditableKey(metadata.key)||isImportantMetadataKey(metadata.key)">
           <td><input type="checkbox" 
             [formControl]="metadataControls.get(metadata.key)"  
             (ngModelChange)="onChangeSelection($event,metadata.key)"

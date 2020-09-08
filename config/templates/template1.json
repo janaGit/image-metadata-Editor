@@ -1,13 +1,34 @@
 {
     "name": "Template 1",
+    "existingMetadataTab": {
+        "keys": [
+            "FileName"
+        ],
+        "method": "COPY_CUSTOM"
+    },
+    "metadataTab": {
+        "contactInfo": "test@eMail.de",
+        "isContactInfoCopiedFromImage": false,
+        "creator": "Creator1234",
+        "isCreatorCopiedFromImage": false,
+        "description": "beautiful picture",
+        "isDescriptionCopiedFromImage": false,
+        "keywords": [
+            "keyword1"
+        ],
+        "areKeywordsCopiedFromImage": false,
+        "license": "CC-by",
+        "isLicenseCopiedFromImage": false,
+        "subject": "Object",
+        "isSubjectCopiedFromImage": false
+    },
     "categoryTab": {
         "isNotSupportedCategoriesToCopy": false,
         "isSupportedCategoriesToCopy": false,
-        "categories": ["See", "Test"]
-    },
-    "existingMetadataTab": {
-        "keys": ["Creator"],
-        "method": "COPY_CUSTOM"
+        "categories": [
+            "See",
+            "Test"
+        ]
     },
     "locationTab": {
         "dateAndTime": "2020-04-23T18:25:43.511Z",
@@ -17,19 +38,5 @@
         "isTimeDisabledByDefault": false,
         "latitude": 52,
         "longitude": 11
-    },
-    "metadataTab": {
-        "contactInfo": "test@eMail.de",
-        "isContactInfoCopiedFromImage": false,
-        "creator": "Creator1234",
-        "isCreatorCopiedFromImage": false,
-        "description": "beautiful picture",
-        "isDescriptionCopiedFromImage": false,
-        "keywords": ["keyword1"],
-        "areKeywordsCopiedFromImage": false,
-        "license": "CC-by",
-        "isLicenseCopiedFromImage": false,
-        "subject": "Object",
-        "isSubjectCopiedFromImage": false
     }
 }

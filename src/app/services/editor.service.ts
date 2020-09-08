@@ -19,8 +19,8 @@ import { AppConfig } from 'app/types/app-config.interface';
  */
 @Injectable()
 export class EditorService {
-    editableKeys: string[] = ["Creator", "Categories", "Description", "Subject", "Keywords",
-        "License", "ContactInfo", "GPSLatitude", "GPSLongitude", "GPSPosition", "DateTimeOriginal"];
+    editableKeys: string[] = ["creator", "categories", "description", "subject", "keywords",
+        "license", "contactinfo", "gpslatitude", "gpslongitude", "gpsposition", "datetimeoriginal"];
     importantMetadataKeys: string;
 
     /**  imageName            ---------------------------------------------           */
@@ -467,6 +467,7 @@ export class EditorService {
 
 
     updateConfig(config: AppConfig) {
+        config.importantMetadataKeys = config.importantMetadataKeys.map(value=>value.toLocaleLowerCase())
         this._config = config;
         this.__config.next(config);
         this.updateLicenseNames(config.licenses);
@@ -502,10 +503,10 @@ export class EditorService {
     }
 
     public isEditableKey(key: string): boolean {
-        return this.editableKeys.indexOf(key) > -1;
+        return this.editableKeys.indexOf(key.toLocaleLowerCase()) > -1;
     }
     public isImportantMetadataKey(key: string): boolean {
-        return this.config.importantMetadataKeys.indexOf(key) > -1;
+        return this.config.importantMetadataKeys.indexOf(key.toLocaleLowerCase()) > -1;
     }
 
     /**
