@@ -50,11 +50,8 @@ export class InputTemplateButtonsComponent implements OnInit {
   private _formData: string | string[];
   @Input()
   set formData(formData) {
-    if (formData) {
       this._formData = formData;
       this.testEquality();
-    }
-
   }
   get formData() {
     return this._formData;
