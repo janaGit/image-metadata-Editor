@@ -114,7 +114,7 @@ export class MetadataService {
         const allMetadata: Object = {};
         if (this.editMetadata) {
 
-            let key = "creator";
+            let key = "creator";[]
             if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
                 allMetadata["Creator"] = this.editMetadata[key];
             }
@@ -127,7 +127,7 @@ export class MetadataService {
                 allMetadata["ContactInfo"] = this.editMetadata[key];
             }
             key = "keywords";
-            if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
+            if (typeof this.editMetadata[key] !== "undefined" && this.editMetadata[key].length > 0) {
                 allMetadata["Keywords"] = this.editMetadata[key];
             }
             key = "subject";
@@ -145,7 +145,7 @@ export class MetadataService {
             allMetadata[key] = value;
         })
 
-        if (this.categories && this.categories.categories) {
+        if (this.categories && this.categories.categories && this.categories.categories.length > 0) {
             allMetadata["Categories"] = this.categories.categories.toString();
         }
 
