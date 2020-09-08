@@ -125,8 +125,8 @@ export class MetadataFromImageService {
             date = this.trandsormDate(date);
         }
         this._location = {
-            latitude: this._metadata["GPSLatitude"],
-            longitude: this._metadata["GPSLongitude"],
+            latitude: +this._metadata["GPSLatitude"],
+            longitude: +this._metadata["GPSLongitude"],
             dateAndTime: date,
             isLocationDisabled: false,
             isTimeDisabled: false

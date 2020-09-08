@@ -11,6 +11,10 @@
             <input type="number" class="form-control" id="inputLongitude" [class.app-label-disabled]="isLocationDisabled"
                 [formControl]="longitudeControl" (ngModelChange)="onChangeLongitude($event)">
         </div>
+        <app-input-template-buttons [templateData]="coordinatesToString(metadataFromTemplate?.latitude,metadataFromTemplate?.longitude)" [imageData]="coordinatesToString(metadataFromImage?.latitude,metadataFromImage?.longitude)"
+        [isToCopyFromImage]="metadataFromTemplate.isLocationCopiedFromImage"
+        (onClickTemplateButton)="getLocationFromTemplate()" (onClickImageButton)="getLocationFromImage()"
+        [formData]="coordinatesToString(latitudeControl.value,longitudeControl.value)"></app-input-template-buttons>
         <button type="button" class="btn btn-primary app-form-field"
             (click)="toogleEnableDisableLocation()">{{buttonToggleEnableDisableLocation}}</button>
         <div class="app-form-space" style="display:flex;flex-direction: column;">

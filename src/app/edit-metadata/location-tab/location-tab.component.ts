@@ -6,6 +6,8 @@ import { MetadataService } from '../metadata.service';
 import { Z_DATA_ERROR } from 'zlib';
 import { MetadataFromLocationTab } from 'app/types/metadata-from-location-tab.interface';
 import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
+import { MetadataFromTemplateService } from '../metadata-from-template.service';
+import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
 
 const SHOW_OSM_LAYER = "Show OSM Layer";
 const HIDE_OSM_LAYER = "Hide OSM Layer";
@@ -41,8 +43,13 @@ export class LocationTabComponent implements OnInit, OnDestroy {
     buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_DISABLE_LOCATION;
     buttonToggleEnableDisableTime = BUTTON_TITLE_TOGGLE_DISABLE_TIME;
 
+    metadataFromImage: MetadataFromLocationTab;
+    metadataFromTemplate: TemplateLocationTab;
 
-    constructor(private _cdr: ChangeDetectorRef, private _metadataService: MetadataService, private _metadataFromImageService: MetadataFromImageService) {
+    constructor(private _cdr: ChangeDetectorRef,
+        private _metadataService: MetadataService,
+        private _metadataFromImageService: MetadataFromImageService,
+        private _metadataFromTemplateService: MetadataFromTemplateService) {
 
     }
 
@@ -72,6 +79,9 @@ export class LocationTabComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         let metadata: MetadataFromLocationTab = this._metadataService.location;
+
+        this.metadataFromImage = this._metadataFromImageService.location;
+        this.metadataFromTemplate = this._metadataFromTemplateService.location;
 
         this.isTimeDisabled = metadata.isTimeDisabled;
         this.isLocationDisabled = metadata.isLocationDisabled
@@ -187,5 +197,25 @@ export class LocationTabComponent implements OnInit, OnDestroy {
     onChangeTime(value) {
 
 
+    }
+
+    coordinatesToString(latitude: number, longitude: number): string {
+        if(typeof latitude === "undefined" || typeof latitude === "undefined" ){
+           return ""; 
+        }
+        return latitude.toFixed(4) + "  " + longitude.toFixed(4);
+    }
+
+    getLocationFromTemplate(){
+        this.markerLatLong = {
+            lat: this._metadataFromTemplateService.location.latitude,
+            long: this._metadataFromTemplateService.location.longitude,
+        }
+    }
+    getLocationFromImage(){
+        this.markerLatLong = {
+            lat: this._metadataFromImageService.location.latitude,
+            long: this._metadataFromImageService.location.longitude,
+        } 
     }
 }

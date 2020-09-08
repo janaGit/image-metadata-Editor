@@ -196,7 +196,7 @@ export class MetadataService {
             isLocationDisabled: template.locationTab.isLocationDisabledByDefault,
             isTimeDisabled: template.locationTab.isTimeDisabledByDefault,
             latitude: template.locationTab.isLocationCopiedFromImage ? this._metadataFromImageService.location.latitude : template.locationTab.latitude,
-            longitude: template.locationTab.isLocationCopiedFromImage ? this._metadataFromImageService.location.longitude : template.locationTab.longitude
+            longitude: template.locationTab.isLocationCopiedFromImage ? this._metadataFromImageService.location.longitude: template.locationTab.longitude
         });
 
         this.updateExistingMetadataFromTemplate(template.existingMetadataTab);
