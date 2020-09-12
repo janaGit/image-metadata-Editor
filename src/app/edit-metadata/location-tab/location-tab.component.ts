@@ -46,6 +46,10 @@ export class LocationTabComponent implements OnInit, OnDestroy {
     metadataFromImage: MetadataFromLocationTab;
     metadataFromTemplate: TemplateLocationTab;
 
+    editedDateAndTime: string = "";
+
+    dateFromTemplate: string;
+    dateFromImage: string;
     constructor(private _cdr: ChangeDetectorRef,
         private _metadataService: MetadataService,
         private _metadataFromImageService: MetadataFromImageService,
@@ -55,15 +59,7 @@ export class LocationTabComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         let latitude;
-        let longitude;
-        let date: Date;
-
-        date = new Date(this.dateImageCreated.value);
-        let time = <Date>this.timeImageCreated.value;
-        date.setHours(time.getHours());
-        date.setMinutes(time.getMinutes());
-        date.setSeconds(time.getSeconds());
-
+        let longitude
 
         latitude = this.latitudeControl.value;
         longitude = this.longitudeControl.value;
@@ -72,16 +68,31 @@ export class LocationTabComponent implements OnInit, OnDestroy {
         this._metadataService.updateLocation({
             longitude: longitude,
             latitude: latitude,
-            dateAndTime: date,
+            dateAndTime: new Date(this.editedDateAndTime),
             isTimeDisabled: this.isTimeDisabled,
             isLocationDisabled: this.isLocationDisabled
         });
     }
+
+    private setEditedDateAndTime() {
+        let _date: Date;
+        _date = new Date(this.dateImageCreated.value);
+        let time = <Date>this.timeImageCreated.value;
+        _date.setHours(time.getHours());
+        _date.setMinutes(time.getMinutes());
+        _date.setSeconds(time.getSeconds());
+
+        this.editedDateAndTime = _date.toString();
+    }
+
     ngOnInit() {
         let metadata: MetadataFromLocationTab = this._metadataService.location;
 
         this.metadataFromImage = this._metadataFromImageService.location;
         this.metadataFromTemplate = this._metadataFromTemplateService.location;
+
+        this.dateFromImage = this.metadataFromImage.dateAndTime ? this.metadataFromImage.dateAndTime.toString() : "";
+        this.dateFromTemplate = this.metadataFromTemplate.dateAndTime ? this.metadataFromTemplate.dateAndTime.toString() : "";
 
         this.isTimeDisabled = metadata.isTimeDisabled;
         this.isLocationDisabled = metadata.isLocationDisabled
@@ -109,8 +120,9 @@ export class LocationTabComponent implements OnInit, OnDestroy {
             this.dateImageCreated.setValue(new Date(metadata.dateAndTime));
             this.timeImageCreated.setValue(new Date(metadata.dateAndTime));
         }
-        this._cdr.detectChanges();
 
+
+        this.setEditedDateAndTime();
 
     }
 
@@ -190,32 +202,39 @@ export class LocationTabComponent implements OnInit, OnDestroy {
 
     }
     onChangeDate(value) {
-
-
+        this.setEditedDateAndTime();
     }
 
     onChangeTime(value) {
-
-
+        this.setEditedDateAndTime();
     }
 
     coordinatesToString(latitude: number, longitude: number): string {
-        if(typeof latitude === "undefined" || typeof latitude === "undefined" ){
-           return ""; 
+        if (typeof latitude === "undefined" || typeof latitude === "undefined") {
+            return "";
         }
         return latitude.toFixed(4) + "  " + longitude.toFixed(4);
     }
 
-    getLocationFromTemplate(){
+    getLocationFromTemplate() {
         this.markerLatLong = {
             lat: this._metadataFromTemplateService.location.latitude,
             long: this._metadataFromTemplateService.location.longitude,
         }
     }
-    getLocationFromImage(){
+    getLocationFromImage() {
         this.markerLatLong = {
             lat: this._metadataFromImageService.location.latitude,
             long: this._metadataFromImageService.location.longitude,
-        } 
+        }
+    }
+
+    getTimeFromTemplate() {
+        this.dateImageCreated.setValue(this.metadataFromTemplate.dateAndTime);
+        this.timeImageCreated.setValue(this.metadataFromTemplate.dateAndTime);
+    }
+    getTimeFromImage() {
+        this.dateImageCreated.setValue(this.metadataFromImage.dateAndTime);
+        this.timeImageCreated.setValue(this.metadataFromImage.dateAndTime);
     }
 }

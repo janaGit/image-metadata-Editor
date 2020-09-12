@@ -24,6 +24,10 @@
                     [bsConfig]="{ dateInputFormat: 'YYYY:MM:DD' }" [class.app-label-disabled]="isTimeDisabled" [formControl]="dateImageCreated" (ngModelChange)="onChangeDate($event)">
                 <timepicker  [showSeconds]="true" [showMeridian]="false" [class.app-label-disabled]="isTimeDisabled" [formControl]="timeImageCreated" (ngModelChange)="onChangeTime($event)"></timepicker>
             </div>
+            <app-input-template-buttons [templateData]="dateFromTemplate" [imageData]="dateFromImage"
+            [isToCopyFromImage]="metadataFromTemplate.isTimeCopiedFromImage"
+            (onClickTemplateButton)="getTimeFromTemplate()" (onClickImageButton)="getTimeFromImage()"
+            [formData]="editedDateAndTime"></app-input-template-buttons>
             <button type="button" class="btn btn-primary app-form-field"
                 (click)="toogleEnableDisableTime()">{{buttonToggleEnableDisableTime}}</button>
         </div> 
