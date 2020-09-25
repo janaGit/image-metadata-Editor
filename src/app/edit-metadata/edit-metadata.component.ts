@@ -7,6 +7,7 @@ import { MetadataService } from './metadata.service';
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { MetadataFromTemplateService } from './metadata-from-template.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 /**
  *  Main component of the editor view.
@@ -50,14 +51,17 @@ export class EditMetadataComponent implements OnInit, OnDestroy {
         { title: 'Location', tab: 'location', disabled: true },
         { title: 'Complete', tab: 'complete', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService, private _metadataService: MetadataService, private _metadataFromImageService: MetadataFromImageService, private _metadataFromTemplateService: MetadataFromTemplateService) {
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService,
+        private _editorService: EditorService, private _metadataService: MetadataService,
+        private _metadataFromImageService: MetadataFromImageService, private _metadataFromTemplateService: MetadataFromTemplateService,
+        private _router: Router) {
 
     }
 
     ngOnDestroy(): void {
         this._imageSelectedImageNameSubscription.unsubscribe();
         this._templateNameSubscription.unsubscribe();
-      }
+    }
     ngOnInit() {
         // Set the File tab to be active.
         this.tabs.forEach(tab => {
@@ -110,6 +114,10 @@ export class EditMetadataComponent implements OnInit, OnDestroy {
      * when a new editing process should be started.
      */
     startEditing() {
+        if (this._editorService.imageName === "selectAll_Images.png") {
+            this._router.navigate(['edit_all_metadata']);
+            return;
+        }
         this.tabs.forEach(tab => {
             if (tab.tab === 'file') {
                 tab.disabled = true;
