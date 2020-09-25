@@ -16,6 +16,12 @@ import { MoreMetadataTabComponent } from './edit-metadata/more-metadata-tab/more
 import { LocationTabComponent } from './edit-metadata/location-tab/location-tab.component';
 import { CompleteComponent } from './edit-metadata/complete-tab/complete-tab.component';
 
+import { AllMetadataCategoriesTabComponent}from './edit-all-metadata/all-metadata-categories-tab/all-metadata-categories-tab.component';
+import { AllMetadataEditTabComponent}from './edit-all-metadata/all-metadata-edit-tab/all-metadata-edit-tab.component';
+import { AllMetadataFurtherMetadataTabComponent}from './edit-all-metadata/all-metadata-further-metadata-tab/all-metadata-further-metadata-tab.component';
+import { AllMetadataLocationTabComponent}from './edit-all-metadata/all-metadata-location-tab/all-metadata-location-tab.component';
+import { AllMetadataTemplateTabComponent}from './edit-all-metadata/all-metadata-template-tab/all-metadata-template-tab.component';
+
 import{EditTemplateComponent} from './edit-template/edit-template.component';
 import{StartTemplateTabComponent} from './edit-template/start-template-tab/start-template-tab.component';
 
@@ -33,7 +39,7 @@ import { ExifToolService } from './services/exif-tool.service';
 import { ContextMenuService } from './services/context-menu.service';
 import { EditorService } from './services/editor.service';
 import { MetadataService } from './edit-metadata/metadata.service';
-import { MetadataFromImageService } from './edit-metadata/metadata-from-image.service';
+import { MetadataFromImageService } from './services/metadata-from-image.service';
 import { EditTemplateService } from './edit-template/edit-template.service';
 
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -64,6 +70,7 @@ import { EditMetadataTemplateTabComponent } from './edit-template/edit-metadata-
 import { CategoriesTemplateTabComponent } from './edit-template/categories-template-tab/categories-template-tab.component';
 import { SelectCategoryTreeComponent } from './select-category-tree/select-category-tree.component';
 import { LocationTemplateTabComponent } from './edit-template/location-template-tab/location-template-tab.component';
+import { EditAllMetadataComponent } from './edit-all-metadata/edit-all-metadata.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +104,14 @@ import { LocationTemplateTabComponent } from './edit-template/location-template-
     EditMetadataTemplateTabComponent,
     CategoriesTemplateTabComponent,
     SelectCategoryTreeComponent,
-    LocationTemplateTabComponent
+    LocationTemplateTabComponent,
+    EditAllMetadataComponent,
+    AllMetadataCategoriesTabComponent,
+    AllMetadataEditTabComponent,
+    AllMetadataFurtherMetadataTabComponent,
+    AllMetadataLocationTabComponent,
+    AllMetadataTemplateTabComponent
+
   ],
   imports: [
     BrowserModule,

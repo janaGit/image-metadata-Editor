@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 import { EditorService } from 'app/services/editor.service';
 import { MetadataService } from '../metadata.service';
-import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
+import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { MetadataFromTemplateService } from '../metadata-from-template.service';
 
 @Component({

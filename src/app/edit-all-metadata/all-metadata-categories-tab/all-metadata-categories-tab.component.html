@@ -1,0 +1,24 @@
+<div class="app-container container-fluid">
+    <div class="app-form-field">
+        <label>
+            Selected Categories:
+            <button type="button" class="btn btn-primary item_selected-category"
+                *ngFor="let category of allSelectedCategories">{{category}}</button>
+        </label>
+    </div>
+
+    <div class="app-form-field app-tree">
+        <app-select-category-tree [inputCategories]="inputCategories" (onChangeCategory)="selectedCategories=$event">
+        </app-select-category-tree>
+    </div>
+    <div class="app-form-field">
+        <mat-checkbox class="checklist-leaf-node" [(ngModel)]="isSupportedCategoriesToCopy">
+            Supported categories should be copied
+        </mat-checkbox>
+    </div>
+    <div class="app-form-field">
+        <mat-checkbox class="checklist-leaf-node" [(ngModel)]="isNotSupportedCategoriesToCopy">
+            Not supported categories should be copied
+        </mat-checkbox>
+    </div>
+</div>

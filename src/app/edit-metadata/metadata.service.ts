@@ -8,7 +8,7 @@ import { ReturnObject } from 'app/types/return-object.interface';
 import { HttpClient } from '@angular/common/http';
 import { EditorService } from '../services/editor.service';
 import { AppTemplate } from 'app/types/app-template.interface';
-import { MetadataFromImageService } from './metadata-from-image.service';
+import { MetadataFromImageService } from '../services/metadata-from-image.service';
 import { TemplateExistingMetadata } from 'app/types/template-existing-metadata.interface';
 
 /**

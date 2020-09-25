@@ -3,20 +3,20 @@ import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 
 import { EditorService } from './../services/editor.service';
 import { ImageService } from './../services/image.service';
-import { MetadataService } from './metadata.service';
+import { EditAllMetadataService } from './edit-all-metadata.service';
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
-import { MetadataFromTemplateService } from './metadata-from-template.service';
+import { EditAllMetadataFromTemplateService } from './edit-all-metadata-from-template.service';
 import { Subscription } from 'rxjs';
 
 /**
  *  Main component of the editor view.
 */
 @Component({
-    selector: 'edit-metadata',
-    templateUrl: 'edit-metadata.component.html',
-    styleUrls: ['edit-metadata.component.scss']
+    selector: 'edit-all-metadata',
+    templateUrl: 'edit-all-metadata.component.html',
+    styleUrls: ['edit-all-metadata.component.scss']
 })
-export class EditMetadataComponent implements OnInit, OnDestroy {
+export class EditAllMetadataComponent implements OnInit, OnDestroy {
     private _imageSelectedImageNameSubscription: Subscription;
     private _templateNameSubscription: Subscription;
     /**
@@ -50,7 +50,7 @@ export class EditMetadataComponent implements OnInit, OnDestroy {
         { title: 'Location', tab: 'location', disabled: true },
         { title: 'Complete', tab: 'complete', disabled: true }
     ];
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService, private _metadataService: MetadataService, private _metadataFromImageService: MetadataFromImageService, private _metadataFromTemplateService: MetadataFromTemplateService) {
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService, private _metadataService: EditAllMetadataService, private _metadataFromImageService: MetadataFromImageService, private _metadataFromTemplateService: EditAllMetadataFromTemplateService) {
 
     }
 

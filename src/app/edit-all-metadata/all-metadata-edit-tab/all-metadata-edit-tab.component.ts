@@ -4,15 +4,15 @@ import { MetadataFromMetadataTab } from 'app/types/metadata-from-metadata-tab.in
 import { EditorService } from 'app/services/editor.service';
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { MetadataService } from 'app/edit-metadata/metadata.service';
-import { EditTemplateService } from '../edit-template.service';
+import { EditAllMetadataService } from '../edit-all-metadata.service';
 import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 
 @Component({
-  selector: 'app-edit-metadata-template-tab',
-  templateUrl: './edit-metadata-template-tab.component.html',
-  styleUrls: ['./edit-metadata-template-tab.component.scss', '../../css/global-app.scss']
+  selector: 'app-all-metadata-categories-tab',
+  templateUrl: './all-metadata-edit-tab.component.html',
+  styleUrls: ['./all-metadata-edit-tab.component.scss', '../../css/global-app.scss']
 })
-export class EditMetadataTemplateTabComponent implements OnInit {
+export class AllMetadataEditTabComponent implements OnInit {
 
   creator = new FormControl('');
   onChangeCreator(event) {
@@ -116,7 +116,7 @@ export class EditMetadataTemplateTabComponent implements OnInit {
 
   constructor(private _cdr: ChangeDetectorRef,
     private _editorService: EditorService,
-    private _editTemplateService: EditTemplateService) {
+    private _editAllMetadataService: EditAllMetadataService) {
 
   }
 
@@ -128,7 +128,7 @@ export class EditMetadataTemplateTabComponent implements OnInit {
   ngOnInit(): void {
     this.licenseNames = this._editorService.getLicenseNames;
 
-    const editMetadata = deepCopyFunction(this._editTemplateService.editMetadata);
+    const editMetadata = deepCopyFunction(this._editAllMetadataService.editMetadata);
 
     this.creator.setValue(editMetadata.creator);
     this.isCreatorCopiedFromImage = editMetadata.isCreatorCopiedFromImage;
@@ -147,7 +147,7 @@ export class EditMetadataTemplateTabComponent implements OnInit {
   }
 
   sendMetadataToService() {
-    this._editTemplateService.updateEditMetadata({
+    this._editAllMetadataService.updateEditMetadata({
       creator: this.creator.value,
       isCreatorCopiedFromImage: this.isCreatorCopiedFromImage,
       contactInfo: this.contactInfo.value,

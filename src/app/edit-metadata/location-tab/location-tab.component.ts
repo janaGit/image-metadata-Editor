@@ -5,7 +5,7 @@ import { FormControl } from '@angular/forms';
 import { MetadataService } from '../metadata.service';
 import { Z_DATA_ERROR } from 'zlib';
 import { MetadataFromLocationTab } from 'app/types/metadata-from-location-tab.interface';
-import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
+import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { MetadataFromTemplateService } from '../metadata-from-template.service';
 import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
 

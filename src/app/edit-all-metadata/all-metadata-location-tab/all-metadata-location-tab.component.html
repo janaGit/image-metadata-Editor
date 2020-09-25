@@ -1,0 +1,61 @@
+<div class="row" style="height: 100%;">
+    <div class="col-sm-6 app-container" style="height: 100%; display:flex; flex-direction:column">
+
+        <div class="form-group app-form-field">
+            <label for="inputLatitude">Latitude</label>
+            <input type="number" class="form-control" [class.app-label-disabled]="isLocationCopiedFromImage"
+                id="inputLatitude" [formControl]="latitudeControl" [attr.disabled]="isLocationCopiedFromImage?'':null"
+                (ngModelChange)="onChangeLatitude($event)">
+        </div>
+        <div class="form-group app-form-field">
+            <label for="inputLongitude">Longitude</label>
+            <input type="number" class="form-control" id="inputLongitude"
+                [class.app-label-disabled]="isLocationCopiedFromImage"
+                [attr.disabled]="isLocationCopiedFromImage?'':null" [formControl]="longitudeControl"
+                (ngModelChange)="onChangeLongitude($event)">
+
+        </div>
+        <div class="">
+            <div class="app-form-field">
+                <mat-checkbox [(ngModel)]="isLocationCopiedFromImage">Copy location from image
+                </mat-checkbox>
+            </div>
+            <div class="app-form-field">
+                <mat-checkbox [(ngModel)]="isLocationDisabled">Disable location by default
+                </mat-checkbox>
+            </div>
+
+        </div>
+
+        <div class="app-form-space" style="display:flex;flex-direction: column;">
+                <div style="display:flex; align-items: center; justify-content: center">
+                    <input type="text" placeholder="Datepicker" class="form-control app-form-field__row-element"
+                        [attr.disabled]="isTimeCopiedFromImage?'':null" bsDatepicker
+                        [bsConfig]="{}"
+                        [class.app-label-disabled]="isTimeCopiedFromImage" [formControl]="dateImageCreated"
+                        (ngModelChange)="onChangeDate($event)">
+                    <timepicker [showSeconds]="true" [showMeridian]="false"
+                        [class.app-label-disabled]="isTimeCopiedFromImage" [disabled]="isTimeCopiedFromImage"
+                        [formControl]="timeImageCreated" (ngModelChange)="onChangeTime($event)"></timepicker>
+                </div>
+            <div class="">
+                <div class="app-form-field">
+                    <mat-checkbox [(ngModel)]="isTimeCopiedFromImage">Copy from Image
+                    </mat-checkbox>
+                </div>
+                <div class="app-form-field">
+                    <mat-checkbox [(ngModel)]="isTimeDisabled">Disable Time by default
+                    </mat-checkbox>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6" style="height: 100%; display:flex; flex-direction:column">
+        <button type="button" class="btn btn-primary" (click)="toogleLayerView()">{{buttonShowOSMLayerTitle}}</button>
+        <div style="flex: 1; position: relative;">
+            <app-map [areLayersRequested]="areLayersRequested" [latLongZoom]="latLongZoom"
+                [(markerLatLong)]="markerLatLong">
+            </app-map>
+        </div>
+    </div>
+</div>

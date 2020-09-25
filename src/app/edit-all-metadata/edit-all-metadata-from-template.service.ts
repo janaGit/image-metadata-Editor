@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { MetadataFromMetadataTab } from '../types/metadata-from-metadata-tab.interface';
-import { MetadataFromLocationTab } from '../types/metadata-from-location-tab.interface';
 import { AppTemplate } from 'app/types/app-template.interface';
 import { TemplateCategoriesTab } from 'app/types/template-categories-tab.interface';
-import { MetadataFromImageService } from '../services/metadata-from-image.service';
+import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { deepCopyFunction } from '../../../utilities/utilitiy-methods';
 import { EditorService } from 'app/services/editor.service';
 import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
@@ -16,7 +14,7 @@ import { TemplateExistingMetadata } from 'app/types/template-existing-metadata.i
 @Injectable({
     providedIn: 'root'
 })
-export class MetadataFromTemplateService {
+export class EditAllMetadataFromTemplateService {
 
     private _templateName: string;
 

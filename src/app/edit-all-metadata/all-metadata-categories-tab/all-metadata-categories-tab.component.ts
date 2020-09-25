@@ -3,7 +3,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EditorService } from 'app/services/editor.service';
-import { EditTemplateService } from '../edit-template.service';
+import { EditAllMetadataService } from '../edit-all-metadata.service';
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { Subscription } from 'rxjs';
 import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
@@ -25,11 +25,11 @@ export class CategoryFlatNode {
 
 
 @Component({
-  selector: 'app-categories-template-tab',
-  templateUrl: './categories-template-tab.component.html',
-  styleUrls: ['./categories-template-tab.component.scss', '../../css/global-app.scss']
+  selector: 'app-all-metadata-categories-tab',
+  templateUrl: './all-metadata-categories-tab.component.html',
+  styleUrls: ['./all-metadata-categories-tab.component.scss', '../../css/global-app.scss']
 })
-export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
+export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
 
   private _isSupportedCategoriesToCopy: boolean = false;
   set isSupportedCategoriesToCopy(isSupportedCategoriesToCopy: boolean) {
@@ -66,7 +66,7 @@ export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
   }
 
 
-  constructor(private _editTemplateService: EditTemplateService,
+  constructor(private _editAllMetadataService: EditAllMetadataService,
     private _metadataFromImageService: MetadataFromImageService,
     private _cdr: ChangeDetectorRef) {
 
@@ -79,7 +79,7 @@ export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    let __categories = this._editTemplateService.categories;
+    let __categories = this._editAllMetadataService.categories;
 
     this.inputCategories = __categories.categories;
     this.isSupportedCategoriesToCopy = __categories.isSupportedCategoriesToCopy;
@@ -100,7 +100,7 @@ export class CategoriesTemplateTabComponent implements OnInit, OnDestroy {
   }
 
   sendMetadataToService() {
-    this._editTemplateService.updateCategories({
+    this._editAllMetadataService.updateCategories({
       categories: this.allSelectedCategories,
       isSupportedCategoriesToCopy: this.isSupportedCategoriesToCopy,
       isNotSupportedCategoriesToCopy: this.isNotSupportedCategoriesToCopy

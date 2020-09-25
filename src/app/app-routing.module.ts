@@ -2,6 +2,7 @@ import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { EditMetadataComponent } from './edit-metadata/edit-metadata.component';
+import { EditAllMetadataComponent } from './edit-all-metadata/edit-all-metadata.component';
 import { EditTemplateComponent } from './edit-template/edit-template.component';
 import { ImageGalleryComponent } from './image-gallery/image-gallery.component';
 
@@ -9,6 +10,10 @@ const routes: Routes = [
     {
         path: 'edit_metadata',
         component: EditMetadataComponent
+    },
+    {
+        path: 'edit_all_metadata',
+        component: EditAllMetadataComponent
     },
     {
         path: 'edit_templates',

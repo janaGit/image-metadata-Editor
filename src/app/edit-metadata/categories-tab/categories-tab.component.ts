@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { EditorService } from 'app/services/editor.service';
 import { MetadataService } from '../metadata.service';
-import { MetadataFromImageService } from 'app/edit-metadata/metadata-from-image.service';
+import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 import { MetadataFromTemplateService } from '../metadata-from-template.service';
 import { Subscription } from 'rxjs';
