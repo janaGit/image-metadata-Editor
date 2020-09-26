@@ -1,167 +1,62 @@
-import { Component, OnInit, Output, EventEmitter, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { ImageService } from './../../services/image.service';
-import { EditorService } from './../../services/editor.service';
-import { ExifToolService } from './../../services/exif-tool.service';
-import { FormControl, ValidatorFn, AbstractControl, Validators } from '@angular/forms';
-import { AppTemplate } from '../../types/app-template.interface';
-import { EditAllMetadataService } from '../edit-all-metadata.service';
-import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
-import { ExistingMetadataTemplateMethods } from '../../types/existing-metadata-templete-methods.type';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { ExifToolService } from 'app/services/exif-tool.service';
+import { EditorService } from 'app/services/editor.service';
+import { EditTemplateService } from 'app/edit-template/edit-template.service';
+import { AppTemplate } from 'app/types/app-template.interface';
+import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { EditAllMetadataFromTemplateService } from '../edit-all-metadata-from-template.service';
+import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
+import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
+import { EditAllMetadataService } from '../edit-all-metadata.service';
+import { EMPTY_TEMPLATE, emptyTemplate } from 'app/templates';
 
-const NEW_TEMPLATE = "NEW TEMPLATE";
-const newTemplate: AppTemplate = {
-    name: NEW_TEMPLATE,
-    categoryTab: {
-        isNotSupportedCategoriesToCopy: false,
-        isSupportedCategoriesToCopy: false,
-        categories: []
-    },
-    existingMetadataTab: {
-        keys: [],
-        method: ExistingMetadataTemplateMethods.COPY_ALL,
-    },
-    locationTab: {
-        dateAndTime: undefined,
-        isLocationDisabledByDefault: false,
-        isTimeDisabledByDefault: false,
-        latitude: undefined,
-        longitude: undefined,
-        isLocationCopiedFromImage: false,
-        isTimeCopiedFromImage: false
-    },
-    metadataTab: {
-        contactInfo: "",
-        isContactInfoCopiedFromImage: false,
-        creator: "",
-        isCreatorCopiedFromImage: false,
-        description: "",
-        isDescriptionCopiedFromImage: false,
-        keywords: [],
-        areKeywordsCopiedFromImage: false,
-        license: "",
-        isLicenseCopiedFromImage: false,
-        subject: "",
-        isSubjectCopiedFromImage: false
-    }
-}
 
 @Component({
-    selector: 'app-all-metadata-template-tab',
-    templateUrl: './all-metadata-template-tab.component.html',
-    styleUrls: ['./all-metadata-template-tab.component.scss', '../../css/global-app.scss']
+  selector: 'app-all-metadata-template-tab',
+  templateUrl: './all-metadata-template-tab.component.html',
+  styleUrls: ['./all-metadata-template-tab.component.scss', '../../css/global-app.scss']
 })
 export class AllMetadataTemplateTabComponent implements OnInit, OnDestroy {
+  templates: Map<string, AppTemplate> = new Map();
+  templateKeys: string[];
 
-    templates: Map<string, AppTemplate> = new Map();
-    copyTemplates: Map<string, AppTemplate> = new Map();
+  selectTemplate = new FormControl("");
 
-    templateKeys: string[];
-    copyTemplateKeys: string[];
-    templateName = new FormControl("", [Validators.required, this.templateNameValidator(new RegExp(NEW_TEMPLATE))]);
-    selectTemplate = new FormControl("");
-    copyTemplate = new FormControl("");
+  templateSubscription: Subscription;
 
-    isNewTemplateShown = false;
-    isStartDisabled = false;
-    templateSubscription: Subscription;
+  metadataFromTemplateServiceSubscription: Subscription;
 
-    /**
-     * Event emitter that imforms the parent of this class
-     * (editMetadata.component) that the editing process 
-     * starts for current selected image.
-     * 
-     * No data are transmitted. 
-     *
-     */
-    @Output() start = new EventEmitter();
+  constructor(private _cdr: ChangeDetectorRef,
+    private _editorService: EditorService,
+    private _metadataFromTemplateService: EditAllMetadataFromTemplateService,
+    private _metadataService: EditAllMetadataService) { }
 
-    constructor(private _cdr: ChangeDetectorRef, private _exifToolService: ExifToolService,
-         private _editorService: EditorService, private _editAllMetadataService: EditAllMetadataService) { }
+  ngOnInit(): void {
 
-    ngOnInit() {
+    this.templateSubscription = this._editorService.templates$.subscribe(templates => {
+      this.templates = new Map(templates);
 
-        this.templateSubscription = this._editorService.templates$.subscribe(templates => {
-            this.templates = new Map(templates);
-            this.templates.set(newTemplate.name, deepCopyFunction(newTemplate));
-            this.templateKeys = [...this.templates.keys()];
+      this.templateKeys = [...this.templates.keys()];
 
+    })
 
-            this.copyTemplates = new Map(templates);
-            this.copyTemplateKeys = [...this.copyTemplates.keys()];
-            this.selectTemplate.setValue(NEW_TEMPLATE);
+    this.metadataFromTemplateServiceSubscription = this._metadataFromTemplateService.templateName$.subscribe(templateName => {
+      if (templateName !== this.selectTemplate.value) {
+        this.selectTemplate.setValue(templateName);
+      } 
+      
+    });
 
-        })
+  }
 
+  ngOnDestroy() {
+    this.templateSubscription.unsubscribe();
+  }
 
+  onChangeSelectTemplate(event) {
+    this._metadataFromTemplateService.setTemplate(this.templates.get(event));
+    this._metadataService.setMetadataFromAppTemplate(this._metadataFromTemplateService.getTemplate());
+  }
 
-        this.isNewTemplateShown = true;
-        if (this.templateName.errors && this.isNewTemplateShown) {
-            this.isStartDisabled = true;
-        }
-    }
-    ngOnDestroy() {
-        this.templateSubscription.unsubscribe();
-    }
-
-    set errorMessage(error) {
-        alert("errorMessage" + error);
-    }
-
-
-    async startEditing() {
-        let template: AppTemplate;
-        if (this.selectTemplate.value === NEW_TEMPLATE) {
-
-            if (this.copyTemplate.value !== "") {
-                template = this.copyTemplates.get(this.copyTemplate.value);
-            } else {
-                template = this.templates.get(NEW_TEMPLATE);
-            }
-            template.name = this.templateName.value;
-        } else {
-            template = this.copyTemplates.get(this.selectTemplate.value);
-        }
-        this._editAllMetadataService.setTemplate(template);
-        this.start.emit();
-    }
-
-    onChangeSelectTemplate(event) {
-        if (event === NEW_TEMPLATE) {
-            this.isNewTemplateShown = true;
-            if (this.templateName.errors) {
-                this.isStartDisabled = true;
-            }
-        } else {
-            this.isNewTemplateShown = false;
-            this.isStartDisabled = false;
-        }
-    }
-
-
-    templateNameValidator(nameRe: RegExp): ValidatorFn {
-        return (control: AbstractControl): { [key: string]: any } | null => {
-            const forbidden = nameRe.test(control.value);
-            if (forbidden) {
-                return { forbiddenName: { value: control.value } };
-            }
-            if (typeof this.copyTemplates.get(control.value) !== "undefined") {
-                return { exists: { value: control.value } };
-            }
-            return null;
-        };
-    }
-
-    onChangeTemplateName(name: string) {
-        if (this.templateName.errors) {
-            this.isStartDisabled = true;
-        } else {
-            this.isStartDisabled = false;
-        }
-    }
-
-    deleteTemplate() {
-        const template = this.copyTemplates.get(this.selectTemplate.value);
-        this._editorService.deleteTemplateBackend(template);
-    }
 }

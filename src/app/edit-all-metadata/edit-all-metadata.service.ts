@@ -8,6 +8,8 @@ import { AppTemplate } from 'app/types/app-template.interface';
 import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
 import { TemplateCategoriesTab } from 'app/types/template-categories-tab.interface';
 import { TemplateExistingMetadata } from 'app/types/template-existing-metadata.interface';
+import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
+import { MetadataFromMetadataTab } from 'app/types/metadata-from-metadata-tab.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -23,9 +25,9 @@ export class EditAllMetadataService {
 
 
 
-    private _editMetadata: MetadataFromMetadataTemplateTab;
+    private _editMetadata: MetadataFromMetadataTab;
 
-    private __editMetadata: BehaviorSubject<MetadataFromMetadataTemplateTab> = new BehaviorSubject<MetadataFromMetadataTemplateTab>(null);
+    private __editMetadata: BehaviorSubject<MetadataFromMetadataTab> = new BehaviorSubject<MetadataFromMetadataTab>(null);
 
     public editMetadata$ = this.__editMetadata.asObservable();
 
@@ -54,7 +56,7 @@ export class EditAllMetadataService {
 
 
 
-    constructor(private _http: HttpClient, private _editorService: EditorService) {
+    constructor(private _http: HttpClient, private _editorService: EditorService, private _metadataFromImageService: MetadataFromImageService) {
     }
     get templateName() {
         return this._templateName;
@@ -81,7 +83,7 @@ export class EditAllMetadataService {
         this.__templateName.next(templateName);
     }
 
-    updateEditMetadata(metadata: MetadataFromMetadataTemplateTab) {
+    updateEditMetadata(metadata: MetadataFromMetadataTab) {
         this._editMetadata = metadata;
         this.__editMetadata.next(metadata);
     }
@@ -108,17 +110,6 @@ export class EditAllMetadataService {
         this.updateLocation(null);
     }
 
-    returnTemplate(): AppTemplate {
-        const appTemplate: AppTemplate = {
-            name: this.templateName,
-            existingMetadataTab: this.existingMetadata,
-            metadataTab: this.editMetadata,
-            categoryTab: this.categories,
-            locationTab: this.location,
-        };
-
-        return appTemplate;
-    }
 
     setTemplate(template: AppTemplate) {
         this.updateTemplateName(template.name);
@@ -128,7 +119,18 @@ export class EditAllMetadataService {
         this.updateLocation(template.locationTab);
     }
 
+    setMetadataFromAppTemplate(template: AppTemplate) {
+        this.updateEditMetadata({
+            creator: template.metadataTab.isCreatorCopiedFromImage ? this._metadataFromImageService.editMetadata.creator : template.metadataTab.creator,
+            contactInfo: template.metadataTab.isContactInfoCopiedFromImage ? this._metadataFromImageService.editMetadata.contactInfo : template.metadataTab.contactInfo,
+            license: template.metadataTab.isLicenseCopiedFromImage ? this._metadataFromImageService.editMetadata.license : template.metadataTab.license,
+            keywords: template.metadataTab.areKeywordsCopiedFromImage ? [...this._metadataFromImageService.editMetadata.keywords] : [...template.metadataTab.keywords],
+            subject: template.metadataTab.isSubjectCopiedFromImage ? this._metadataFromImageService.editMetadata.subject : template.metadataTab.subject,
+            description: template.metadataTab.isDescriptionCopiedFromImage ? this._metadataFromImageService.editMetadata.description : template.metadataTab.description
+        });
 
+    
+    }
 
 
 }
