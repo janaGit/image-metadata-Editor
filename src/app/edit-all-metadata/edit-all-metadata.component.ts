@@ -7,6 +7,7 @@ import { EditAllMetadataService } from './edit-all-metadata.service';
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { EditAllMetadataFromTemplateService } from './edit-all-metadata-from-template.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 /**
  *  Main component of the editor view.
@@ -22,7 +23,7 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
     /**
      * Name of the actual selected tab.
      */
-    public selectedTab: string = 'file';
+    public selectedTab: string = 'template';
 
     /*
      * Name of the folder where the images are stored 
@@ -42,15 +43,18 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
      * Tabs for the different steps of the editing process.
      */
     public tabs: Array<any> = [
-        { title: 'File', tab: 'file' },
-        { title: 'Template', tab: 'template', disabled: true },
-        { title: 'Existing Metadata', tab: 'existing_metadata', disabled: true },
-        { title: 'Edit Metadata', tab: 'metadata', disabled: true },
-        { title: 'Categories', tab: 'categories', disabled: true },
-        { title: 'Location', tab: 'location', disabled: true },
-        { title: 'Complete', tab: 'complete', disabled: true }
+        { title: 'File', tab: 'file', disabled: true },
+        { title: 'Template', tab: 'template'},
+        { title: 'Existing Metadata', tab: 'existing_metadata'},
+        { title: 'Edit Metadata', tab: 'metadata'},
+        { title: 'Categories', tab: 'categories'},
+        { title: 'Location', tab: 'location'},
+        { title: 'Complete', tab: 'complete'}
     ];
-    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService, private _metadataService: EditAllMetadataService, private _metadataFromImageService: MetadataFromImageService, private _metadataFromTemplateService: EditAllMetadataFromTemplateService) {
+    constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService,
+         private _metadataService: EditAllMetadataService, private _metadataFromImageService: MetadataFromImageService,
+         private _metadataFromTemplateService: EditAllMetadataFromTemplateService,
+         private _router: Router) {
 
     }
 
@@ -61,9 +65,8 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
     ngOnInit() {
         // Set the File tab to be active.
         this.tabs.forEach(tab => {
-            if (tab.tab === 'file') {
+            if (tab.tab === 'template') {
                 tab.active = true;
-                this._editorService.updateIsFileTabOpen(true);
             }
         });
 
@@ -84,11 +87,6 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
     public selectTabByTitle(tabTitle: string) {
         let tab = this.tabs.find(tab => { return tab.title === tabTitle });
         this.selectedTab = tab.tab;
-        if (this.selectedTab === 'file') {
-            this._editorService.updateIsFileTabOpen(true);
-        } else {
-            this._editorService.updateIsFileTabOpen(false);
-        }
     }
     /**
      * Set the name of the actual selected tab.
@@ -98,30 +96,6 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
     public selectTab(tab: string) {
         let _tab = this.tabs.find(_tab => { return _tab.tab === tab });
         this.selectedTab = _tab.tab;
-        if (this.selectedTab === 'file') {
-            this._editorService.updateIsFileTabOpen(true);
-        } else {
-            this._editorService.updateIsFileTabOpen(false);
-        }
-    }
-
-    /**
-     * Update tab settings (active, disabled),
-     * when a new editing process should be started.
-     */
-    startEditing() {
-        this.tabs.forEach(tab => {
-            if (tab.tab === 'file') {
-                tab.disabled = true;
-                tab.active = false;
-            } else {
-                tab.disabled = false;
-                if (tab.tab === 'template') {
-                    tab.active = true;
-                }
-            }
-        });
-        this.selectTab('template');
     }
 
     /**
@@ -129,16 +103,9 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
      * when an editing process should be aborted.
      */
     click_Abort() {
-        this.tabs.forEach(tab => {
-            if (tab.tab === 'file') {
-                tab.disabled = false;
-                tab.active = true;
-            } else {
-                tab.disabled = true;
-                tab.active = false;
-            }
-        });
-        this.selectTab('file');
+        this._router.navigate(['edit_metadata']);
+        this._editorService.updateIsFileTabOpen(false);
+
         this._metadataService.resetMetadata();
         this._metadataFromTemplateService.resetTemplate();
         this._metadataFromImageService.resetMetadata();

@@ -116,6 +116,7 @@ export class EditMetadataComponent implements OnInit, OnDestroy {
     startEditing() {
         if (this._editorService.imageName === "selectAll_Images.png") {
             this._router.navigate(['edit_all_metadata']);
+            this._editorService.updateIsFileTabOpen(false);
             return;
         }
         this.tabs.forEach(tab => {

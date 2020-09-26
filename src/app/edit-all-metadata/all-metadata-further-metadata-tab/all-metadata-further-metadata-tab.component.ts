@@ -5,7 +5,7 @@ import { ExistingMetadataTemplateMethods } from '../../types/existing-metadata-t
 import { TemplateExistingMetadata } from '../../types/template-existing-metadata.interface'
 
 @Component({
-  selector: 'app-all-metadata-further-metadata-tab.',
+  selector: 'app-all-metadata-further-metadata-tab',
   templateUrl: './all-metadata-further-metadata-tab.component.html',
   styleUrls: ['./all-metadata-further-metadata-tab.component.scss', '../../css/global-app.scss']
 })
