@@ -70,9 +70,7 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
             }
         });
 
-        this._imageSelectedImageNameSubscription = this._editorService.imageName$.subscribe(imgName => {
-            this.imgPath = this._imageService.imageDir + '/' + imgName;
-        });
+        this.imgPath = this._imageService.imageDir + '/' + "selectAll_Images.png";
 
         this._templateNameSubscription = this._editAllMetadataFromTemplateService.templateName$.subscribe(templateName => {
             this.templateName = templateName;
