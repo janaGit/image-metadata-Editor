@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExistingMetadataTemplateTabComponent } from './all-metadata-further-metadata-tab.component';
+import { AllMetadataFurtherMetadataTabComponent } from './all-metadata-further-metadata-tab.component';
 
 describe('ExistingMetadataTemplateTabComponent', () => {
-  let component: ExistingMetadataTemplateTabComponent;
-  let fixture: ComponentFixture<ExistingMetadataTemplateTabComponent>;
+  let component: AllMetadataFurtherMetadataTabComponent;
+  let fixture: ComponentFixture<AllMetadataFurtherMetadataTabComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExistingMetadataTemplateTabComponent ]
+      declarations: [ AllMetadataFurtherMetadataTabComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExistingMetadataTemplateTabComponent);
+    fixture = TestBed.createComponent(AllMetadataFurtherMetadataTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

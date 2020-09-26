@@ -25,12 +25,12 @@ export class AllMetadataTemplateTabComponent implements OnInit, OnDestroy {
 
   templateSubscription: Subscription;
 
-  metadataFromTemplateServiceSubscription: Subscription;
+  editAllMetadataFromTemplateServiceSubscription: Subscription;
 
   constructor(private _cdr: ChangeDetectorRef,
     private _editorService: EditorService,
-    private _metadataFromTemplateService: EditAllMetadataFromTemplateService,
-    private _metadataService: EditAllMetadataService) { }
+    private _editAllMetadataFromTemplateService: EditAllMetadataFromTemplateService,
+    private _editAllMetadataService: EditAllMetadataService) { }
 
   ngOnInit(): void {
 
@@ -41,7 +41,7 @@ export class AllMetadataTemplateTabComponent implements OnInit, OnDestroy {
 
     })
 
-    this.metadataFromTemplateServiceSubscription = this._metadataFromTemplateService.templateName$.subscribe(templateName => {
+    this.editAllMetadataFromTemplateServiceSubscription = this._editAllMetadataFromTemplateService.templateName$.subscribe(templateName => {
       if (templateName !== this.selectTemplate.value) {
         this.selectTemplate.setValue(templateName);
       } 
@@ -55,8 +55,8 @@ export class AllMetadataTemplateTabComponent implements OnInit, OnDestroy {
   }
 
   onChangeSelectTemplate(event) {
-    this._metadataFromTemplateService.setTemplate(this.templates.get(event));
-    this._metadataService.setMetadataFromAppTemplate(this._metadataFromTemplateService.getTemplate());
+    this._editAllMetadataFromTemplateService.setTemplate(this.templates.get(event));
+    this._editAllMetadataService.setMetadataFromAppTemplate(this._editAllMetadataFromTemplateService.getTemplate());
   }
 
 }

@@ -52,8 +52,8 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
         { title: 'Complete', tab: 'complete'}
     ];
     constructor(private _cdr: ChangeDetectorRef, private _imageService: ImageService, private _editorService: EditorService,
-         private _metadataService: EditAllMetadataService, private _metadataFromImageService: MetadataFromImageService,
-         private _metadataFromTemplateService: EditAllMetadataFromTemplateService,
+         private _editAllMetadataService: EditAllMetadataService, private _metadataFromImageService: MetadataFromImageService,
+         private _editAllMetadataFromTemplateService: EditAllMetadataFromTemplateService,
          private _router: Router) {
 
     }
@@ -74,7 +74,7 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
             this.imgPath = this._imageService.imageDir + '/' + imgName;
         });
 
-        this._templateNameSubscription = this._metadataFromTemplateService.templateName$.subscribe(templateName => {
+        this._templateNameSubscription = this._editAllMetadataFromTemplateService.templateName$.subscribe(templateName => {
             this.templateName = templateName;
         });
     }
@@ -106,8 +106,8 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
         this._router.navigate(['edit_metadata']);
         this._editorService.updateIsFileTabOpen(false);
 
-        this._metadataService.resetMetadata();
-        this._metadataFromTemplateService.resetTemplate();
+        this._editAllMetadataService.resetMetadata();
+        this._editAllMetadataFromTemplateService.resetTemplate();
         this._metadataFromImageService.resetMetadata();
 
     }
