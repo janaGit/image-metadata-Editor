@@ -10,6 +10,8 @@ import { IMAGE_EDITED } from '../../../../utilities/constants';
 import { emptyTemplate } from 'app/templates';
 import { MetadataFromTemplateService } from '../metadata-from-template.service';
 import { MetadataService } from '../metadata.service';
+import { EditAllMetadataFromTemplateService } from 'app/edit-all-metadata/edit-all-metadata-from-template.service';
+import { EditAllMetadataService } from 'app/edit-all-metadata/edit-all-metadata.service';
 /**
  * This class provides the controller for the file-tab in the
  * editor view.
@@ -75,7 +77,9 @@ export class FileTabComponent implements OnInit, OnDestroy {
          private _imageService: ImageService,
          private _editorService: EditorService,
          private _metadataFromTemplateService: MetadataFromTemplateService,
-         private _metadataService: MetadataService) { }
+         private _metadataService: MetadataService,
+         private _editAllMetadataFromTemplateService: EditAllMetadataFromTemplateService,
+         private _editAllMetadataService: EditAllMetadataService) { }
 
     ngOnDestroy(): void {
         this._contextMenuElementsSubscriptions.forEach(subscription => subscription.unsubscribe());
@@ -245,11 +249,14 @@ export class FileTabComponent implements OnInit, OnDestroy {
      */
     async startEditing() {
         try {
+            if (this._editorService.imageName === "selectAll_Images.png") {
+                this.start.emit();
+                return;
+            }
             await this._exifToolService.requestMetadata();
             this._exifToolService.requestMetadata_toEdit();
             this._metadataFromTemplateService.setTemplate(emptyTemplate);
-            this._metadataService.setMetadataFromAppTemplate(emptyTemplate);
-            
+            this._metadataService.setMetadataFromAppTemplate(emptyTemplate); 
             if (this._exifToolService.metadata) {
                 this.start.emit();
             } else {

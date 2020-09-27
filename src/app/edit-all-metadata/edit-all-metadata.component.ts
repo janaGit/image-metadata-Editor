@@ -8,7 +8,7 @@ import { MetadataFromImageService } from 'app/services/metadata-from-image.servi
 import { EditAllMetadataFromTemplateService } from './edit-all-metadata-from-template.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-
+import { emptyTemplate } from 'app/templates';
 /**
  *  Main component of the editor view.
 */
@@ -18,7 +18,6 @@ import { Router } from '@angular/router';
     styleUrls: ['edit-all-metadata.component.scss']
 })
 export class EditAllMetadataComponent implements OnInit, OnDestroy {
-    private _imageSelectedImageNameSubscription: Subscription;
     private _templateNameSubscription: Subscription;
     /**
      * Name of the actual selected tab.
@@ -59,10 +58,11 @@ export class EditAllMetadataComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this._imageSelectedImageNameSubscription.unsubscribe();
         this._templateNameSubscription.unsubscribe();
       }
     ngOnInit() {
+        this._editAllMetadataFromTemplateService.setTemplate(emptyTemplate);
+        this._editAllMetadataService.setMetadataFromAppTemplate(emptyTemplate); 
         // Set the File tab to be active.
         this.tabs.forEach(tab => {
             if (tab.tab === 'template') {
