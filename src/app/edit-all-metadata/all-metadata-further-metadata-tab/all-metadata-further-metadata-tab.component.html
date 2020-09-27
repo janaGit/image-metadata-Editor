@@ -1,18 +1,37 @@
 <div class="app-container" style=" display: flex;justify-content: center;">
     <div class="form">
-        <mat-radio-group [(ngModel)]="selectedValue" (ngModelChange)="onChangeSelectedItem($event)">
-            <mat-radio-button class="radioSelect app-form-field" [value]="methods.COPY_ALL">Copy all metadata</mat-radio-button>
-            <mat-radio-button class="radioSelect app-form-field-end" [value]="methods.COPY_CUSTOM">Copy custom metadata
-            </mat-radio-button>
-            <mat-radio-button class="radioSelect app-form-field" [value]="methods.DELETE_ALL">Delete all metadata
-            </mat-radio-button>
-            <mat-radio-button class="radioSelect app-form-field" [value]="methods.DELETE_CUSTOM">Delete custom metadata
-            </mat-radio-button>
-        </mat-radio-group>
+        <div class="app-form-field">
+            <mat-radio-group [(ngModel)]="selectedValue" (ngModelChange)="onChangeSelectedItem($event)">
+                <mat-radio-button class="radioSelect app-form-field" [value]="methods.COPY_ALL">Copy all metadata
+                </mat-radio-button>
+                <mat-radio-button class="radioSelect app-form-field-end" [value]="methods.COPY_CUSTOM">Copy custom
+                    metadata
+                </mat-radio-button>
+                <mat-radio-button class="radioSelect app-form-field" [value]="methods.DELETE_ALL">Delete all metadata
+                </mat-radio-button>
+                <mat-radio-button class="radioSelect app-form-field" [value]="methods.DELETE_CUSTOM">Delete custom
+                    metadata
+                </mat-radio-button>
+            </mat-radio-group>
+            <app-input-template-buttons [templateData]="selectedValueFromTemplate"
+                buttonTitleTemplateMetadata="Use from Template" (onClickTemplateButton)="setSelectedItemFromTemplate()"
+                [formData]="selectedValue">
+            </app-input-template-buttons>
 
-        <app-add-items-vertical *ngIf="isMetadataKeysShown" [title]="'Metadata Keys'" [(items)]="metadataKeys"></app-add-items-vertical>
+        </div>
+
+        <div class="app-form-field">
+            <app-add-items-vertical *ngIf="isMetadataKeysShown" [title]="'Metadata Keys'" [(items)]="metadataKeys">
+            </app-add-items-vertical>
+            <app-input-template-buttons *ngIf="isMetadataKeysShown" [templateData]="metadataKeysFromTemplate"
+                buttonTitleTemplateMetadata="Use from Template" (onClickTemplateButton)="setMetadataKeysFromTemplate()"
+                [formData]="metadataKeys">
+            </app-input-template-buttons>
+
+        </div>
+
 
     </div>
 
 
-</div> 
+</div>
