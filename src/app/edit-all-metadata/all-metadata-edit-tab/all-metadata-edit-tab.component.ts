@@ -8,41 +8,30 @@ import { EditAllMetadataService } from '../edit-all-metadata.service';
 import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 
 @Component({
-  selector: 'app-all-metadata-categories-tab',
+  selector: 'app-all-metadata-edit-tab',
   templateUrl: './all-metadata-edit-tab.component.html',
   styleUrls: ['./all-metadata-edit-tab.component.scss', '../../css/global-app.scss']
 })
 export class AllMetadataEditTabComponent implements OnInit {
 
   creator = new FormControl('');
-  onChangeCreator(event) {
-    this.sendMetadataToService();
-  }
+
 
   contactInfo = new FormControl('');
-  onChangeContactInfo(event) {
-    this.sendMetadataToService();
-  }
+
 
   license = new FormControl('');
-  onChangeLicense(event) {
-    this.sendMetadataToService();
-  }
+
 
   subject = new FormControl('');
-  onChangeSubject(event) {
-    this.sendMetadataToService();
-  }
+
 
   description = new FormControl('');
-  onChangeDescription(event) {
-    this.sendMetadataToService();
-  }
+
 
   private _keywords: string[] = [];
   set keywords(keywords: string[]) {
     this._keywords = keywords;
-    this.sendMetadataToService();
   }
   get keywords() {
     return this._keywords;
@@ -52,7 +41,6 @@ export class AllMetadataEditTabComponent implements OnInit {
   private _isCreatorCopiedFromImage: boolean = false;
   set isCreatorCopiedFromImage(isCreatorCopiedFromImage: boolean) {
     this._isCreatorCopiedFromImage = isCreatorCopiedFromImage;
-    this.sendMetadataToService();
   }
   get isCreatorCopiedFromImage() {
     return this._isCreatorCopiedFromImage;
@@ -62,7 +50,6 @@ export class AllMetadataEditTabComponent implements OnInit {
   private _isContactInfoCopiedFromImage: boolean = false;
   set isContactInfoCopiedFromImage(isContactInfoCopiedFromImage: boolean) {
     this._isContactInfoCopiedFromImage = isContactInfoCopiedFromImage;
-    this.sendMetadataToService();
   }
   get isContactInfoCopiedFromImage() {
     return this._isContactInfoCopiedFromImage;
@@ -72,7 +59,6 @@ export class AllMetadataEditTabComponent implements OnInit {
   private _isLicenseCopiedFromImage: boolean = false;
   set isLicenseCopiedFromImage(isLicenseCopiedFromImage: boolean) {
     this._isLicenseCopiedFromImage = isLicenseCopiedFromImage;
-    this.sendMetadataToService();
   }
   get isLicenseCopiedFromImage() {
     return this._isLicenseCopiedFromImage;
@@ -82,7 +68,6 @@ export class AllMetadataEditTabComponent implements OnInit {
   private _areKeywordsCopiedFromImage: boolean = false;
   set areKeywordsCopiedFromImage(areKeywordsCopiedFromImage: boolean) {
     this._areKeywordsCopiedFromImage = areKeywordsCopiedFromImage;
-    this.sendMetadataToService();
   }
   get areKeywordsCopiedFromImage() {
     return this._areKeywordsCopiedFromImage;
@@ -92,7 +77,6 @@ export class AllMetadataEditTabComponent implements OnInit {
   private _isSubjectCopiedFromImage: boolean = false;
   set isSubjectCopiedFromImage(isSubjectCopiedFromImage: boolean) {
     this._isSubjectCopiedFromImage = isSubjectCopiedFromImage;
-    this.sendMetadataToService();
   }
   get isSubjectCopiedFromImage() {
     return this._isSubjectCopiedFromImage;
@@ -102,7 +86,6 @@ export class AllMetadataEditTabComponent implements OnInit {
   private _isDescriptionCopiedFromImage: boolean = false;
   set isDescriptionCopiedFromImage(isDescriptionCopiedFromImage: boolean) {
     this._isDescriptionCopiedFromImage = isDescriptionCopiedFromImage;
-    this.sendMetadataToService();
   }
   get isDescriptionCopiedFromImage() {
     return this._isDescriptionCopiedFromImage;
@@ -121,9 +104,11 @@ export class AllMetadataEditTabComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-
-
+    this.sendMetadataToService();
   }
+
+
+
 
   ngOnInit(): void {
     this.licenseNames = this._editorService.getLicenseNames;
