@@ -6,6 +6,8 @@ import { MetadataFromImageService } from 'app/services/metadata-from-image.servi
 import { MetadataService } from 'app/edit-metadata/metadata.service';
 import { EditAllMetadataService } from '../edit-all-metadata.service';
 import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
+import { EditAllMetadataFromTemplateService } from '../edit-all-metadata-from-template.service';
+import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
 
 @Component({
   selector: 'app-all-metadata-edit-tab',
@@ -94,12 +96,13 @@ export class AllMetadataEditTabComponent implements OnInit {
 
   licenseNames: string[] = [];
 
+  templateData: MetadataFromMetadataTemplateTab;
 
-  metadataFromImage: MetadataFromMetadataTab;
 
   constructor(private _cdr: ChangeDetectorRef,
     private _editorService: EditorService,
-    private _editAllMetadataService: EditAllMetadataService) {
+    private _editAllMetadataService: EditAllMetadataService,
+    private _editAllMetadataFromTemplateService: EditAllMetadataFromTemplateService) {
 
   }
 
@@ -128,7 +131,7 @@ export class AllMetadataEditTabComponent implements OnInit {
     this.keywords = editMetadata.keywords;
     this.areKeywordsCopiedFromImage = editMetadata.areKeywordsCopiedFromImage;
 
-
+    this.templateData = this._editAllMetadataFromTemplateService.editMetadata;
   }
 
   sendMetadataToService() {
@@ -146,5 +149,24 @@ export class AllMetadataEditTabComponent implements OnInit {
       description: this.description.value,
       isDescriptionCopiedFromImage: this.isDescriptionCopiedFromImage
     });
+  }
+
+  setCreatorFromTemplate() {
+    this.creator.setValue(this.templateData.creator);
+  }
+  setContactInfoFromTemplate() {
+    this.contactInfo.setValue(this.templateData.contactInfo);
+  }
+  setLicenseFromTemplate() {
+    this.license.setValue(this.templateData.license);
+  }
+  setKeywordsFromTemplate() {
+    this.keywords = this.templateData.keywords;
+  }
+  setSubjectFromTemplate() {
+    this.subject.setValue(this.templateData.subject);
+  }
+  setDescriptionFromTemplate() {
+    this.description.setValue(this.templateData.description);
   }
 }
