@@ -46,9 +46,10 @@ export class AllMetadataFurtherMetadataTabComponent implements OnInit, OnDestroy
 
   ngOnInit(): void {
     this.selectedValue = this._editAllMetadataService.existingMetadata.method;
+    this.onChangeSelectedItem(this.selectedValue);
+    
     if (this._editAllMetadataService.existingMetadata["keys"]) {
       this.metadataKeys = (<TemplateExistingMetadata>this._editAllMetadataService.existingMetadata).keys;
-      this.isMetadataKeysShown = true;
     }
     this.templateSubscription = this._editAllMetadataFromTemplateService.existingMetadata$.subscribe(metadataFromTemplate => {
       this.metadataKeysFromTemplate = metadataFromTemplate.keys;
