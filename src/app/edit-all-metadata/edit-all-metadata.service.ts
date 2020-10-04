@@ -111,17 +111,12 @@ export class EditAllMetadataService {
     }
 
 
-    setTemplate(template: AppTemplate) {
+    setMetadataFromAppTemplate(template: AppTemplate) {
         this.updateTemplateName(template.name);
         this.updateExistingMetadata(template.existingMetadataTab); 
         this.updateEditMetadata(template.metadataTab);
         this.updateCategories(template.categoryTab);
         this.updateLocation(template.locationTab);
-    }
-
-    setMetadataFromAppTemplate(template: AppTemplate) {
-        this.updateEditMetadata(template.metadataTab);
-        this.updateExistingMetadata(template.existingMetadataTab);
     }
 
 

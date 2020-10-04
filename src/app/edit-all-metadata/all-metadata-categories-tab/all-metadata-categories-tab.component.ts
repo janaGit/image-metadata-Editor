@@ -7,6 +7,7 @@ import { EditAllMetadataService } from '../edit-all-metadata.service';
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { Subscription } from 'rxjs';
 import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
+import { EditAllMetadataFromTemplateService } from '../edit-all-metadata-from-template.service';
 
 /**
  * Node for category item
@@ -34,7 +35,6 @@ export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
   private _isSupportedCategoriesToCopy: boolean = false;
   set isSupportedCategoriesToCopy(isSupportedCategoriesToCopy: boolean) {
     this._isSupportedCategoriesToCopy = isSupportedCategoriesToCopy;
-    this.sendMetadataToService();
   }
   get isSupportedCategoriesToCopy() {
     return this._isSupportedCategoriesToCopy;
@@ -44,14 +44,24 @@ export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
   private _isNotSupportedCategoriesToCopy: boolean = false;
   set isNotSupportedCategoriesToCopy(isNotSupportedCategoriesToCopy: boolean) {
     this._isNotSupportedCategoriesToCopy = isNotSupportedCategoriesToCopy;
-    this.sendMetadataToService();
   }
   get isNotSupportedCategoriesToCopy() {
     return this._isNotSupportedCategoriesToCopy;
   }
 
   allSelectedCategories: string[] = [];
-  inputCategories: string[] = [];
+
+ 
+  private _inputCategories: string[] = [];
+  set inputCategories(inputCategories: string[]) {
+    this._inputCategories = inputCategories;
+  }
+  get inputCategories() {
+    return this._inputCategories;
+  }
+
+  categoriesFromTemplate: string[] = [];
+
 
 
 
@@ -59,7 +69,6 @@ export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
   set selectedCategories(selectedCategories: string[]) {
     this._selectedCategories = selectedCategories;
     this.updateMetadata();
-    this.sendMetadataToService();
   }
   get selectedCategories() {
     return this._selectedCategories;
@@ -68,24 +77,27 @@ export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
 
   constructor(private _editAllMetadataService: EditAllMetadataService,
     private _metadataFromImageService: MetadataFromImageService,
-    private _cdr: ChangeDetectorRef) {
+    private _cdr: ChangeDetectorRef,
+    private _editAllMetadataFromTemplateService: EditAllMetadataFromTemplateService) {
 
 
   }
 
   ngOnDestroy(): void {
-
+    this.sendMetadataToService();
   }
 
   ngOnInit() {
 
     let __categories = this._editAllMetadataService.categories;
 
-    this.inputCategories = __categories.categories;
+    this.inputCategories= __categories.categories;
     this.isSupportedCategoriesToCopy = __categories.isSupportedCategoriesToCopy;
     this.isNotSupportedCategoriesToCopy = __categories.isNotSupportedCategoriesToCopy;
 
+    this.categoriesFromTemplate = this._editAllMetadataFromTemplateService.categories.categories;
 
+    
     this.updateMetadata();
   }
 
@@ -107,4 +119,11 @@ export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
     });
   }
 
+  setCategoriesFromTemplate() {
+    this.inputCategories = deepCopyFunction(this._editAllMetadataFromTemplateService.categories.categories);
+    this._isNotSupportedCategoriesToCopy= this._editAllMetadataFromTemplateService.categories.isNotSupportedCategoriesToCopy;
+    this._isSupportedCategoriesToCopy= this._editAllMetadataFromTemplateService.categories.isSupportedCategoriesToCopy;
+
+  
+  }
 }

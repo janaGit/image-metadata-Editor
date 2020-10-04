@@ -21,4 +21,8 @@
             Not supported categories should be copied
         </mat-checkbox>
     </div>
+    <app-input-template-buttons [templateData]="categoriesFromTemplate"
+    [buttonTitleTemplateMetadata]="categoriesFromTemplate" (onClickTemplateButton)="setCategoriesFromTemplate()"
+    [formData]="selectedCategories">
+</app-input-template-buttons>
 </div>
