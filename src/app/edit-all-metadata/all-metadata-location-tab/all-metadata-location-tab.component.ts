@@ -4,6 +4,7 @@ import { LatLong } from 'app/types/latlong.interface';
 import { FormControl } from '@angular/forms';
 import { EditAllMetadataService } from '../edit-all-metadata.service';
 import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
+import { EditAllMetadataFromTemplateService } from '../edit-all-metadata-from-template.service';
 
 const SHOW_OSM_LAYER = "Show OSM Layer";
 const HIDE_OSM_LAYER = "Hide OSM Layer";
@@ -17,12 +18,17 @@ const DEFAULT_LONGITUDE = 11;
     styleUrls: ['./all-metadata-location-tab.component.scss', '../../css/global-app.scss']
 })
 export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
-
+    templateIsLocationCopiedFromImage: boolean;
+    templateIsTimeCopiedFromImage: boolean;
+    templateIsLocationDisabled: boolean;
+    templateIsTimeDisabled: boolean;
+    templateLongitude: number;
+    templateLatitude: number;
+    templateDateTime: Date;
 
     private _isLocationCopiedFromImage: boolean = false;
     set isLocationCopiedFromImage(isLocationCopiedFromImage: boolean) {
         this._isLocationCopiedFromImage = isLocationCopiedFromImage;
-        this.sendMetadataToService();
     }
     get isLocationCopiedFromImage() {
         return this._isLocationCopiedFromImage;
@@ -32,7 +38,7 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
     private _isTimeCopiedFromImage: boolean = false;
     set isTimeCopiedFromImage(isTimeCopiedFromImage: boolean) {
         this._isTimeCopiedFromImage = isTimeCopiedFromImage;
-        this.sendMetadataToService();
+
     }
     get isTimeCopiedFromImage() {
         return this._isTimeCopiedFromImage;
@@ -85,12 +91,20 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
 
     areLayersRequested = false;
 
-    constructor(private _cdr: ChangeDetectorRef, private _editAllMetadataService: EditAllMetadataService) {
-
+    constructor(private _cdr: ChangeDetectorRef,
+        private _editAllMetadataFromTemplateService: EditAllMetadataFromTemplateService,
+        private _editAllMetadataService: EditAllMetadataService) {
+        this.templateIsTimeCopiedFromImage = this._editAllMetadataFromTemplateService.location.isTimeCopiedFromImage;
+        this.templateIsLocationCopiedFromImage = this._editAllMetadataFromTemplateService.location.isLocationCopiedFromImage;
+        this.templateIsLocationDisabled = this._editAllMetadataFromTemplateService.location.isLocationDisabledByDefault;
+        this.templateIsTimeDisabled = this._editAllMetadataFromTemplateService.location.isTimeDisabledByDefault;
+        this.templateDateTime = this._editAllMetadataFromTemplateService.location.dateAndTime;
+        this.templateLatitude = this._editAllMetadataFromTemplateService.location.latitude;
+        this.templateLongitude = this._editAllMetadataFromTemplateService.location.longitude;
     }
 
     ngOnDestroy(): void {
-
+        this.sendMetadataToService();
     }
 
     ngOnInit() {
@@ -137,22 +151,18 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
         if (value !== this.markerLatLong.lat) {
             this.markerLatLong = { lat: value, long: this.markerLatLong.long };
         }
-        this.sendMetadataToService();
     }
 
     onChangeLongitude(value) {
         if (value !== this.markerLatLong.long) {
             this.markerLatLong = { lat: this.markerLatLong.lat, long: value };
         }
-        this.sendMetadataToService();
     }
 
     onChangeDate(value) {
-        this.sendMetadataToService();
     }
 
     onChangeTime(value) {
-        this.sendMetadataToService();
     }
 
     sendMetadataToService() {
@@ -180,5 +190,32 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
             isLocationDisabledByDefault: this.isLocationDisabled,
             isTimeCopiedFromImage: this.isTimeCopiedFromImage
         });
+    }
+
+    setLocationFromTemplate() {
+        this.isLocationCopiedFromImage = this.templateIsLocationCopiedFromImage;
+        this.isLocationDisabled = this.templateIsLocationDisabled;
+        this.latitudeControl.setValue(this.templateLatitude);
+        this.longitudeControl.setValue(this.templateLongitude);
+    }
+
+    setTimeFromTemplate() {
+        this.isTimeCopiedFromImage = this.templateIsTimeCopiedFromImage;
+        this.isTimeDisabled = this.templateIsTimeDisabled;
+        this.dateImageCreated.setValue(new Date(this.templateDateTime));
+        this.timeImageCreated.setValue(new Date(this.templateDateTime));
+    }
+
+    isDateTimeSameAsTemplate(): boolean {
+        if (this.templateDateTime) {
+            let date = new Date(this.dateImageCreated.value);
+            let time = new Date(this.timeImageCreated.value);
+            date.setHours(time.getHours());
+            date.setMinutes(time.getMinutes());
+            date.setSeconds(time.getSeconds());
+
+            return date.toString() === new Date(this.templateDateTime).toString();
+        }
+        return false;
     }
 }

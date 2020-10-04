@@ -24,7 +24,12 @@
                 <mat-checkbox [(ngModel)]="isLocationDisabled">Disable location by default
                 </mat-checkbox>
             </div>
-
+            <app-edit-all-metadata-input-template-buttons buttonTitleTemplateMetadata="Use from Template"
+            (onClickTemplateButton)="setLocationFromTemplate()"
+            [isTemplateDataWithFormDataEqual]="isLocationCopiedFromImage === templateIsLocationCopiedFromImage &&
+             isLocationDisabled === templateIsLocationDisabled && latitudeControl.value === templateLatitude &&
+             longitudeControl.value === templateLongitude">
+        </app-edit-all-metadata-input-template-buttons>
         </div>
 
         <div class="app-form-space" style="display:flex;flex-direction: column;">
@@ -48,6 +53,11 @@
                     </mat-checkbox>
                 </div>
             </div>
+            <app-edit-all-metadata-input-template-buttons buttonTitleTemplateMetadata="Use from Template"
+            (onClickTemplateButton)="setTimeFromTemplate()"
+            [isTemplateDataWithFormDataEqual]="isTimeCopiedFromImage === templateIsTimeCopiedFromImage &&
+            isTimeDisabled === templateIsTimeDisabled && isDateTimeSameAsTemplate()">
+            </app-edit-all-metadata-input-template-buttons>
         </div>
     </div>
     <div class="col-sm-6" style="height: 100%; display:flex; flex-direction:column">
