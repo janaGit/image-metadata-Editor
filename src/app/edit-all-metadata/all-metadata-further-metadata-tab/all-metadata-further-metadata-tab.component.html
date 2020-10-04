@@ -13,23 +13,17 @@
                     metadata
                 </mat-radio-button>
             </mat-radio-group>
-            <app-input-template-buttons [templateData]="selectedValueFromTemplate"
-                buttonTitleTemplateMetadata="Use from Template" (onClickTemplateButton)="setSelectedItemFromTemplate()"
-                [formData]="selectedValue">
-            </app-input-template-buttons>
-
         </div>
 
         <div class="app-form-field">
             <app-add-items-vertical *ngIf="isMetadataKeysShown" [title]="'Metadata Keys'" [(items)]="metadataKeys">
             </app-add-items-vertical>
-            <app-input-template-buttons *ngIf="isMetadataKeysShown" [templateData]="metadataKeysFromTemplate"
-                buttonTitleTemplateMetadata="Use from Template" (onClickTemplateButton)="setMetadataKeysFromTemplate()"
-                [formData]="metadataKeys">
-            </app-input-template-buttons>
-
         </div>
-
+        <app-edit-all-metadata-input-template-buttons   buttonTitleTemplateMetadata="Use from Template"
+        (onClickTemplateButton)="setFromTemplate()" 
+        [isTemplateDataWithFormDataEqual]="((selectedValue === methods.COPY_ALL || selectedValue === methods.DELETE_ALL) && selectedValue === selectedValueFromTemplate)
+        || (((selectedValue === methods.COPY_CUSTOM || selectedValue === methods.DELETE_CUSTOM)&& selectedValue === selectedValueFromTemplate)&& areArraysEqual(metadataKeys,metadataKeysFromTemplate) )">
+        </app-edit-all-metadata-input-template-buttons>
 
     </div>
 

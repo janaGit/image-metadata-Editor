@@ -6,7 +6,7 @@ import { EditorService } from 'app/services/editor.service';
 import { EditAllMetadataService } from '../edit-all-metadata.service';
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { Subscription } from 'rxjs';
-import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
+import { areArraysEqual, deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 import { EditAllMetadataFromTemplateService } from '../edit-all-metadata-from-template.service';
 
 /**
@@ -32,6 +32,8 @@ export class CategoryFlatNode {
 })
 export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
 
+  areArraysEqual = areArraysEqual;
+
   private _isSupportedCategoriesToCopy: boolean = false;
   set isSupportedCategoriesToCopy(isSupportedCategoriesToCopy: boolean) {
     this._isSupportedCategoriesToCopy = isSupportedCategoriesToCopy;
@@ -51,7 +53,7 @@ export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
 
   allSelectedCategories: string[] = [];
 
- 
+
   private _inputCategories: string[] = [];
   set inputCategories(inputCategories: string[]) {
     this._inputCategories = inputCategories;
@@ -61,8 +63,8 @@ export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
   }
 
   categoriesFromTemplate: string[] = [];
-
-
+  templateIsNotSupportedCategoriesToCopy: boolean;
+  templateIsSupportedCategoriesToCopy: boolean;
 
 
   private _selectedCategories: string[] = [];
@@ -91,13 +93,14 @@ export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
 
     let __categories = this._editAllMetadataService.categories;
 
-    this.inputCategories= __categories.categories;
+    this.inputCategories = __categories.categories;
     this.isSupportedCategoriesToCopy = __categories.isSupportedCategoriesToCopy;
     this.isNotSupportedCategoriesToCopy = __categories.isNotSupportedCategoriesToCopy;
 
     this.categoriesFromTemplate = this._editAllMetadataFromTemplateService.categories.categories;
+    this.templateIsNotSupportedCategoriesToCopy = this._editAllMetadataFromTemplateService.categories.isNotSupportedCategoriesToCopy;
+    this.templateIsSupportedCategoriesToCopy = this._editAllMetadataFromTemplateService.categories.isSupportedCategoriesToCopy;
 
-    
     this.updateMetadata();
   }
 
@@ -119,11 +122,12 @@ export class AllMetadataCategoriesTabComponent implements OnInit, OnDestroy {
     });
   }
 
-  setCategoriesFromTemplate() {
+  setFromTemplate() {
     this.inputCategories = deepCopyFunction(this._editAllMetadataFromTemplateService.categories.categories);
-    this._isNotSupportedCategoriesToCopy= this._editAllMetadataFromTemplateService.categories.isNotSupportedCategoriesToCopy;
-    this._isSupportedCategoriesToCopy= this._editAllMetadataFromTemplateService.categories.isSupportedCategoriesToCopy;
+    this.selectedCategories = deepCopyFunction(this._editAllMetadataFromTemplateService.categories.categories);
+    this._isNotSupportedCategoriesToCopy = this.templateIsNotSupportedCategoriesToCopy;
+    this._isSupportedCategoriesToCopy = this.templateIsSupportedCategoriesToCopy;
 
-  
+
   }
 }

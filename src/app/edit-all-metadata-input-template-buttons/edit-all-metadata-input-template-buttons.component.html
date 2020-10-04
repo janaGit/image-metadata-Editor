@@ -1,0 +1,8 @@
+<div class="component__row">
+    <button type="button" class="btn component__button_template"  (click)="onClickTemplateButton.emit(true)"
+        [class.component__success]="isTemplateDataWithFormDataEqual">
+        <span class=" fas fa-sticky-note component__icon"></span>
+        <span *ngIf="buttonTitleTemplateMetadata.length === 0">{{templateData}}</span>
+        <span *ngIf="buttonTitleTemplateMetadata.length > 0">{{buttonTitleTemplateMetadata}}</span>
+    </button>
+</div>

@@ -5,13 +5,11 @@
                 <label for="creator" [class.app-label-disabled]="">Creator</label>
                 <input class="form-control" [class.app-label-disabled]="isCreatorCopiedFromImage" id="creator"
                     [attr.disabled]="isCreatorCopiedFromImage?'':null" [formControl]="creator">
-                    <app-input-template-buttons [templateData]="templateData.creator"
-                    [isDisabled]="isCreatorCopiedFromImage"
-                    [buttonTitleTemplateMetadata]="templateData.creator" (onClickTemplateButton)="setCreatorFromTemplate()"
-                    [formData]="creator.value">
-                </app-input-template-buttons>
                 <mat-checkbox [(ngModel)]="isCreatorCopiedFromImage">Copy from Image
                 </mat-checkbox>
+                <app-edit-all-metadata-input-template-buttons [templateData]="templateData.creator"  [buttonTitleTemplateMetadata]="templateData.creator"
+                (onClickTemplateButton)="setCreatorFromTemplate()" [isTemplateDataWithFormDataEqual]=" (isCreatorCopiedFromImage === true && isCreatorCopiedFromImage===templateData.isCreatorCopiedFromImage) || (creator.value===templateData.creator && isCreatorCopiedFromImage==false)">
+                </app-edit-all-metadata-input-template-buttons>
             </div>
             <div class="app-form-field">
                 <label [class.app-label-disabled]="">License</label>
@@ -20,13 +18,11 @@
                     <option></option>
                     <option *ngFor="let licenseName of licenseNames" [ngValue]="licenseName">{{licenseName}}</option>
                 </select>
-                <app-input-template-buttons [templateData]="templateData.license"
-                [isDisabled]="isLicenseCopiedFromImage"
-                [buttonTitleTemplateMetadata]="templateData.license" (onClickTemplateButton)="setLicenseFromTemplate()"
-                [formData]="license.value">
-            </app-input-template-buttons>
                 <mat-checkbox [(ngModel)]="isLicenseCopiedFromImage">Copy from Image
                 </mat-checkbox>
+                <app-edit-all-metadata-input-template-buttons [templateData]="templateData.license"  [buttonTitleTemplateMetadata]="templateData.license"
+                (onClickTemplateButton)="setLicenseFromTemplate()" [isTemplateDataWithFormDataEqual]=" (isLicenseCopiedFromImage === true && isLicenseCopiedFromImage===templateData.isLicenseCopiedFromImage) || (license.value===templateData.license && isLicenseCopiedFromImage==false)">
+                </app-edit-all-metadata-input-template-buttons>
             </div>
         </div>
         <div class="col-xs-6">
@@ -34,13 +30,12 @@
                 <label for="contactInfo" [class.app-label-disabled]="">Contact Info</label>
                 <input class="form-control" [class.app-label-disabled]="isContactInfoCopiedFromImage" id="contactInfo"
                     [formControl]="contactInfo" [attr.disabled]="isContactInfoCopiedFromImage?'':null">
-                    <app-input-template-buttons [templateData]="templateData.contactInfo"
-                    [isDisabled]="isContactInfoCopiedFromImage"
-                    [buttonTitleTemplateMetadata]="templateData.contactInfo" (onClickTemplateButton)="setContactInfoFromTemplate()"
-                    [formData]="contactInfo.value">
-                </app-input-template-buttons>
                 <mat-checkbox [(ngModel)]="isContactInfoCopiedFromImage">Copy from Image
                 </mat-checkbox>
+                <app-edit-all-metadata-input-template-buttons [templateData]="templateData.contactInfo"  [buttonTitleTemplateMetadata]="templateData.contactInfo"
+                (onClickTemplateButton)="setContactInfoFromTemplate()" 
+                [isTemplateDataWithFormDataEqual]=" (isContactInfoCopiedFromImage === true && isContactInfoCopiedFromImage===templateData.isContactInfoCopiedFromImage) || (contactInfo.value===templateData.contactInfo && isContactInfoCopiedFromImage==false)">
+                </app-edit-all-metadata-input-template-buttons>
             </div>
         </div>
     </div>
@@ -48,13 +43,12 @@
     <div class="row app-form-space ">
         <div class="col-xs-6">
             <app-add-items [(keywords)]="keywords" [areKeywordsDisabled]="areKeywordsCopiedFromImage"></app-add-items>
-            <app-input-template-buttons [templateData]="templateData.keywords"
-            [isDisabled]="areKeywordsCopiedFromImage"
-            [buttonTitleTemplateMetadata]="templateData.keywords" (onClickTemplateButton)="setKeywordsFromTemplate()"
-            [formData]="keywords">
-        </app-input-template-buttons>
             <mat-checkbox [(ngModel)]="areKeywordsCopiedFromImage">Copy from Image
             </mat-checkbox>
+            <app-edit-all-metadata-input-template-buttons [templateData]="templateData.keywords"  [buttonTitleTemplateMetadata]="templateData.keywords"
+            (onClickTemplateButton)="setKeywordsFromTemplate()" 
+            [isTemplateDataWithFormDataEqual]=" (areKeywordsCopiedFromImage === true && areKeywordsCopiedFromImage===templateData.areKeywordsCopiedFromImage) || (areArraysEqual(keywords,templateData.keywords) && areKeywordsCopiedFromImage==false)">
+            </app-edit-all-metadata-input-template-buttons>
         </div>
     </div>
 
@@ -65,13 +59,12 @@
                 <textarea class="form-control" rows="10" id="subject"
                     [class.app-label-disabled]="isSubjectCopiedFromImage" [formControl]="subject"
                     [attr.disabled]="isSubjectCopiedFromImage?'':null"></textarea>
-                    <app-input-template-buttons [templateData]="templateData.subject"
-                    [isDisabled]="isSubjectCopiedFromImage"
-                    [buttonTitleTemplateMetadata]="templateData.subject" (onClickTemplateButton)="setSubjectFromTemplate()"
-                    [formData]="subject.value">
-                </app-input-template-buttons>
                 <mat-checkbox [(ngModel)]="isSubjectCopiedFromImage">Copy from Image
                 </mat-checkbox>
+                <app-edit-all-metadata-input-template-buttons [templateData]="templateData.subject"  [buttonTitleTemplateMetadata]="templateData.subject"
+                (onClickTemplateButton)="setSubjectFromTemplate()" 
+                [isTemplateDataWithFormDataEqual]=" (isSubjectCopiedFromImage === true && isSubjectCopiedFromImage===templateData.isSubjectCopiedFromImage) || (subject.value===templateData.subject && isSubjectCopiedFromImage==false)">
+                </app-edit-all-metadata-input-template-buttons>
             </div>
         </div>
         <div class="col-xs-6">
@@ -80,13 +73,12 @@
                 <textarea class="form-control" rows="10" id="subject"
                     [class.app-label-disabled]="isDescriptionCopiedFromImage" [formControl]="description"
                     [attr.disabled]="isDescriptionCopiedFromImage?'':null" id="description"></textarea>
-                    <app-input-template-buttons [templateData]="templateData.description"
-                    [isDisabled]="isDescriptionCopiedFromImage"
-                    [buttonTitleTemplateMetadata]="templateData.description" (onClickTemplateButton)="setDescriptionFromTemplate()"
-                    [formData]="description.value">
-                </app-input-template-buttons>
                 <mat-checkbox [(ngModel)]="isDescriptionCopiedFromImage">Copy from Image
                 </mat-checkbox>
+                <app-edit-all-metadata-input-template-buttons [templateData]="templateData.description"  [buttonTitleTemplateMetadata]="templateData.description"
+                (onClickTemplateButton)="setDescriptionFromTemplate()" 
+                [isTemplateDataWithFormDataEqual]=" (isDescriptionCopiedFromImage === true && isDescriptionCopiedFromImage===templateData.isDescriptionCopiedFromImage) || (description.value===templateData.description && isDescriptionCopiedFromImage==false)">
+                </app-edit-all-metadata-input-template-buttons>
             </div>
         </div>
     </div>

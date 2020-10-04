@@ -21,8 +21,8 @@
             Not supported categories should be copied
         </mat-checkbox>
     </div>
-    <app-input-template-buttons [templateData]="categoriesFromTemplate"
-    [buttonTitleTemplateMetadata]="categoriesFromTemplate" (onClickTemplateButton)="setCategoriesFromTemplate()"
-    [formData]="selectedCategories">
-</app-input-template-buttons>
+    <app-edit-all-metadata-input-template-buttons buttonTitleTemplateMetadata="Use from Template"
+        (onClickTemplateButton)="setFromTemplate()"
+        [isTemplateDataWithFormDataEqual]="areArraysEqual(categoriesFromTemplate,selectedCategories)&& isSupportedCategoriesToCopy===templateIsSupportedCategoriesToCopy && isNotSupportedCategoriesToCopy===templateIsNotSupportedCategoriesToCopy">
+    </app-edit-all-metadata-input-template-buttons>
 </div>

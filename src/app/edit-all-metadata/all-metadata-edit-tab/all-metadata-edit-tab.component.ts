@@ -5,7 +5,7 @@ import { EditorService } from 'app/services/editor.service';
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { MetadataService } from 'app/edit-metadata/metadata.service';
 import { EditAllMetadataService } from '../edit-all-metadata.service';
-import { deepCopyFunction } from '../../../../utilities/utilitiy-methods';
+import { areArraysEqual, deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 import { EditAllMetadataFromTemplateService } from '../edit-all-metadata-from-template.service';
 import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
 
@@ -93,7 +93,7 @@ export class AllMetadataEditTabComponent implements OnInit {
     return this._isDescriptionCopiedFromImage;
   }
 
-
+  areArraysEqual = areArraysEqual;
   licenseNames: string[] = [];
 
   templateData: MetadataFromMetadataTemplateTab;
@@ -153,20 +153,26 @@ export class AllMetadataEditTabComponent implements OnInit {
 
   setCreatorFromTemplate() {
     this.creator.setValue(this.templateData.creator);
+    this.isCreatorCopiedFromImage=this.templateData.isCreatorCopiedFromImage;
   }
   setContactInfoFromTemplate() {
     this.contactInfo.setValue(this.templateData.contactInfo);
+    this.isContactInfoCopiedFromImage=this.templateData.isContactInfoCopiedFromImage;
   }
   setLicenseFromTemplate() {
     this.license.setValue(this.templateData.license);
+    this.isLicenseCopiedFromImage=this.templateData.isLicenseCopiedFromImage;
   }
   setKeywordsFromTemplate() {
-    this.keywords = this.templateData.keywords;
+    this.keywords = deepCopyFunction(this.templateData.keywords);
+    this.areKeywordsCopiedFromImage=this.templateData.areKeywordsCopiedFromImage;
   }
   setSubjectFromTemplate() {
     this.subject.setValue(this.templateData.subject);
+    this.isSubjectCopiedFromImage=this.templateData.isSubjectCopiedFromImage;
   }
   setDescriptionFromTemplate() {
     this.description.setValue(this.templateData.description);
+    this.isDescriptionCopiedFromImage=this.templateData.isDescriptionCopiedFromImage;
   }
 }

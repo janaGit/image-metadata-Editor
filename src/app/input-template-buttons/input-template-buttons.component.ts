@@ -57,15 +57,6 @@ export class InputTemplateButtonsComponent implements OnInit {
     return this._formData;
   }
 
-  private _isDisabled: boolean = false;
-  @Input()
-  set isDisabled(isDisabled) {
-      this._isDisabled = isDisabled;
-  }
-  get isDisabled() {
-    return this._isDisabled;
-  }
-
 
   @Output() onClickTemplateButton = new EventEmitter<boolean>();
   @Output() onClickImageButton = new EventEmitter<boolean>();

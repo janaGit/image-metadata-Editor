@@ -5,6 +5,7 @@ import { ExistingMetadataTemplateMethods } from '../../types/existing-metadata-t
 import { TemplateExistingMetadata } from '../../types/template-existing-metadata.interface'
 import { EditAllMetadataFromTemplateService } from '../edit-all-metadata-from-template.service';
 import { Subscribable, Subscription } from 'rxjs';
+import { areArraysEqual, deepCopyFunction } from '../../../../utilities/utilitiy-methods';
 
 @Component({
   selector: 'app-all-metadata-further-metadata-tab',
@@ -16,13 +17,14 @@ export class AllMetadataFurtherMetadataTabComponent implements OnInit, OnDestroy
   selectedValue: ExistingMetadataTemplateMethods = null;
   methods = ExistingMetadataTemplateMethods;
 
+  areArraysEqual = areArraysEqual;
+  
   selectedValueFromTemplate: ExistingMetadataTemplateMethods = null;
 
 
   private _metadataKeys: string[] = [];
   set metadataKeys(metadataKeys: string[]) {
     this._metadataKeys = metadataKeys;
-    this.sendMetadataToService();
   }
   get metadataKeys() {
     return this._metadataKeys;
@@ -31,7 +33,6 @@ export class AllMetadataFurtherMetadataTabComponent implements OnInit, OnDestroy
   private _metadataKeysFromTemplate: string[] = [];
   set metadataKeysFromTemplate(metadataKeys: string[]) {
     this._metadataKeysFromTemplate = metadataKeys;
-    this.sendMetadataToService();
   }
   get metadataKeysFromTemplate() {
     return this._metadataKeysFromTemplate;
@@ -76,12 +77,10 @@ export class AllMetadataFurtherMetadataTabComponent implements OnInit, OnDestroy
     });
   }
 
-  setSelectedItemFromTemplate() {
+  setFromTemplate() {
+    this.metadataKeys = deepCopyFunction(this.metadataKeysFromTemplate);
     this.selectedValue = this.selectedValueFromTemplate;
     this.onChangeSelectedItem(this.selectedValue);
   }
 
-  setMetadataKeysFromTemplate() {
-    this.metadataKeys = this.metadataKeysFromTemplate;
-  }
 }
