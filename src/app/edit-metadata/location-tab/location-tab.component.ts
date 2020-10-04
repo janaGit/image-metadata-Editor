@@ -8,15 +8,10 @@ import { MetadataFromLocationTab } from 'app/types/metadata-from-location-tab.in
 import { MetadataFromImageService } from 'app/services/metadata-from-image.service';
 import { MetadataFromTemplateService } from '../metadata-from-template.service';
 import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
+import { BUTTON_TITLE_TOGGLE_DISABLE_LOCATION, BUTTON_TITLE_TOGGLE_DISABLE_TIME, BUTTON_TITLE_TOGGLE_ENABLE_LOCATION, BUTTON_TITLE_TOGGLE_ENABLE_TIME } from '../../../../utilities/constants';
 
 const SHOW_OSM_LAYER = "Show OSM Layer";
 const HIDE_OSM_LAYER = "Hide OSM Layer";
-
-const BUTTON_TITLE_TOGGLE_DISABLE_LOCATION = "Disable Location";
-const BUTTON_TITLE_TOGGLE_ENABLE_LOCATION = "Enable Location";
-
-const BUTTON_TITLE_TOGGLE_DISABLE_TIME = "Disable Time";
-const BUTTON_TITLE_TOGGLE_ENABLE_TIME = "Enable Time";
 
 const DEFAULT_LATITUDE = 52;
 const DEFAULT_LONGITUDE = 11;

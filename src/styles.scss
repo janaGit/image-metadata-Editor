@@ -45,6 +45,15 @@ mat-checkbox label {
   background-color: #4863A0;
 }
 
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+.mat-checkbox-checked.mat-accent .mat-checkbox-background{
+  background-color: #4863A0;
+}
+.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background,
+.mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: #b0b0b0;
+}
+
 /* Angular material radio button */
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
   border-color:  #4863A0;

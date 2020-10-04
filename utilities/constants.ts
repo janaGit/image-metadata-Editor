@@ -8,3 +8,9 @@ export const REST_DELETE_TEMPLATE = SERVER_BASE + "/deleteTemplate";
 export const REST_WRITE_TEMPLATE = SERVER_BASE + "/writeTemplate";
 export const REST_GET_CATEGORY_TREE = SERVER_BASE + "/getCategoryTree";
 export const REST_GET_CONFIG = SERVER_BASE + "/getConfig";
+
+export const BUTTON_TITLE_TOGGLE_DISABLE_LOCATION = "Disable Location";
+export const BUTTON_TITLE_TOGGLE_ENABLE_LOCATION = "Enable Location";
+
+export const BUTTON_TITLE_TOGGLE_DISABLE_TIME = "Disable Time";
+export const BUTTON_TITLE_TOGGLE_ENABLE_TIME = "Enable Time";

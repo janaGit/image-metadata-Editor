@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { EditAllMetadataService } from '../edit-all-metadata.service';
 import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
 import { EditAllMetadataFromTemplateService } from '../edit-all-metadata-from-template.service';
+import { BUTTON_TITLE_TOGGLE_DISABLE_LOCATION, BUTTON_TITLE_TOGGLE_DISABLE_TIME, BUTTON_TITLE_TOGGLE_ENABLE_LOCATION, BUTTON_TITLE_TOGGLE_ENABLE_TIME } from '../../../../utilities/constants';
 
 const SHOW_OSM_LAYER = "Show OSM Layer";
 const HIDE_OSM_LAYER = "Hide OSM Layer";
@@ -38,6 +39,13 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
     private _isTimeCopiedFromImage: boolean = false;
     set isTimeCopiedFromImage(isTimeCopiedFromImage: boolean) {
         this._isTimeCopiedFromImage = isTimeCopiedFromImage;
+        if (this._isTimeCopiedFromImage) {
+            this.dateImageCreated.disable();
+            this.timeImageCreated.disable();
+        } else {
+            this.dateImageCreated.enable();
+            this.timeImageCreated.enable();
+        }
 
     }
     get isTimeCopiedFromImage() {
@@ -61,7 +69,6 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
     private _isLocationDisabled: boolean = false;
     set isLocationDisabled(isLocationDisabled: boolean) {
         this._isLocationDisabled = isLocationDisabled;
-        this.sendMetadataToService();
     }
     get isLocationDisabled() {
         return this._isLocationDisabled;
@@ -71,13 +78,13 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
     private _isTimeDisabled: boolean = false;
     set isTimeDisabled(isTimeDisabled: boolean) {
         this._isTimeDisabled = isTimeDisabled;
-        this.sendMetadataToService();
     }
     get isTimeDisabled() {
         return this._isTimeDisabled;
     }
 
-
+    buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_DISABLE_LOCATION;
+    buttonToggleEnableDisableTime = BUTTON_TITLE_TOGGLE_DISABLE_TIME;
 
     latitudeControl = new FormControl(DEFAULT_LATITUDE);
     longitudeControl = new FormControl(DEFAULT_LONGITUDE);
@@ -145,7 +152,52 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
             this.buttonShowOSMLayerTitle = SHOW_OSM_LAYER;
         }
     }
+    toogleEnableDisableLocation() {
+        if (this.isLocationDisabled) {
+            this.enableLocation();
+        } else {
+            this.disableLocation();
+        }
+    }
+    disableLocation() {
+        this.isLocationDisabled = true;
+        this.buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_ENABLE_LOCATION;
+        this.latitudeControl.disable();
+        this.longitudeControl.disable();
+    }
+    enableLocation() {
+        this.isLocationDisabled = false;
+        this.buttonToggleEnableDisableLocation = BUTTON_TITLE_TOGGLE_DISABLE_LOCATION;
+        if (!this.isLocationCopiedFromImage) {
+            this.latitudeControl.enable();
+            this.longitudeControl.enable();
+        }
 
+    }
+
+    toogleEnableDisableTime() {
+        if (this.isTimeDisabled) {
+            this.enableTime();
+        } else {
+            this.disableTime();
+        }
+    }
+
+    disableTime() {
+        this.isTimeDisabled = true;
+        this.buttonToggleEnableDisableTime = BUTTON_TITLE_TOGGLE_ENABLE_TIME;
+        this.dateImageCreated.disable();
+        this.timeImageCreated.disable();
+    }
+    enableTime() {
+        this.isTimeDisabled = false;
+        this.buttonToggleEnableDisableTime = BUTTON_TITLE_TOGGLE_DISABLE_TIME;
+        if (!this.isTimeCopiedFromImage) {
+            this.dateImageCreated.enable();
+            this.timeImageCreated.enable();
+        }
+
+    }
 
     onChangeLatitude(value) {
         if (value !== this.markerLatLong.lat) {
