@@ -1,0 +1,19 @@
+.container{
+  padding-bottom: 10px;
+}
+
+@media only screen and (min-height:800px){
+  .table-container{
+      overflow-y:scroll;
+      height: 65vh;
+  }
+}
+.table-container{
+  flex-grow: 1;
+}
+.color-key{
+  color: #4863A0;
+}
+  
+  
+  

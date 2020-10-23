@@ -119,8 +119,6 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
 
 
         if (typeof metadata !== "undefined" || metadata === null) {
-            this.isTimeDisabled = metadata.isTimeDisabledByDefault;
-            this.isLocationDisabled = metadata.isLocationDisabledByDefault
 
             this.isLocationCopiedFromImage = metadata.isLocationCopiedFromImage;
             this.isTimeCopiedFromImage = metadata.isTimeCopiedFromImage;
@@ -138,6 +136,17 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
             } else {
                 this.dateImageCreated.setValue(new Date(metadata.dateAndTime));
                 this.timeImageCreated.setValue(new Date(metadata.dateAndTime));
+            }
+            if (metadata.isTimeDisabledByDefault) {
+                this.disableTime();
+            } else {
+                this.enableTime();
+            }
+
+            if (metadata.isLocationDisabledByDefault) {
+                this.disableLocation();
+            } else {
+                this.enableLocation();
             }
 
         }
@@ -246,14 +255,22 @@ export class AllMetadataLocationTabComponent implements OnInit, OnDestroy {
 
     setLocationFromTemplate() {
         this.isLocationCopiedFromImage = this.templateIsLocationCopiedFromImage;
-        this.isLocationDisabled = this.templateIsLocationDisabled;
+        if (this.templateIsLocationDisabled) {
+            this.disableLocation();
+        } else {
+            this.enableLocation();
+        }
         this.latitudeControl.setValue(this.templateLatitude);
         this.longitudeControl.setValue(this.templateLongitude);
     }
 
     setTimeFromTemplate() {
         this.isTimeCopiedFromImage = this.templateIsTimeCopiedFromImage;
-        this.isTimeDisabled = this.templateIsTimeDisabled;
+        if (this.templateIsTimeDisabled) {
+            this.disableTime();
+        } else {
+            this.enableTime();
+        }
         this.dateImageCreated.setValue(new Date(this.templateDateTime));
         this.timeImageCreated.setValue(new Date(this.templateDateTime));
     }

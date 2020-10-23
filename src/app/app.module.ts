@@ -72,6 +72,7 @@ import { SelectCategoryTreeComponent } from './select-category-tree/select-categ
 import { LocationTemplateTabComponent } from './edit-template/location-template-tab/location-template-tab.component';
 import { EditAllMetadataComponent } from './edit-all-metadata/edit-all-metadata.component';
 import{EditAllMetdataInputTemplateButtonsComponent} from './edit-all-metadata-input-template-buttons/edit-all-metadata-input-template-buttons.component';
+import { AllMetadataCompleteTabComponent } from './edit-all-metadata/all-metadata-complete-tab/all-metadata-complete-tab.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +113,8 @@ import{EditAllMetdataInputTemplateButtonsComponent} from './edit-all-metadata-in
     AllMetadataFurtherMetadataTabComponent,
     AllMetadataLocationTabComponent,
     AllMetadataTemplateTabComponent,
-    EditAllMetdataInputTemplateButtonsComponent
+    EditAllMetdataInputTemplateButtonsComponent,
+    AllMetadataCompleteTabComponent
 
   ],
   imports: [

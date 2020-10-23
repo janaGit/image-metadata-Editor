@@ -15,8 +15,8 @@ export const emptyTemplate: AppTemplate = {
     },
     locationTab: {
         dateAndTime: undefined,
-        isLocationDisabledByDefault: false,
-        isTimeDisabledByDefault: false,
+        isLocationDisabledByDefault: true,
+        isTimeDisabledByDefault: true,
         latitude: undefined,
         longitude: undefined,
         isLocationCopiedFromImage: false,
