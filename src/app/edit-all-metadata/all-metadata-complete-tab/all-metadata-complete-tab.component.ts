@@ -29,7 +29,7 @@ export class AllMetadataCompleteTabComponent implements OnInit {
 
   }
   ngOnInit() {
-      this.metadata = this._editAllMetadataService.getAllMetadata();
+      this.metadata = this._editAllMetadataService.metadataObject;
       this.metadataKeys = Object.keys(this.metadata).sort(this.shiftEditableKeysUp.bind(this));
   }
 

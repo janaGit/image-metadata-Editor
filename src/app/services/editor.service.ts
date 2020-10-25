@@ -506,7 +506,7 @@ export class EditorService {
         return this.editableKeys.indexOf(key.toLocaleLowerCase()) > -1;
     }
     public isImportantMetadataKey(key: string): boolean {
-        return this.config.importantMetadataKeys.indexOf(key.toLocaleLowerCase()) > -1;
+        return this.config && this.config.importantMetadataKeys.indexOf(key.toLocaleLowerCase()) > -1;
     }
 
     /**

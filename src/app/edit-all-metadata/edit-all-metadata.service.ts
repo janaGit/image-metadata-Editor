@@ -53,7 +53,14 @@ export class EditAllMetadataService {
 
     private __location: BehaviorSubject<TemplateLocationTab> = new BehaviorSubject<TemplateLocationTab>(null);
 
-    public location$ = this.__categories.asObservable();
+    public location$ = this.__location.asObservable();
+
+
+    private _metadataObject: Object;
+
+    private __metadataObject: BehaviorSubject<Object> = new BehaviorSubject<Object>(null);
+
+    public metadataObject$ = this.__metadataObject.asObservable();
 
 
 
@@ -80,29 +87,44 @@ export class EditAllMetadataService {
         return this._location;
     }
 
+    get metadataObject() {
+        return this._metadataObject;
+    }
+
     updateTemplateName(templateName: string) {
         this._templateName = templateName;
         this.__templateName.next(templateName);
+        this.updateMetadataObject();
     }
 
     updateEditMetadata(metadata: MetadataFromMetadataTemplateTab) {
         this._editMetadata = metadata;
         this.__editMetadata.next(metadata);
+        this.updateMetadataObject();
     }
 
     updateCategories(categories: TemplateCategoriesTab) {
         this._categories = categories;
         this.__categories.next(categories);
+        this.updateMetadataObject();
     }
 
     updateExistingMetadata(existingMetadata: TemplateExistingMetadata) {
         this._existingMetadata = existingMetadata;
         this.__existingMetadata.next(existingMetadata);
+        this.updateMetadataObject();
     }
 
     updateLocation(location: TemplateLocationTab) {
         this._location = location;
         this.__location.next(location);
+        this.updateMetadataObject();
+    }
+
+    private updateMetadataObject() {
+        const object = this.createMetadataObject();
+        this._metadataObject = object;
+        this.__metadataObject.next(object);
     }
 
     resetMetadata() {
@@ -110,6 +132,7 @@ export class EditAllMetadataService {
         this.updateEditMetadata(null);
         this.updateCategories(null);
         this.updateLocation(null);
+        this.updateMetadataObject();
     }
 
 
@@ -119,8 +142,10 @@ export class EditAllMetadataService {
         this.updateEditMetadata(template.metadataTab);
         this.updateCategories(template.categoryTab);
         this.updateLocation(template.locationTab);
+        this.updateMetadataObject();
     }
-    getAllMetadata(): Object {
+
+    private createMetadataObject(): Object {
         const allMetadata: Object = {};
         if (this.editMetadata) {
 
@@ -194,49 +219,49 @@ export class EditAllMetadataService {
         }
 
 
-        if (this.existingMetadata.method === ExistingMetadataTemplateMethods.COPY_CUSTOM) {
+        if (this.existingMetadata && this.existingMetadata.method === ExistingMetadataTemplateMethods.COPY_CUSTOM) {
             allMetadata["Existing metadata"] = "Copy: " + this.existingMetadata.keys.join(", ");
         }
-        if (this.existingMetadata.method === ExistingMetadataTemplateMethods.DELETE_CUSTOM) {
+        if (this.existingMetadata && this.existingMetadata.method === ExistingMetadataTemplateMethods.DELETE_CUSTOM) {
             allMetadata["Existing metadata"] = "Delete: " + this.existingMetadata.keys.join(", ");
         }
-        if (this.existingMetadata.method === ExistingMetadataTemplateMethods.COPY_ALL) {
+        if (this.existingMetadata && this.existingMetadata.method === ExistingMetadataTemplateMethods.COPY_ALL) {
             allMetadata["Existing metadata"] = "Copy all";
         }
-        if (this.existingMetadata.method === ExistingMetadataTemplateMethods.DELETE_ALL) {
+        if (this.existingMetadata && this.existingMetadata.method === ExistingMetadataTemplateMethods.DELETE_ALL) {
             allMetadata["Existing metadata"] = "Delete all";
         }
 
-        if (this.categories.categories && this.categories.categories.length > 0) {
+        if (this.categories && this.categories.categories && this.categories.categories.length > 0) {
             allMetadata["Categories"] = this.categories.categories.toString();
         }
-        if (this.categories && this.categories.isNotSupportedCategoriesToCopy) {
+        if (this.categories && this.categories && this.categories.isNotSupportedCategoriesToCopy) {
             allMetadata["Not supported Categories"] = "Copy from Image";
         } else {
             allMetadata["Not supported Categories"] = "Omit";
         }
-        if (this.categories && this.categories.isSupportedCategoriesToCopy) {
+        if (this.categories && this.categories && this.categories.isSupportedCategoriesToCopy) {
             allMetadata["Supported Categories"] = "Copy from Image";
         } else {
             allMetadata["Supported Categories"] = "Omit";
         }
 
-        if (this.location.isLocationCopiedFromImage) {
+        if (this.location && this.location.isLocationCopiedFromImage) {
             allMetadata["GPS"] = "Copy from Image";
 
         } else {
-            if (!this.location.isLocationDisabledByDefault) {
+            if (this.location && !this.location.isLocationDisabledByDefault) {
                 allMetadata["GPSLatitude"] = this.location.latitude;
                 allMetadata["GPSLongitude"] = this.location.longitude;
             } else {
                 allMetadata["GPS"] = "Delete";
             }
         }
-        if (this.location.isTimeCopiedFromImage) {
+        if (this.location && this.location.isTimeCopiedFromImage) {
             allMetadata["DateTime"] = "Copy from Image";
 
         } else {
-            if (!this.location.isTimeDisabledByDefault) {
+            if (this.location && !this.location.isTimeDisabledByDefault) {
                 allMetadata["DateTimeOriginal"] = this.location.dateAndTime
             } else {
                 allMetadata["DateTimeOriginal"] = "Delete";

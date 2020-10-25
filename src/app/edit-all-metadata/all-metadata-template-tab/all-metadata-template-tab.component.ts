@@ -23,7 +23,12 @@ export class AllMetadataTemplateTabComponent implements OnInit, OnDestroy {
 
   selectTemplate = new FormControl("");
 
+  selectedTemplate: Object;
+  selectedTemplateKeys: string[];
+
   templateSubscription: Subscription;
+
+  metadataObjectSubscription: Subscription;
 
   editAllMetadataFromTemplateServiceSubscription: Subscription;
 
@@ -38,20 +43,37 @@ export class AllMetadataTemplateTabComponent implements OnInit, OnDestroy {
       this.templates = new Map(templates);
 
       this.templateKeys = [...this.templates.keys()];
-
     })
 
     this.editAllMetadataFromTemplateServiceSubscription = this._editAllMetadataFromTemplateService.templateName$.subscribe(templateName => {
       if (templateName !== this.selectTemplate.value) {
         this.selectTemplate.setValue(templateName);
-      } 
-      
+      }
+    });
+
+    this.metadataObjectSubscription = this._editAllMetadataService.metadataObject$.subscribe(metadataObject => {
+      if (metadataObject != null) {
+        this.selectedTemplate = metadataObject;
+        this.selectedTemplateKeys = Object.keys(this.selectedTemplate).sort(this.shiftEditableKeysUp.bind(this));
+      }
     });
 
   }
 
   ngOnDestroy() {
     this.templateSubscription.unsubscribe();
+    this.metadataObjectSubscription.unsubscribe();
+    this.editAllMetadataFromTemplateServiceSubscription.unsubscribe();
+  }
+
+  isImportantMetadataKey(key: string) {
+    return this._editorService.isImportantMetadataKey(key);
+  }
+  isEditableKey(key: string) {
+    return this._editorService.isEditableKey(key);
+  }
+  isEditableOrImportantKey(key: string) {
+    return this.isEditableKey(key) || this.isImportantMetadataKey(key);
   }
 
   onChangeSelectTemplate(event) {
@@ -59,4 +81,18 @@ export class AllMetadataTemplateTabComponent implements OnInit, OnDestroy {
     this._editAllMetadataService.setMetadataFromAppTemplate(this._editAllMetadataFromTemplateService.getTemplate());
   }
 
+  shiftEditableKeysUp(this, a, b) {
+    if (!this.isEditableOrImportantKey(a) && this.isEditableOrImportantKey(b)) {
+      return 1;
+    }
+    if (this.isEditableOrImportantKey(a) && !this.isEditableOrImportantKey(b)) {
+      return -1;
+    }
+    if ([a, b].sort()[0] === a) {
+      return -1;
+    } else {
+      return 1;
+    }
+
+  };
 }

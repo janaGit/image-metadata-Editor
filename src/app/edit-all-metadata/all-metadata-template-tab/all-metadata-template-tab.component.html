@@ -1,14 +1,22 @@
-<div id='window' class="app-container" style=" display: flex;">
+<div id='window' class="app-container container" style=" display: flex;">
 
-  <div style="display:flex; justify-content: center; flex:1;">
-      <div>
-          <div class="app-form-field app-form-field__width">
-              <label>Select Template</label>
-              <select class="form-control" [formControl]="selectTemplate"
-                  (ngModelChange)="onChangeSelectTemplate($event)">
-                  <option *ngFor="let templateName of templateKeys" [ngValue]="templateName">{{templateName}}</option>
-              </select>
-          </div>
-      </div>
-  </div>
-</div>
+    <div style="display:flex; justify-content: center;flex-direction: column; flex:1;">
+
+        <div class="app-form-field app-form-field__width" style="align-self:center;">
+            <label>Select Template</label>
+            <select class="form-control" [formControl]="selectTemplate"
+                (ngModelChange)="onChangeSelectTemplate($event)">
+                <option *ngFor="let templateName of templateKeys" [ngValue]="templateName">{{templateName}}</option>
+            </select>
+        </div>
+        <div class="table-container" *ngIf="selectTemplate">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr *ngFor="let key of selectedTemplateKeys" [class.color-key]="isEditableKey(key)||isImportantMetadataKey(key)">
+                            <td class="app-capitalize">{{key}}</td>
+                            <td>{{selectedTemplate[key]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
