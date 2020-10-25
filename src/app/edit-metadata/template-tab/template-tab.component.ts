@@ -23,7 +23,12 @@ export class TemplateTabComponent implements OnInit, OnDestroy {
 
   selectTemplate = new FormControl("");
 
+  selectedTemplate: Object;
+  selectedTemplateKeys: string[];
+
   templateSubscription: Subscription;
+
+  metadataObjectSubscription: Subscription;
 
   metadataFromTemplateServiceSubscription: Subscription;
 
@@ -48,6 +53,12 @@ export class TemplateTabComponent implements OnInit, OnDestroy {
       
     });
 
+    this.metadataObjectSubscription = this._metadataFromTemplateService.templateObject$.subscribe(templateObject => {
+      if (templateObject != null) {
+        this.selectedTemplate = templateObject;
+        this.selectedTemplateKeys = Object.keys(this.selectedTemplate).sort(this.shiftEditableKeysUp.bind(this));
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -58,5 +69,29 @@ export class TemplateTabComponent implements OnInit, OnDestroy {
     this._metadataFromTemplateService.setTemplate(this.templates.get(event));
     this._metadataService.setMetadataFromAppTemplate(this._metadataFromTemplateService.getTemplate());
   }
+  isImportantMetadataKey(key: string) {
+    return this._editorService.isImportantMetadataKey(key);
+  }
+  isEditableKey(key: string) {
+    return this._editorService.isEditableKey(key);
+  }
+  isEditableOrImportantKey(key: string) {
+    return this.isEditableKey(key) || this.isImportantMetadataKey(key);
+  }
 
+
+  shiftEditableKeysUp(this, a, b) {
+    if (!this.isEditableOrImportantKey(a) && this.isEditableOrImportantKey(b)) {
+      return 1;
+    }
+    if (this.isEditableOrImportantKey(a) && !this.isEditableOrImportantKey(b)) {
+      return -1;
+    }
+    if ([a, b].sort()[0] === a) {
+      return -1;
+    } else {
+      return 1;
+    }
+
+  };
 }
