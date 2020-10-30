@@ -112,6 +112,7 @@ export class Server {
         this.router.post('/editMetadata/:imageName', this.editMetadata);
         this.router.post('/editMetadataAllImagesSelected/:imageName', this.editMetadataAllImagesSelected);
         this.router.get('/getMetadataToEdit/:imageName', this.getMetadataToEdit);
+        this.router.get('/getMetadataByTagNames_editedFolder/:imageName', this.getMetadataByTagNames_editedFolder);
 
         this.router.post('/newImage', this.upload.single('image'), this.newImage);
         this.router.delete('/deleteImage/:imageName', this.deleteImage);
@@ -268,6 +269,16 @@ export class Server {
         });
     }
 
+    private getMetadataByTagNames_editedFolder = (req: Request, res: Response) => {
+        var imageName = req.params.imageName;
+
+        var metadata = this._getMetadataToEdit(this.imageDir_edited, imageName);
+        metadata.then((value) => {
+            res.send(value);
+        }, (error) => {
+            res.status(404).send(error);
+        });
+    }
 
     private copyImageToImageFolder = (req: Request, res: Response) => {
         let imageName = req.params.imageName;

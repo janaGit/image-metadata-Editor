@@ -104,25 +104,27 @@ export class MoreMetadataTabComponent implements OnDestroy {
     }
 
     shiftEditableKeysUp(this, a, b) {
-        if (!this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
-            return 1;
-        }
-        if (this.isEditableKey(a.key) && !this.isEditableKey(b.key)) {
-            return -1;
-        }
-        if (this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
-            if ([a.key, b.key].sort()[0] === a.key) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
         if (!this.isImportantMetadataKey(a.key) && this.isImportantMetadataKey(b.key)) {
             return 1;
         }
         if (this.isImportantMetadataKey(a.key) && !this.isImportantMetadataKey(b.key)) {
             return -1;
         }
+        if (this.isImportantMetadataKey(a.key) && this.isImportantMetadataKey(b.key)) {
+            if ([a.key, b.key].sort()[0] === a.key) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+
+        if (!this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
+            return 1;
+        }
+        if (this.isEditableKey(a.key) && !this.isEditableKey(b.key)) {
+            return -1;
+        }
+
         if ([a.key, b.key].sort()[0] === a.key) {
             return -1;
         } else {

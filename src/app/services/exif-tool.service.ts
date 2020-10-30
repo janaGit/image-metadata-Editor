@@ -35,9 +35,15 @@ export class ExifToolService {
     private _deleteAllMetadata = this._serverBase + '/deleteAllMetadata';
 
     /**
- * Restful webservice URL to get the not humanreadabile metadata from an image that should be edited 
- */
+     * * Restful webservice URL to get the not humanreadabile metadata from an image that should be edited 
+     * */
     private _getMetadata_to_edit = this._serverBase + '/getMetadataToEdit';
+
+    /**
+     * * Restful webservice URL to get the not humanreadabile metadata from an image that should has been edited and
+     *      is in the image gallery (images_edited) folder
+     * */
+    private _getMetadataByTagNames_editedFolder = this._serverBase + '/getMetadataByTagNames_editedFolder';
 
     /**
      * Actual language-setting for the image metadata. 
@@ -64,6 +70,11 @@ export class ExifToolService {
      * Stores the metadata of an image of the image gallery. 
      */
     private _metadata_edited: Object;
+
+    /**
+     * Stores the metadata by tag names of an image of the image gallery. 
+     */
+    private _metadata_edited_byTagNames: Object;
 
     constructor(private _http: HttpClient, private _editorService: EditorService, private _imageService: ImageService, private _metadataFromImageService: MetadataFromImageService) { }
 
@@ -99,6 +110,13 @@ export class ExifToolService {
      */
     get metadata_to_edit() {
         return this._metadata_to_edit;
+    }
+
+    /**
+     * Get the metadata of an image of the image gallery. 
+     */
+    get metadata_edited_byTagNames() {
+        return this._metadata_edited_byTagNames;
     }
 
     /**
@@ -162,6 +180,24 @@ export class ExifToolService {
     }
 
     /**
+     * Method that does a request to the backend to get the metadata with tag names
+     * of a specific image from the image folder.
+     */
+    async requestMetadataByTagNames_editedFolder() {
+        try {
+            const data = await this._http.get(this._getMetadataByTagNames_editedFolder + '/' + this._editorService.imageName_edited).pipe(
+                map(this.extractData)).toPromise();
+            this._metadata_edited_byTagNames = data;
+            this._errorMessage = null;
+        } catch (error) {
+            this.handleError(error);
+            this._errorMessage = error.message;
+            this._metadata_to_edit = null;
+        }
+
+    }
+
+    /**
      * Method that deletes the metadata of images of the editing view.
      * @param imageName Image name of Image that metadata should be deleted.
      * @return Name of Image after deleted image data. (Image is renamed after deleting image data)
@@ -179,10 +215,10 @@ export class ExifToolService {
 
     }
     /** 
- * Method that deletes the metadata of images of the editing view.
- * @param imageName Image name of Image that metadata should be deleted.
- * @return Name of Image after deleted image data. (Image is renamed after deleting image data)
- */
+    * Method that deletes the metadata of images of the editing view.
+    * @param imageName Image name of Image that metadata should be deleted.
+    * @return Name of Image after deleted image data. (Image is renamed after deleting image data)
+    */
     async deleteAllMetadataOfImage(imageName: string): Promise<string> {
         try {
             const returnObject = await this._http.post(this._deleteAllMetadata + '/' + imageName, "").pipe(

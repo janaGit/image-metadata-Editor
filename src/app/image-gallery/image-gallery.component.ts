@@ -56,10 +56,16 @@ export class ImageGalleryComponent {
      * actual selected image.
      */
     metadata = {};
+
+    /**
+    * This variable stores the metadata by tag names of the 
+    * actual selected image.
+    */
+    metadataByTagNames = {};
     /**
      * This variable stores the metadata keys.
      */
-    metadata_keys = [];
+    metadataKeyTagMap= new Map<string,string>();
     /**
      * This variable stores the image name the mouse is placed.
      */
@@ -141,14 +147,24 @@ export class ImageGalleryComponent {
         this._editorService.updateImageName_edited(imageName);
         // After that update the metadata of that image can be requested at the backend.
         await this._exifToolService.requestMetadata_edited();
+        await this._exifToolService.requestMetadataByTagNames_editedFolder();
         // Get the metadata from the exifToolService.
         this.metadata = this._exifToolService.metadata_edited;
-        if (this.metadata) {
-            this.metadata_keys = Object.keys(this.metadata);
-        } else {
-            this.metadata_keys = [];
-        }
+        this.metadataByTagNames = this._exifToolService.metadata_edited_byTagNames;
+        this.mapMetadataLanguageKeysToMetadataTags(this.metadata,this.metadataByTagNames);
+      
+    }
 
+    mapMetadataLanguageKeysToMetadataTags(metadata: Object, metadataByTagNames: Object) {
+        this.metadataKeyTagMap = new Map<string, string>();
+        const metadataKeys = Object.keys(metadata);
+        const metadataTags = Object.keys(metadataByTagNames);
+        if (metadataKeys.length !== metadataTags.length) {
+            throw new Error("length of arrays has to have the same length!");
+        }
+        for (let i = 0; i < metadataTags.length; i++) {
+            this.metadataKeyTagMap .set(metadataKeys[i], metadataTags[i]);
+        }
     }
     /**
      * This method checks if an image has been fixed.
@@ -212,5 +228,41 @@ export class ImageGalleryComponent {
                 this.table.nativeElement.scrollBy([0, -50]);
         }
     }
+
+    isEditableKey(key: string) {
+        return this._editorService.isEditableKey(this.metadataKeyTagMap.get(key));
+    }
+
+    isImportantMetadataKey(key: string) {
+        return this._editorService.isImportantMetadataKey(this.metadataKeyTagMap.get(key));
+    }
+    shiftEditableKeysUp(this, a, b) {
+        if (!this.isImportantMetadataKey(a.key) && this.isImportantMetadataKey(b.key)) {
+            return 1;
+        }
+        if (this.isImportantMetadataKey(a.key) && !this.isImportantMetadataKey(b.key)) {
+            return -1;
+        }
+        if (this.isImportantMetadataKey(a.key) && this.isImportantMetadataKey(b.key)) {
+            if ([a.key, b.key].sort()[0] === a.key) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+        if (!this.isEditableKey(a.key) && this.isEditableKey(b.key)) {
+            return 1;
+        }
+        if (this.isEditableKey(a.key) && !this.isEditableKey(b.key)) {
+            return -1;
+        }
+
+        if ([a.key, b.key].sort()[0] === a.key) {
+            return -1;
+        } else {
+            return 1;
+        }
+
+    };
 }
 
