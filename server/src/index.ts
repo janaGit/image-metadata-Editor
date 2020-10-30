@@ -110,6 +110,7 @@ export class Server {
         this.router.get('/getMetadata_edited/:imageName/:lang', this.getMetadata_edited);
         this.router.post('/deleteAllMetadata/:imageName', this.deleteAllMetadata);
         this.router.post('/editMetadata/:imageName', this.editMetadata);
+        this.router.post('/editMetadataAllImagesSelected/:imageName', this.editMetadataAllImagesSelected);
         this.router.get('/getMetadataToEdit/:imageName', this.getMetadataToEdit);
 
         this.router.post('/newImage', this.upload.single('image'), this.newImage);
@@ -418,6 +419,21 @@ export class Server {
             const result = await this.exifTool.writeMetadata(this.imageDir, imageName, metadata);
             res.status(200).send(result);
         } catch (error) {
+            console.error(error);
+            res.status(500).send("Server error");
+        }
+
+    }
+
+    private editMetadataAllImagesSelected = async (req: Request, res: Response) => {
+        let metadata = req.body.metadata;
+        let imageName = req.params.imageName;
+        console.log(metadata);
+        try {
+            await this.exifTool.writeMetadataAllImagesSelected(this.imageDir, imageName, metadata);
+            res.status(200).send("OK");
+        } catch (error) {
+            console.error(error);
             res.status(500).send("Server error");
         }
 

@@ -57,3 +57,15 @@ export function areArraysEqual(_arr1, _arr2) {
         return true;
 
 }
+// From: https://stackoverflow.com/questions/47062922/how-to-get-all-keys-with-values-from-nested-objects/47063174 (adapted)
+export function getKeysFromNestedObject(obj): string[] {
+        return Object.keys(obj).reduce((res, el) => {
+                if (Array.isArray(obj[el])) {
+                        return res;
+                } else if (typeof obj[el] === 'object' && obj[el] !== null) {
+                        return [...res, ...getKeysFromNestedObject(obj[el])];
+                }
+                return [...res, el];
+        }, []);
+}
+

@@ -34,9 +34,7 @@ export class AllMetadataCompleteTabComponent implements OnInit {
   }
 
   async onClickSave() {
-      //await this._metadataService.sendMetadataToBackend();
-      this._imageService.moveImageToImageGalleryAndUpdateImagesInFolder_Edited(this._editorService.imageName);
-
+      this._editAllMetadataService.sendMetadataToBackendAndMoveToImageGallery();
       this._router.navigate(["image_gallery"]);
   }
 

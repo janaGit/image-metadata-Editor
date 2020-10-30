@@ -4,7 +4,9 @@ import * as readline from 'readline';
 import * as constants from "../../utilities/constants";
 import * as fs from 'fs';
 import { ReturnObject } from '../../src/app/types/return-object.interface';
-
+import { AppTemplate } from '../../src/app/types/app-template.interface';
+import { ExistingMetadataTemplateMethods } from '../../src/app/types/existing-metadata-templete-methods.type';
+import { getKeysFromNestedObject } from '../../utilities/utilitiy-methods';
 interface ImageData {
   imageName: string,
   imageNameAfterProcessing: string,
@@ -12,6 +14,9 @@ interface ImageData {
 }
 export class ExifTool {
   private _languages = ['cs', 'de', 'en', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pl', 'ru', 'sv', 'tr', 'zh_cn', 'zh_tw'];
+
+  private fileNameForCategoryTree = "category-tree.json"
+  private configDir = './config';
 
   public getMetadataHumanreadable(imageDir, imageName, lang) {
     var json = {};
@@ -44,7 +49,7 @@ export class ExifTool {
   public getMetadata(imageDir, imageName) {
     var json = {};
 
-    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, '-a', '-s','-c', '%.16f']);
+    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, '-a', '-s', '-c', '%.16f']);
     return new Promise((fulfill, reject) => {
       ls.stdout.on('data', (data) => {
         console.log('exifTool getMetadata: ' + data);
@@ -75,7 +80,7 @@ export class ExifTool {
     }
     console.log(metadataArray);
 
-    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, ...metadataArray]);
+    var ls = child_process.spawn('exiftool', [imageDir + '/' + imageName, "-all=", ...metadataArray]);
     return new Promise((fulfill, reject) => {
       ls.stdout.on('data', (data) => {
         fulfill("OK");
@@ -87,6 +92,118 @@ export class ExifTool {
     });
   }
 
+  public writeMetadataAllImagesSelected(imageDir, imageName: string, metadata: AppTemplate) {
+    try {
+      var ls_categories = child_process.spawnSync('exiftool', [imageDir + '/' + imageName, "-Categories"]);
+      const tags = this.createTags(metadata, ls_categories.stdout);
+      console.log("createMetadataForProcessing: "+this.createMetadataForProcessing(tags.tagsAndValues).join(" "));
+      var ls_categories = child_process.spawnSync('exiftool', [imageDir + '/' + imageName, ...this.createMetadataForProcessing(tags.tagsAndValues), "-tagsFromFile", '@', '-orientation',  ...tags.copyFromImage,'-overwrite_original']);
+    } catch (e) {
+      console.error('exifTool writeMetadataAllImagesSelected() error: ' + e);
+    }
+
+  }
+  private createMetadataForProcessing(tagsAndValues: Map<string, string>): string[] {
+    let strings = [];
+    tagsAndValues.forEach((value, key) => {
+      strings.push("-"+key + "=" + value);
+    });
+    return strings;
+  }
+  private createTags(metadata: AppTemplate, categoriesFromImage: string): { tagsAndValues: Map<string, string>, copyFromImage: string[] } {
+    let copyFromImage: string[] = [];
+    const tagsAndValues = new Map<string, string>();
+
+
+    if (metadata.existingMetadataTab.method === ExistingMetadataTemplateMethods.COPY_CUSTOM) {
+      copyFromImage = metadata.existingMetadataTab.keys;
+      tagsAndValues.set("all", "");
+    }
+    if (metadata.existingMetadataTab.method === ExistingMetadataTemplateMethods.DELETE_CUSTOM) {
+      metadata.existingMetadataTab.keys.forEach(key => {
+        tagsAndValues.set(key, "");
+      });
+    }
+    if (metadata.existingMetadataTab.method === ExistingMetadataTemplateMethods.DELETE_ALL) {
+      tagsAndValues.set("all", "");
+    }
+
+    if (metadata.metadataTab.isCreatorCopiedFromImage) {
+      copyFromImage.push("Creator");
+    } else {
+      tagsAndValues.set("Creator", metadata.metadataTab.creator);
+    }
+    if (metadata.metadataTab.isLicenseCopiedFromImage) {
+      copyFromImage.push("License");
+    } else {
+      tagsAndValues.set("License", metadata.metadataTab.license);
+    }
+    if (metadata.metadataTab.isContactInfoCopiedFromImage) {
+      copyFromImage.push("ContactInfo");
+    } else {
+      tagsAndValues.set("ContactInfo", metadata.metadataTab.contactInfo);
+    }
+    if (metadata.metadataTab.areKeywordsCopiedFromImage) {
+      copyFromImage.push("Keywords");
+      tagsAndValues.set("Keywords", metadata.metadataTab.keywords.join(","));
+    } else {
+      tagsAndValues.set("Keywords", metadata.metadataTab.keywords.join(","));
+    }
+    if (metadata.metadataTab.isSubjectCopiedFromImage) {
+      copyFromImage.push("Subject");
+    } else {
+      tagsAndValues.set("Subject", metadata.metadataTab.subject);
+    }
+    if (metadata.metadataTab.isDescriptionCopiedFromImage) {
+      copyFromImage.push("Description");
+    } else {
+      tagsAndValues.set("Description", metadata.metadataTab.description);
+    }
+
+    const categoryTree = JSON.parse(fs.readFileSync(this.configDir + "/" + this.fileNameForCategoryTree).toString());
+    const supportedCategories = getKeysFromNestedObject(categoryTree);
+    let addedCategories = metadata.categoryTab.categories.join(",");
+    if (metadata.categoryTab.isNotSupportedCategoriesToCopy && metadata.categoryTab.isSupportedCategoriesToCopy) {
+      tagsAndValues.set("Categories", addedCategories + categoriesFromImage);
+    }
+    if (!metadata.categoryTab.isNotSupportedCategoriesToCopy && metadata.categoryTab.isSupportedCategoriesToCopy) {
+      const onlySupportedCategories = categoriesFromImage.split(",").filter(category => supportedCategories.includes(category));
+      tagsAndValues.set("Categories", addedCategories + onlySupportedCategories);
+    }
+    if (metadata.categoryTab.isNotSupportedCategoriesToCopy && !metadata.categoryTab.isSupportedCategoriesToCopy) {
+      const notSupportedCategories = categoriesFromImage.split(",").filter(category => !supportedCategories.includes(category));
+      tagsAndValues.set("Categories", addedCategories + notSupportedCategories);
+
+    }
+    if (!metadata.categoryTab.isNotSupportedCategoriesToCopy && !metadata.categoryTab.isSupportedCategoriesToCopy) {
+      tagsAndValues.set("Categories", addedCategories);
+    }
+
+
+
+    if (metadata.locationTab.isLocationDisabledByDefault) {
+      tagsAndValues.set("GPSLatitude", "");
+      tagsAndValues.set("GPSLongitude", "");
+    } else {
+      if (metadata.locationTab.isLocationCopiedFromImage) {
+        copyFromImage.push("GPSLatitude");
+        copyFromImage.push("GPSLongitude");
+      } else {
+        tagsAndValues.set("GPSLatitude", metadata.locationTab.latitude + "");
+        tagsAndValues.set("GPSLongitude", metadata.locationTab.longitude + "");
+      }
+    }
+    if (metadata.locationTab.isTimeDisabledByDefault) {
+      tagsAndValues.set("DateTimeOriginal", "");
+    } else {
+      if (metadata.locationTab.isTimeCopiedFromImage) {
+        copyFromImage.push("DateTimeOriginal");
+      } else {
+        tagsAndValues.set("DateTimeOriginal", metadata.locationTab.dateAndTime.toString());
+      }
+    }
+    return { tagsAndValues, copyFromImage }
+  }
   public async deleteAllMetadata(imageDir, imageName): Promise<ReturnObject> {
     let data: ReturnObject;
     if (imageName.indexOf("editedx") === -1) {

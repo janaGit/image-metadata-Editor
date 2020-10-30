@@ -12,12 +12,17 @@ import { MetadataFromImageService } from 'app/services/metadata-from-image.servi
 import { MetadataFromMetadataTab } from 'app/types/metadata-from-metadata-tab.interface';
 import { ExistingMetadataTemplateMethods } from 'app/types/existing-metadata-templete-methods.type';
 import { ExistingMetadataTemplateTabComponent } from 'app/edit-template/existing-metadata-template-tab/existing-metadata-template-tab.component';
+import { map } from 'rxjs/operators';
+import { ReturnObject } from 'app/types/return-object.interface';
+import { ImageService } from 'app/services/image.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class EditAllMetadataService {
+    private _serverBase = '/api';
 
+    private _uri_editMetadataAllImagesSelected = this._serverBase + '/editMetadataAllImagesSelected';
 
     private _templateName: string;
 
@@ -65,7 +70,8 @@ export class EditAllMetadataService {
 
 
 
-    constructor(private _http: HttpClient, private _editorService: EditorService, private _metadataFromImageService: MetadataFromImageService) {
+    constructor(private _http: HttpClient, private _editorService: EditorService, private _metadataFromImageService: MetadataFromImageService,
+        private _imageService: ImageService) {
     }
     get templateName() {
         return this._templateName;
@@ -143,6 +149,16 @@ export class EditAllMetadataService {
         this.updateCategories(template.categoryTab);
         this.updateLocation(template.locationTab);
         this.updateMetadataObject();
+    }
+
+    getAsAppTemplate(): AppTemplate {
+        return {
+            name: this.templateName,
+            categoryTab: this.categories,
+            metadataTab: this.editMetadata,
+            locationTab: this.location,
+            existingMetadataTab: this.existingMetadata
+        }
     }
 
     private createMetadataObject(): Object {
@@ -272,4 +288,47 @@ export class EditAllMetadataService {
         return allMetadata;
     }
 
+
+    async sendMetadataToBackendAndMoveToImageGallery() {
+        try {
+            const imageNames = await this._imageService.getImageNames();
+            imageNames.forEach(async imageName => {
+                if (imageName !== "selectAll_Images.png") {
+                    this.processImageAllSelected(imageName);
+                }
+
+            })
+        }
+        catch (error) {
+            this.handleError(error)
+        };
+    }
+
+    private async processImageAllSelected(imageName: string) {
+        try {
+            await this._http.post(this._uri_editMetadataAllImagesSelected + "/" + imageName, { metadata: this.getAsAppTemplate() }).pipe(
+                map(this.extractReturnObject)).toPromise();
+        }
+        catch (error) {
+            this.handleError(error)
+        };
+        await this._imageService.moveImageToImageGallery(imageName);
+        await this._imageService.updateImageNamesInFolder_edited();
+    }
+    private extractReturnObject(res: any): ReturnObject {
+        if (res.status < 200 || res.status >= 300) {
+            throw new Error('Bad response status: ' + res.status);
+        }
+
+        return res.body || {};
+    }
+    private handleError(error: any) {
+        let err = error || 'Error on server communication';
+        if (error.status === 404) {
+            console.warn(error);
+        } else {
+            console.error(err);
+        }
+
+    }
 }
