@@ -61,6 +61,8 @@ export class MetadataFromTemplateService {
 
     public templateObject$ = this.__templateObject.asObservable();
 
+    private _deletedOrAddedKeywords: string[] = [];
+
     constructor(
         private _metadataFromImageService: MetadataFromImageService,
         private _editorService: EditorService) {
@@ -120,7 +122,8 @@ export class MetadataFromTemplateService {
     }
 
     updateEditMetadata(metadata: MetadataFromMetadataTemplateTab) {
-        this._editMetadata = metadata;
+        this._editMetadata = deepCopyFunction(metadata);
+        this._deletedOrAddedKeywords = metadata.keywords;
         this._editMetadata.keywords = this.mergeImageTemplateKeywords();
         this.updateTemplateObject();
     }
@@ -258,68 +261,77 @@ export class MetadataFromTemplateService {
         const allMetadata: Object = {};
         if (this.editMetadata) {
 
-            let key = "creator";[]
             if (this.editMetadata.isCreatorCopiedFromImage) {
                 allMetadata["Creator"] = "Copy from Image";
             } else {
-                if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
-                    allMetadata["Creator"] = this.editMetadata[key];
+                if (this.editMetadata.creator !== "" && typeof this.editMetadata.creator !== "undefined") {
+                    allMetadata["Creator"] = this.editMetadata.creator;
                 } else {
                     allMetadata["Creator"] = "Delete";
                 }
             }
 
 
-            key = "license";
-            if (this.editMetadata.isCreatorCopiedFromImage) {
+
+            if (this.editMetadata.isLicenseCopiedFromImage) {
                 allMetadata["License"] = "Copy from Image";
             } else {
-                if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
-                    allMetadata["License"] = this.editMetadata[key];
+                if (this.editMetadata.license !== "" && typeof this.editMetadata.license !== "undefined") {
+                    allMetadata["License"] = this.editMetadata.license;
                 } else {
                     allMetadata["License"] = "Delete";
                 }
             }
 
-            key = "contactInfo";
-            if (this.editMetadata.isCreatorCopiedFromImage) {
+
+            if (this.editMetadata.isContactInfoCopiedFromImage) {
                 allMetadata["ContactInfo"] = "Copy from Image";
             } else {
-                if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
-                    allMetadata["ContactInfo"] = this.editMetadata[key];
+                if (this.editMetadata.contactInfo !== "" && typeof this.editMetadata.contactInfo !== "undefined") {
+                    allMetadata["ContactInfo"] = this.editMetadata.contactInfo;
                 } else {
                     allMetadata["ContactInfo"] = "Delete";
                 }
             }
 
-            key = "keywords";
-            if (this.editMetadata.isCreatorCopiedFromImage) {
+
+            if (this.editMetadata.areKeywordsCopiedFromImage) {
                 allMetadata["Keywords"] = "Copy from Image";
+                if (typeof this.editMetadata.keywords !== "undefined" && this.editMetadata.keywords.length > 0) {
+
+                    if (this.editMetadata.areKeywordsToDeleteFromImage) {
+                        allMetadata["Keywords"] += "; Delete:";
+                        allMetadata["Keywords"] += this._deletedOrAddedKeywords.map(keyword => " " + keyword);
+                    } else {
+                        allMetadata["Keywords"] += "; Add:";
+                        allMetadata["Keywords"] += this._deletedOrAddedKeywords.map(keyword => " " + keyword);
+                    }
+                }
             } else {
-                if (typeof this.editMetadata[key] !== "undefined" && this.editMetadata[key].length > 0) {
-                    allMetadata["Keywords"] = this.editMetadata[key];
+                if (typeof this.editMetadata.keywords !== "undefined" && this.editMetadata.keywords.length > 0) {
+                    allMetadata["Keywords"] = this.editMetadata.keywords;
                 } else {
                     allMetadata["Keywords"] = "Delete";
                 }
             }
 
-            key = "subject";
-            if (this.editMetadata.isCreatorCopiedFromImage) {
+
+            if (this.editMetadata.isSubjectCopiedFromImage) {
                 allMetadata["Subject"] = "Copy from Image";
             } else {
-                if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
-                    allMetadata["Subject"] = this.editMetadata[key];
+                if (this.editMetadata.subject !== "" && typeof this.editMetadata.subject !== "undefined") {
+                    allMetadata["Subject"] = this.editMetadata.subject;
                 } else {
                     allMetadata["Subject"] = "Delete";
                 }
             }
 
-            key = "description";
-            if (this.editMetadata.isCreatorCopiedFromImage) {
+
+            if (this.editMetadata.isDescriptionCopiedFromImage) {
                 allMetadata["Description"] = "Copy from Image";
             } else {
-                if (this.editMetadata[key] !== "" && typeof this.editMetadata[key] !== "undefined") {
-                    allMetadata["Description"] = this.editMetadata[key];
+                if (this.editMetadata.description !== "" && typeof this.editMetadata.description !== "undefined") {
+                    allMetadata["Description"] = this.editMetadata.description;
                 } else {
                     allMetadata["Description"] = "Delete";
                 }
