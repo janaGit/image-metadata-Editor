@@ -297,7 +297,7 @@ export class MetadataFromTemplateService {
 
             if (this.editMetadata.areKeywordsCopiedFromImage) {
                 allMetadata["Keywords"] = "Copy from Image";
-                if (typeof this.editMetadata.keywords !== "undefined" && this.editMetadata.keywords.length > 0) {
+                if (typeof this._deletedOrAddedKeywords!== "undefined" && this._deletedOrAddedKeywords.length > 0) {
 
                     if (this.editMetadata.areKeywordsToDeleteFromImage) {
                         allMetadata["Keywords"] += "; Delete:";
