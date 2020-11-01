@@ -7,6 +7,7 @@ export interface MetadataFromMetadataTemplateTab{
     isLicenseCopiedFromImage: boolean,
     keywords:string[];
     areKeywordsCopiedFromImage: boolean,
+    areKeywordsToDeleteFromImage: boolean,
     subject: string;
     isSubjectCopiedFromImage: boolean,
     description:string;

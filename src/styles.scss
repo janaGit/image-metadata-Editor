@@ -61,6 +61,16 @@ mat-checkbox label {
 .mat-radio-button.mat-accent .mat-radio-inner-circle{
   background-color: #4863A0;
 }
+.mat-radio-disabled.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+  border-color: #b0b0b0;
+}
+.mat-radio-disabled.mat-radio-button.mat-accent .mat-radio-inner-circle{
+  background-color:  #b0b0b0;
+}
+.mat-radio-container, .mat-radio-label-content{
+  margin-top: 5px;
+}
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

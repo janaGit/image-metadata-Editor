@@ -75,6 +75,14 @@ export class AllMetadataEditTabComponent implements OnInit {
     return this._areKeywordsCopiedFromImage;
   }
 
+  private _areKeywordsToDeleteFromImage: boolean = false;
+  set areKeywordsToDeleteFromImage(areKeywordsToDeleteFromImage: boolean) {
+    this._areKeywordsToDeleteFromImage = areKeywordsToDeleteFromImage;
+  }
+  get areKeywordsToDeleteFromImage() {
+    return this._areKeywordsToDeleteFromImage;
+  }
+
 
   private _isSubjectCopiedFromImage: boolean = false;
   set isSubjectCopiedFromImage(isSubjectCopiedFromImage: boolean) {
@@ -130,6 +138,7 @@ export class AllMetadataEditTabComponent implements OnInit {
     this.isDescriptionCopiedFromImage = editMetadata.isDescriptionCopiedFromImage;
     this.keywords = editMetadata.keywords;
     this.areKeywordsCopiedFromImage = editMetadata.areKeywordsCopiedFromImage;
+    this.areKeywordsToDeleteFromImage= editMetadata.areKeywordsToDeleteFromImage;
 
     this.templateData = this._editAllMetadataFromTemplateService.editMetadata;
   }
@@ -144,6 +153,7 @@ export class AllMetadataEditTabComponent implements OnInit {
       isLicenseCopiedFromImage: this.isLicenseCopiedFromImage,
       keywords: this.keywords,
       areKeywordsCopiedFromImage: this.areKeywordsCopiedFromImage,
+      areKeywordsToDeleteFromImage: this.areKeywordsToDeleteFromImage,
       subject: this.subject.value,
       isSubjectCopiedFromImage: this.isSubjectCopiedFromImage,
       description: this.description.value,
@@ -174,5 +184,13 @@ export class AllMetadataEditTabComponent implements OnInit {
   setDescriptionFromTemplate() {
     this.description.setValue(this.templateData.description);
     this.isDescriptionCopiedFromImage=this.templateData.isDescriptionCopiedFromImage;
+  }
+
+  onChangeAreKeywordsToDeleteFromImage(event) {
+    if (event === "delete") { 
+      this.areKeywordsToDeleteFromImage = true;
+    }  else {
+      this.areKeywordsToDeleteFromImage = false;
+    }
   }
 }

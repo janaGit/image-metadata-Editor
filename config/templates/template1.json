@@ -17,6 +17,7 @@
             "keyword1"
         ],
         "areKeywordsCopiedFromImage": false,
+        "areKeywordsToDeleteFromImage": false,
         "license": "CC-by",
         "isLicenseCopiedFromImage": false,
         "subject": "Object",

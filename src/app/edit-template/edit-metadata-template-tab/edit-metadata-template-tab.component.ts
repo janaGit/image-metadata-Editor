@@ -88,6 +88,15 @@ export class EditMetadataTemplateTabComponent implements OnInit {
     return this._areKeywordsCopiedFromImage;
   }
 
+  private _areKeywordsToDeleteFromImage: boolean = false;
+  set areKeywordsToDeleteFromImage(areKeywordsToDeleteFromImage: boolean) {
+    this._areKeywordsToDeleteFromImage = areKeywordsToDeleteFromImage;
+    this.sendMetadataToService();
+  }
+  get areKeywordsToDeleteFromImage() {
+    return this._areKeywordsToDeleteFromImage;
+  }
+
 
   private _isSubjectCopiedFromImage: boolean = false;
   set isSubjectCopiedFromImage(isSubjectCopiedFromImage: boolean) {
@@ -142,7 +151,7 @@ export class EditMetadataTemplateTabComponent implements OnInit {
     this.isDescriptionCopiedFromImage = editMetadata.isDescriptionCopiedFromImage;
     this.keywords = editMetadata.keywords;
     this.areKeywordsCopiedFromImage = editMetadata.areKeywordsCopiedFromImage;
-
+    this.areKeywordsToDeleteFromImage = editMetadata.areKeywordsToDeleteFromImage;
 
   }
 
@@ -156,10 +165,18 @@ export class EditMetadataTemplateTabComponent implements OnInit {
       isLicenseCopiedFromImage: this.isLicenseCopiedFromImage,
       keywords: this.keywords,
       areKeywordsCopiedFromImage: this.areKeywordsCopiedFromImage,
+      areKeywordsToDeleteFromImage: this.areKeywordsToDeleteFromImage,
       subject: this.subject.value,
       isSubjectCopiedFromImage: this.isSubjectCopiedFromImage,
       description: this.description.value,
       isDescriptionCopiedFromImage: this.isDescriptionCopiedFromImage
     });
+  }
+  onChangeAreKeywordsToDeleteFromImage(event) {
+    if (event) { 
+      this.areKeywordsToDeleteFromImage = true;
+    }  else {
+      this.areKeywordsToDeleteFromImage = false;
+    }
   }
 }

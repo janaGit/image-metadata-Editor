@@ -8,20 +8,21 @@
         "method": "COPY_CUSTOM"
     },
     "metadataTab": {
+        "creator": "Creator1234",
+        "isCreatorCopiedFromImage": true,
         "contactInfo": "test2@eMail.de",
         "isContactInfoCopiedFromImage": false,
-        "creator": "Creator1234",
-        "isCreatorCopiedFromImage": false,
-        "description": "beautiful picture",
-        "isDescriptionCopiedFromImage": false,
+        "license": "CC-by",
+        "isLicenseCopiedFromImage": true,
         "keywords": [
             "keyword1"
         ],
-        "areKeywordsCopiedFromImage": false,
-        "license": "CC-by",
-        "isLicenseCopiedFromImage": false,
+        "areKeywordsCopiedFromImage": true,
+        "areKeywordsToDeleteFromImage": true,
         "subject": "Object",
-        "isSubjectCopiedFromImage": false
+        "isSubjectCopiedFromImage": false,
+        "description": "beautiful picture",
+        "isDescriptionCopiedFromImage": false
     },
     "categoryTab": {
         "isNotSupportedCategoriesToCopy": false,

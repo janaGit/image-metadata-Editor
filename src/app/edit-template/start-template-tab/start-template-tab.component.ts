@@ -39,6 +39,7 @@ const newTemplate: AppTemplate = {
         isDescriptionCopiedFromImage: false,
         keywords: [],
         areKeywordsCopiedFromImage: false,
+        areKeywordsToDeleteFromImage: false,
         license: "",
         isLicenseCopiedFromImage: false,
         subject: "",
