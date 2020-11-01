@@ -5,7 +5,7 @@ import { MetadataFromLocationTab } from '../types/metadata-from-location-tab.int
 import { AppTemplate } from 'app/types/app-template.interface';
 import { TemplateCategoriesTab } from 'app/types/template-categories-tab.interface';
 import { MetadataFromImageService } from '../services/metadata-from-image.service';
-import { deepCopyFunction } from '../../../utilities/utilitiy-methods';
+import { deepCopyFunction, returnUniqueItems } from '../../../utilities/utilitiy-methods';
 import { EditorService } from 'app/services/editor.service';
 import { TemplateLocationTab } from 'app/types/template-location-tab.interface';
 import { MetadataFromMetadataTemplateTab } from 'app/types/metadata-from-metadata-template-tab.interface';
@@ -121,8 +121,21 @@ export class MetadataFromTemplateService {
 
     updateEditMetadata(metadata: MetadataFromMetadataTemplateTab) {
         this._editMetadata = metadata;
-        this.__editMetadata.next(metadata);
+        this._editMetadata.keywords = this.mergeImageTemplateKeywords();
         this.updateTemplateObject();
+    }
+
+    private mergeImageTemplateKeywords(): string[] {
+        let keywords = this.editMetadata.keywords;
+        if (this._editMetadata.areKeywordsCopiedFromImage) {
+            if (this._editMetadata.areKeywordsToDeleteFromImage) {
+                keywords = returnUniqueItems([].concat(this._metadataFromImageService.editMetadata.keywords.filter(keywordFromImage => typeof this.editMetadata.keywords.find(keywordFromTemplate => keywordFromImage === keywordFromTemplate) === "undefined")));
+            } else {
+                keywords = returnUniqueItems([...this._metadataFromImageService.editMetadata.keywords, ...this.editMetadata.keywords]);
+
+            }
+        }
+        return keywords;
     }
 
     updateCategories(templateCategories: TemplateCategoriesTab) {

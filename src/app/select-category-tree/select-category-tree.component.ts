@@ -3,6 +3,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EditorService } from 'app/services/editor.service';
+import { returnUniqueItems } from '../../../utilities/utilitiy-methods';
 /**
  * Code and comments used from: https://material.angular.io/components/tree/examples
  */
@@ -244,8 +245,8 @@ export class SelectCategoryTreeComponent implements OnInit, OnDestroy {
       }
     })
 
-    const uniqueCategories = categories.filter((item, index) => categories.indexOf(item) === index);
-  
+    const uniqueCategories = returnUniqueItems(categories);
+      
     this.onChangeCategory.emit(uniqueCategories);
   }
 }

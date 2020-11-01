@@ -138,7 +138,7 @@ export class AllMetadataEditTabComponent implements OnInit {
     this.isDescriptionCopiedFromImage = editMetadata.isDescriptionCopiedFromImage;
     this.keywords = editMetadata.keywords;
     this.areKeywordsCopiedFromImage = editMetadata.areKeywordsCopiedFromImage;
-    this.areKeywordsToDeleteFromImage= editMetadata.areKeywordsToDeleteFromImage;
+    this.areKeywordsToDeleteFromImage = editMetadata.areKeywordsToDeleteFromImage;
 
     this.templateData = this._editAllMetadataFromTemplateService.editMetadata;
   }
@@ -163,33 +163,34 @@ export class AllMetadataEditTabComponent implements OnInit {
 
   setCreatorFromTemplate() {
     this.creator.setValue(this.templateData.creator);
-    this.isCreatorCopiedFromImage=this.templateData.isCreatorCopiedFromImage;
+    this.isCreatorCopiedFromImage = this.templateData.isCreatorCopiedFromImage;
   }
   setContactInfoFromTemplate() {
     this.contactInfo.setValue(this.templateData.contactInfo);
-    this.isContactInfoCopiedFromImage=this.templateData.isContactInfoCopiedFromImage;
+    this.isContactInfoCopiedFromImage = this.templateData.isContactInfoCopiedFromImage;
   }
   setLicenseFromTemplate() {
     this.license.setValue(this.templateData.license);
-    this.isLicenseCopiedFromImage=this.templateData.isLicenseCopiedFromImage;
+    this.isLicenseCopiedFromImage = this.templateData.isLicenseCopiedFromImage;
   }
   setKeywordsFromTemplate() {
     this.keywords = deepCopyFunction(this.templateData.keywords);
-    this.areKeywordsCopiedFromImage=this.templateData.areKeywordsCopiedFromImage;
+    this.areKeywordsCopiedFromImage = this.templateData.areKeywordsCopiedFromImage;
+    this.areKeywordsToDeleteFromImage = this.templateData.areKeywordsToDeleteFromImage;
   }
   setSubjectFromTemplate() {
     this.subject.setValue(this.templateData.subject);
-    this.isSubjectCopiedFromImage=this.templateData.isSubjectCopiedFromImage;
+    this.isSubjectCopiedFromImage = this.templateData.isSubjectCopiedFromImage;
   }
   setDescriptionFromTemplate() {
     this.description.setValue(this.templateData.description);
-    this.isDescriptionCopiedFromImage=this.templateData.isDescriptionCopiedFromImage;
+    this.isDescriptionCopiedFromImage = this.templateData.isDescriptionCopiedFromImage;
   }
 
   onChangeAreKeywordsToDeleteFromImage(event) {
-    if (event === "delete") { 
+    if (event === "delete") {
       this.areKeywordsToDeleteFromImage = true;
-    }  else {
+    } else {
       this.areKeywordsToDeleteFromImage = false;
     }
   }

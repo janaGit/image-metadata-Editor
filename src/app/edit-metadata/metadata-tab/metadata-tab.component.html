@@ -40,7 +40,6 @@
     <div class="col-xs-6">
       <app-add-items [(keywords)]="keywords"></app-add-items>
       <app-input-template-buttons [templateData]="metadataFromTemplate.keywords" [imageData]="metadataFromImage.keywords"
-      [isToCopyFromImage]="metadataFromTemplate.areKeywordsCopiedFromImage"
       (onClickTemplateButton)="getKeywordsFromTemplate()" (onClickImageButton)="getKeywordsFromImage()"
       [formData]="keywords"></app-input-template-buttons>
     </div>

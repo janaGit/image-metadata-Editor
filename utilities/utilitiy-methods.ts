@@ -68,4 +68,6 @@ export function getKeysFromNestedObject(obj): string[] {
                 return [...res, el];
         }, []);
 }
-
+export function returnUniqueItems(array: string[]): string[]{
+       return array.filter((item, index) => array.indexOf(item) === index);
+}

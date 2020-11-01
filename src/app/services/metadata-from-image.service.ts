@@ -95,7 +95,7 @@ export class MetadataFromImageService {
             creator: this._metadata["Creator"],
             contactInfo: this._metadata["ContactInfo"],
             license: this._metadata["License"],
-            keywords:  [].concat(this._metadata["Keywords"]),
+            keywords:  typeof this._metadata["Keywords"] !== "undefined"?[].concat((<string[]>this._metadata["Keywords"].split(",")).map(keyword =>keyword.trim())):[],
             subject: this._metadata["Subject"],
             description: this._metadata["Description"]
         };

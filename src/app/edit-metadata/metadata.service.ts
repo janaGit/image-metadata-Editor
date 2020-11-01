@@ -181,7 +181,7 @@ export class MetadataService {
             creator: template.metadataTab.isCreatorCopiedFromImage ? this._metadataFromImageService.editMetadata.creator : template.metadataTab.creator,
             contactInfo: template.metadataTab.isContactInfoCopiedFromImage ? this._metadataFromImageService.editMetadata.contactInfo : template.metadataTab.contactInfo,
             license: template.metadataTab.isLicenseCopiedFromImage ? this._metadataFromImageService.editMetadata.license : template.metadataTab.license,
-            keywords: template.metadataTab.areKeywordsCopiedFromImage ? [...this._metadataFromImageService.editMetadata.keywords] : [...template.metadataTab.keywords],
+            keywords: template.metadataTab.keywords,
             subject: template.metadataTab.isSubjectCopiedFromImage ? this._metadataFromImageService.editMetadata.subject : template.metadataTab.subject,
             description: template.metadataTab.isDescriptionCopiedFromImage ? this._metadataFromImageService.editMetadata.description : template.metadataTab.description
         });
@@ -196,11 +196,12 @@ export class MetadataService {
             isLocationDisabled: template.locationTab.isLocationDisabledByDefault,
             isTimeDisabled: template.locationTab.isTimeDisabledByDefault,
             latitude: template.locationTab.isLocationCopiedFromImage ? this._metadataFromImageService.location.latitude : template.locationTab.latitude,
-            longitude: template.locationTab.isLocationCopiedFromImage ? this._metadataFromImageService.location.longitude: template.locationTab.longitude
+            longitude: template.locationTab.isLocationCopiedFromImage ? this._metadataFromImageService.location.longitude : template.locationTab.longitude
         });
 
         this.updateExistingMetadataFromTemplate(template.existingMetadataTab);
     }
+
 
     private extractReturnObject(res: any): ReturnObject {
         if (res.status < 200 || res.status >= 300) {
