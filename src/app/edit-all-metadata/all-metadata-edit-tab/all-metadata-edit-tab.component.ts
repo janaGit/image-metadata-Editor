@@ -188,7 +188,7 @@ export class AllMetadataEditTabComponent implements OnInit {
   }
 
   onChangeAreKeywordsToDeleteFromImage(event) {
-    if (event === "delete") {
+    if (event === true) {
       this.areKeywordsToDeleteFromImage = true;
     } else {
       this.areKeywordsToDeleteFromImage = false;

@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import { ReturnObject } from '../../src/app/types/return-object.interface';
 import { AppTemplate } from '../../src/app/types/app-template.interface';
 import { ExistingMetadataTemplateMethods } from '../../src/app/types/existing-metadata-templete-methods.type';
-import { getKeysFromNestedObject } from '../../utilities/utilitiy-methods';
+import { getKeysFromNestedObject, returnUniqueItems } from '../../utilities/utilitiy-methods';
 interface ImageData {
   imageName: string,
   imageNameAfterProcessing: string,
@@ -95,9 +95,10 @@ export class ExifTool {
   public writeMetadataAllImagesSelected(imageDir, imageName: string, metadata: AppTemplate) {
     try {
       var ls_categories = child_process.spawnSync('exiftool', [imageDir + '/' + imageName, "-Categories"]);
-      const tags = this.createTags(metadata, ls_categories.stdout);
-      console.log("createMetadataForProcessing: "+this.createMetadataForProcessing(tags.tagsAndValues).join(" "));
-      var ls_categories = child_process.spawnSync('exiftool', [imageDir + '/' + imageName, ...this.createMetadataForProcessing(tags.tagsAndValues), "-tagsFromFile", '@', '-orientation',  ...tags.copyFromImage,'-overwrite_original']);
+      var ls_keywords = child_process.spawnSync('exiftool', [imageDir + '/' + imageName, "-Keywords"]);
+      const tags = this.createTags(metadata, ls_categories.stdout, ls_keywords.stdout);
+      console.log("createMetadataForProcessing: " + this.createMetadataForProcessing(tags.tagsAndValues).join(" "));
+      var ls_categories = child_process.spawnSync('exiftool', [imageDir + '/' + imageName, ...this.createMetadataForProcessing(tags.tagsAndValues), "-tagsFromFile", '@', '-orientation', ...tags.copyFromImage, '-overwrite_original']);
     } catch (e) {
       console.error('exifTool writeMetadataAllImagesSelected() error: ' + e);
     }
@@ -106,11 +107,11 @@ export class ExifTool {
   private createMetadataForProcessing(tagsAndValues: Map<string, string>): string[] {
     let strings = [];
     tagsAndValues.forEach((value, key) => {
-      strings.push("-"+key + "=" + value);
+      strings.push("-" + key + "=" + value);
     });
     return strings;
   }
-  private createTags(metadata: AppTemplate, categoriesFromImage: string): { tagsAndValues: Map<string, string>, copyFromImage: string[] } {
+  private createTags(metadata: AppTemplate, categoriesFromImage: string, keywordsFromImage: any): { tagsAndValues: Map<string, string>, copyFromImage: string[] } {
     let copyFromImage: string[] = [];
     const tagsAndValues = new Map<string, string>();
 
@@ -133,27 +134,44 @@ export class ExifTool {
     } else {
       tagsAndValues.set("Creator", metadata.metadataTab.creator);
     }
+
     if (metadata.metadataTab.isLicenseCopiedFromImage) {
       copyFromImage.push("License");
     } else {
       tagsAndValues.set("License", metadata.metadataTab.license);
     }
+
     if (metadata.metadataTab.isContactInfoCopiedFromImage) {
       copyFromImage.push("ContactInfo");
     } else {
       tagsAndValues.set("ContactInfo", metadata.metadataTab.contactInfo);
     }
+
     if (metadata.metadataTab.areKeywordsCopiedFromImage) {
-      copyFromImage.push("Keywords");
-      tagsAndValues.set("Keywords", metadata.metadataTab.keywords.join(","));
+
+      if (metadata.metadataTab.areKeywordsToDeleteFromImage) {
+        if (typeof keywordsFromImage === "string") {
+          const keywords = returnUniqueItems([].concat(keywordsFromImage.split(",").filter(keywordFromImage => typeof metadata.metadataTab.keywords.find(keywordFromTemplate => keywordFromImage === keywordFromTemplate) === "undefined")));
+          tagsAndValues.set("Keywords", keywords.join(", "));
+        }
+      } else {
+        if (typeof keywordsFromImage === "string") {
+          tagsAndValues.set("Keywords", returnUniqueItems(metadata.metadataTab.keywords.concat(keywordsFromImage.split(","))).join(", "));
+        } else {
+          tagsAndValues.set("Keywords", metadata.metadataTab.keywords.join(","));
+        }
+      }
+
     } else {
       tagsAndValues.set("Keywords", metadata.metadataTab.keywords.join(","));
     }
+
     if (metadata.metadataTab.isSubjectCopiedFromImage) {
       copyFromImage.push("Subject");
     } else {
       tagsAndValues.set("Subject", metadata.metadataTab.subject);
     }
+
     if (metadata.metadataTab.isDescriptionCopiedFromImage) {
       copyFromImage.push("Description");
     } else {
